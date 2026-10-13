@@ -9,7 +9,9 @@ import {
 import { Cormorant_Garamond, Noto_Sans_KR, Noto_Sans_SC } from "next/font/google";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { ViewTracker } from "@/components/ViewTracker";
 import { routing } from "@/i18n/routing";
+import { getSession } from "@/lib/session";
 import { siteUrl } from "@/lib/site";
 
 const display = Cormorant_Garamond({
@@ -29,6 +31,8 @@ const sansSc = Noto_Sans_SC({
   weight: ["400", "500"],
   variable: "--font-sans-sc",
 });
+
+export const dynamic = "force-dynamic";
 
 type Props = {
   children: React.ReactNode;
@@ -78,6 +82,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   setRequestLocale(locale);
   const messages = await getMessages();
+  const session = await getSession();
 
   return (
     <html
@@ -92,7 +97,8 @@ export default async function LocaleLayout({ children, params }: Props) {
         }}
       >
         <NextIntlClientProvider messages={messages}>
-          <SiteHeader />
+          <ViewTracker />
+          <SiteHeader showAdmin={Boolean(session)} />
           <main className="flex-1">{children}</main>
           <SiteFooter />
         </NextIntlClientProvider>

@@ -7,7 +7,7 @@ import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { navItems } from "@/lib/site";
 
-export function SiteHeader() {
+export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -37,6 +37,11 @@ export function SiteHeader() {
           })}
         </nav>
         <div className="flex items-center gap-4">
+          {showAdmin ? (
+            <a href="/admin" className="text-[11px] tracking-[0.18em] text-cream/80">
+              관리
+            </a>
+          ) : null}
           <LanguageSwitcher light />
           <button
             type="button"
@@ -52,6 +57,11 @@ export function SiteHeader() {
           className="border-t border-cream/15 bg-navy/95 px-6 py-6 text-cream lg:hidden"
         >
           <div className="flex flex-col gap-4">
+            {showAdmin ? (
+              <a href="/admin" className="text-sm tracking-[0.16em]">
+                관리
+              </a>
+            ) : null}
             {navItems.map((item) => (
               <Link
                 key={item.key}

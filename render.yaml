@@ -16,3 +16,13 @@ services:
         value: "22"
       - key: MONGODB_URI
         sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: SEED_SUPERVISOR_USERNAME
+        sync: false
+      - key: SEED_SUPERVISOR_PASSWORD
+        sync: false
+      - key: SEED_ADMIN_USERNAME
+        sync: false
+      - key: SEED_ADMIN_PASSWORD
+        sync: false
