@@ -14,7 +14,9 @@
     "news": "NEWS",
     "contact": "CONTACT",
     "menu": "菜单",
-    "close": "关闭"
+    "close": "关闭",
+    "login": "登录",
+    "admin": "管理"
   },
   "cta": {
     "solutions": "了解方案",

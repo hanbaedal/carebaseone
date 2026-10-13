@@ -14,7 +14,9 @@
     "news": "NEWS",
     "contact": "CONTACT",
     "menu": "메뉴",
-    "close": "닫기"
+    "close": "닫기",
+    "login": "로그인",
+    "admin": "관리"
   },
   "cta": {
     "solutions": "솔루션 보기",

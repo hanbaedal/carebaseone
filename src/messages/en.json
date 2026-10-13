@@ -14,7 +14,9 @@
     "news": "NEWS",
     "contact": "CONTACT",
     "menu": "Menu",
-    "close": "Close"
+    "close": "Close",
+    "login": "LOGIN",
+    "admin": "ADMIN"
   },
   "cta": {
     "solutions": "Explore Solutions",

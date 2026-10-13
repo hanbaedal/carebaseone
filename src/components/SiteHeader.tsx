@@ -11,10 +11,12 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const accountHref = showAdmin ? "/admin" : "/admin/login";
+  const accountLabel = showAdmin ? t("admin") : t("login");
   return (
     <header className="absolute inset-x-0 top-0 z-50 text-cream">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-5">
-        <Link href="/" className="font-display text-xl tracking-[0.18em]">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:gap-6 sm:px-6 sm:py-5">
+        <Link href="/" className="shrink-0 font-display text-xl tracking-[0.18em]">
           CAREBASE
         </Link>
         <nav className="hidden items-center gap-5 lg:flex">
@@ -36,16 +38,19 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
             );
           })}
         </nav>
-        <div className="flex items-center gap-4">
-          {showAdmin ? (
-            <a href="/admin" className="text-[11px] tracking-[0.18em] text-cream/80">
-              관리
-            </a>
-          ) : null}
-          <LanguageSwitcher light />
+        <div className="flex shrink-0 items-center gap-2 sm:gap-4">
+          <a
+            href={accountHref}
+            className="whitespace-nowrap border border-cream/50 px-2 py-1 text-[11px] tracking-[0.14em] text-cream hover:bg-cream hover:text-navy"
+          >
+            {accountLabel}
+          </a>
+          <div className="hidden sm:block">
+            <LanguageSwitcher light />
+          </div>
           <button
             type="button"
-            className="text-[11px] tracking-[0.18em] lg:hidden"
+            className="whitespace-nowrap text-[11px] tracking-[0.14em] lg:hidden"
             onClick={() => setOpen((value) => !value)}
           >
             {open ? t("close") : t("menu")}
@@ -57,11 +62,15 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
           className="border-t border-cream/15 bg-navy/95 px-6 py-6 text-cream lg:hidden"
         >
           <div className="flex flex-col gap-4">
-            {showAdmin ? (
-              <a href="/admin" className="text-sm tracking-[0.16em]">
-                관리
-              </a>
-            ) : null}
+            <div className="sm:hidden">
+              <LanguageSwitcher light />
+            </div>
+            <a
+              href={accountHref}
+              className="w-fit border border-cream/50 px-3 py-1.5 text-sm tracking-[0.16em]"
+            >
+              {accountLabel}
+            </a>
             {navItems.map((item) => (
               <Link
                 key={item.key}
