@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -9,7 +9,9 @@ import { navItems } from "@/lib/site";
 
 export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
   const t = useTranslations("nav");
+  const locale = useLocale();
   const pathname = usePathname();
+  const tracking = locale === "en" ? "tracking-[0.18em]" : "tracking-normal";
   const [open, setOpen] = useState(false);
   const accountHref = showAdmin ? "/admin" : "/admin/login";
   const accountLabel = showAdmin ? t("admin") : t("login");
@@ -29,7 +31,7 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
               <Link
                 key={item.key}
                 href={item.href}
-                className={`text-[11px] tracking-[0.18em] transition-colors ${
+                className={`text-[11px] ${tracking} transition-colors ${
                   active ? "text-cream" : "text-cream/60 hover:text-cream"
                 }`}
               >
@@ -76,7 +78,7 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
                 key={item.key}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="text-sm tracking-[0.16em]"
+                className={`text-sm ${tracking}`}
               >
                 {t(item.key)}
               </Link>

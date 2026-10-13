@@ -120,7 +120,7 @@ export default async function HomePage({
       </section>
 
       <section className="mx-auto max-w-6xl px-6 py-24">
-        <p className="text-[11px] tracking-[0.28em] text-sage">For people</p>
+        <p className="text-[11px] tracking-[0.28em] text-sage">{t("home.forPeopleMark")}</p>
         <h2 className="font-display mt-3 text-4xl">{t("home.forPeople")}</h2>
         <p className="mt-4 max-w-xl text-ink/70">{t("home.forPeopleLede")}</p>
         <div className="mt-12 grid gap-4 md:grid-cols-5">
@@ -144,7 +144,7 @@ export default async function HomePage({
       <section className="bg-forest text-cream">
         <div className="mx-auto grid max-w-6xl gap-12 px-6 py-24 md:grid-cols-2 md:items-center">
           <div>
-            <p className="text-[11px] tracking-[0.28em] text-sage">In daily life</p>
+            <p className="text-[11px] tracking-[0.28em] text-sage">{t("home.inLifeMark")}</p>
             <h2 className="font-display mt-3 text-4xl">{t("home.inLife")}</h2>
             <p className="mt-4 text-cream/75">{t("home.inLifeLede")}</p>
             <div className="mt-8 grid gap-4">
@@ -176,7 +176,7 @@ export default async function HomePage({
       </section>
 
       <section className="mx-auto max-w-6xl px-6 py-24">
-        <p className="text-[11px] tracking-[0.28em] text-sage">For partners</p>
+        <p className="text-[11px] tracking-[0.28em] text-sage">{t("home.forPartnersMark")}</p>
         <h2 className="font-display mt-3 text-4xl">{t("home.forPartners")}</h2>
         <p className="mt-4 max-w-xl text-ink/70">{t("home.forPartnersLede")}</p>
         <div className="mt-12 grid gap-4 md:grid-cols-3">

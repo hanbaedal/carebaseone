@@ -1,18 +1,18 @@
 {
   "meta": {
     "site": "CAREBASE",
-    "tagline": "Global NO Metabolite Health Platform",
+    "tagline": "글로벌 산화질소 대사체 건강 플랫폼",
     "description": "CAREBASE는 산화질소(NO) 대사체 기술을 기반으로 제품, 솔루션, 글로벌 사업을 연결하는 헬스케어 플랫폼입니다."
   },
   "nav": {
-    "home": "HOME",
-    "technology": "TECHNOLOGY",
-    "solution": "SOLUTION",
-    "product": "PRODUCT",
-    "global": "GLOBAL",
-    "business": "BUSINESS",
-    "news": "NEWS",
-    "contact": "CONTACT",
+    "home": "홈",
+    "technology": "기술",
+    "solution": "솔루션",
+    "product": "제품",
+    "global": "글로벌",
+    "business": "비즈니스",
+    "news": "소식",
+    "contact": "문의",
     "menu": "메뉴",
     "close": "닫기",
     "login": "로그인",
@@ -27,60 +27,63 @@
   },
   "footer": {
     "mission": "기술과 사람을 연결하여 건강한 세상을 만듭니다.",
-    "closeQuote1": "Technology creates solutions.",
-    "closeQuote2": "Solutions improve lives.",
-    "closeQuote3": "Platforms connect the world.",
+    "closeQuote1": "기술은 솔루션을 만듭니다.",
+    "closeQuote2": "솔루션은 삶을 바꿉니다.",
+    "closeQuote3": "플랫폼은 세계를 연결합니다.",
     "disclaimer": "본 사이트의 내용은 건강 정보의 소개이며, 질병의 진단·치료·예방을 목적으로 하지 않습니다.",
-    "rights": "CAREBASE. Connecting a healthier tomorrow."
+    "rights": "CAREBASE. 더 건강한 내일을 연결합니다."
   },
   "home": {
-    "kicker": "Healthy People · Healthy Society · Healthy World",
+    "kicker": "건강한 사람 · 건강한 사회 · 건강한 세상",
     "headline": "우리는 제품을 만드는 회사가 아닙니다.",
     "lede": "사람과 기술, 자연과 건강을 연결하는 플랫폼입니다.",
     "whyTitle": "왜 산화질소인가",
     "whyBody": "산화질소는 혈관, 순환, 세포, 면역, 회복과 관련된 중요한 생체 신호물질입니다. CAREBASE는 이 기술을 통해 현대인의 건강 문제에 새로운 방향을 제시합니다.",
     "pillarsTitle": "다섯 개의 연결",
+    "forPeopleMark": "사람을 위해",
     "forPeople": "사람을 위한 길",
     "forPeopleLede": "사람마다 필요한 건강은 다릅니다.",
+    "inLifeMark": "생활 속에서",
     "inLife": "생활 속에서",
     "inLifeLede": "기술은 생활 속에서 제품으로 완성됩니다.",
+    "forPartnersMark": "파트너와 함께",
     "forPartners": "함께 성장하는 길",
     "forPartnersLede": "한국의 기술과 세계의 건강을 연결합니다.",
     "pillars": {
       "technology": {
         "num": "01",
-        "title": "Technology",
+        "title": "기술",
         "ko": "자연에서 시작된 건강기술",
         "text": "산화질소 대사체 기술은 자연의 원리에서 출발합니다."
       },
       "solution": {
         "num": "02",
-        "title": "Solution",
+        "title": "솔루션",
         "ko": "건강을 위한 다양한 솔루션",
         "text": "혈관, 스포츠, 시니어, 뷰티, 웰니스."
       },
       "product": {
         "num": "03",
-        "title": "Product",
+        "title": "제품",
         "ko": "생활 속 건강 플랫폼",
         "text": "패치, 음료, 건강식품, 화장품."
       },
       "global": {
         "num": "04",
-        "title": "Global",
+        "title": "글로벌",
         "ko": "세계를 연결하는 플랫폼",
         "text": "한국, 중국, 미국. 건강에는 국경이 없습니다."
       },
       "business": {
         "num": "05",
-        "title": "Business",
+        "title": "비즈니스",
         "ko": "함께 성장하는 건강 생태계",
         "text": "기술과 사람, 기업과 시장을 연결합니다."
       }
     }
   },
   "technology": {
-    "kicker": "01 Technology",
+    "kicker": "01 기술",
     "title": "자연에서 시작된 건강기술",
     "lede": "산화질소(NO) 대사체 기술은 자연의 원리에서 출발하여 건강한 삶을 위한 다양한 기술로 발전하고 있습니다.",
     "blocks": {
@@ -103,7 +106,7 @@
     }
   },
   "solution": {
-    "kicker": "02 Solution",
+    "kicker": "02 솔루션",
     "title": "건강을 위한 다양한 솔루션",
     "lede": "사람마다 필요한 건강은 다릅니다. CAREBASE는 다양한 건강관리 솔루션을 제공합니다.",
     "items": {
@@ -130,98 +133,98 @@
     }
   },
   "product": {
-    "kicker": "03 Product",
+    "kicker": "03 제품",
     "title": "생활 속 건강 플랫폼",
     "lede": "기술은 생활 속에서 제품으로 완성됩니다. 지금은 소개만 제공합니다. 구매는 다음 단계에서 연결됩니다.",
     "note": "제품 구매와 가격 안내는 준비 중입니다. 궁금한 점은 문의해 주세요.",
     "categories": {
       "patch": {
-        "title": "Patch",
+        "title": "패치",
         "text": "일상과 스포츠 현장에 가볍게 더하는 패치.",
         "items": "근육관절패치 · 스포츠패치 · 비타민패치"
       },
       "beverage": {
-        "title": "Beverage",
+        "title": "음료",
         "text": "하루의 리듬에 곁들이는 음료.",
         "items": "Happy N:O · 생맥산 · 쌍화탕"
       },
       "food": {
-        "title": "Health Food",
+        "title": "건강식품",
         "text": "자연에서 온 원료를 담은 건강식품.",
         "items": "땃두릅 · 육미송화"
       },
       "cosmetics": {
-        "title": "Cosmetics",
+        "title": "화장품",
         "text": "피부와 모발을 위한 데일리 케어.",
         "items": "올케어 · 샴푸 · 에센스 · 바디로션"
       }
     }
   },
   "global": {
-    "kicker": "04 Global",
+    "kicker": "04 글로벌",
     "title": "세계를 연결하는 플랫폼",
     "lede": "건강에는 국경이 없습니다. 한국의 기술과 세계의 건강을 연결합니다.",
     "nodes": {
       "korea": {
-        "title": "Korea",
+        "title": "한국",
         "text": "기술, 연구, 브랜드."
       },
       "china": {
-        "title": "China",
+        "title": "중국",
         "text": "생산, 유통, 운영센터."
       },
       "usa": {
-        "title": "USA",
+        "title": "미국",
         "text": "판매, OEM, 브랜드."
       },
       "future": {
-        "title": "Future",
-        "text": "Global Expansion."
+        "title": "앞으로",
+        "text": "세계로 확장합니다."
       }
     }
   },
   "business": {
-    "kicker": "05 Business",
+    "kicker": "05 비즈니스",
     "title": "함께 성장하는 건강 생태계",
     "lede": "CAREBASE는 제품을 판매하는 회사가 아니라, 기술과 사람, 기업과 시장을 연결하는 건강 비즈니스 플랫폼입니다.",
     "center": "NO Metabolite",
     "nodes": {
-      "technology": "Technology",
-      "research": "Research",
-      "product": "Product",
+      "technology": "기술",
+      "research": "연구",
+      "product": "제품",
       "oem": "OEM / ODM",
-      "healthcare": "Healthcare Center",
-      "education": "Education",
-      "distribution": "Global Distribution",
-      "partner": "Partner Network"
+      "healthcare": "헬스케어 센터",
+      "education": "교육",
+      "distribution": "글로벌 유통",
+      "partner": "파트너 네트워크"
     },
     "invite": "연구, 생산, 유통, 교육, 센터 운영에 함께할 파트너를 찾습니다."
   },
   "news": {
-    "kicker": "News",
+    "kicker": "소식",
     "title": "소식",
     "lede": "연구, 교류, 확장의 기록을 천천히 쌓아 갑니다.",
     "empty": "공개할 소식이 준비되면 이 페이지에 올라갑니다.",
     "items": {
       "research": {
-        "tag": "Research",
+        "tag": "연구",
         "title": "산화질소 대사체 연구를 이어갑니다",
         "text": "자연의 원리에서 출발한 기술을 제품과 솔루션으로 연결하는 연구를 계속합니다."
       },
       "symposium": {
-        "tag": "Exchange",
+        "tag": "교류",
         "title": "국제 교류와 심포지엄",
         "text": "연구와 현장을 잇는 대화를 이어 갑니다. 일정은 확정되는 대로 공지합니다."
       },
       "expansion": {
-        "tag": "Global",
+        "tag": "글로벌",
         "title": "한국, 중국, 미국을 잇는 네트워크",
         "text": "기술, 생산, 판매가 한 플랫폼 위에서 만나도록 거점을 넓혀 갑니다."
       }
     }
   },
   "contact": {
-    "kicker": "Contact",
+    "kicker": "문의",
     "title": "연결이 시작되는 곳",
     "lede": "제품이 궁금하신 분과, 함께 사업을 만들고 싶은 분 모두를 기다립니다.",
     "audience": "문의 유형",

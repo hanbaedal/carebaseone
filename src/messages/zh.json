@@ -1,18 +1,18 @@
 {
   "meta": {
     "site": "CAREBASE",
-    "tagline": "Global NO Metabolite Health Platform",
+    "tagline": "全球一氧化氮代谢体健康平台",
     "description": "CAREBASE 是以一氧化氮（NO）代谢体技术为基础，连接产品、方案与全球事业的健康平台。"
   },
   "nav": {
-    "home": "HOME",
-    "technology": "TECHNOLOGY",
-    "solution": "SOLUTION",
-    "product": "PRODUCT",
-    "global": "GLOBAL",
-    "business": "BUSINESS",
-    "news": "NEWS",
-    "contact": "CONTACT",
+    "home": "首页",
+    "technology": "技术",
+    "solution": "方案",
+    "product": "产品",
+    "global": "全球",
+    "business": "事业",
+    "news": "动态",
+    "contact": "联系",
     "menu": "菜单",
     "close": "关闭",
     "login": "登录",
@@ -27,60 +27,63 @@
   },
   "footer": {
     "mission": "连接技术与人，创造更健康的世界。",
-    "closeQuote1": "Technology creates solutions.",
-    "closeQuote2": "Solutions improve lives.",
-    "closeQuote3": "Platforms connect the world.",
+    "closeQuote1": "技术创造方案。",
+    "closeQuote2": "方案改善生活。",
+    "closeQuote3": "平台连接世界。",
     "disclaimer": "本网站内容仅供介绍，不用于疾病的诊断、治疗或预防。",
-    "rights": "CAREBASE. Connecting a healthier tomorrow."
+    "rights": "CAREBASE. 连接更健康的明天。"
   },
   "home": {
-    "kicker": "Healthy People · Healthy Society · Healthy World",
+    "kicker": "健康的人 · 健康的社会 · 健康的世界",
     "headline": "我们不是一家产品公司。",
     "lede": "我们是连接人与技术、自然与健康的平台。",
     "whyTitle": "为什么是一氧化氮",
     "whyBody": "一氧化氮与血管、循环、细胞、免疫和恢复相关，是重要的生物信号物质。CAREBASE 希望以这项技术，为当代健康课题提供新的方向。",
     "pillarsTitle": "五条连接",
+    "forPeopleMark": "为了人",
     "forPeople": "为每个人",
     "forPeopleLede": "每个人需要的健康并不相同。",
+    "inLifeMark": "在生活中",
     "inLife": "在生活里",
     "inLifeLede": "技术在生活中成为产品，才算完成。",
+    "forPartnersMark": "与伙伴一起",
     "forPartners": "共同成长",
     "forPartnersLede": "把韩国的技术与世界的健康连接起来。",
     "pillars": {
       "technology": {
         "num": "01",
-        "title": "Technology",
+        "title": "技术",
         "ko": "源于自然的健康技术",
         "text": "一氧化氮代谢体技术，从自然的原理出发。"
       },
       "solution": {
         "num": "02",
-        "title": "Solution",
+        "title": "方案",
         "ko": "多样的健康方案",
         "text": "血管、运动、长者、美容、身心。"
       },
       "product": {
         "num": "03",
-        "title": "Product",
+        "title": "产品",
         "ko": "生活中的健康平台",
         "text": "贴剂、饮品、健康食品、化妆品。"
       },
       "global": {
         "num": "04",
-        "title": "Global",
+        "title": "全球",
         "ko": "连接世界的平台",
         "text": "韩国、中国、美国。健康没有国界。"
       },
       "business": {
         "num": "05",
-        "title": "Business",
+        "title": "事业",
         "ko": "共同成长的健康生态",
         "text": "连接技术、人、企业与市场。"
       }
     }
   },
   "technology": {
-    "kicker": "01 Technology",
+    "kicker": "01 技术",
     "title": "源于自然的健康技术",
     "lede": "一氧化氮（NO）代谢体技术从自然原理出发，发展为服务健康生活的多种技术。",
     "blocks": {
@@ -103,7 +106,7 @@
     }
   },
   "solution": {
-    "kicker": "02 Solution",
+    "kicker": "02 方案",
     "title": "多样的健康方案",
     "lede": "每个人需要的健康并不相同。CAREBASE 提供生活中的健康管理方案。",
     "items": {
@@ -130,98 +133,98 @@
     }
   },
   "product": {
-    "kicker": "03 Product",
+    "kicker": "03 产品",
     "title": "生活中的健康平台",
     "lede": "技术在生活中成为产品，才算完成。本阶段仅作介绍，购买将在下一步开放。",
     "note": "价格与购买功能尚未开放。如需了解，请先咨询。",
     "categories": {
       "patch": {
-        "title": "Patch",
+        "title": "贴剂",
         "text": "轻轻加入日常与运动现场的贴剂。",
         "items": "肌肉关节贴 · 运动贴 · 维生素贴"
       },
       "beverage": {
-        "title": "Beverage",
+        "title": "饮品",
         "text": "陪伴一天节奏的饮品。",
         "items": "Happy N:O · 生脉散 · 双和汤"
       },
       "food": {
-        "title": "Health Food",
+        "title": "健康食品",
         "text": "承载自然原料的健康食品。",
         "items": "刺老芽 · 六味松花"
       },
       "cosmetics": {
-        "title": "Cosmetics",
+        "title": "化妆品",
         "text": "皮肤与头发的日常护理。",
         "items": "ALL CARE · 洗发水 · 精华 · 身体乳"
       }
     }
   },
   "global": {
-    "kicker": "04 Global",
+    "kicker": "04 全球",
     "title": "连接世界的平台",
     "lede": "健康没有国界。我们把韩国的技术与世界的健康连接起来。",
     "nodes": {
       "korea": {
-        "title": "Korea",
+        "title": "韩国",
         "text": "技术、研究、品牌。"
       },
       "china": {
-        "title": "China",
+        "title": "中国",
         "text": "生产、流通、运营中心。"
       },
       "usa": {
-        "title": "USA",
+        "title": "美国",
         "text": "销售、OEM、品牌。"
       },
       "future": {
-        "title": "Future",
+        "title": "未来",
         "text": "全球拓展。"
       }
     }
   },
   "business": {
-    "kicker": "05 Business",
+    "kicker": "05 事业",
     "title": "共同成长的健康生态",
     "lede": "CAREBASE 不是只销售产品的公司，而是连接技术、人、企业与市场的健康商业平台。",
     "center": "NO Metabolite",
     "nodes": {
-      "technology": "Technology",
-      "research": "Research",
-      "product": "Product",
+      "technology": "技术",
+      "research": "研究",
+      "product": "产品",
       "oem": "OEM / ODM",
-      "healthcare": "Healthcare Center",
-      "education": "Education",
-      "distribution": "Global Distribution",
-      "partner": "Partner Network"
+      "healthcare": "健康中心",
+      "education": "教育",
+      "distribution": "全球流通",
+      "partner": "伙伴网络"
     },
     "invite": "我们寻找研究、生产、流通、教育与健康中心的合作伙伴。"
   },
   "news": {
-    "kicker": "News",
+    "kicker": "动态",
     "title": "动态",
     "lede": "研究、交流与拓展的记录，会慢慢写在这里。",
     "empty": "待公布的消息准备好后，会发布在本页。",
     "items": {
       "research": {
-        "tag": "Research",
+        "tag": "研究",
         "title": "持续一氧化氮代谢体研究",
         "text": "我们继续研究源于自然的技术，并把它连接到产品与方案。"
       },
       "symposium": {
-        "tag": "Exchange",
+        "tag": "交流",
         "title": "国际交流与研讨会",
         "text": "研究与现场之间的对话仍在继续。日程确定后将另行公布。"
       },
       "expansion": {
-        "tag": "Global",
+        "tag": "全球",
         "title": "连接韩国、中国与美国的网络",
         "text": "我们正在扩大技术、生产与销售在同一平台相遇的据点。"
       }
     }
   },
   "contact": {
-    "kicker": "Contact",
+    "kicker": "联系",
     "title": "连接从这里开始",
     "lede": "无论是想了解产品的人，还是想共同开创事业的人，我们都欢迎。",
     "audience": "咨询类型",

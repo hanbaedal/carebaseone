@@ -1,9 +1,10 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { navItems } from "@/lib/site";
 
 export async function SiteFooter() {
   const t = await getTranslations();
+  const locale = await getLocale();
 
   return (
     <footer className="bg-navy text-cream">
@@ -18,7 +19,11 @@ export async function SiteFooter() {
         <p className="mt-8 max-w-xl text-sm leading-7 text-cream/70">
           {t("footer.mission")}
         </p>
-        <div className="mt-12 flex flex-wrap gap-x-5 gap-y-2 text-[11px] tracking-[0.16em] text-cream/55">
+        <div
+          className={`mt-12 flex flex-wrap gap-x-5 gap-y-2 text-[11px] text-cream/55 ${
+            locale === "en" ? "tracking-[0.16em]" : "tracking-normal"
+          }`}
+        >
           {navItems.map((item) => (
             <Link key={item.key} href={item.href} className="hover:text-cream">
               {t(`nav.${item.key}`)}
