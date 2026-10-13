@@ -1,0 +1,247 @@
+{
+  "meta": {
+    "site": "CAREBASE",
+    "tagline": "Global NO Metabolite Health Platform",
+    "description": "CAREBASE 是以一氧化氮（NO）代谢体技术为基础，连接产品、方案与全球事业的健康平台。"
+  },
+  "nav": {
+    "home": "HOME",
+    "technology": "TECHNOLOGY",
+    "solution": "SOLUTION",
+    "product": "PRODUCT",
+    "global": "GLOBAL",
+    "business": "BUSINESS",
+    "news": "NEWS",
+    "contact": "CONTACT",
+    "menu": "菜单",
+    "close": "关闭"
+  },
+  "cta": {
+    "solutions": "了解方案",
+    "partner": "合作咨询",
+    "inquire": "咨询",
+    "details": "查看详情",
+    "backHome": "返回首页"
+  },
+  "footer": {
+    "mission": "连接技术与人，创造更健康的世界。",
+    "closeQuote1": "Technology creates solutions.",
+    "closeQuote2": "Solutions improve lives.",
+    "closeQuote3": "Platforms connect the world.",
+    "disclaimer": "本网站内容仅供介绍，不用于疾病的诊断、治疗或预防。",
+    "rights": "CAREBASE. Connecting a healthier tomorrow."
+  },
+  "home": {
+    "kicker": "Healthy People · Healthy Society · Healthy World",
+    "headline": "我们不是一家产品公司。",
+    "lede": "我们是连接人与技术、自然与健康的平台。",
+    "whyTitle": "为什么是一氧化氮",
+    "whyBody": "一氧化氮与血管、循环、细胞、免疫和恢复相关，是重要的生物信号物质。CAREBASE 希望以这项技术，为当代健康课题提供新的方向。",
+    "pillarsTitle": "五条连接",
+    "forPeople": "为每个人",
+    "forPeopleLede": "每个人需要的健康并不相同。",
+    "inLife": "在生活里",
+    "inLifeLede": "技术在生活中成为产品，才算完成。",
+    "forPartners": "共同成长",
+    "forPartnersLede": "把韩国的技术与世界的健康连接起来。",
+    "pillars": {
+      "technology": {
+        "num": "01",
+        "title": "Technology",
+        "ko": "源于自然的健康技术",
+        "text": "一氧化氮代谢体技术，从自然的原理出发。"
+      },
+      "solution": {
+        "num": "02",
+        "title": "Solution",
+        "ko": "多样的健康方案",
+        "text": "血管、运动、长者、美容、身心。"
+      },
+      "product": {
+        "num": "03",
+        "title": "Product",
+        "ko": "生活中的健康平台",
+        "text": "贴剂、饮品、健康食品、化妆品。"
+      },
+      "global": {
+        "num": "04",
+        "title": "Global",
+        "ko": "连接世界的平台",
+        "text": "韩国、中国、美国。健康没有国界。"
+      },
+      "business": {
+        "num": "05",
+        "title": "Business",
+        "ko": "共同成长的健康生态",
+        "text": "连接技术、人、企业与市场。"
+      }
+    }
+  },
+  "technology": {
+    "kicker": "01 Technology",
+    "title": "源于自然的健康技术",
+    "lede": "一氧化氮（NO）代谢体技术从自然原理出发，发展为服务健康生活的多种技术。",
+    "blocks": {
+      "no": {
+        "title": "什么是一氧化氮（NO）？",
+        "text": "一氧化氮与血管、循环和细胞信号相关。CAREBASE 研究这一自然原理。"
+      },
+      "metabolite": {
+        "title": "什么是一氧化氮代谢体？",
+        "text": "代谢体是把与一氧化氮相关的路径，延伸到生活方案中的技术基础。"
+      },
+      "research": {
+        "title": "长期研究",
+        "text": "基于二十余年的研究积累，我们介绍这项技术的可能性，并把它连到产品与方案。"
+      },
+      "proof": {
+        "title": "研究与交流",
+        "text": "我们介绍核心技术、专利、论文与国际研讨会。具体数字将在资料核实后公布。"
+      }
+    }
+  },
+  "solution": {
+    "kicker": "02 Solution",
+    "title": "多样的健康方案",
+    "lede": "每个人需要的健康并不相同。CAREBASE 提供生活中的健康管理方案。",
+    "items": {
+      "vascular": {
+        "title": "血管健康",
+        "text": "关注循环与日常节奏的健康管理。"
+      },
+      "sports": {
+        "title": "运动恢复",
+        "text": "为运动之后的恢复而准备的方案。"
+      },
+      "senior": {
+        "title": "健康寿命",
+        "text": "长者与家人共同度过的健康时光。"
+      },
+      "beauty": {
+        "title": "皮肤健康",
+        "text": "在自然光下照护皮肤与日常的美容护理。"
+      },
+      "wellness": {
+        "title": "身心平衡",
+        "text": "连接冥想、自然与生活节奏的管理。"
+      }
+    }
+  },
+  "product": {
+    "kicker": "03 Product",
+    "title": "生活中的健康平台",
+    "lede": "技术在生活中成为产品，才算完成。本阶段仅作介绍，购买将在下一步开放。",
+    "note": "价格与购买功能尚未开放。如需了解，请先咨询。",
+    "categories": {
+      "patch": {
+        "title": "Patch",
+        "text": "轻轻加入日常与运动现场的贴剂。",
+        "items": "肌肉关节贴 · 运动贴 · 维生素贴"
+      },
+      "beverage": {
+        "title": "Beverage",
+        "text": "陪伴一天节奏的饮品。",
+        "items": "Happy N:O · 生脉散 · 双和汤"
+      },
+      "food": {
+        "title": "Health Food",
+        "text": "承载自然原料的健康食品。",
+        "items": "刺老芽 · 六味松花"
+      },
+      "cosmetics": {
+        "title": "Cosmetics",
+        "text": "皮肤与头发的日常护理。",
+        "items": "ALL CARE · 洗发水 · 精华 · 身体乳"
+      }
+    }
+  },
+  "global": {
+    "kicker": "04 Global",
+    "title": "连接世界的平台",
+    "lede": "健康没有国界。我们把韩国的技术与世界的健康连接起来。",
+    "nodes": {
+      "korea": {
+        "title": "Korea",
+        "text": "技术、研究、品牌。"
+      },
+      "china": {
+        "title": "China",
+        "text": "生产、流通、运营中心。"
+      },
+      "usa": {
+        "title": "USA",
+        "text": "销售、OEM、品牌。"
+      },
+      "future": {
+        "title": "Future",
+        "text": "全球拓展。"
+      }
+    }
+  },
+  "business": {
+    "kicker": "05 Business",
+    "title": "共同成长的健康生态",
+    "lede": "CAREBASE 不是只销售产品的公司，而是连接技术、人、企业与市场的健康商业平台。",
+    "center": "NO Metabolite",
+    "nodes": {
+      "technology": "Technology",
+      "research": "Research",
+      "product": "Product",
+      "oem": "OEM / ODM",
+      "healthcare": "Healthcare Center",
+      "education": "Education",
+      "distribution": "Global Distribution",
+      "partner": "Partner Network"
+    },
+    "invite": "我们寻找研究、生产、流通、教育与健康中心的合作伙伴。"
+  },
+  "news": {
+    "kicker": "News",
+    "title": "动态",
+    "lede": "研究、交流与拓展的记录，会慢慢写在这里。",
+    "empty": "待公布的消息准备好后，会发布在本页。",
+    "items": {
+      "research": {
+        "tag": "Research",
+        "title": "持续一氧化氮代谢体研究",
+        "text": "我们继续研究源于自然的技术，并把它连接到产品与方案。"
+      },
+      "symposium": {
+        "tag": "Exchange",
+        "title": "国际交流与研讨会",
+        "text": "研究与现场之间的对话仍在继续。日程确定后将另行公布。"
+      },
+      "expansion": {
+        "tag": "Global",
+        "title": "连接韩国、中国与美国的网络",
+        "text": "我们正在扩大技术、生产与销售在同一平台相遇的据点。"
+      }
+    }
+  },
+  "contact": {
+    "kicker": "Contact",
+    "title": "连接从这里开始",
+    "lede": "无论是想了解产品的人，还是想共同开创事业的人，我们都欢迎。",
+    "audience": "咨询类型",
+    "consumer": "产品 / 方案咨询",
+    "partner": "合作 / OEM 咨询",
+    "name": "姓名",
+    "organization": "公司 / 机构",
+    "email": "邮箱",
+    "country": "国家",
+    "partnerType": "关注方向",
+    "types": {
+      "oem": "OEM / ODM",
+      "distribution": "流通 / 销售",
+      "education": "教育",
+      "center": "健康中心",
+      "other": "其他"
+    },
+    "message": "留言",
+    "submit": "发送",
+    "sending": "发送中…",
+    "success": "已收到您的留言，我们会尽快联系。",
+    "error": "请稍后再试。",
+    "required": "此项为必填。"
+  }
+}

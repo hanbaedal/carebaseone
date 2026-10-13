@@ -1,0 +1,247 @@
+{
+  "meta": {
+    "site": "CAREBASE",
+    "tagline": "Global NO Metabolite Health Platform",
+    "description": "CAREBASE는 산화질소(NO) 대사체 기술을 기반으로 제품, 솔루션, 글로벌 사업을 연결하는 헬스케어 플랫폼입니다."
+  },
+  "nav": {
+    "home": "HOME",
+    "technology": "TECHNOLOGY",
+    "solution": "SOLUTION",
+    "product": "PRODUCT",
+    "global": "GLOBAL",
+    "business": "BUSINESS",
+    "news": "NEWS",
+    "contact": "CONTACT",
+    "menu": "메뉴",
+    "close": "닫기"
+  },
+  "cta": {
+    "solutions": "솔루션 보기",
+    "partner": "파트너 문의",
+    "inquire": "문의하기",
+    "details": "자세히 보기",
+    "backHome": "홈으로"
+  },
+  "footer": {
+    "mission": "기술과 사람을 연결하여 건강한 세상을 만듭니다.",
+    "closeQuote1": "Technology creates solutions.",
+    "closeQuote2": "Solutions improve lives.",
+    "closeQuote3": "Platforms connect the world.",
+    "disclaimer": "본 사이트의 내용은 건강 정보의 소개이며, 질병의 진단·치료·예방을 목적으로 하지 않습니다.",
+    "rights": "CAREBASE. Connecting a healthier tomorrow."
+  },
+  "home": {
+    "kicker": "Healthy People · Healthy Society · Healthy World",
+    "headline": "우리는 제품을 만드는 회사가 아닙니다.",
+    "lede": "사람과 기술, 자연과 건강을 연결하는 플랫폼입니다.",
+    "whyTitle": "왜 산화질소인가",
+    "whyBody": "산화질소는 혈관, 순환, 세포, 면역, 회복과 관련된 중요한 생체 신호물질입니다. CAREBASE는 이 기술을 통해 현대인의 건강 문제에 새로운 방향을 제시합니다.",
+    "pillarsTitle": "다섯 개의 연결",
+    "forPeople": "사람을 위한 길",
+    "forPeopleLede": "사람마다 필요한 건강은 다릅니다.",
+    "inLife": "생활 속에서",
+    "inLifeLede": "기술은 생활 속에서 제품으로 완성됩니다.",
+    "forPartners": "함께 성장하는 길",
+    "forPartnersLede": "한국의 기술과 세계의 건강을 연결합니다.",
+    "pillars": {
+      "technology": {
+        "num": "01",
+        "title": "Technology",
+        "ko": "자연에서 시작된 건강기술",
+        "text": "산화질소 대사체 기술은 자연의 원리에서 출발합니다."
+      },
+      "solution": {
+        "num": "02",
+        "title": "Solution",
+        "ko": "건강을 위한 다양한 솔루션",
+        "text": "혈관, 스포츠, 시니어, 뷰티, 웰니스."
+      },
+      "product": {
+        "num": "03",
+        "title": "Product",
+        "ko": "생활 속 건강 플랫폼",
+        "text": "패치, 음료, 건강식품, 화장품."
+      },
+      "global": {
+        "num": "04",
+        "title": "Global",
+        "ko": "세계를 연결하는 플랫폼",
+        "text": "한국, 중국, 미국. 건강에는 국경이 없습니다."
+      },
+      "business": {
+        "num": "05",
+        "title": "Business",
+        "ko": "함께 성장하는 건강 생태계",
+        "text": "기술과 사람, 기업과 시장을 연결합니다."
+      }
+    }
+  },
+  "technology": {
+    "kicker": "01 Technology",
+    "title": "자연에서 시작된 건강기술",
+    "lede": "산화질소(NO) 대사체 기술은 자연의 원리에서 출발하여 건강한 삶을 위한 다양한 기술로 발전하고 있습니다.",
+    "blocks": {
+      "no": {
+        "title": "산화질소(NO)란?",
+        "text": "산화질소는 혈관, 순환, 세포 신호와 관련된 생체 물질입니다. CAREBASE는 이 자연의 원리를 연구합니다."
+      },
+      "metabolite": {
+        "title": "산화질소 대사체란?",
+        "text": "대사체는 산화질소와 관련된 흐름을 생활 속 솔루션으로 확장하기 위한 기술 기반입니다."
+      },
+      "research": {
+        "title": "오랜 연구",
+        "text": "20여 년의 연구와 기술 축적을 바탕으로, 가능성을 알리고 제품과 솔루션으로 연결합니다."
+      },
+      "proof": {
+        "title": "연구와 교류",
+        "text": "핵심 기술, 특허, 논문, 국제 심포지엄 등 연구 성과를 소개합니다. 숫자는 검증된 자료가 준비되는 대로 공개합니다."
+      }
+    }
+  },
+  "solution": {
+    "kicker": "02 Solution",
+    "title": "건강을 위한 다양한 솔루션",
+    "lede": "사람마다 필요한 건강은 다릅니다. CAREBASE는 다양한 건강관리 솔루션을 제공합니다.",
+    "items": {
+      "vascular": {
+        "title": "혈관 건강",
+        "text": "순환과 일상의 리듬을 생각하는 건강 관리."
+      },
+      "sports": {
+        "title": "스포츠 회복",
+        "text": "움직임 이후의 회복을 위한 솔루션."
+      },
+      "senior": {
+        "title": "건강수명",
+        "text": "시니어와 가족이 함께하는 건강한 시간."
+      },
+      "beauty": {
+        "title": "피부 건강",
+        "text": "자연광 아래 피부와 일상을 돌보는 뷰티케어."
+      },
+      "wellness": {
+        "title": "웰니스",
+        "text": "명상, 자연, 생활의 균형을 잇는 관리."
+      }
+    }
+  },
+  "product": {
+    "kicker": "03 Product",
+    "title": "생활 속 건강 플랫폼",
+    "lede": "기술은 생활 속에서 제품으로 완성됩니다. 지금은 소개만 제공합니다. 구매는 다음 단계에서 연결됩니다.",
+    "note": "제품 구매와 가격 안내는 준비 중입니다. 궁금한 점은 문의해 주세요.",
+    "categories": {
+      "patch": {
+        "title": "Patch",
+        "text": "일상과 스포츠 현장에 가볍게 더하는 패치.",
+        "items": "근육관절패치 · 스포츠패치 · 비타민패치"
+      },
+      "beverage": {
+        "title": "Beverage",
+        "text": "하루의 리듬에 곁들이는 음료.",
+        "items": "Happy N:O · 생맥산 · 쌍화탕"
+      },
+      "food": {
+        "title": "Health Food",
+        "text": "자연에서 온 원료를 담은 건강식품.",
+        "items": "땃두릅 · 육미송화"
+      },
+      "cosmetics": {
+        "title": "Cosmetics",
+        "text": "피부와 모발을 위한 데일리 케어.",
+        "items": "올케어 · 샴푸 · 에센스 · 바디로션"
+      }
+    }
+  },
+  "global": {
+    "kicker": "04 Global",
+    "title": "세계를 연결하는 플랫폼",
+    "lede": "건강에는 국경이 없습니다. 한국의 기술과 세계의 건강을 연결합니다.",
+    "nodes": {
+      "korea": {
+        "title": "Korea",
+        "text": "기술, 연구, 브랜드."
+      },
+      "china": {
+        "title": "China",
+        "text": "생산, 유통, 운영센터."
+      },
+      "usa": {
+        "title": "USA",
+        "text": "판매, OEM, 브랜드."
+      },
+      "future": {
+        "title": "Future",
+        "text": "Global Expansion."
+      }
+    }
+  },
+  "business": {
+    "kicker": "05 Business",
+    "title": "함께 성장하는 건강 생태계",
+    "lede": "CAREBASE는 제품을 판매하는 회사가 아니라, 기술과 사람, 기업과 시장을 연결하는 건강 비즈니스 플랫폼입니다.",
+    "center": "NO Metabolite",
+    "nodes": {
+      "technology": "Technology",
+      "research": "Research",
+      "product": "Product",
+      "oem": "OEM / ODM",
+      "healthcare": "Healthcare Center",
+      "education": "Education",
+      "distribution": "Global Distribution",
+      "partner": "Partner Network"
+    },
+    "invite": "연구, 생산, 유통, 교육, 센터 운영에 함께할 파트너를 찾습니다."
+  },
+  "news": {
+    "kicker": "News",
+    "title": "소식",
+    "lede": "연구, 교류, 확장의 기록을 천천히 쌓아 갑니다.",
+    "empty": "공개할 소식이 준비되면 이 페이지에 올라갑니다.",
+    "items": {
+      "research": {
+        "tag": "Research",
+        "title": "산화질소 대사체 연구를 이어갑니다",
+        "text": "자연의 원리에서 출발한 기술을 제품과 솔루션으로 연결하는 연구를 계속합니다."
+      },
+      "symposium": {
+        "tag": "Exchange",
+        "title": "국제 교류와 심포지엄",
+        "text": "연구와 현장을 잇는 대화를 이어 갑니다. 일정은 확정되는 대로 공지합니다."
+      },
+      "expansion": {
+        "tag": "Global",
+        "title": "한국, 중국, 미국을 잇는 네트워크",
+        "text": "기술, 생산, 판매가 한 플랫폼 위에서 만나도록 거점을 넓혀 갑니다."
+      }
+    }
+  },
+  "contact": {
+    "kicker": "Contact",
+    "title": "연결이 시작되는 곳",
+    "lede": "제품이 궁금하신 분과, 함께 사업을 만들고 싶은 분 모두를 기다립니다.",
+    "audience": "문의 유형",
+    "consumer": "제품 · 솔루션 문의",
+    "partner": "파트너십 · OEM 문의",
+    "name": "이름",
+    "organization": "소속 / 회사",
+    "email": "이메일",
+    "country": "국가",
+    "partnerType": "관심 분야",
+    "types": {
+      "oem": "OEM / ODM",
+      "distribution": "유통 · 판매",
+      "education": "교육",
+      "center": "헬스케어 센터",
+      "other": "기타"
+    },
+    "message": "메시지",
+    "submit": "보내기",
+    "sending": "보내는 중…",
+    "success": "메시지를 받았습니다. 확인 후 연락드리겠습니다.",
+    "error": "잠시 후 다시 시도해 주세요.",
+    "required": "필수 항목입니다."
+  }
+}

@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: carebaseone
+    runtime: node
+    repo: https://github.com/hanbaedal/carebaseone
+    branch: main
+    region: singapore
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /ko
+    domains:
+      - carebaseone.com
+      - www.carebaseone.com
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: MONGODB_URI
+        sync: false

@@ -1,0 +1,247 @@
+{
+  "meta": {
+    "site": "CAREBASE",
+    "tagline": "Global NO Metabolite Health Platform",
+    "description": "CAREBASE is a healthcare platform that connects nitric oxide (NO) metabolite technology with products, solutions, and global business."
+  },
+  "nav": {
+    "home": "HOME",
+    "technology": "TECHNOLOGY",
+    "solution": "SOLUTION",
+    "product": "PRODUCT",
+    "global": "GLOBAL",
+    "business": "BUSINESS",
+    "news": "NEWS",
+    "contact": "CONTACT",
+    "menu": "Menu",
+    "close": "Close"
+  },
+  "cta": {
+    "solutions": "Explore Solutions",
+    "partner": "Partner with us",
+    "inquire": "Inquire",
+    "details": "View details",
+    "backHome": "Back home"
+  },
+  "footer": {
+    "mission": "Connecting technology and people to create a healthier world.",
+    "closeQuote1": "Technology creates solutions.",
+    "closeQuote2": "Solutions improve lives.",
+    "closeQuote3": "Platforms connect the world.",
+    "disclaimer": "Content on this site is for introduction only. It is not intended to diagnose, treat, or prevent disease.",
+    "rights": "CAREBASE. Connecting a healthier tomorrow."
+  },
+  "home": {
+    "kicker": "Healthy People · Healthy Society · Healthy World",
+    "headline": "We are not a product company.",
+    "lede": "We are a platform that connects people, technology, nature, and health.",
+    "whyTitle": "Why nitric oxide",
+    "whyBody": "Nitric oxide is a signaling molecule involved in circulation, cells, immune response, and recovery. CAREBASE uses this science to open a new direction for everyday health.",
+    "pillarsTitle": "Five connections",
+    "forPeople": "For people",
+    "forPeopleLede": "The health each person needs is different.",
+    "inLife": "In daily life",
+    "inLifeLede": "Technology becomes complete when it lives in daily routines.",
+    "forPartners": "For partners",
+    "forPartnersLede": "Korean technology, connected to health around the world.",
+    "pillars": {
+      "technology": {
+        "num": "01",
+        "title": "Technology",
+        "ko": "Health science from nature",
+        "text": "NO metabolite technology begins with a principle found in nature."
+      },
+      "solution": {
+        "num": "02",
+        "title": "Solution",
+        "ko": "Health solutions, differently needed",
+        "text": "Vascular health, sport, senior care, beauty, wellness."
+      },
+      "product": {
+        "num": "03",
+        "title": "Product",
+        "ko": "A health platform for living",
+        "text": "Patches, drinks, health foods, and cosmetics."
+      },
+      "global": {
+        "num": "04",
+        "title": "Global",
+        "ko": "A platform that connects the world",
+        "text": "Korea, China, the United States. Health has no borders."
+      },
+      "business": {
+        "num": "05",
+        "title": "Business",
+        "ko": "A health ecosystem we grow together",
+        "text": "Connecting technology, people, companies, and markets."
+      }
+    }
+  },
+  "technology": {
+    "kicker": "01 Technology",
+    "title": "Health science that began in nature",
+    "lede": "Nitric oxide (NO) metabolite technology starts from a principle in nature and grows into technologies for healthier living.",
+    "blocks": {
+      "no": {
+        "title": "What is nitric oxide (NO)?",
+        "text": "Nitric oxide is a biological messenger related to blood vessels, circulation, and cellular signaling. CAREBASE studies this principle of nature."
+      },
+      "metabolite": {
+        "title": "What is an NO metabolite?",
+        "text": "The metabolite platform is how we extend nitric oxide–related pathways into everyday solutions."
+      },
+      "research": {
+        "title": "Years of research",
+        "text": "Built on more than twenty years of study, we share the possibility of this science and carry it into products and solutions."
+      },
+      "proof": {
+        "title": "Research and exchange",
+        "text": "We present core technology, patents, papers, and international symposiums. Specific figures will be published as verified materials are ready."
+      }
+    }
+  },
+  "solution": {
+    "kicker": "02 Solution",
+    "title": "Different health, different solutions",
+    "lede": "The health each person needs is different. CAREBASE offers solutions for living, not a single product story.",
+    "items": {
+      "vascular": {
+        "title": "Vascular health",
+        "text": "Care that considers circulation and the rhythm of daily life."
+      },
+      "sports": {
+        "title": "Sport recovery",
+        "text": "Solutions for recovery after movement."
+      },
+      "senior": {
+        "title": "Healthspan",
+        "text": "Healthy time shared by seniors and their families."
+      },
+      "beauty": {
+        "title": "Skin health",
+        "text": "Beauty care for skin and daily life in natural light."
+      },
+      "wellness": {
+        "title": "Wellness",
+        "text": "Care that links meditation, nature, and balance."
+      }
+    }
+  },
+  "product": {
+    "kicker": "03 Product",
+    "title": "A health platform for living",
+    "lede": "Technology is completed as products in daily life. This site introduces the lines only. Purchasing will come later.",
+    "note": "Pricing and checkout are not available yet. Please inquire if you would like to know more.",
+    "categories": {
+      "patch": {
+        "title": "Patch",
+        "text": "Patches that sit lightly in daily life and sport.",
+        "items": "Muscle & joint · Sport · Vitamin"
+      },
+      "beverage": {
+        "title": "Beverage",
+        "text": "Drinks that sit beside the rhythm of a day.",
+        "items": "Happy N:O · Saengmaeksan · Ssanghwatang"
+      },
+      "food": {
+        "title": "Health Food",
+        "text": "Foods built from ingredients found in nature.",
+        "items": "Ddatdureup · Yukmisonghwa"
+      },
+      "cosmetics": {
+        "title": "Cosmetics",
+        "text": "Daily care for skin and hair.",
+        "items": "ALL CARE · Shampoo · Essence · Body lotion"
+      }
+    }
+  },
+  "global": {
+    "kicker": "04 Global",
+    "title": "A platform that connects the world",
+    "lede": "Health has no borders. We connect Korean technology with health around the world.",
+    "nodes": {
+      "korea": {
+        "title": "Korea",
+        "text": "Technology, research, brand."
+      },
+      "china": {
+        "title": "China",
+        "text": "Production, distribution, operations."
+      },
+      "usa": {
+        "title": "USA",
+        "text": "Sales, OEM, brand."
+      },
+      "future": {
+        "title": "Future",
+        "text": "Global expansion."
+      }
+    }
+  },
+  "business": {
+    "kicker": "05 Business",
+    "title": "A health ecosystem we grow together",
+    "lede": "CAREBASE is not a company that only sells products. It is a health business platform that connects technology, people, companies, and markets.",
+    "center": "NO Metabolite",
+    "nodes": {
+      "technology": "Technology",
+      "research": "Research",
+      "product": "Product",
+      "oem": "OEM / ODM",
+      "healthcare": "Healthcare Center",
+      "education": "Education",
+      "distribution": "Global Distribution",
+      "partner": "Partner Network"
+    },
+    "invite": "We look for partners in research, manufacturing, distribution, education, and health centers."
+  },
+  "news": {
+    "kicker": "News",
+    "title": "News",
+    "lede": "We will keep a quiet record of research, exchange, and expansion.",
+    "empty": "Stories will appear here as they are ready to share.",
+    "items": {
+      "research": {
+        "tag": "Research",
+        "title": "Continuing NO metabolite research",
+        "text": "We keep studying a technology that began in nature, and connecting it to products and solutions."
+      },
+      "symposium": {
+        "tag": "Exchange",
+        "title": "International exchange and symposiums",
+        "text": "We continue conversations between research and the field. Dates will be announced when confirmed."
+      },
+      "expansion": {
+        "tag": "Global",
+        "title": "A network across Korea, China, and the United States",
+        "text": "We are widening the places where technology, production, and sales can meet on one platform."
+      }
+    }
+  },
+  "contact": {
+    "kicker": "Contact",
+    "title": "Where connection begins",
+    "lede": "We welcome people who want to know the products, and people who want to build the business with us.",
+    "audience": "I am inquiring as",
+    "consumer": "Product / solution inquiry",
+    "partner": "Partnership / OEM inquiry",
+    "name": "Name",
+    "organization": "Organization",
+    "email": "Email",
+    "country": "Country",
+    "partnerType": "Interest",
+    "types": {
+      "oem": "OEM / ODM",
+      "distribution": "Distribution / sales",
+      "education": "Education",
+      "center": "Healthcare center",
+      "other": "Other"
+    },
+    "message": "Message",
+    "submit": "Send",
+    "sending": "Sending…",
+    "success": "We received your message and will be in touch.",
+    "error": "Please try again in a moment.",
+    "required": "This field is required."
+  }
+}
