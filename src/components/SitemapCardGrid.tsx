@@ -40,27 +40,26 @@ const cardPastels: Record<string, { shell: string; divider: string; label: strin
     divider: "border-indigo-200/60",
     label: "text-indigo-800",
   },
-  extra: {
-    shell: "border-slate-200/90 border-dashed bg-slate-50 hover:border-slate-300",
-    divider: "border-slate-200/70",
-    label: "text-slate-600",
-  },
 };
 
 function cardTheme(key: string) {
-  return cardPastels[key] ?? cardPastels.extra;
+  return (
+    cardPastels[key] ?? {
+      shell: "border-line bg-white hover:border-brand/20",
+      divider: "border-line",
+      label: "text-brand-ink/60",
+    }
+  );
 }
 
 export function SitemapCardGrid({
   groups,
   tNav,
   tHome,
-  tExtra,
 }: {
   groups: NavGroup[];
   tNav: (key: string) => string;
   tHome: (key: string) => string;
-  tExtra: { extra: string; xml: string; about: string };
 }) {
   const pillars = groups.filter((g) => pillarKeys.has(g.groupKey));
   const rest = groups.filter((g) => !pillarKeys.has(g.groupKey));
@@ -124,40 +123,6 @@ export function SitemapCardGrid({
           </article>
         );
         })}
-        <article
-          className={`flex flex-col rounded-2xl border px-6 py-7 shadow-sm ${cardPastels.extra.shell}`}
-        >
-          <h2 className={`text-sm font-semibold tracking-wide ${cardPastels.extra.label}`}>
-            {tExtra.extra}
-          </h2>
-          <ul className={`mt-4 flex flex-col gap-2 border-t pt-4 ${cardPastels.extra.divider}`}>
-            <li>
-              <Link href="/" className="text-[14px] text-brand-ink hover:text-brand">
-                {tNav("home")}
-              </Link>
-            </li>
-            <li>
-              <Link href="/about" className="text-[14px] text-brand-ink hover:text-brand">
-                {tNav("about")}
-              </Link>
-            </li>
-            <li>
-              <Link href="/sitemap" className="text-[14px] text-brand-ink hover:text-brand">
-                {tNav("sitemap")}
-              </Link>
-            </li>
-            <li>
-              <a
-                href="/sitemap.xml"
-                className="text-[14px] text-brand-ink hover:text-brand"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {tExtra.xml}
-              </a>
-            </li>
-          </ul>
-        </article>
       </div>
     </div>
   );

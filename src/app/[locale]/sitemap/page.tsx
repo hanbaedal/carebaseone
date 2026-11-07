@@ -21,12 +21,17 @@ export default async function SiteMapPage({
       <p className="mt-3 max-w-2xl text-brand-ink/65">{t("lede")}</p>
       <p className="mt-2 text-sm text-brand-ink/50">{t("cardHint")}</p>
       <SitemapLocaleLinks activeLocale={active} caption={t("localeSwitch")} />
-      <SitemapCardGrid
-        groups={navGroups}
-        tNav={tNav}
-        tHome={tHome}
-        tExtra={{ extra: t("extra"), xml: t("xml"), about: tNav("about") }}
-      />
+      <SitemapCardGrid groups={navGroups} tNav={tNav} tHome={tHome} />
+      <p className="mt-10 text-sm text-brand-ink/45">
+        <a
+          href="/sitemap.xml"
+          className="text-brand-ink/55 underline-offset-2 hover:text-brand hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t("xml")}
+        </a>
+      </p>
     </div>
   );
 }

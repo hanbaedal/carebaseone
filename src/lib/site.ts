@@ -79,6 +79,7 @@ export const navGroups: NavGroup[] = [
   {
     groupKey: "community",
     children: [
+      { href: "/about", key: "about" },
       { href: "/community", key: "community" },
       { href: "/community/notice", key: "notice" },
       { href: "/community/archive", key: "archive" },
