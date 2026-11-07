@@ -3,6 +3,7 @@ import { hashPassword, verifyPassword } from "@/lib/password";
 import {
   ensureIndexes,
   members,
+  users,
   type MemberDoc,
   type MemberStatus,
   type MemberTier,
@@ -21,10 +22,14 @@ export async function findMemberByUsername(username: string) {
   return rest as MemberPublic;
 }
 
+/** 회원 아이디 중복: members 컬렉션 + 운영자(users) 아이디와 충돌 여부 */
 export async function isUsernameTaken(username: string) {
   await ensureIndexes();
-  const hit = await (await members()).findOne({ username });
-  return Boolean(hit);
+  const trimmed = username.trim();
+  if (!trimmed) return true;
+  if (await (await members()).findOne({ username: trimmed })) return true;
+  const staff = await (await users()).findOne({ username: trimmed.toLowerCase() });
+  return Boolean(staff);
 }
 
 export async function findMemberByOAuth(
@@ -59,8 +64,8 @@ export async function registerMember(input: {
   if (input.password.length < 8) {
     return "비밀번호는 8자 이상이어야 합니다.";
   }
+  if (await isUsernameTaken(username)) return "이미 사용 중인 아이디입니다.";
   const col = await members();
-  if (await col.findOne({ username })) return "이미 사용 중인 아이디입니다.";
   await col.insertOne({
     username,
     passwordHash: await hashPassword(input.password),

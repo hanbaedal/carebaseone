@@ -11,7 +11,7 @@ export default async function StorePage({
   params: Promise<{ locale: string }>;
 }) {
   resolveLocale((await params).locale);
-  const t = await getTranslations("store");
+  const [t, tNav] = await Promise.all([getTranslations("store"), getTranslations("nav")]);
   const member = await getApprovedMember();
   const products = await listActiveProducts();
 
@@ -22,7 +22,7 @@ export default async function StorePage({
         <p className="mt-4 text-brand-ink/70">{t("loginRequired")}</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link href="/member/login" className="rounded-full bg-brand px-5 py-2 text-white">
-            {t("login")}
+            {tNav("memberSignIn")}
           </Link>
           <Link href="/member/signup" className="rounded-full border border-brand px-5 py-2 text-brand">
             {t("signup")}

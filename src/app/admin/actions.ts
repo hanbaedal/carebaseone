@@ -4,14 +4,7 @@ import { redirect } from "next/navigation";
 import { saveSection } from "@/lib/content";
 import { clearSession, getSession, setSession } from "@/lib/session";
 import { users } from "@/lib/db";
-import {
-  authenticate,
-  createAdmin,
-  findUser,
-  recentFailures,
-  recordActivity,
-  updateAdmin,
-} from "@/lib/users";
+import { authenticate, createAdmin, findUser, recordActivity, updateAdmin } from "@/lib/users";
 
 async function requireSession() {
   const session = await getSession();
@@ -38,9 +31,6 @@ export async function login(
   }
 
   try {
-    if ((await recentFailures(username)) >= 8) {
-      return { error: "시도가 많습니다. 잠시 후 다시 로그인해 주세요." };
-    }
     const existing = await findUser(username);
     const user = await authenticate(username, password);
     if (!user) {

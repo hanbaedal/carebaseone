@@ -51,13 +51,13 @@ export function MemberHeaderAuth({ loggedIn }: { loggedIn: boolean }) {
     return (
       <>
         <Link href="/member/login" className={textLinkClass}>
-          {t("login")}
+          {t("memberSignIn")}
         </Link>
         <Link
           href="/member/login"
           className={iconButtonClass}
-          aria-label={t("login")}
-          title={t("login")}
+          aria-label={t("memberSignIn")}
+          title={t("memberSignIn")}
         >
           <IconUser className={iconClass} />
         </Link>

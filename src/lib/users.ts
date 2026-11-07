@@ -178,15 +178,6 @@ export async function updateAdmin(input: {
   return null;
 }
 
-export async function recentFailures(username: string) {
-  await ensureIndexes();
-  return (await activity()).countDocuments({
-    username,
-    action: "login-failed",
-    createdAt: { $gte: new Date(Date.now() - 15 * 60 * 1000) },
-  });
-}
-
 export async function recordActivity(entry: {
   username: string;
   role: UserDoc["role"] | "unknown" | "member";

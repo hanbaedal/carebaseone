@@ -16,8 +16,10 @@ export function MemberSignupForm() {
     const res = await fetch(
       `/api/member/check-username?username=${encodeURIComponent(username)}`,
     );
-    const data = (await res.json()) as { taken?: boolean };
-    setUsernameHint(data.taken ? "이미 사용 중인 아이디입니다." : "사용 가능한 아이디입니다.");
+    const data = (await res.json()) as { available?: boolean };
+    setUsernameHint(
+      data.available === false ? "이미 사용 중인 아이디입니다." : "사용 가능한 아이디입니다.",
+    );
   }, []);
 
   return (
