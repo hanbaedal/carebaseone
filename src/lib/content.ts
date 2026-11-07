@@ -28,7 +28,7 @@ export const contentSections = [
   { key: "contact", label: "문의" },
   { key: "cta", label: "버튼" },
   { key: "footer", label: "하단" },
-  { key: "meta", label: "소개문" },
+  { key: "meta", label: "로고·회사명" },
 ] as const;
 
 export type EditorField = {

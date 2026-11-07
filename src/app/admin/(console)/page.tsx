@@ -42,8 +42,9 @@ export default async function ContentPage({
           {contentSections.find((item) => item.key === section)?.label}
         </h1>
         <p className="mt-1 text-[11px] leading-5 text-ink/50">
-          입력란은 한글만 표시합니다. 저장하면 영·중국어는 자동으로 맞춰지고, 방문자는 헤더 KO /
-          EN / 中文으로 언어를 바꿉니다.
+          {section === "meta"
+            ? "회사 이름(meta.site)·한줄 소개(meta.tagline)를 수정합니다. 로고 이미지는 public/logo.png 파일입니다."
+            : "입력란은 한글만 표시합니다. 저장하면 영·중국어는 자동으로 맞춰지고, 방문자는 헤더 KO / EN / 中文으로 언어를 바꿉니다."}
         </p>
         {notice ? (
           <p

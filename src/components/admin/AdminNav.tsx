@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { logout } from "@/app/admin/actions";
+import { AdminBrand } from "@/components/admin/AdminBrand";
 import type { Role } from "@/lib/session";
 
 const links = [
@@ -29,16 +30,24 @@ const links = [
   },
 ];
 
-export function AdminNav({ role, username }: { role: Role; username: string }) {
+export function AdminNav({
+  role,
+  username,
+  siteName,
+  tagline,
+}: {
+  role: Role;
+  username: string;
+  siteName: string;
+  tagline?: string;
+}) {
   const pathname = usePathname();
   const items = links.filter((item) => !item.supervisor || role === "supervisor");
 
   return (
     <header className="border-b border-ink/10 bg-white">
-      <div className="mx-auto flex max-w-5xl items-center gap-3 px-3 py-2">
-        <a href="/ko" className="text-xs tracking-[0.16em] text-forest">
-          CAREBASE
-        </a>
+      <div className="mx-auto flex max-w-5xl items-center gap-3 px-3 py-2.5">
+        <AdminBrand siteName={siteName} tagline={tagline} />
         <nav className="flex flex-1 gap-1 overflow-x-auto text-xs">
           {items.map((item) => {
             const active = item.match(pathname);

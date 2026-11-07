@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { AdminNav } from "@/components/admin/AdminNav";
-import { clearSession, getSession } from "@/lib/session";
+import { getSession, clearSession } from "@/lib/session";
+import { getSiteBrand } from "@/lib/site-brand";
 import { findUser } from "@/lib/users";
 
 export const dynamic = "force-dynamic";
@@ -28,9 +29,16 @@ export default async function ConsoleLayout({
     redirect("/admin/login");
   }
 
+  const brand = await getSiteBrand();
+
   return (
     <div className="min-h-full">
-      <AdminNav role={user.role} username={user.username} />
+      <AdminNav
+        role={user.role}
+        username={user.username}
+        siteName={brand.siteName}
+        tagline={brand.tagline}
+      />
       <div className="mx-auto max-w-5xl px-3 py-4">{children}</div>
     </div>
   );
