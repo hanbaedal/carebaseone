@@ -12,10 +12,10 @@
       "titleKo": "바이오힐링 근육관절 패치",
       "summaryKo": "일상·활동 후 부위 케어용 대표 패치. 성분분석표·COI·피부 일차자극 시험 자료 보유.",
       "mediaHrefs": [
-        "/media/patch-coi.pdf",
-        "/media/patch-ingredients-2026.pdf",
-        "/media/skin-irritation-beone.pdf",
-        "/media/spec-muscle-joint.xlsx"
+        "/api/media/patch-coi",
+        "/api/media/patch-ingredients-2026",
+        "/api/media/skin-irritation-beone",
+        "/api/media/spec-muscle-joint"
       ]
     },
     {
@@ -23,35 +23,35 @@
       "category": "patch",
       "titleKo": "바이오힐링 근육관절 핫패치",
       "summaryKo": "온열감을 고려한 근육·관절 라인. 상품기술서 기준 소개.",
-      "mediaHrefs": ["/media/spec-muscle-joint-hot.xlsx"]
+      "mediaHrefs": ["/api/media/spec-muscle-joint-hot"]
     },
     {
       "slug": "slim-hot-patch",
       "category": "patch",
       "titleKo": "슬림 핫패치 (산화질소 소재)",
       "summaryKo": "산화질소 대사체 소재를 적용한 슬림 핫패치 라인.",
-      "mediaHrefs": ["/media/spec-slim-hot-no.xlsx"]
+      "mediaHrefs": ["/api/media/spec-slim-hot-no"]
     },
     {
       "slug": "good-night-nose-patch",
       "category": "patch",
       "titleKo": "굿나잇 코패치",
       "summaryKo": "수면·호흡 편의를 고려한 코 부착형 패치.",
-      "mediaHrefs": ["/media/spec-good-night-nose.xlsx"]
+      "mediaHrefs": ["/api/media/spec-good-night-nose"]
     },
     {
       "slug": "multi-memory-patch",
       "category": "patch",
       "titleKo": "다기억 패치",
       "summaryKo": "인지·활력 케어를 위한 복합 소재 패치.",
-      "mediaHrefs": ["/media/spec-multi-memory.xlsx"]
+      "mediaHrefs": ["/api/media/spec-multi-memory"]
     },
     {
       "slug": "energy-focus-patch",
       "category": "patch",
       "titleKo": "에너이자 패치",
       "summaryKo": "활동·집중 상황을 위한 에너지 케어 패치.",
-      "mediaHrefs": ["/media/spec-energy-focus.xlsx"]
+      "mediaHrefs": ["/api/media/spec-energy-focus"]
     },
     {
       "slug": "us-miracle-patch",
@@ -59,7 +59,7 @@
       "image": "/images/products/us-recoverx-line.jpg",
       "titleKo": "미국 수출 · 미라클 패치",
       "summaryKo": "미국 시장용 바이오힐링 미라클 패치 (1P·2P·4P·12P 구성).",
-      "mediaHrefs": ["/media/us-miracle-patch-pdf.pdf"]
+      "mediaHrefs": ["/api/media/us-miracle-patch-pdf"]
     },
     {
       "slug": "us-hot-patch",
@@ -67,7 +67,7 @@
       "image": "/images/products/us-recoverx-line.jpg",
       "titleKo": "미국 수출 · 핫 패치",
       "summaryKo": "미국 시장용 핫 패치 라인 패키징.",
-      "mediaHrefs": ["/media/us-miracle-patch-pdf.pdf"]
+      "mediaHrefs": ["/api/media/us-miracle-patch-pdf"]
     },
     {
       "slug": "jaryeon-cushion",

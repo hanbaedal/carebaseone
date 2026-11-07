@@ -15,7 +15,7 @@ export function MediaList({
       {items.map((item) => (
         <li key={item.slug} className="py-4">
           <a
-            href={item.filePath}
+            href={item.filePath.startsWith("/api/") ? item.filePath : `/api/media/${item.slug}`}
             target="_blank"
             rel="noopener noreferrer"
             className="group flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between"

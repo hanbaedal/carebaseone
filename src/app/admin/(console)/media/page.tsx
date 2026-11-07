@@ -16,7 +16,8 @@ export default async function AdminMediaPage({
       <div>
         <h1 className="text-sm">자료실 / 증빙 파일</h1>
         <p className="mt-1 text-[11px] text-ink/50">
-          파일은 public/media 또는 import 스크립트로 추가합니다.
+          PDF·PPTX 등 바이너리는 MongoDB GridFS(archiveFiles)에 저장됩니다. 로컬 원본은{" "}
+          <code className="text-ink/70">CAREBASE_MEDIA_SOURCE</code> 또는 ingest 스크립트로 적재합니다.
         </p>
         {query.status === "saved" ? (
           <p className="mt-1 text-xs text-forest">반영했습니다.</p>

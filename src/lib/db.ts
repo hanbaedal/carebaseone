@@ -64,18 +64,23 @@ export type MediaCategory =
 
 export type MediaAudience = "public" | "member";
 
+export type MediaStorage = "gridfs" | "missing";
+
 export type MediaDoc = {
   slug: string;
   category: MediaCategory;
   audience: MediaAudience;
   title: Record<"ko" | "en" | "zh", string>;
   summary: Record<"ko" | "en" | "zh", string>;
+  /** 다운로드 URL — `/api/media/{slug}` */
   filePath: string;
   fileName: string;
   mime: string;
   size: number;
   tags: string[];
   published: boolean;
+  storage: MediaStorage;
+  gridFsId?: string;
   createdAt: Date;
   updatedAt: Date;
 };

@@ -6,6 +6,17 @@ const globalForMongo = globalThis as typeof globalThis & {
   mongoClient?: MongoClient;
 };
 
+export async function getDatabase() {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    throw new Error("MONGODB_URI is not set");
+  }
+  const client = globalForMongo.mongoClient ?? new MongoClient(uri);
+  globalForMongo.mongoClient = client;
+  await client.connect();
+  return client.db(databaseName);
+}
+
 export async function getCollection<T extends Document>(
   name: string,
 ): Promise<Collection<T>> {
