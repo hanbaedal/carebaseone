@@ -19,19 +19,36 @@ export async function ensureSeedUsers() {
   await ensureIndexes();
   const collection = await users();
   for (const seed of seeds) {
-    const username = seed.username?.trim();
+    const username = seed.username?.trim().toLowerCase();
     const password = seed.password;
     if (!username || !password) continue;
+    const passwordHash = await hashPassword(password);
     const existing = await collection.findOne({ username });
-    if (existing) continue;
-    await collection.insertOne({
-      username,
-      passwordHash: await hashPassword(password),
-      role: seed.role,
-      disabled: false,
-      createdAt: new Date(),
-      createdBy: "seed",
-    });
+    if (!existing) {
+      await collection.insertOne({
+        username,
+        passwordHash,
+        role: seed.role,
+        disabled: false,
+        createdAt: new Date(),
+        createdBy: "seed",
+      });
+      continue;
+    }
+    // Render SEED_* 값이 바뀌어도 로그인 가능하도록 시드 슬롯 비밀번호 동기화
+    const isSeedSlot = seeds.some((s) => s.username?.trim().toLowerCase() === username);
+    if (isSeedSlot) {
+      await collection.updateOne(
+        { username },
+        {
+          $set: {
+            passwordHash,
+            role: seed.role,
+            disabled: false,
+          },
+        },
+      );
+    }
   }
 }
 
@@ -42,7 +59,7 @@ export async function findUser(username: string) {
 
 export async function authenticate(username: string, password: string) {
   await ensureSeedUsers();
-  const user = await findUser(username.trim());
+  const user = await findUser(username.trim().toLowerCase());
   if (!user || user.disabled) return null;
   const match = await verifyPassword(password, user.passwordHash);
   if (!match) return null;

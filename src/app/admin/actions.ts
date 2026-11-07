@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { saveSection } from "@/lib/content";
 import { clearSession, getSession, setSession } from "@/lib/session";
+import { users } from "@/lib/db";
 import {
   authenticate,
   createAdmin,
@@ -27,7 +28,7 @@ export async function login(
   _prev: { error?: string },
   formData: FormData,
 ): Promise<{ error?: string; ok?: boolean }> {
-  const username = String(formData.get("username") ?? "").trim();
+  const username = String(formData.get("username") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
   if (!username || !password) {
     return { error: "아이디와 비밀번호를 입력해 주세요." };
@@ -48,7 +49,23 @@ export async function login(
         action: "login-failed",
         detail: "",
       });
-      return { error: "아이디 또는 비밀번호가 올바르지 않습니다." };
+      const userCount = await (await users()).countDocuments({});
+      if (userCount === 0) {
+        return {
+          error:
+            "관리자 계정이 없습니다. Render에 SEED_ADMIN_USERNAME·SEED_ADMIN_PASSWORD를 설정한 뒤 저장·재배포하세요.",
+        };
+      }
+      const seedName =
+        process.env.SEED_ADMIN_USERNAME?.trim().toLowerCase() ??
+        process.env.SEED_SUPERVISOR_USERNAME?.trim().toLowerCase();
+      if (seedName === username && !process.env.SEED_ADMIN_PASSWORD && !process.env.SEED_SUPERVISOR_PASSWORD) {
+        return { error: "SEED 비밀번호 환경 변수가 비어 있습니다." };
+      }
+      return {
+        error:
+          "아이디 또는 비밀번호가 올바르지 않습니다. Render의 SEED_* 아이디·비밀번호와 동일한지 확인하세요.",
+      };
     }
     await recordActivity({
       username: user.username,
