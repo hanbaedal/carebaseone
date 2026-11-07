@@ -4,7 +4,15 @@ import { redirect } from "next/navigation";
 import { saveSection } from "@/lib/content";
 import { clearSession, getSession, setSession } from "@/lib/session";
 import { users } from "@/lib/db";
-import { authenticate, createAdmin, findUser, recordActivity, updateAdmin } from "@/lib/users";
+import { getCompanyProfile, saveCompanyProfile, type CompanyProfileInput } from "@/lib/company-profile";
+import {
+  authenticate,
+  createAdmin,
+  findUser,
+  recordActivity,
+  updateAdmin,
+  updateStaffSelfPassword,
+} from "@/lib/users";
 
 async function requireSession() {
   const session = await getSession();
@@ -114,6 +122,60 @@ export async function saveContent(formData: FormData) {
   redirect(
     `/admin/content?section=${encodeURIComponent(section)}&status=${status}&message=${encodeURIComponent(message)}`,
   );
+}
+
+function profileFromForm(formData: FormData): CompanyProfileInput {
+  const pick = (name: keyof CompanyProfileInput) => String(formData.get(name) ?? "").trim();
+  return {
+    companyName: pick("companyName"),
+    representativeName: pick("representativeName"),
+    companyPhone: pick("companyPhone"),
+    companyFax: pick("companyFax"),
+    companyEmail: pick("companyEmail"),
+    representativePhone: pick("representativePhone"),
+    website: pick("website"),
+    businessRegistrationNumber: pick("businessRegistrationNumber"),
+    businessType: pick("businessType"),
+    businessItem: pick("businessItem"),
+    snsFacebook: pick("snsFacebook"),
+    snsInstagram: pick("snsInstagram"),
+    snsNaverCafe: pick("snsNaverCafe"),
+    snsYoutube: pick("snsYoutube"),
+    snsKakao: pick("snsKakao"),
+  };
+}
+
+export async function saveStaffSelfEdit(formData: FormData) {
+  const session = await requireSession();
+  if (session.role !== "admin" && session.role !== "supervisor") {
+    redirect("/admin/site");
+  }
+
+  const password = String(formData.get("password") ?? "").trim();
+  if (password) {
+    const pwError = await updateStaffSelfPassword({
+      username: session.username,
+      password,
+      role: session.role,
+    });
+    if (pwError) {
+      redirect(
+        `/admin/staff-self-edit?status=error&message=${encodeURIComponent(pwError)}`,
+      );
+    }
+  }
+
+  try {
+    await saveCompanyProfile({
+      values: profileFromForm(formData),
+      username: session.username,
+      role: session.role,
+    });
+  } catch {
+    redirect("/admin/staff-self-edit?status=error&message=저장하지%20못했습니다.");
+  }
+
+  redirect("/admin/staff-self-edit?status=saved");
 }
 
 export async function manageUser(formData: FormData) {

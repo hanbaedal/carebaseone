@@ -38,6 +38,11 @@ export const adminMenuGroups: AdminMenuGroup[] = [
     items: [{ href: "/admin/orders", label: "주문 목록" }],
   },
   {
+    key: "account",
+    label: "내 정보",
+    items: [{ href: "/admin/staff-self-edit", label: "관리자 정보 수정" }],
+  },
+  {
     key: "supervisor",
     label: "슈퍼바이저",
     supervisorOnly: true,

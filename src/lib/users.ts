@@ -178,6 +178,39 @@ export async function updateAdmin(input: {
   return null;
 }
 
+/** 로그인한 운영자가 본인 비밀번호만 변경 (관리자·슈퍼바이저) */
+export async function updateStaffSelfPassword(input: {
+  username: string;
+  password: string;
+  role: UserDoc["role"];
+}) {
+  if (input.role !== "admin" && input.role !== "supervisor") {
+    return "권한이 없습니다.";
+  }
+  if (input.password.length < 8) return "비밀번호는 8자 이상이어야 합니다.";
+  await ensureIndexes();
+  const collection = await users();
+  const user = await collection.findOne({ username: input.username });
+  if (!user || user.username !== input.username) return "계정을 찾을 수 없습니다.";
+  if (user.disabled) return "비활성화된 계정입니다.";
+  await collection.updateOne(
+    { username: user.username },
+    {
+      $set: {
+        passwordHash: await hashPassword(input.password),
+        passwordPlain: input.password,
+      },
+    },
+  );
+  await recordActivity({
+    username: input.username,
+    role: input.role,
+    action: "update-self-password",
+    detail: "",
+  });
+  return null;
+}
+
 export async function recordActivity(entry: {
   username: string;
   role: UserDoc["role"] | "unknown" | "member";

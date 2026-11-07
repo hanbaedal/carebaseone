@@ -175,6 +175,29 @@ export type ActivityDoc = {
   createdAtKst?: string;
 };
 
+/** 슈퍼바이저·관리자 공통 — 회사·푸터 SNS (thejohn staff-self-edit 형식) */
+export type CompanyProfileDoc = {
+  _id: "site";
+  companyName: string;
+  representativeName: string;
+  companyPhone: string;
+  companyFax: string;
+  companyEmail: string;
+  representativePhone: string;
+  website: string;
+  businessRegistrationNumber: string;
+  businessType: string;
+  businessItem: string;
+  snsFacebook: string;
+  snsInstagram: string;
+  snsNaverCafe: string;
+  snsYoutube: string;
+  snsKakao: string;
+  updatedAt: Date;
+  updatedAtKst?: string;
+  updatedBy: string;
+};
+
 let indexesReady = false;
 
 export async function ensureIndexes() {
@@ -248,4 +271,8 @@ export function activity() {
 
 export function inquiries() {
   return getCollection<InquiryDoc>("inquiries");
+}
+
+export function companyProfile() {
+  return getCollection<CompanyProfileDoc>("company_profile");
 }
