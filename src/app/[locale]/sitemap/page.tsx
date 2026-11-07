@@ -1,7 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { SitemapCardGrid } from "@/components/SitemapCardGrid";
 import { SitemapLocaleLinks } from "@/components/SitemapLocaleLinks";
-import { navGroups } from "@/lib/site";
+import { headerNav } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
 
 export default async function SiteMapPage({
@@ -21,7 +21,7 @@ export default async function SiteMapPage({
       <p className="mt-3 max-w-2xl text-brand-ink/65">{t("lede")}</p>
       <p className="mt-2 text-sm text-brand-ink/50">{t("cardHint")}</p>
       <SitemapLocaleLinks activeLocale={active} caption={t("localeSwitch")} />
-      <SitemapCardGrid groups={navGroups} tNav={tNav} tHome={tHome} />
+      <SitemapCardGrid items={headerNav} tNav={tNav} tHome={tHome} />
       <p className="mt-10 text-sm text-brand-ink/45">
         <a
           href="/sitemap.xml"

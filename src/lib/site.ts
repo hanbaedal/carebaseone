@@ -21,11 +21,12 @@ export const images = {
 
 export type NavLink = { href: string; key: string };
 
-/** 메인 화면·헤더 상단 6개 메뉴 (첨부 디자인 기준) */
+/** 메인 화면·헤더·사이트맵 공통 메뉴 */
 export type HeaderNavItem = NavLink & {
   children?: NavLink[];
 };
 
+/** 헤더 메뉴 = 사이트맵 카드 구성의 단일 기준 */
 export const headerNav: HeaderNavItem[] = [
   { href: "/about", key: "about" },
   {
@@ -41,68 +42,23 @@ export const headerNav: HeaderNavItem[] = [
   { href: "/solution", key: "solution" },
   { href: "/global", key: "global" },
   { href: "/business", key: "business" },
-];
-
-export type NavGroup = {
-  /** home.pillars.{groupKey} 또는 nav.groups.{groupKey} */
-  groupKey: string;
-  children: NavLink[];
-};
-
-/** 사이트맵: 01~05 필러 + 커뮤니티·회원 */
-export const navGroups: NavGroup[] = [
   {
-    groupKey: "technology",
+    href: "/community",
+    key: "community",
     children: [
-      { href: "/technology", key: "technology" },
-      { href: "/patents", key: "patents" },
-      { href: "/certifications", key: "certifications" },
-      { href: "/research", key: "research" },
-    ],
-  },
-  {
-    groupKey: "product",
-    children: [{ href: "/product", key: "product" }],
-  },
-  {
-    groupKey: "solution",
-    children: [{ href: "/solution", key: "solution" }],
-  },
-  {
-    groupKey: "global",
-    children: [{ href: "/global", key: "global" }],
-  },
-  {
-    groupKey: "business",
-    children: [{ href: "/business", key: "business" }],
-  },
-  {
-    groupKey: "community",
-    children: [
-      { href: "/about", key: "about" },
-      { href: "/community", key: "community" },
       { href: "/community/notice", key: "notice" },
       { href: "/community/archive", key: "archive" },
       { href: "/community/gallery", key: "gallery" },
       { href: "/contact", key: "contact" },
     ],
   },
-  {
-    groupKey: "member",
-    children: [
-      { href: "/store", key: "store" },
-      { href: "/member/login", key: "memberLogin" },
-      { href: "/member/signup", key: "memberSignup" },
-    ],
-  },
 ];
 
-export const navItems = [
-  ...headerNav.flatMap((item) => [item, ...(item.children ?? [])]),
-  ...navGroups.flatMap((g) => g.children),
-].filter(
-  (item, index, arr) => arr.findIndex((x) => x.href === item.href) === index,
-);
+export const navItems = headerNav
+  .flatMap((item) => [item, ...(item.children ?? [])])
+  .filter(
+    (item, index, arr) => arr.findIndex((x) => x.href === item.href) === index,
+  );
 
 export const evidenceNavItems = [
   { href: "/patents", key: "patents" },
@@ -115,11 +71,11 @@ export const communityNavItems = [
   { href: "/community/notice", key: "notice" },
   { href: "/community/archive", key: "archive" },
   { href: "/community/gallery", key: "gallery" },
+  { href: "/contact", key: "contact" },
 ] as const;
 
 export const footerExtraItems = [
   ...evidenceNavItems,
   ...communityNavItems,
   { href: "/store", key: "store" },
-  { href: "/contact", key: "contact" },
 ] as const;

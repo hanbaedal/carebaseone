@@ -38,8 +38,8 @@
   },
   "sitemapPage": {
     "title": "Sitemap",
-    "lede": "Pages grouped in cards aligned with the main menu.",
-    "cardHint": "01–05 match the home page pillar bar.",
+    "lede": "Same order and structure as the site header.",
+    "cardHint": "About, pillars 01–05, and community submenus match the header.",
     "localeSwitch": "Sitemap by language",
     "extra": "Other",
     "xml": "XML sitemap for search engines"

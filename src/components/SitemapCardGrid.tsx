@@ -1,10 +1,14 @@
 import { Link } from "@/i18n/navigation";
-import type { NavGroup } from "@/lib/site";
+import type { HeaderNavItem } from "@/lib/site";
 
 const pillarKeys = new Set(["technology", "product", "solution", "global", "business"]);
 
-/** 카드별 파스텔 배경·테두리 */
 const cardPastels: Record<string, { shell: string; divider: string; label: string }> = {
+  about: {
+    shell: "border-slate-200/90 bg-slate-50 hover:border-slate-300",
+    divider: "border-slate-200/70",
+    label: "text-slate-700",
+  },
   technology: {
     shell: "border-sky-200/80 bg-sky-50 hover:border-sky-300/90",
     divider: "border-sky-200/60",
@@ -35,14 +39,9 @@ const cardPastels: Record<string, { shell: string; divider: string; label: strin
     divider: "border-teal-200/60",
     label: "text-teal-800",
   },
-  member: {
-    shell: "border-indigo-200/80 bg-indigo-50 hover:border-indigo-300/90",
-    divider: "border-indigo-200/60",
-    label: "text-indigo-800",
-  },
 };
 
-function cardTheme(key: string) {
+function theme(key: string) {
   return (
     cardPastels[key] ?? {
       shell: "border-line bg-white hover:border-brand/20",
@@ -53,77 +52,56 @@ function cardTheme(key: string) {
 }
 
 export function SitemapCardGrid({
-  groups,
+  items,
   tNav,
   tHome,
 }: {
-  groups: NavGroup[];
+  items: HeaderNavItem[];
   tNav: (key: string) => string;
   tHome: (key: string) => string;
 }) {
-  const pillars = groups.filter((g) => pillarKeys.has(g.groupKey));
-  const rest = groups.filter((g) => !pillarKeys.has(g.groupKey));
-
   return (
-    <div className="mt-12 space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        {pillars.map((group) => {
-          const theme = cardTheme(group.groupKey);
-          return (
+    <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {items.map((item) => {
+        const pastel = theme(item.key);
+        const isPillar = pillarKeys.has(item.key);
+        const links: { href: string; key: string }[] =
+          item.children && item.children.length > 0
+            ? [{ href: item.href, key: item.key }, ...item.children]
+            : [{ href: item.href, key: item.key }];
+
+        return (
           <article
-            key={group.groupKey}
-            className={`flex flex-col rounded-2xl border px-5 py-6 shadow-sm transition-all hover:shadow-md ${theme.shell}`}
+            key={item.key}
+            className={`flex flex-col rounded-2xl border px-5 py-6 shadow-sm transition-all hover:shadow-md ${pastel.shell}`}
           >
-            <p className={`text-[11px] font-semibold tracking-[0.14em] ${theme.label}`}>
-              {tHome(`${group.groupKey}.num`)}
-            </p>
-            <h2 className="mt-1 min-h-[2.75rem] text-[16px] font-semibold leading-snug text-brand-ink">
-              {tHome(`${group.groupKey}.ko`)}
+            {isPillar ? (
+              <p className={`text-[11px] font-semibold tracking-[0.14em] ${pastel.label}`}>
+                {tHome(`${item.key}.num`)}
+              </p>
+            ) : null}
+            <h2
+              className={`font-semibold leading-snug text-brand-ink ${
+                isPillar ? "mt-1 min-h-[2.75rem] text-[16px]" : "text-sm tracking-wide"
+              } ${isPillar ? "" : pastel.label}`}
+            >
+              {isPillar ? tHome(`${item.key}.ko`) : tNav(item.key)}
             </h2>
-            <ul className={`mt-4 flex flex-1 flex-col gap-2 border-t pt-4 ${theme.divider}`}>
-              {group.children.map((child) => (
-                <li key={child.key}>
+            <ul className={`mt-4 flex flex-1 flex-col gap-2 border-t pt-4 ${pastel.divider}`}>
+              {links.map((link) => (
+                <li key={link.href}>
                   <Link
-                    href={child.href}
+                    href={link.href}
                     className="text-[13px] text-brand-ink/80 hover:text-brand"
                   >
-                    {tNav(child.key)}
+                    {tNav(link.key)}
                   </Link>
                 </li>
               ))}
             </ul>
           </article>
         );
-        })}
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-3">
-        {rest.map((group) => {
-          const theme = cardTheme(group.groupKey);
-          return (
-          <article
-            key={group.groupKey}
-            className={`flex flex-col rounded-2xl border px-6 py-7 shadow-sm transition-all hover:shadow-md ${theme.shell}`}
-          >
-            <h2 className={`text-sm font-semibold tracking-wide ${theme.label}`}>
-              {tNav(`groups.${group.groupKey}`)}
-            </h2>
-            <ul className={`mt-4 flex flex-col gap-2 border-t pt-4 ${theme.divider}`}>
-              {group.children.map((child) => (
-                <li key={child.key}>
-                  <Link
-                    href={child.href}
-                    className="text-[14px] text-brand-ink hover:text-brand"
-                  >
-                    {tNav(child.key)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </article>
-        );
-        })}
-      </div>
+      })}
     </div>
   );
 }
