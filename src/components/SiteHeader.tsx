@@ -19,7 +19,16 @@ function itemActive(pathname: string, item: (typeof headerNav)[number]) {
   return item.children?.some((c) => linkActive(pathname, c.href)) ?? false;
 }
 
-export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
+const inquireButtonClass =
+  "hidden whitespace-nowrap rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white shadow-[0_8px_18px_rgba(29,111,232,0.25)] hover:bg-brand-deep md:inline-flex";
+
+export function SiteHeader({
+  showAdmin = false,
+  memberName = null,
+}: {
+  showAdmin?: boolean;
+  memberName?: string | null;
+}) {
   const t = useTranslations("nav") as (key: string) => string;
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -83,24 +92,33 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
           ) : null}
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          <Link
-            href="/contact"
-            className="hidden whitespace-nowrap rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white shadow-[0_8px_18px_rgba(29,111,232,0.25)] hover:bg-brand-deep md:inline-flex"
-          >
-            {t("inquire")}
-          </Link>
+          {memberName ? (
+            <Link
+              href="/member/profile"
+              className={`${inquireButtonClass} max-w-[10rem] truncate`}
+              title={memberName}
+            >
+              {memberName}
+            </Link>
+          ) : (
+            <Link href="/contact" className={inquireButtonClass}>
+              {t("inquire")}
+            </Link>
+          )}
           <Link href="/sitemap" className={utilityLinkClass(pathname === "/sitemap")}>
             {t("sitemap")}
           </Link>
           <div className="hidden sm:block">
             <LanguageSwitcher />
           </div>
-          <Link
-            href="/member/login"
-            className="hidden whitespace-nowrap px-1 text-[12px] text-brand-ink/45 hover:text-brand md:inline"
-          >
-            {t("memberLogin")}
-          </Link>
+          {!memberName ? (
+            <Link
+              href="/member/login"
+              className="hidden whitespace-nowrap px-1 text-[12px] text-brand-ink/45 hover:text-brand md:inline"
+            >
+              {t("memberLogin")}
+            </Link>
+          ) : null}
           <button
             type="button"
             className="whitespace-nowrap rounded-full border border-line px-3 py-1.5 text-[12px] font-medium lg:hidden"
@@ -116,13 +134,23 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
             <div className="sm:hidden pb-2">
               <LanguageSwitcher />
             </div>
-            <Link
-              href="/contact"
-              onClick={() => setOpen(false)}
-              className="mb-1 w-fit rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white"
-            >
-              {t("inquire")}
-            </Link>
+            {memberName ? (
+              <Link
+                href="/member/profile"
+                onClick={() => setOpen(false)}
+                className="mb-1 w-fit rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white"
+              >
+                {memberName}
+              </Link>
+            ) : (
+              <Link
+                href="/contact"
+                onClick={() => setOpen(false)}
+                className="mb-1 w-fit rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white"
+              >
+                {t("inquire")}
+              </Link>
+            )}
             <Link
               href="/sitemap"
               onClick={() => setOpen(false)}

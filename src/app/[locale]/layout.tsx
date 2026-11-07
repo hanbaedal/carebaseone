@@ -11,6 +11,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ViewTracker } from "@/components/ViewTracker";
 import { routing } from "@/i18n/routing";
+import { getApprovedMember } from "@/lib/member-session";
 import { getSession } from "@/lib/session";
 import { siteUrl } from "@/lib/site";
 
@@ -82,7 +83,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   setRequestLocale(locale);
   const messages = await getMessages();
-  const session = await getSession();
+  const [session, member] = await Promise.all([getSession(), getApprovedMember()]);
 
   return (
     <html
@@ -98,7 +99,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       >
         <NextIntlClientProvider messages={messages}>
           <ViewTracker />
-          <SiteHeader showAdmin={Boolean(session)} />
+          <SiteHeader showAdmin={Boolean(session)} memberName={member?.name ?? null} />
           <main className="flex-1">{children}</main>
           <SiteFooter />
         </NextIntlClientProvider>
