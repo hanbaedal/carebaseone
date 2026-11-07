@@ -1,8 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import type { HeaderNavItem } from "@/lib/site";
 
-const pillarKeys = new Set(["technology", "product", "solution", "global", "business"]);
-
 const cardPastels: Record<string, { shell: string; divider: string; label: string }> = {
   about: {
     shell: "border-slate-200/90 bg-slate-50 hover:border-slate-300",
@@ -51,21 +49,21 @@ function theme(key: string) {
   );
 }
 
+/** 헤더 `headerNav` + 관리 메뉴와 동일한 구조·라벨(nav) */
 export function SitemapCardGrid({
   items,
   tNav,
-  tHome,
+  adminHref = "/admin",
 }: {
   items: HeaderNavItem[];
   tNav: (key: string) => string;
-  tHome: (key: string) => string;
+  adminHref?: string;
 }) {
   return (
     <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {items.map((item) => {
         const pastel = theme(item.key);
-        const isPillar = pillarKeys.has(item.key);
-        const links: { href: string; key: string }[] =
+        const links =
           item.children && item.children.length > 0
             ? [{ href: item.href, key: item.key }, ...item.children]
             : [{ href: item.href, key: item.key }];
@@ -75,33 +73,35 @@ export function SitemapCardGrid({
             key={item.key}
             className={`flex flex-col rounded-2xl border px-5 py-6 shadow-sm transition-all hover:shadow-md ${pastel.shell}`}
           >
-            {isPillar ? (
-              <p className={`text-[11px] font-semibold tracking-[0.14em] ${pastel.label}`}>
-                {tHome(`${item.key}.num`)}
-              </p>
-            ) : null}
-            <h2
-              className={`font-semibold leading-snug text-brand-ink ${
-                isPillar ? "mt-1 min-h-[2.75rem] text-[16px]" : "text-sm tracking-wide"
-              } ${isPillar ? "" : pastel.label}`}
-            >
-              {isPillar ? tHome(`${item.key}.ko`) : tNav(item.key)}
+            <h2 className={`text-sm font-semibold tracking-wide text-brand-ink ${pastel.label}`}>
+              <Link href={item.href} className="hover:text-brand">
+                {tNav(item.key)}
+              </Link>
             </h2>
-            <ul className={`mt-4 flex flex-1 flex-col gap-2 border-t pt-4 ${pastel.divider}`}>
-              {links.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-[13px] text-brand-ink/80 hover:text-brand"
-                  >
-                    {tNav(link.key)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {item.children?.length ? (
+              <ul className={`mt-4 flex flex-1 flex-col gap-2 border-t pt-4 ${pastel.divider}`}>
+                {links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-[13px] text-brand-ink/80 hover:text-brand"
+                    >
+                      {tNav(link.key)}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </article>
         );
       })}
+      <article className="flex flex-col rounded-2xl border border-line bg-white px-5 py-6 shadow-sm">
+        <h2 className="text-sm font-semibold tracking-wide text-brand-ink">
+          <a href={adminHref} className="hover:text-brand">
+            {tNav("admin")}
+          </a>
+        </h2>
+      </article>
     </div>
   );
 }

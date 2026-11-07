@@ -20,9 +20,6 @@ function itemActive(pathname: string, item: (typeof headerNav)[number]) {
   return item.children?.some((c) => linkActive(pathname, c.href)) ?? false;
 }
 
-const inquireButtonClass =
-  "hidden whitespace-nowrap rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white shadow-[0_8px_18px_rgba(29,111,232,0.25)] hover:bg-brand-deep md:inline-flex";
-
 export function SiteHeader({ memberName = null }: { memberName?: string | null }) {
   const t = useTranslations("nav") as (key: string) => string;
   const pathname = usePathname();
@@ -88,16 +85,12 @@ export function SiteHeader({ memberName = null }: { memberName?: string | null }
           {memberName ? (
             <Link
               href="/member/profile"
-              className={`${inquireButtonClass} max-w-[10rem] truncate`}
+              className={`${utilityLinkClass(pathname.startsWith("/member/profile"))} max-w-[10rem] truncate`}
               title={memberName}
             >
               {memberName}
             </Link>
-          ) : (
-            <Link href="/contact" className={inquireButtonClass}>
-              {t("inquire")}
-            </Link>
-          )}
+          ) : null}
           <Link href="/sitemap" className={utilityLinkClass(pathname === "/sitemap")}>
             {t("sitemap")}
           </Link>
@@ -124,19 +117,11 @@ export function SiteHeader({ memberName = null }: { memberName?: string | null }
               <Link
                 href="/member/profile"
                 onClick={() => setOpen(false)}
-                className="mb-1 w-fit rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white"
+                className="mb-2 text-[14px] font-medium text-brand"
               >
                 {memberName}
               </Link>
-            ) : (
-              <Link
-                href="/contact"
-                onClick={() => setOpen(false)}
-                className="mb-1 w-fit rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white"
-              >
-                {t("inquire")}
-              </Link>
-            )}
+            ) : null}
             <Link
               href="/sitemap"
               onClick={() => setOpen(false)}
