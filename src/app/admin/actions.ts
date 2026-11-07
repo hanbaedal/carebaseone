@@ -112,13 +112,13 @@ export async function saveContent(formData: FormData) {
   }
 
   redirect(
-    `/admin?section=${encodeURIComponent(section)}&status=${status}&message=${encodeURIComponent(message)}`,
+    `/admin/content?section=${encodeURIComponent(section)}&status=${status}&message=${encodeURIComponent(message)}`,
   );
 }
 
 export async function manageUser(formData: FormData) {
   const session = await requireSession();
-  if (session.role !== "supervisor") redirect("/admin");
+  if (session.role !== "supervisor") redirect("/admin/site");
 
   const intent = String(formData.get("intent") ?? "");
   let message = "";

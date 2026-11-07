@@ -8,10 +8,10 @@ export const dynamic = "force-dynamic";
 export default async function UsersPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; message?: string }>;
+  searchParams: Promise<{ status?: string; message?: string; focus?: string }>;
 }) {
   const session = await getSession();
-  if (session?.role !== "supervisor") redirect("/admin");
+  if (session?.role !== "supervisor") redirect("/admin/site");
 
   const query = await searchParams;
   const accounts = await listUsers();
@@ -19,7 +19,7 @@ export default async function UsersPage({
   return (
     <div className="grid gap-4">
       <div>
-        <h1 className="text-sm">관리자 계정</h1>
+        <h1 className="text-sm">관리자 등록 · 리스트</h1>
         <p className="mt-1 text-[11px] text-ink/50">
           슈퍼바이저만 관리자 아이디를 만들 수 있습니다.
         </p>
@@ -32,6 +32,7 @@ export default async function UsersPage({
       </div>
 
       <form
+        id="create"
         action={manageUser}
         className="grid gap-2 border border-ink/10 bg-white p-3 md:grid-cols-[1fr_1fr_auto] md:items-end"
       >
@@ -59,7 +60,7 @@ export default async function UsersPage({
         <button className="bg-forest px-3 py-2 text-xs text-cream">만들기</button>
       </form>
 
-      <div className="overflow-x-auto border border-ink/10 bg-white">
+      <div id="list" className="overflow-x-auto border border-ink/10 bg-white">
         <table className="w-full min-w-[32rem] text-left text-xs">
           <thead className="text-[11px] text-ink/50">
             <tr>

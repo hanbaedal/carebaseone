@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 export default async function LoginPage() {
   const session = await getSession();
-  if (session) redirect("/admin");
+  if (session) redirect("/admin/site");
 
   let configHint: string | null = null;
   if (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32) {

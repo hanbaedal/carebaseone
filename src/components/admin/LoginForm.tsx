@@ -8,7 +8,7 @@ export function LoginForm() {
 
   useEffect(() => {
     if (state.ok) {
-      window.location.assign("/admin");
+      window.location.assign("/admin/site");
     }
   }, [state.ok]);
 

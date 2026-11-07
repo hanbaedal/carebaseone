@@ -1,5 +1,7 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { AdminNav } from "@/components/admin/AdminNav";
+import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminTopBar } from "@/components/admin/AdminTopBar";
 import { getSession, clearSession } from "@/lib/session";
 import { getSiteBrand } from "@/lib/site-brand";
 import { findUser } from "@/lib/users";
@@ -33,13 +35,18 @@ export default async function ConsoleLayout({
 
   return (
     <div className="min-h-full">
-      <AdminNav
+      <AdminTopBar
         role={user.role}
         username={user.username}
         siteName={brand.siteName}
         tagline={brand.tagline}
       />
-      <div className="mx-auto max-w-5xl px-3 py-4">{children}</div>
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-3 py-4 lg:flex-row">
+        <Suspense fallback={<aside className="hidden lg:block lg:w-44" />}>
+          <AdminSidebar role={user.role} />
+        </Suspense>
+        <main className="min-w-0 flex-1">{children}</main>
+      </div>
     </div>
   );
 }

@@ -19,14 +19,14 @@ function countOf(rows: { _id: string; count: number }[], id: string) {
 
 export default async function StatsPage() {
   const session = await getSession();
-  if (session?.role !== "supervisor") redirect("/admin");
+  if (session?.role !== "supervisor") redirect("/admin/site");
 
   const stats = await getDashboard();
   const peak = Math.max(...stats.daily.map((row) => row.count), 1);
 
   return (
     <div className="grid gap-4">
-      <h1 className="text-sm">접속 통계</h1>
+      <h1 className="text-sm">접속·이용 통계</h1>
       <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
         {[
           ["오늘 일반", stats.guestToday],
