@@ -9,6 +9,28 @@ export type CompanyProfileInput = Omit<
   "_id" | "updatedAt" | "updatedAtKst" | "updatedBy"
 >;
 
+/** DB 비어 있을 때 공개 SNS (관리자 정보 수정 값이 우선) */
+export const SITE_SNS_DEFAULTS: Pick<
+  CompanyProfileInput,
+  "snsFacebook" | "snsInstagram" | "snsYoutube" | "snsNaverCafe"
+> = {
+  snsFacebook: "https://www.facebook.com/profile.php?id=61596489113854",
+  snsInstagram: "https://www.instagram.com/carebase.kr/",
+  snsYoutube: "https://www.youtube.com/channel/UCycMxD82rFtJyCT53w8MUZA",
+  snsNaverCafe:
+    "https://section.blog.naver.com/BlogHome.naver?directoryNo=0&currentPage=1&groupId=0",
+};
+
+function withSiteSnsDefaults(profile: CompanyProfileInput): CompanyProfileInput {
+  const out = { ...profile };
+  for (const key of Object.keys(SITE_SNS_DEFAULTS) as (keyof typeof SITE_SNS_DEFAULTS)[]) {
+    if (!String(out[key] ?? "").trim()) {
+      out[key] = SITE_SNS_DEFAULTS[key];
+    }
+  }
+  return out;
+}
+
 const emptyProfile = (): CompanyProfileInput => ({
   companyName: "",
   representativeName: "",
@@ -32,13 +54,13 @@ export async function getCompanyProfile(): Promise<CompanyProfileInput> {
   const doc = await (await companyProfile()).findOne({ _id: "site" });
   if (doc) {
     const { _id, updatedAt, updatedAtKst, updatedBy, ...rest } = doc;
-    return rest;
+    return withSiteSnsDefaults(rest);
   }
   const messages = (await getCmsMessages("ko")) as { meta?: { site?: string } };
   const base = emptyProfile();
   base.companyName = messages.meta?.site?.trim() || "CAREBASE";
   base.website = "https://carebaseone.com";
-  return base;
+  return withSiteSnsDefaults(base);
 }
 
 export async function saveCompanyProfile(input: {
