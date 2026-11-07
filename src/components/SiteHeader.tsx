@@ -22,9 +22,6 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
-  const accountHref = showAdmin ? "/admin" : "/admin/login";
-  const accountLabel = showAdmin ? t("admin") : t("login");
-
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/95 text-brand-ink backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:py-4">
@@ -99,12 +96,14 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
           >
             {t("memberLogin")}
           </Link>
-          <a
-            href={accountHref}
-            className="whitespace-nowrap px-1 text-[12px] text-brand-ink/45 hover:text-brand"
-          >
-            {accountLabel}
-          </a>
+          {showAdmin ? (
+            <a
+              href="/admin"
+              className="whitespace-nowrap px-1 text-[12px] font-medium text-brand hover:text-brand-deep"
+            >
+              {t("admin")}
+            </a>
+          ) : null}
           <button
             type="button"
             className="whitespace-nowrap rounded-full border border-line px-3 py-1.5 text-[12px] font-medium lg:hidden"
@@ -175,9 +174,11 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
             >
               {t("sitemap")}
             </Link>
-            <a href={accountHref} className="text-[13px] text-brand-ink/50">
-              {accountLabel}
-            </a>
+            {showAdmin ? (
+              <a href="/admin" className="text-[13px] font-medium text-brand">
+                {t("admin")}
+              </a>
+            ) : null}
           </div>
         </div>
       ) : null}
