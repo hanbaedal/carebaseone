@@ -1,12 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  authenticateMember,
-  isUsernameTaken,
-  registerMember,
-  updateMemberProfile,
-} from "@/lib/members";
+import { authenticateMember, findMemberByUsername, registerMember, updateMemberProfile } from "@/lib/members";
+import { findUser } from "@/lib/users";
 import {
   clearMemberSession,
   getApprovedMember,
@@ -22,7 +18,6 @@ export async function signupMember(
   const password2 = String(formData.get("password2") ?? "");
   if (password !== password2) return { error: "비밀번호 확인이 일치하지 않습니다." };
   const username = String(formData.get("username") ?? "").trim();
-  if (await isUsernameTaken(username)) return { error: "이미 사용 중인 아이디입니다." };
   const error = await registerMember({
     username,
     password,
@@ -51,8 +46,29 @@ export async function loginMember(
     return { error: "서버 로그인 설정이 필요합니다. 관리자에게 문의해 주세요." };
   }
   try {
+    if (await findUser(username)) {
+      return {
+        error:
+          "홈페이지 관리(운영자) 계정입니다. 회원 로그인이 아닙니다. 주소창에 /admin/login 을 입력하거나 상단 「홈페이지 관리」에서 로그인해 주세요.",
+      };
+    }
     const result = await authenticateMember(username, password);
-    if (!result) return { error: "아이디 또는 비밀번호가 올바르지 않습니다." };
+    if (!result) {
+      const member = await findMemberByUsername(username);
+      if (member && member.status === "approved") {
+        return {
+          error:
+            "비밀번호가 맞지 않습니다. 가입 시 설정한 비밀번호를 그대로 입력해 주세요. Compass members.passwordPlain 과 비교할 수 있습니다.",
+        };
+      }
+      if (member && member.status !== "approved") {
+        return { error: "관리자 승인 대기 중입니다." };
+      }
+      return {
+        error:
+          "회원 계정이 없거나 비밀번호가 맞지 않습니다. 가입 후 관리자 승인이 필요합니다. 운영자는 /admin/login 을 이용해 주세요.",
+      };
+    }
     if ("error" in result) {
       if (result.status === "pending") return { error: "관리자 승인 대기 중입니다." };
       if (result.status === "held") return { error: "가입이 보류되었습니다. 문의해 주세요." };

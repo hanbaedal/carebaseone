@@ -41,6 +41,7 @@ export async function login(
     if ((await recentFailures(username)) >= 8) {
       return { error: "시도가 많습니다. 잠시 후 다시 로그인해 주세요." };
     }
+    const existing = await findUser(username);
     const user = await authenticate(username, password);
     if (!user) {
       await recordActivity({
@@ -55,9 +56,18 @@ export async function login(
           error: "관리자 계정이 없습니다. Render SEED_* 설정 후 /admin/login 을 다시 열어 주세요.",
         };
       }
+      if (!existing) {
+        return {
+          error:
+            "운영자 계정이 없습니다. 아이디는 소문자로 users 컬렉션에 있어야 합니다. 회원(members)과는 별도입니다.",
+        };
+      }
+      if (existing.disabled) {
+        return { error: "비활성화된 계정입니다. 슈퍼바이저에게 문의해 주세요." };
+      }
       return {
         error:
-          "아이디 또는 비밀번호가 맞지 않습니다. MongoDB carebaseone.users 의 passwordPlain 과 입력값이 같은지 확인하세요.",
+          "비밀번호가 맞지 않습니다. 입력값이 Compass users.passwordPlain 과 같으면 한 번 더 시도해 주세요(해시 자동 복구).",
       };
     }
     await recordActivity({

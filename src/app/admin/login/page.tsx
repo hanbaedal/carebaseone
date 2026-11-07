@@ -32,6 +32,9 @@ export default async function LoginPage() {
     <main className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-4 py-8">
       <p className="text-[11px] tracking-[0.16em] text-forest">CAREBASE</p>
       <h1 className="mt-1 text-lg">관리 로그인</h1>
+      <p className="mt-2 text-xs leading-5 text-ink/60">
+        운영자·관리자(xinxinedu, 슈퍼바이저) 전용입니다. 상단 「회원」로그인과 다릅니다.
+      </p>
       {configHint ? (
         <p className="mt-3 text-xs leading-5 text-red-800">{configHint}</p>
       ) : null}

@@ -22,6 +22,13 @@ export default async function MemberLoginPage({
   return (
     <div className="mx-auto max-w-md px-6 py-16">
       <h1 className="font-display text-3xl text-brand-ink">회원 로그인</h1>
+      <p className="mt-2 text-sm text-brand-ink/60">
+        스토어·회원용입니다. 홈페이지 관리(운영자)는{" "}
+        <a href="/admin/login" className="text-brand underline-offset-2 hover:underline">
+          관리 로그인(/admin/login)
+        </a>
+        을 이용해 주세요.
+      </p>
       <div className="mt-6 rounded-2xl border border-line bg-white p-6">
         <MemberLoginForm />
       </div>

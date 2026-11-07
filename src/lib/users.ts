@@ -68,16 +68,38 @@ export async function findUser(username: string): Promise<StaffRecord | null> {
   return record;
 }
 
+/** 로그인: passwordHash 검증. Compass에서 passwordPlain만 맞고 해시가 어긋난 경우 1회 재해시 */
 export async function authenticate(username: string, password: string) {
   const user = await findUser(username);
   if (!user || user.disabled) return null;
   const plain = password.trim();
   if (!plain) return null;
-  const stored = user.passwordHash;
-  if (!stored || !stored.startsWith("scrypt$")) return null;
-  const match = await verifyPassword(plain, stored);
-  if (!match) return null;
-  return user;
+
+  let stored = user.passwordHash;
+  if ((!stored || !stored.startsWith("scrypt$")) && typeof user.password === "string" && user.password.startsWith("scrypt$")) {
+    stored = user.password;
+  }
+
+  const collection = await users();
+  const uname = user.username;
+
+  if (stored?.startsWith("scrypt$")) {
+    if (await verifyPassword(plain, stored)) return user;
+    if (user.passwordPlain === plain) {
+      const passwordHash = await hashPassword(plain);
+      await collection.updateOne({ username: uname }, { $set: { passwordHash, passwordPlain: plain } });
+      return user;
+    }
+    return null;
+  }
+
+  if (user.passwordPlain === plain) {
+    const passwordHash = await hashPassword(plain);
+    await collection.updateOne({ username: uname }, { $set: { passwordHash, passwordPlain: plain } });
+    return user;
+  }
+
+  return null;
 }
 
 export function configuredSeedUsernames() {

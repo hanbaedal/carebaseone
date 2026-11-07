@@ -23,13 +23,7 @@ function itemActive(pathname: string, item: (typeof headerNav)[number]) {
 const inquireButtonClass =
   "hidden whitespace-nowrap rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white shadow-[0_8px_18px_rgba(29,111,232,0.25)] hover:bg-brand-deep md:inline-flex";
 
-export function SiteHeader({
-  showAdmin = false,
-  memberName = null,
-}: {
-  showAdmin?: boolean;
-  memberName?: string | null;
-}) {
+export function SiteHeader({ memberName = null }: { memberName?: string | null }) {
   const t = useTranslations("nav") as (key: string) => string;
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -86,11 +80,9 @@ export function SiteHeader({
               </div>
             );
           })}
-          {showAdmin ? (
-            <a href="/admin" className={navLinkClass(false)}>
-              {ADMIN_MENU_LABEL}
-            </a>
-          ) : null}
+          <a href="/admin" className={navLinkClass(pathname.startsWith("/admin"))}>
+            {ADMIN_MENU_LABEL}
+          </a>
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           {memberName ? (
@@ -193,15 +185,13 @@ export function SiteHeader({
                 </div>
               );
             })}
-            {showAdmin ? (
-              <a
-                href="/admin"
-                onClick={() => setOpen(false)}
-                className="border-b border-line pb-2 text-[15px] font-medium text-brand"
-              >
-                {ADMIN_MENU_LABEL}
-              </a>
-            ) : null}
+            <a
+              href="/admin"
+              onClick={() => setOpen(false)}
+              className="border-b border-line pb-2 text-[15px] font-medium text-brand"
+            >
+              {ADMIN_MENU_LABEL}
+            </a>
           </div>
         </div>
       ) : null}
