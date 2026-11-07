@@ -1,5 +1,5 @@
 /**
- * Render 배포 시 SEED_* 환경 변수로 Mongo staff 비밀번호를 맞춥니다.
+ * 수동 실행: Render SEED_* 로 Mongo users 비밀번호를 맞출 때만 사용 (배포 시 자동 실행 없음).
  * 사용: MONGODB_URI 및 SEED_* 가 설정된 상태에서 node scripts/sync-seed-users.cjs
  */
 const { MongoClient } = require("mongodb");

@@ -6,7 +6,6 @@ import { clearSession, getSession, setSession } from "@/lib/session";
 import { users } from "@/lib/db";
 import {
   authenticate,
-  configuredSeedUsernames,
   createAdmin,
   findUser,
   recentFailures,
@@ -50,37 +49,15 @@ export async function login(
         action: "login-failed",
         detail: "",
       });
-      const existing = await findUser(username);
-      if (existing && !existing.passwordHash) {
-        return {
-          error:
-            "관리자 계정에 passwordHash 필드가 없습니다. MongoDB carebaseone → users 컬렉션 필드를 확인하세요.",
-        };
-      }
       const userCount = await (await users()).countDocuments({});
       if (userCount === 0) {
         return {
-          error:
-            "관리자 계정이 없습니다. Render에 SEED_ADMIN_USERNAME·SEED_ADMIN_PASSWORD를 설정한 뒤 저장·재배포하세요.",
+          error: "관리자 계정이 없습니다. Render SEED_* 설정 후 /admin/login 을 다시 열어 주세요.",
         };
       }
-      const seedName =
-        process.env.SEED_ADMIN_USERNAME?.trim().toLowerCase() ??
-        process.env.SEED_SUPERVISOR_USERNAME?.trim().toLowerCase();
-      if (seedName === username && !process.env.SEED_ADMIN_PASSWORD && !process.env.SEED_SUPERVISOR_PASSWORD) {
-        return { error: "SEED 비밀번호 환경 변수가 비어 있습니다." };
-      }
-      const seedIds = configuredSeedUsernames();
-      const hint = [
-        seedIds.supervisor ? `슈퍼바이저=${seedIds.supervisor}` : null,
-        seedIds.admin ? `관리자=${seedIds.admin}` : null,
-      ]
-        .filter(Boolean)
-        .join(", ");
       return {
-        error: hint
-          ? `아이디 또는 비밀번호가 맞지 않습니다. Render SEED_* 와 동일해야 합니다. (서버에 등록된 시드 아이디: ${hint})`
-          : "아이디 또는 비밀번호가 맞지 않습니다. Render SEED_* 를 설정한 뒤 저장하고 재배포하세요.",
+        error:
+          "아이디 또는 비밀번호가 맞지 않습니다. MongoDB carebaseone.users 의 passwordPlain 과 입력값이 같은지 확인하세요.",
       };
     }
     await recordActivity({
