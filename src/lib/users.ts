@@ -1,3 +1,4 @@
+import type { ObjectId } from "mongodb";
 import { formatKoreaDateTimeStorage, mongoCreated } from "@/lib/korea-time";
 import { hashPassword, verifyPassword } from "@/lib/password";
 import type { Role } from "@/lib/session";
@@ -86,7 +87,7 @@ export async function ensureSeedUsers(options?: { syncPasswords?: boolean }) {
   }
 }
 
-type StaffRecord = UserDoc & { _id: unknown; password?: string };
+type StaffRecord = UserDoc & { _id: ObjectId; password?: string };
 
 async function normalizeStaffRecord(
   collection: Awaited<ReturnType<typeof users>>,
