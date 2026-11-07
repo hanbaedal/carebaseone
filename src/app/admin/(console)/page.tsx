@@ -5,8 +5,8 @@ import { contentSections, getEditorFields } from "@/lib/content";
 export const dynamic = "force-dynamic";
 
 const notices: Record<string, string> = {
-  saved: "저장했습니다. 영어와 중국어에도 반영됩니다.",
-  partial: "한글은 저장했습니다. 일부 번역은 잠시 후 다시 저장해 주세요.",
+  saved: "저장했습니다. 영·중국어는 자동 번역되어 공개 홈에 반영됩니다.",
+  partial: "한글은 저장했습니다. 영·중 일부만 실패했으면 같은 내용으로 다시 저장해 주세요.",
   error: "저장하지 못했습니다.",
 };
 
@@ -42,9 +42,8 @@ export default async function ContentPage({
           {contentSections.find((item) => item.key === section)?.label}
         </h1>
         <p className="mt-1 text-[11px] leading-5 text-ink/50">
-          {section === "nav"
-            ? "헤더·사이트맵 메뉴와 모든 소메뉴 이름을 수정합니다. 로그인 후 저장하면 공개 홈에 반영됩니다."
-            : "한글을 고치면 영어와 중국어로 번역해 저장합니다. PC에서는 번역이 칸 아래에 보이고, 모바일에서는 EN · 中文을 눌러 확인합니다."}
+          입력란은 한글만 표시합니다. 저장하면 영·중국어는 자동으로 맞춰지고, 방문자는 헤더 KO /
+          EN / 中文으로 언어를 바꿉니다.
         </p>
         {notice ? (
           <p

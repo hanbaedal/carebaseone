@@ -120,20 +120,22 @@ export async function saveSection(input: {
     const currentEn = getPath(english, path);
     const currentZh = getPath(chinese, path);
     const koChanged = nextKo !== currentKo;
-    const enChanged = nextEn !== currentEn;
-    const zhChanged = nextZh !== currentZh;
+    /** 관리 화면은 한글만 보냄 — en/zh 빈 값이면 직접 수정이 아님 */
+    const koOnlySubmit = nextEn === "" && nextZh === "";
+    const enChanged = !koOnlySubmit && nextEn !== currentEn;
+    const zhChanged = !koOnlySubmit && nextZh !== currentZh;
     if (!koChanged && !enChanged && !zhChanged) continue;
 
     let englishText = enChanged ? nextEn : currentEn;
     let chineseText = zhChanged ? nextZh : currentZh;
-    if (koChanged && !enChanged) {
+    if (koChanged && (koOnlySubmit || !enChanged)) {
       try {
         englishText = await translateFromKorean(nextKo, "en");
       } catch {
         failed += 1;
       }
     }
-    if (koChanged && !zhChanged) {
+    if (koChanged && (koOnlySubmit || !zhChanged)) {
       try {
         chineseText = await translateFromKorean(nextKo, "zh");
       } catch {
