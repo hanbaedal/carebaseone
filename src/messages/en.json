@@ -28,6 +28,7 @@
     "menu": "Menu",
     "close": "Close",
     "login": "Login",
+    "logout": "Log out",
     "admin": "Site admin",
     "sitemap": "Sitemap",
     "groups": {
@@ -379,6 +380,7 @@
     "title": "Member store",
     "loginRequired": "Approved members can place orders.",
     "login": "Log in",
+    "logout": "Log out",
     "signup": "Sign up",
     "orderNote": "Phase 1: order requests without online payment.",
     "myOrders": "My orders",

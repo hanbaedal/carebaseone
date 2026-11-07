@@ -28,6 +28,7 @@
     "menu": "菜单",
     "close": "关闭",
     "login": "登录",
+    "logout": "退出登录",
     "admin": "网站管理",
     "sitemap": "网站地图",
     "groups": {

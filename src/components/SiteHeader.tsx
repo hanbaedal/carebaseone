@@ -6,6 +6,7 @@ import { usePathname } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { MemberHeaderAuth } from "@/components/MemberHeaderAuth";
 import { headerNav } from "@/lib/site";
 
 const ADMIN_MENU_LABEL = "홈페이지 관리";
@@ -111,14 +112,6 @@ export function SiteHeader({
           <div className="hidden sm:block">
             <LanguageSwitcher />
           </div>
-          {!memberName ? (
-            <Link
-              href="/member/login"
-              className="hidden whitespace-nowrap px-1 text-[12px] text-brand-ink/45 hover:text-brand md:inline"
-            >
-              {t("memberLogin")}
-            </Link>
-          ) : null}
           <button
             type="button"
             className="whitespace-nowrap rounded-full border border-line px-3 py-1.5 text-[12px] font-medium lg:hidden"
@@ -126,6 +119,7 @@ export function SiteHeader({
           >
             {open ? t("close") : t("menu")}
           </button>
+          <MemberHeaderAuth loggedIn={Boolean(memberName)} />
         </div>
       </div>
       {open ? (

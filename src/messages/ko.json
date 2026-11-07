@@ -28,6 +28,7 @@
     "menu": "메뉴",
     "close": "닫기",
     "login": "로그인",
+    "logout": "로그아웃",
     "admin": "홈페이지 관리",
     "sitemap": "사이트맵",
     "groups": {
