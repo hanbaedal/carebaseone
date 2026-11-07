@@ -1,7 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
-import { footerExtraItems, navItems } from "@/lib/site";
 
 export async function SiteFooter() {
   const t = await getTranslations();
@@ -13,18 +11,6 @@ export async function SiteFooter() {
         <p className="mt-5 max-w-xl text-sm leading-7 text-brand-ink/65">
           {t("footer.mission")}
         </p>
-        <div className="mt-10 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-brand-ink/55">
-          {navItems.map((item) => (
-            <Link key={item.key} href={item.href} className="hover:text-brand">
-              {t(`nav.${item.key}`)}
-            </Link>
-          ))}
-          {footerExtraItems.map((item) => (
-            <Link key={item.key} href={item.href} className="hover:text-brand">
-              {t(`nav.${item.key}`)}
-            </Link>
-          ))}
-        </div>
         <div className="mt-10 border-t border-line pt-6 text-xs leading-6 text-brand-ink/45">
           <p>{t("footer.disclaimer")}</p>
           <p className="mt-3">{t("footer.rights")}</p>

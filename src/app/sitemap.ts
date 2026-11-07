@@ -19,6 +19,7 @@ const paths = [
     .map((item) => ({ href: item.href, priority: 0.65 })),
   { href: "/member/login", priority: 0.5 },
   { href: "/member/signup", priority: 0.5 },
+  { href: "/sitemap", priority: 0.4 },
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {

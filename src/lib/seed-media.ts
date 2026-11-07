@@ -1,5 +1,6 @@
 import path from "node:path";
 import manifest from "@/data/media-manifest.json";
+import mediaI18n from "@/data/media-i18n.json";
 import { ensureIndexes, media, type MediaCategory } from "@/lib/db";
 import { ingestAllMediaBinaries } from "@/lib/media-ingest";
 import { mediaApiPath } from "@/lib/media-storage";
@@ -13,8 +14,17 @@ const mimeByExt: Record<string, string> = {
   ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
 };
 
-function emptyLocale(text: string) {
-  return { ko: text, en: text, zh: text };
+type ManifestItem = (typeof manifest)[number] & {
+  titleEn?: string;
+  titleZh?: string;
+};
+
+function localizedTitle(item: ManifestItem) {
+  const extra = mediaI18n[item.slug as keyof typeof mediaI18n];
+  const ko = item.titleKo;
+  const en = item.titleEn ?? extra?.en ?? ko;
+  const zh = item.titleZh ?? extra?.zh ?? ko;
+  return { ko, en, zh };
 }
 
 export async function ensureMediaSeed() {
@@ -24,14 +34,15 @@ export async function ensureMediaSeed() {
   for (const item of manifest) {
     const ext = path.extname(item.fileName) || ".pdf";
     const mime = mimeByExt[ext.toLowerCase()] ?? "application/octet-stream";
+    const titles = localizedTitle(item as ManifestItem);
     const hit = await col.findOne({ slug: item.slug });
     if (!hit) {
       await col.insertOne({
         slug: item.slug,
         category: item.category as MediaCategory,
         audience: "public",
-        title: emptyLocale(item.titleKo),
-        summary: emptyLocale(item.titleKo),
+        title: titles,
+        summary: titles,
         filePath: mediaApiPath(item.slug),
         fileName: item.fileName,
         mime,
@@ -42,6 +53,11 @@ export async function ensureMediaSeed() {
         createdAt: now,
         updatedAt: now,
       });
+    } else {
+      await col.updateOne(
+        { slug: item.slug },
+        { $set: { title: titles, summary: titles, updatedAt: now } },
+      );
     }
   }
 

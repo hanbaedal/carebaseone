@@ -8,9 +8,6 @@
     {
       "slug": "muscle-joint-patch",
       "category": "patch",
-      "image": "/images/products/patch-line-promo.png",
-      "titleKo": "바이오힐링 근육관절 패치",
-      "summaryKo": "일상·활동 후 부위 케어용 대표 패치. 성분분석표·COI·피부 일차자극 시험 자료 보유.",
       "mediaHrefs": [
         "/api/media/patch-coi",
         "/api/media/patch-ingredients-2026",
@@ -21,67 +18,46 @@
     {
       "slug": "muscle-joint-hot-patch",
       "category": "patch",
-      "titleKo": "바이오힐링 근육관절 핫패치",
-      "summaryKo": "온열감을 고려한 근육·관절 라인. 상품기술서 기준 소개.",
       "mediaHrefs": ["/api/media/spec-muscle-joint-hot"]
     },
     {
       "slug": "slim-hot-patch",
       "category": "patch",
-      "titleKo": "슬림 핫패치 (산화질소 소재)",
-      "summaryKo": "산화질소 대사체 소재를 적용한 슬림 핫패치 라인.",
       "mediaHrefs": ["/api/media/spec-slim-hot-no"]
     },
     {
       "slug": "good-night-nose-patch",
       "category": "patch",
-      "titleKo": "굿나잇 코패치",
-      "summaryKo": "수면·호흡 편의를 고려한 코 부착형 패치.",
       "mediaHrefs": ["/api/media/spec-good-night-nose"]
     },
     {
       "slug": "multi-memory-patch",
       "category": "patch",
-      "titleKo": "다기억 패치",
-      "summaryKo": "인지·활력 케어를 위한 복합 소재 패치.",
       "mediaHrefs": ["/api/media/spec-multi-memory"]
     },
     {
       "slug": "energy-focus-patch",
       "category": "patch",
-      "titleKo": "에너이자 패치",
-      "summaryKo": "활동·집중 상황을 위한 에너지 케어 패치.",
       "mediaHrefs": ["/api/media/spec-energy-focus"]
     },
     {
       "slug": "us-miracle-patch",
       "category": "patch",
-      "image": "/images/products/us-recoverx-line.jpg",
-      "titleKo": "미국 수출 · 미라클 패치",
-      "summaryKo": "미국 시장용 바이오힐링 미라클 패치 (1P·2P·4P·12P 구성).",
       "mediaHrefs": ["/api/media/us-miracle-patch-pdf"]
     },
     {
       "slug": "us-hot-patch",
       "category": "patch",
-      "image": "/images/products/us-recoverx-line.jpg",
-      "titleKo": "미국 수출 · 핫 패치",
-      "summaryKo": "미국 시장용 핫 패치 라인 패키징.",
       "mediaHrefs": ["/api/media/us-miracle-patch-pdf"]
     },
     {
       "slug": "jaryeon-cushion",
       "category": "cosmetics",
-      "image": "/images/products/jaryeon-cushion.jpg",
-      "titleKo": "慈蓮 (자련) 뷰티 쿠션",
-      "summaryKo": "연꽃 모티프 프리미엄 쿠션 라인.",
       "mediaHrefs": []
     },
     {
       "slug": "happy-no",
       "category": "beverage",
-      "titleKo": "Happy N:O",
-      "summaryKo": "생활형 음료 라인 (스토어 문의).",
       "mediaHrefs": []
     }
   ]

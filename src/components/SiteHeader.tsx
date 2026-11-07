@@ -6,12 +6,22 @@ import { usePathname } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { navItems } from "@/lib/site";
+import { headerNav } from "@/lib/site";
+
+function linkActive(pathname: string, href: string) {
+  return pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
+}
+
+function itemActive(pathname: string, item: (typeof headerNav)[number]) {
+  if (linkActive(pathname, item.href)) return true;
+  return item.children?.some((c) => linkActive(pathname, c.href)) ?? false;
+}
 
 export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
-  const t = useTranslations("nav");
+  const t = useTranslations("nav") as (key: string) => string;
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [expanded, setExpanded] = useState<string | null>(null);
   const accountHref = showAdmin ? "/admin" : "/admin/login";
   const accountLabel = showAdmin ? t("admin") : t("login");
 
@@ -19,21 +29,59 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
     <header className="sticky top-0 z-50 border-b border-line bg-white/95 text-brand-ink backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:py-4">
         <BrandLogo />
-        <nav className="hidden items-center gap-6 xl:flex">
-          {navItems.map((item) => {
-            const active = pathname.startsWith(item.href);
+        <nav className="hidden items-center gap-4 lg:flex xl:gap-6">
+          {headerNav.map((item) => {
+            const active = itemActive(pathname, item);
+            if (!item.children?.length) {
+              return (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  className={`text-[14px] font-medium transition-colors ${
+                    active ? "text-brand" : "text-brand-ink/70 hover:text-brand"
+                  }`}
+                >
+                  {t(item.key)}
+                </Link>
+              );
+            }
             return (
-              <Link
-                key={item.key}
-                href={item.href}
-                className={`text-[14px] font-medium transition-colors ${
-                  active ? "text-brand" : "text-brand-ink/70 hover:text-brand"
-                }`}
-              >
-                {t(item.key)}
-              </Link>
+              <div key={item.key} className="group relative">
+                <Link
+                  href={item.href}
+                  className={`inline-flex items-center gap-0.5 text-[14px] font-medium ${
+                    active ? "text-brand" : "text-brand-ink/70 group-hover:text-brand"
+                  }`}
+                >
+                  {t(item.key)}
+                  <span className="text-[10px] text-brand-ink/35" aria-hidden>
+                    ▾
+                  </span>
+                </Link>
+                <div className="invisible absolute left-0 top-full z-50 min-w-[10.5rem] rounded-xl border border-line bg-white py-2 pt-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                  {item.children.map((child) => (
+                    <Link
+                      key={child.key}
+                      href={child.href}
+                      className={`block px-4 py-2 text-[13px] hover:bg-brand/5 ${
+                        linkActive(pathname, child.href) ? "text-brand" : "text-brand-ink/80"
+                      }`}
+                    >
+                      {t(child.key)}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             );
           })}
+          <Link
+            href="/sitemap"
+            className={`text-[13px] font-medium ${
+              pathname === "/sitemap" ? "text-brand" : "text-brand-ink/45 hover:text-brand"
+            }`}
+          >
+            {t("sitemap")}
+          </Link>
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <Link
@@ -59,7 +107,7 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
           </a>
           <button
             type="button"
-            className="whitespace-nowrap rounded-full border border-line px-3 py-1.5 text-[12px] font-medium xl:hidden"
+            className="whitespace-nowrap rounded-full border border-line px-3 py-1.5 text-[12px] font-medium lg:hidden"
             onClick={() => setOpen((value) => !value)}
           >
             {open ? t("close") : t("menu")}
@@ -67,28 +115,66 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
         </div>
       </div>
       {open ? (
-        <div className="border-t border-line bg-white px-4 py-5 xl:hidden sm:px-6">
-          <div className="flex flex-col gap-4">
-            <div className="sm:hidden">
+        <div className="border-t border-line bg-white px-4 py-5 lg:hidden sm:px-6">
+          <div className="flex flex-col gap-2">
+            <div className="sm:hidden pb-2">
               <LanguageSwitcher />
             </div>
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
-              className="w-fit rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white"
+              className="mb-2 w-fit rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white"
             >
               {t("inquire")}
             </Link>
-            {navItems.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="text-[15px] font-medium text-brand-ink"
-              >
-                {t(item.key)}
-              </Link>
-            ))}
+            {headerNav.map((item) => {
+              const hasChildren = Boolean(item.children?.length);
+              const expandedOpen = expanded === item.key;
+              return (
+                <div key={item.key} className="border-b border-line pb-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <Link
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      className="text-[15px] font-medium text-brand-ink"
+                    >
+                      {t(item.key)}
+                    </Link>
+                    {hasChildren ? (
+                      <button
+                        type="button"
+                        className="px-2 text-xs text-brand-ink/50"
+                        aria-expanded={expandedOpen}
+                        onClick={() => setExpanded(expandedOpen ? null : item.key)}
+                      >
+                        {expandedOpen ? "−" : "+"}
+                      </button>
+                    ) : null}
+                  </div>
+                  {hasChildren && expandedOpen ? (
+                    <div className="mt-2 flex flex-col gap-2 border-l border-line pl-3">
+                      {item.children!.map((child) => (
+                        <Link
+                          key={child.key}
+                          href={child.href}
+                          onClick={() => setOpen(false)}
+                          className="text-[14px] text-brand-ink/75"
+                        >
+                          {t(child.key)}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
+            <Link
+              href="/sitemap"
+              onClick={() => setOpen(false)}
+              className="pt-1 text-[14px] text-brand-ink/60"
+            >
+              {t("sitemap")}
+            </Link>
             <a href={accountHref} className="text-[13px] text-brand-ink/50">
               {accountLabel}
             </a>

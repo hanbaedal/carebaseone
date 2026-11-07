@@ -22,7 +22,7 @@ export default async function GalleryPage({
     <div className="mx-auto max-w-5xl px-6 py-16">
       <h1 className="font-display text-4xl text-brand-ink">{t("sections.gallery")}</h1>
       <p className="mt-3 text-brand-ink/65">{t("galleryLede")}</p>
-      <ProductGalleryGrid locale={locale} />
+      <ProductGalleryGrid />
       <div className="mt-14">
         <PostList items={items} locale={locale} basePath="/community/gallery" />
       </div>

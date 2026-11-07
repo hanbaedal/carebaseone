@@ -21,13 +21,27 @@
     "gallery": "갤러리",
     "store": "스토어",
     "memberLogin": "회원",
+    "memberSignup": "회원가입",
     "news": "소식",
     "contact": "문의",
     "inquire": "사업·제품 문의",
     "menu": "메뉴",
     "close": "닫기",
     "login": "로그인",
-    "admin": "관리"
+    "admin": "관리",
+    "sitemap": "사이트맵",
+    "groups": {
+      "community": "커뮤니티",
+      "member": "회원·스토어"
+    }
+  },
+  "sitemapPage": {
+    "title": "사이트맵",
+    "lede": "메인 메뉴와 동일한 구성으로 페이지를 카드형으로 모았습니다.",
+    "cardHint": "01~05는 홈 하단 바와 같은 그룹입니다.",
+    "localeSwitch": "언어별 사이트맵",
+    "extra": "기타",
+    "xml": "XML 사이트맵 (검색엔진용)"
   },
   "cta": {
     "solutions": "솔루션 보기",
@@ -197,6 +211,52 @@
       }
     }
   },
+  "productCatalog": {
+    "doc": "자료",
+    "archiveLink": "자료실",
+    "lines": {
+      "muscle-joint-patch": {
+        "title": "바이오힐링 근육관절 패치",
+        "summary": "일상·활동 후 부위 케어용 대표 패치. 성분분석표·COI·피부 일차자극 시험 자료 보유."
+      },
+      "muscle-joint-hot-patch": {
+        "title": "바이오힐링 근육관절 핫패치",
+        "summary": "온열감을 고려한 근육·관절 라인. 상품기술서 기준 소개."
+      },
+      "slim-hot-patch": {
+        "title": "슬림 핫패치 (산화질소 소재)",
+        "summary": "산화질소 대사체 소재를 적용한 슬림 핫패치 라인."
+      },
+      "good-night-nose-patch": {
+        "title": "굿나잇 코패치",
+        "summary": "수면·호흡 편의를 고려한 코 부착형 패치."
+      },
+      "multi-memory-patch": {
+        "title": "다기억 패치",
+        "summary": "인지·활력 케어를 위한 복합 소재 패치."
+      },
+      "energy-focus-patch": {
+        "title": "에너이자 패치",
+        "summary": "활동·집중 상황을 위한 에너지 케어 패치."
+      },
+      "us-miracle-patch": {
+        "title": "미국 수출 · 미라클 패치",
+        "summary": "미국 시장용 바이오힐링 미라클 패치 (1P·2P·4P·12P 구성)."
+      },
+      "us-hot-patch": {
+        "title": "미국 수출 · 핫 패치",
+        "summary": "미국 시장용 핫 패치 라인 패키징."
+      },
+      "jaryeon-cushion": {
+        "title": "慈蓮 (자련) 뷰티 쿠션",
+        "summary": "연꽃 모티프 프리미엄 쿠션 라인."
+      },
+      "happy-no": {
+        "title": "Happy N:O",
+        "summary": "생활형 음료 라인 (스토어 문의)."
+      }
+    }
+  },
   "global": {
     "kicker": "04 글로벌",
     "title": "세계를 연결하는 플랫폼",
@@ -284,6 +344,27 @@
     "archiveLede": "인증·연구·제품 PDF와 관리자 등록 자료입니다. (특허는 지식재산권 메뉴)",
     "archivePosts": "등록 글",
     "galleryLede": "제품·전시·해외 패키징 사진과 관리자 등록 갤러리입니다.",
+    "mediaEmpty": "등록된 자료가 없습니다.",
+    "postsEmpty": "게시글이 없습니다.",
+    "pinned": "공지",
+    "galleryItems": {
+      "jaryeon-cushion-hero": {
+        "title": "慈蓮 뷰티 쿠션",
+        "caption": "연꽃 디자인 프리미엄 쿠션"
+      },
+      "jaryeon-cushion-detail": {
+        "title": "쿠션 구성",
+        "caption": "미러·퍼프 포함 구성"
+      },
+      "us-recoverx": {
+        "title": "미국 패치 패키징",
+        "caption": "ICY / HOT 리커버리 패치 라인"
+      },
+      "patent-garlic-cert": {
+        "title": "마늘 발효 특허",
+        "caption": "특허 등록 증빙 (예: 10-1609918)"
+      }
+    },
     "sections": {
       "notice": "공지사항",
       "archive": "자료실",

@@ -18,15 +18,89 @@ export const images = {
   lab: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=1600&q=80",
 } as const;
 
-export const navItems = [
+export type NavLink = { href: string; key: string };
+
+/** 메인 화면·헤더 상단 6개 메뉴 (첨부 디자인 기준) */
+export type HeaderNavItem = NavLink & {
+  children?: NavLink[];
+};
+
+export const headerNav: HeaderNavItem[] = [
   { href: "/about", key: "about" },
-  { href: "/technology", key: "technology" },
-  { href: "/patents", key: "patents" },
+  {
+    href: "/technology",
+    key: "technology",
+    children: [
+      { href: "/patents", key: "patents" },
+      { href: "/certifications", key: "certifications" },
+      { href: "/research", key: "research" },
+    ],
+  },
   { href: "/product", key: "product" },
   { href: "/solution", key: "solution" },
   { href: "/global", key: "global" },
   { href: "/business", key: "business" },
-] as const;
+];
+
+export type NavGroup = {
+  /** home.pillars.{groupKey} 또는 nav.groups.{groupKey} */
+  groupKey: string;
+  children: NavLink[];
+};
+
+/** 사이트맵: 01~05 필러 + 커뮤니티·회원 */
+export const navGroups: NavGroup[] = [
+  {
+    groupKey: "technology",
+    children: [
+      { href: "/technology", key: "technology" },
+      { href: "/patents", key: "patents" },
+      { href: "/certifications", key: "certifications" },
+      { href: "/research", key: "research" },
+    ],
+  },
+  {
+    groupKey: "product",
+    children: [{ href: "/product", key: "product" }],
+  },
+  {
+    groupKey: "solution",
+    children: [{ href: "/solution", key: "solution" }],
+  },
+  {
+    groupKey: "global",
+    children: [{ href: "/global", key: "global" }],
+  },
+  {
+    groupKey: "business",
+    children: [{ href: "/business", key: "business" }],
+  },
+  {
+    groupKey: "community",
+    children: [
+      { href: "/community", key: "community" },
+      { href: "/community/notice", key: "notice" },
+      { href: "/community/archive", key: "archive" },
+      { href: "/community/gallery", key: "gallery" },
+      { href: "/contact", key: "contact" },
+    ],
+  },
+  {
+    groupKey: "member",
+    children: [
+      { href: "/store", key: "store" },
+      { href: "/member/login", key: "memberLogin" },
+      { href: "/member/signup", key: "memberSignup" },
+    ],
+  },
+];
+
+export const navItems = [
+  ...headerNav.flatMap((item) => [item, ...(item.children ?? [])]),
+  ...navGroups.flatMap((g) => g.children),
+].filter(
+  (item, index, arr) => arr.findIndex((x) => x.href === item.href) === index,
+);
 
 export const evidenceNavItems = [
   { href: "/patents", key: "patents" },

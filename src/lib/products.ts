@@ -1,8 +1,23 @@
 import catalog from "@/data/product-catalog.json";
+import ko from "@/messages/ko.json";
+import en from "@/messages/en.json";
+import zh from "@/messages/zh.json";
 import { ensureIndexes, products } from "@/lib/db";
 
-function emptyLocale(text: string) {
-  return { ko: text, en: text, zh: text };
+type CatalogLines = Record<string, { title: string; summary: string }>;
+
+function lineTexts(slug: string) {
+  const k = (ko.productCatalog.lines as CatalogLines)[slug];
+  const e = (en.productCatalog.lines as CatalogLines)[slug];
+  const z = (zh.productCatalog.lines as CatalogLines)[slug];
+  return {
+    title: { ko: k?.title ?? slug, en: e?.title ?? slug, zh: z?.title ?? slug },
+    summary: {
+      ko: k?.summary ?? "",
+      en: e?.summary ?? "",
+      zh: z?.summary ?? "",
+    },
+  };
 }
 
 const storeLines = catalog.lines.filter((line) =>
@@ -14,12 +29,13 @@ export async function ensureProductSeed() {
   const col = await products();
   const now = new Date();
   for (const item of storeLines) {
+    const text = lineTexts(item.slug);
     await col.updateOne(
       { slug: item.slug },
       {
         $set: {
-          title: emptyLocale(item.titleKo),
-          summary: emptyLocale(item.summaryKo),
+          title: text.title,
+          summary: text.summary,
           active: true,
           updatedAt: now,
         },

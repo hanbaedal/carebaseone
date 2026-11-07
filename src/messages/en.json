@@ -21,13 +21,27 @@
     "gallery": "Gallery",
     "store": "Store",
     "memberLogin": "Members",
+    "memberSignup": "Sign up",
     "news": "News",
     "contact": "Contact",
     "inquire": "Business Inquiry",
     "menu": "Menu",
     "close": "Close",
     "login": "Login",
-    "admin": "Admin"
+    "admin": "Admin",
+    "sitemap": "Sitemap",
+    "groups": {
+      "community": "Community",
+      "member": "Store & members"
+    }
+  },
+  "sitemapPage": {
+    "title": "Sitemap",
+    "lede": "Pages grouped in cards aligned with the main menu.",
+    "cardHint": "01–05 match the home page pillar bar.",
+    "localeSwitch": "Sitemap by language",
+    "extra": "Other",
+    "xml": "XML sitemap for search engines"
   },
   "cta": {
     "solutions": "Explore Solutions",
@@ -197,6 +211,52 @@
       }
     }
   },
+  "productCatalog": {
+    "doc": "File",
+    "archiveLink": "Archive",
+    "lines": {
+      "muscle-joint-patch": {
+        "title": "Bio Healing muscle & joint patch",
+        "summary": "Flagship patch for daily and post-activity care. COI, ingredient table, and irritation test on file."
+      },
+      "muscle-joint-hot-patch": {
+        "title": "Bio Healing muscle & joint hot patch",
+        "summary": "Warmth-oriented muscle and joint line per product spec."
+      },
+      "slim-hot-patch": {
+        "title": "Slim hot patch (NO material)",
+        "summary": "Slim hot patch line with NO metabolite materials."
+      },
+      "good-night-nose-patch": {
+        "title": "Good-night nose patch",
+        "summary": "Nose patch designed for sleep and breathing comfort."
+      },
+      "multi-memory-patch": {
+        "title": "Multi-memory patch",
+        "summary": "Composite patch for cognitive and vitality care."
+      },
+      "energy-focus-patch": {
+        "title": "Energy focus patch",
+        "summary": "Energy care patch for activity and focus."
+      },
+      "us-miracle-patch": {
+        "title": "US export · Miracle patch",
+        "summary": "Bio Healing Miracle patch for the US (1P·2P·4P·12P packs)."
+      },
+      "us-hot-patch": {
+        "title": "US export · Hot patch",
+        "summary": "Hot patch packaging for the US market."
+      },
+      "jaryeon-cushion": {
+        "title": "Jaryeon (慈蓮) beauty cushion",
+        "summary": "Premium cushion line with lotus motif."
+      },
+      "happy-no": {
+        "title": "Happy N:O",
+        "summary": "Lifestyle beverage line (inquire via store)."
+      }
+    }
+  },
   "global": {
     "kicker": "04 Global",
     "title": "A platform that connects the world",
@@ -283,7 +343,28 @@
     "noticeLede": "Site notices and updates.",
     "archiveLede": "Certification, research, and product PDFs. Patents are under Patents.",
     "archivePosts": "Articles",
-    "galleryLede": "Exhibitions and events.",
+    "galleryLede": "Product, exhibition, and US packaging photos plus admin gallery posts.",
+    "mediaEmpty": "No files listed yet.",
+    "postsEmpty": "No posts yet.",
+    "pinned": "Notice",
+    "galleryItems": {
+      "jaryeon-cushion-hero": {
+        "title": "Jaryeon beauty cushion",
+        "caption": "Premium lotus design cushion"
+      },
+      "jaryeon-cushion-detail": {
+        "title": "Cushion set",
+        "caption": "Mirror and puff included"
+      },
+      "us-recoverx": {
+        "title": "US patch packaging",
+        "caption": "ICY / HOT recovery patch line"
+      },
+      "patent-garlic-cert": {
+        "title": "Garlic fermentation patent",
+        "caption": "Registration evidence (e.g. 10-1609918)"
+      }
+    },
     "sections": {
       "notice": "Notice",
       "archive": "Archive",

@@ -1,0 +1,146 @@
+{
+  "kr-10-2129038-nitrogen-fermentation": {
+    "en": "NO metabolite fixation via nitrogen fermentation (10-2129038)",
+    "zh": "氮源发酵固定 NO 代谢体（10-2129038）"
+  },
+  "kr-10-2403429-enteric": {
+    "en": "Enteric tablet patent (10-2403429)",
+    "zh": "肠溶片专利（10-2403429）"
+  },
+  "kr-10-2602347-gsh": {
+    "en": "Gastric nitrosamine & NO patent (10-2602347)",
+    "zh": "胃内亚硝胺与 NO 专利（10-2602347）"
+  },
+  "kr-10-2760247-nitrosamine": {
+    "en": "Nitrosamine suppression composition (10-2760247)",
+    "zh": "亚硝胺抑制组合物（10-2760247）"
+  },
+  "pct-kr2020-014881": {
+    "en": "PCT application KR2020/014881",
+    "zh": "PCT 国际申请 KR2020/014881"
+  },
+  "us-patent": {
+    "en": "United States patent",
+    "zh": "美国专利"
+  },
+  "us-patent-cert": {
+    "en": "US patent registration certificate",
+    "zh": "美国专利注册证明"
+  },
+  "cn-patent-zh": {
+    "en": "China patent (Chinese)",
+    "zh": "中国专利（中文）"
+  },
+  "cn-patent-en": {
+    "en": "China patent (English)",
+    "zh": "中国专利（英文）"
+  },
+  "jp-garlic-ferment": {
+    "en": "Garlic fermentation — Japan patent",
+    "zh": "大蒜发酵 — 日本专利"
+  },
+  "cn-garlic-ferment": {
+    "en": "Garlic fermentation — China patent",
+    "zh": "大蒜发酵 — 中国专利"
+  },
+  "mulberry-patent": {
+    "en": "Mulberry leaf patent",
+    "zh": "桑叶专利"
+  },
+  "kalangco-patent": {
+    "en": "Kalanchoe patent certificate",
+    "zh": "落地生根专利证"
+  },
+  "fda-establishment-2026": {
+    "en": "FDA Establishment Registration 2026",
+    "zh": "FDA 设施注册 2026"
+  },
+  "beoletd-gdp": {
+    "en": "BEOLETD GDP",
+    "zh": "BEOLETD GDP"
+  },
+  "otc-fda-guide": {
+    "en": "OTC drug FDA registration guide",
+    "zh": "OTC 药品 FDA 注册指南"
+  },
+  "us-otc": {
+    "en": "United States OTC",
+    "zh": "美国 OTC"
+  },
+  "hl-bp-csr": {
+    "en": "HL-BP-FG CSR (blood pressure)",
+    "zh": "HL-BP-FG CSR（血压）"
+  },
+  "nutrients-14-05238": {
+    "en": "Nutrients paper 14-05238",
+    "zh": "Nutrients 论文 14-05238"
+  },
+  "maneul-analysis": {
+    "en": "MaNeul ES+ analysis",
+    "zh": "MaNeul ES+ 分析"
+  },
+  "skin-irritation-beone": {
+    "en": "Bio Healing patch primary irritation test",
+    "zh": "Bio Healing 贴剂一次刺激试验"
+  },
+  "patch-coi": {
+    "en": "Muscle & joint patch COI / efficacy",
+    "zh": "肌肉关节贴 COI·功效"
+  },
+  "patch-ingredients-2026": {
+    "en": "Muscle & joint patch ingredient table (2026)",
+    "zh": "肌肉关节贴成分表（2026）"
+  },
+  "fixed-no": {
+    "en": "Fixed nitric oxide",
+    "zh": "固定化一氧化氮"
+  },
+  "infrared-report": {
+    "en": "Far-infrared radiation test report",
+    "zh": "远红外线放射试验资料"
+  },
+  "no-antioxidant-nutrients": {
+    "en": "Natural NO metabolites & antioxidant nutrients",
+    "zh": "天然 NO 代谢体与抗氧化营养素"
+  },
+  "beone-intro-kr": {
+    "en": "BEONE company · technology · product brochure (KR)",
+    "zh": "BEONE 公司·技术·产品介绍（韩文）"
+  },
+  "maneul-total-compound-xlsx": {
+    "en": "MaNeul ES+ total compound (Excel)",
+    "zh": "MaNeul ES+ 全成分分析（Excel）"
+  },
+  "ingredients-2026-xlsx": {
+    "en": "Patch ingredients 2026 (Excel)",
+    "zh": "贴剂成分表 2026（Excel）"
+  },
+  "spec-muscle-joint": {
+    "en": "Muscle & joint patch product spec",
+    "zh": "肌肉关节贴产品技术书"
+  },
+  "spec-muscle-joint-hot": {
+    "en": "Muscle & joint hot patch spec",
+    "zh": "肌肉关节热敷贴技术书"
+  },
+  "spec-slim-hot-no": {
+    "en": "Slim hot patch spec (NO)",
+    "zh": "纤体热敷贴技术书（NO）"
+  },
+  "spec-good-night-nose": {
+    "en": "Good-night nose patch spec",
+    "zh": "晚安鼻贴技术书"
+  },
+  "spec-multi-memory": {
+    "en": "Multi-memory patch spec",
+    "zh": "多记忆贴技术书"
+  },
+  "spec-energy-focus": {
+    "en": "Energy focus patch spec",
+    "zh": "能量集中贴技术书"
+  },
+  "us-miracle-patch-pdf": {
+    "en": "US export Miracle patch packaging",
+    "zh": "美国出口 Miracle 贴包装"
+  }
+}

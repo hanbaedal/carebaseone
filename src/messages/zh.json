@@ -21,13 +21,27 @@
     "gallery": "图库",
     "store": "商店",
     "memberLogin": "会员",
+    "memberSignup": "注册",
     "news": "动态",
     "contact": "联系",
     "inquire": "事业·产品咨询",
     "menu": "菜单",
     "close": "关闭",
     "login": "登录",
-    "admin": "管理"
+    "admin": "管理",
+    "sitemap": "网站地图",
+    "groups": {
+      "community": "社区",
+      "member": "商城·会员"
+    }
+  },
+  "sitemapPage": {
+    "title": "网站地图",
+    "lede": "与主菜单一致的卡片式页面索引。",
+    "cardHint": "01~05 与首页底栏分组相同。",
+    "localeSwitch": "按语言的网站地图",
+    "extra": "其他",
+    "xml": "供搜索引擎使用的 XML 网站地图"
   },
   "cta": {
     "solutions": "了解方案",
@@ -197,6 +211,52 @@
       }
     }
   },
+  "productCatalog": {
+    "doc": "资料",
+    "archiveLink": "资料室",
+    "lines": {
+      "muscle-joint-patch": {
+        "title": "Bio Healing 肌肉关节贴",
+        "summary": "日常与活动后护理主打贴。提供成分表、COI 与皮肤刺激试验资料。"
+      },
+      "muscle-joint-hot-patch": {
+        "title": "Bio Healing 肌肉关节热敷贴",
+        "summary": "注重温热感的肌肉关节系列，按产品技术书介绍。"
+      },
+      "slim-hot-patch": {
+        "title": "纤体热敷贴（NO 材料）",
+        "summary": "采用 NO 代谢体材料的纤体热敷贴系列。"
+      },
+      "good-night-nose-patch": {
+        "title": "晚安鼻贴",
+        "summary": "考虑睡眠与呼吸方便的鼻贴。"
+      },
+      "multi-memory-patch": {
+        "title": "多记忆贴",
+        "summary": "认知与活力护理用复合贴。"
+      },
+      "energy-focus-patch": {
+        "title": "能量集中贴",
+        "summary": "活动与专注场景用能量护理贴。"
+      },
+      "us-miracle-patch": {
+        "title": "美国出口 · Miracle 贴",
+        "summary": "美国市场 Bio Healing Miracle 贴（1P·2P·4P·12P）。"
+      },
+      "us-hot-patch": {
+        "title": "美国出口 · 热敷贴",
+        "summary": "美国市场热敷贴包装。"
+      },
+      "jaryeon-cushion": {
+        "title": "慈莲美容气垫",
+        "summary": "莲花主题 Premium 气垫系列。"
+      },
+      "happy-no": {
+        "title": "Happy N:O",
+        "summary": "生活型饮品系列（商城咨询）。"
+      }
+    }
+  },
   "global": {
     "kicker": "04 全球",
     "title": "连接世界的平台",
@@ -283,7 +343,28 @@
     "noticeLede": "网站公告与更新。",
     "archiveLede": "认证、研究与产品 PDF；专利请见知识产权栏目。",
     "archivePosts": "文章",
-    "galleryLede": "展会与活动记录。",
+    "galleryLede": "产品、展会、海外包装照片及管理员图集。",
+    "mediaEmpty": "暂无资料。",
+    "postsEmpty": "暂无帖子。",
+    "pinned": "公告",
+    "galleryItems": {
+      "jaryeon-cushion-hero": {
+        "title": "慈莲美容气垫",
+        "caption": "莲花设计 Premium 气垫"
+      },
+      "jaryeon-cushion-detail": {
+        "title": "气垫组成",
+        "caption": "含镜子与粉扑"
+      },
+      "us-recoverx": {
+        "title": "美国贴包装",
+        "caption": "ICY / HOT 恢复贴系列"
+      },
+      "patent-garlic-cert": {
+        "title": "大蒜发酵专利",
+        "caption": "专利注册证明（例：10-1609918）"
+      }
+    },
     "sections": {
       "notice": "公告",
       "archive": "资料室",
