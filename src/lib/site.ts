@@ -28,7 +28,15 @@ export type HeaderNavItem = NavLink & {
 
 /** 헤더 메뉴 = 사이트맵 카드 구성의 단일 기준 */
 export const headerNav: HeaderNavItem[] = [
-  { href: "/about", key: "about" },
+  {
+    href: "/about",
+    key: "about",
+    children: [
+      { href: "/solution", key: "solution" },
+      { href: "/global", key: "global" },
+      { href: "/business", key: "business" },
+    ],
+  },
   {
     href: "/technology",
     key: "technology",
@@ -39,9 +47,6 @@ export const headerNav: HeaderNavItem[] = [
     ],
   },
   { href: "/product", key: "product" },
-  { href: "/solution", key: "solution" },
-  { href: "/global", key: "global" },
-  { href: "/business", key: "business" },
   {
     href: "/community",
     key: "community",
