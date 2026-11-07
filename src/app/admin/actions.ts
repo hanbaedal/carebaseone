@@ -6,6 +6,7 @@ import { clearSession, getSession, setSession } from "@/lib/session";
 import { users } from "@/lib/db";
 import {
   authenticate,
+  configuredSeedUsernames,
   createAdmin,
   findUser,
   recentFailures,
@@ -62,9 +63,17 @@ export async function login(
       if (seedName === username && !process.env.SEED_ADMIN_PASSWORD && !process.env.SEED_SUPERVISOR_PASSWORD) {
         return { error: "SEED 비밀번호 환경 변수가 비어 있습니다." };
       }
+      const seedIds = configuredSeedUsernames();
+      const hint = [
+        seedIds.supervisor ? `슈퍼바이저=${seedIds.supervisor}` : null,
+        seedIds.admin ? `관리자=${seedIds.admin}` : null,
+      ]
+        .filter(Boolean)
+        .join(", ");
       return {
-        error:
-          "아이디 또는 비밀번호가 올바르지 않습니다. Render의 SEED_* 아이디·비밀번호와 동일한지 확인하세요.",
+        error: hint
+          ? `아이디 또는 비밀번호가 맞지 않습니다. Render SEED_* 와 동일해야 합니다. (서버에 등록된 시드 아이디: ${hint})`
+          : "아이디 또는 비밀번호가 맞지 않습니다. Render SEED_* 를 설정한 뒤 저장하고 재배포하세요.",
       };
     }
     await recordActivity({

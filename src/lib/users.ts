@@ -2,32 +2,58 @@ import { hashPassword, verifyPassword } from "@/lib/password";
 import type { Role } from "@/lib/session";
 import { activity, ensureIndexes, users, type UserDoc } from "@/lib/db";
 
-const seeds: { username?: string; password?: string; role: Role }[] = [
-  {
-    username: process.env.SEED_SUPERVISOR_USERNAME,
-    password: process.env.SEED_SUPERVISOR_PASSWORD,
-    role: "supervisor",
-  },
-  {
-    username: process.env.SEED_ADMIN_USERNAME,
-    password: process.env.SEED_ADMIN_PASSWORD,
-    role: "admin",
-  },
-];
+function normalizeUsername(value: string | undefined) {
+  const trimmed = value?.trim().toLowerCase();
+  return trimmed || undefined;
+}
 
-export async function ensureSeedUsers() {
+/** Render 환경 변수 값 — 앞뒤 공백·줄바꿈 제거 */
+function normalizeSeedPassword(value: string | undefined) {
+  if (value === undefined || value === null) return undefined;
+  const trimmed = String(value).trim();
+  return trimmed || undefined;
+}
+
+function seedConfigs() {
+  return [
+    {
+      username: normalizeUsername(process.env.SEED_SUPERVISOR_USERNAME),
+      password: normalizeSeedPassword(process.env.SEED_SUPERVISOR_PASSWORD),
+      role: "supervisor" as const,
+    },
+    {
+      username: normalizeUsername(process.env.SEED_ADMIN_USERNAME),
+      password: normalizeSeedPassword(process.env.SEED_ADMIN_PASSWORD),
+      role: "admin" as const,
+    },
+  ];
+}
+
+async function findSeedUser(
+  collection: Awaited<ReturnType<typeof users>>,
+  seed: { username: string; role: Role },
+) {
+  let doc = await collection.findOne({ username: seed.username });
+  if (!doc) {
+    doc = await collection.findOne({ role: seed.role, createdBy: "seed" });
+  }
+  return doc;
+}
+
+export async function ensureSeedUsers(options?: { syncPasswords?: boolean }) {
+  const syncPasswords = options?.syncPasswords ?? false;
   await ensureIndexes();
   const collection = await users();
-  for (const seed of seeds) {
-    const username = seed.username?.trim().toLowerCase();
+  for (const seed of seedConfigs()) {
+    const username = seed.username;
     const password = seed.password;
     if (!username || !password) continue;
-    const passwordHash = await hashPassword(password);
-    const existing = await collection.findOne({ username });
+    const existing = await findSeedUser(collection, { username, role: seed.role });
+
     if (!existing) {
       await collection.insertOne({
         username,
-        passwordHash,
+        passwordHash: await hashPassword(password),
         role: seed.role,
         disabled: false,
         createdAt: new Date(),
@@ -35,35 +61,40 @@ export async function ensureSeedUsers() {
       });
       continue;
     }
-    // Render SEED_* 값이 바뀌어도 로그인 가능하도록 시드 슬롯 비밀번호 동기화
-    const isSeedSlot = seeds.some((s) => s.username?.trim().toLowerCase() === username);
-    if (isSeedSlot) {
-      await collection.updateOne(
-        { username },
-        {
-          $set: {
-            passwordHash,
-            role: seed.role,
-            disabled: false,
-          },
-        },
-      );
+
+    const update: Partial<UserDoc> = {
+      role: seed.role,
+      disabled: false,
+    };
+    if (syncPasswords) {
+      update.passwordHash = await hashPassword(password);
     }
+    if (existing.username !== username) {
+      update.username = username;
+    }
+    if (Object.keys(update).length === 0) continue;
+    await collection.updateOne({ _id: existing._id }, { $set: update });
   }
 }
 
 export async function findUser(username: string) {
   await ensureIndexes();
-  return (await users()).findOne({ username });
+  return (await users()).findOne({ username: username.trim().toLowerCase() });
 }
 
 export async function authenticate(username: string, password: string) {
   await ensureSeedUsers();
-  const user = await findUser(username.trim().toLowerCase());
+  const user = await findUser(username);
   if (!user || user.disabled) return null;
   const match = await verifyPassword(password, user.passwordHash);
   if (!match) return null;
   return user;
+}
+
+export function configuredSeedUsernames() {
+  const supervisor = normalizeUsername(process.env.SEED_SUPERVISOR_USERNAME);
+  const admin = normalizeUsername(process.env.SEED_ADMIN_USERNAME);
+  return { supervisor, admin };
 }
 
 export async function listUsers() {
@@ -80,7 +111,7 @@ export async function createAdmin(input: {
   createdBy: string;
 }) {
   await ensureIndexes();
-  const username = input.username.trim();
+  const username = input.username.trim().toLowerCase();
   if (!/^[a-zA-Z0-9._-]{3,32}$/.test(username)) {
     return "아이디는 3~32자의 영문, 숫자, . _ - 만 사용할 수 있습니다.";
   }

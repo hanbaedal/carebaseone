@@ -16,7 +16,7 @@ export default async function LoginPage() {
     configHint = "MONGODB_URI가 서버에 설정되어야 로그인할 수 있습니다.";
   } else {
     try {
-      await ensureSeedUsers();
+      await ensureSeedUsers({ syncPasswords: true });
       const hasSeed =
         Boolean(process.env.SEED_ADMIN_USERNAME) || Boolean(process.env.SEED_SUPERVISOR_USERNAME);
       if (!hasSeed) {

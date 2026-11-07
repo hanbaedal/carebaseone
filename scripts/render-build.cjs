@@ -5,3 +5,6 @@ if (process.env.RENDER !== "true") {
 }
 
 execSync("npx next build --webpack", { stdio: "inherit" });
+if (process.env.MONGODB_URI) {
+  execSync("node scripts/sync-seed-users.cjs", { stdio: "inherit" });
+}

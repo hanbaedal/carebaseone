@@ -10,6 +10,7 @@
     "build": "next build --webpack",
     "postinstall": "node scripts/render-build.cjs",
     "start": "next start",
+    "staff:sync-seed": "node scripts/sync-seed-users.cjs",
     "lint": "eslint"
   },
   "dependencies": {
