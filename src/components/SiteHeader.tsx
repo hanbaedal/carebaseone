@@ -9,8 +9,6 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MemberHeaderAuth } from "@/components/MemberHeaderAuth";
 import { headerNav } from "@/lib/site";
 
-const ADMIN_MENU_LABEL = "홈페이지 관리";
-
 function linkActive(pathname: string, href: string) {
   return pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 }
@@ -78,7 +76,7 @@ export function SiteHeader({ memberName = null }: { memberName?: string | null }
             );
           })}
           <a href="/admin" className={navLinkClass(pathname.startsWith("/admin"))}>
-            {ADMIN_MENU_LABEL}
+            {t("admin")}
           </a>
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
@@ -175,7 +173,7 @@ export function SiteHeader({ memberName = null }: { memberName?: string | null }
               onClick={() => setOpen(false)}
               className="border-b border-line pb-2 text-[15px] font-medium text-brand"
             >
-              {ADMIN_MENU_LABEL}
+              {t("admin")}
             </a>
           </div>
         </div>

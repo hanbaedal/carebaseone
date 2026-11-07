@@ -1,4 +1,5 @@
 import { ContentEditor } from "@/components/admin/ContentEditor";
+import { NavMenuEditor } from "@/components/admin/NavMenuEditor";
 import { contentSections, getEditorFields } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -41,8 +42,9 @@ export default async function ContentPage({
           {contentSections.find((item) => item.key === section)?.label}
         </h1>
         <p className="mt-1 text-[11px] leading-5 text-ink/50">
-          한글을 고치면 영어와 중국어로 번역해 저장합니다. PC에서는 번역이 칸 아래에
-          보이고, 모바일에서는 EN · 中文을 눌러 확인합니다.
+          {section === "nav"
+            ? "헤더·사이트맵 메뉴와 모든 소메뉴 이름을 수정합니다. 로그인 후 저장하면 공개 홈에 반영됩니다."
+            : "한글을 고치면 영어와 중국어로 번역해 저장합니다. PC에서는 번역이 칸 아래에 보이고, 모바일에서는 EN · 中文을 눌러 확인합니다."}
         </p>
         {notice ? (
           <p
@@ -54,7 +56,11 @@ export default async function ContentPage({
           </p>
         ) : null}
         <div className="mt-3">
-          <ContentEditor section={section} fields={fields} />
+          {section === "nav" ? (
+            <NavMenuEditor fields={fields} />
+          ) : (
+            <ContentEditor section={section} fields={fields} />
+          )}
         </div>
       </section>
     </div>
