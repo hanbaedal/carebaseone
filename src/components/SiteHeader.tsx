@@ -8,6 +8,8 @@ import { BrandLogo } from "@/components/BrandLogo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { headerNav } from "@/lib/site";
 
+const ADMIN_MENU_LABEL = "홈페이지 관리";
+
 function linkActive(pathname: string, href: string) {
   return pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 }
@@ -22,6 +24,17 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
+
+  const navLinkClass = (active: boolean) =>
+    `text-[14px] font-medium transition-colors ${
+      active ? "text-brand" : "text-brand-ink/70 hover:text-brand"
+    }`;
+
+  const utilityLinkClass = (active: boolean) =>
+    `hidden whitespace-nowrap text-[13px] font-medium md:inline ${
+      active ? "text-brand" : "text-brand-ink/50 hover:text-brand"
+    }`;
+
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/95 text-brand-ink backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:py-4">
@@ -31,13 +44,7 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
             const active = itemActive(pathname, item);
             if (!item.children?.length) {
               return (
-                <Link
-                  key={item.key}
-                  href={item.href}
-                  className={`text-[14px] font-medium transition-colors ${
-                    active ? "text-brand" : "text-brand-ink/70 hover:text-brand"
-                  }`}
-                >
+                <Link key={item.key} href={item.href} className={navLinkClass(active)}>
                   {t(item.key)}
                 </Link>
               );
@@ -46,9 +53,7 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
               <div key={item.key} className="group relative">
                 <Link
                   href={item.href}
-                  className={`inline-flex items-center gap-0.5 text-[14px] font-medium ${
-                    active ? "text-brand" : "text-brand-ink/70 group-hover:text-brand"
-                  }`}
+                  className={`inline-flex items-center gap-0.5 ${navLinkClass(active)}`}
                 >
                   {t(item.key)}
                   <span className="text-[10px] text-brand-ink/35" aria-hidden>
@@ -71,14 +76,11 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
               </div>
             );
           })}
-          <Link
-            href="/sitemap"
-            className={`text-[13px] font-medium ${
-              pathname === "/sitemap" ? "text-brand" : "text-brand-ink/45 hover:text-brand"
-            }`}
-          >
-            {t("sitemap")}
-          </Link>
+          {showAdmin ? (
+            <a href="/admin" className={navLinkClass(false)}>
+              {ADMIN_MENU_LABEL}
+            </a>
+          ) : null}
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <Link
@@ -86,6 +88,9 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
             className="hidden whitespace-nowrap rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white shadow-[0_8px_18px_rgba(29,111,232,0.25)] hover:bg-brand-deep md:inline-flex"
           >
             {t("inquire")}
+          </Link>
+          <Link href="/sitemap" className={utilityLinkClass(pathname === "/sitemap")}>
+            {t("sitemap")}
           </Link>
           <div className="hidden sm:block">
             <LanguageSwitcher />
@@ -96,14 +101,6 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
           >
             {t("memberLogin")}
           </Link>
-          {showAdmin ? (
-            <a
-              href="/admin"
-              className="whitespace-nowrap px-1 text-[12px] font-medium text-brand hover:text-brand-deep"
-            >
-              {t("admin")}
-            </a>
-          ) : null}
           <button
             type="button"
             className="whitespace-nowrap rounded-full border border-line px-3 py-1.5 text-[12px] font-medium lg:hidden"
@@ -122,9 +119,16 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
-              className="mb-2 w-fit rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white"
+              className="mb-1 w-fit rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white"
             >
               {t("inquire")}
+            </Link>
+            <Link
+              href="/sitemap"
+              onClick={() => setOpen(false)}
+              className="mb-2 text-[14px] font-medium text-brand-ink/70 hover:text-brand"
+            >
+              {t("sitemap")}
             </Link>
             {headerNav.map((item) => {
               const hasChildren = Boolean(item.children?.length);
@@ -167,16 +171,13 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
                 </div>
               );
             })}
-            <Link
-              href="/sitemap"
-              onClick={() => setOpen(false)}
-              className="pt-1 text-[14px] text-brand-ink/60"
-            >
-              {t("sitemap")}
-            </Link>
             {showAdmin ? (
-              <a href="/admin" className="text-[13px] font-medium text-brand">
-                {t("admin")}
+              <a
+                href="/admin"
+                onClick={() => setOpen(false)}
+                className="border-b border-line pb-2 text-[15px] font-medium text-brand"
+              >
+                {ADMIN_MENU_LABEL}
               </a>
             ) : null}
           </div>
