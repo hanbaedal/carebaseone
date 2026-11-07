@@ -27,64 +27,89 @@ function localizedTitle(item: ManifestItem) {
   return { ko, en, zh };
 }
 
-export async function ensureMediaSeed() {
+let seedRunning: Promise<void> | null = null;
+let ingestStarted = false;
+
+/** 공개 목록용 — DB 조회만, 매 요청 manifest 동기화 없음 */
+export async function ensureMediaReady() {
   await ensureIndexes();
   const col = await media();
-  const now = new Date();
-  for (const item of manifest) {
-    const ext = path.extname(item.fileName) || ".pdf";
-    const mime = mimeByExt[ext.toLowerCase()] ?? "application/octet-stream";
-    const titles = localizedTitle(item as ManifestItem);
-    const hit = await col.findOne({ slug: item.slug });
-    if (!hit) {
-      await col.insertOne({
-        slug: item.slug,
-        category: item.category as MediaCategory,
-        audience: "public",
-        title: titles,
-        summary: titles,
-        filePath: mediaApiPath(item.slug),
-        fileName: item.fileName,
-        mime,
-        size: 0,
-        tags: item.tags ?? [],
-        published: true,
-        storage: "missing",
-        createdAt: now,
-        updatedAt: now,
-      });
-    } else {
-      await col.updateOne(
-        { slug: item.slug },
-        { $set: { title: titles, summary: titles, updatedAt: now } },
-      );
-    }
+  const count = await col.estimatedDocumentCount();
+  if (count === 0) {
+    await ensureMediaSeed();
   }
+}
 
-  await col.updateMany(
-    { filePath: { $regex: "^/media/" } },
-    [
-      {
-        $set: {
-          filePath: { $concat: ["/api/media/", "$slug"] },
-          updatedAt: new Date(),
-        },
-      },
-    ],
-  );
+/** 관리·최초 적재: manifest 메타 동기화 (관리 화면에서만 호출 권장) */
+export async function ensureMediaSeed() {
+  if (seedRunning) return seedRunning;
+  seedRunning = runMediaSeed();
+  return seedRunning;
+}
 
-  if (!process.env.MONGODB_URI) return;
-
-  const col2 = await media();
-  const pending = await col2.countDocuments({
-    $or: [{ storage: { $ne: "gridfs" } }, { gridFsId: { $exists: false } }],
-  });
-  if (pending > 0) {
-    const jobs = manifest.map((item) => {
+async function runMediaSeed() {
+  try {
+    await ensureIndexes();
+    const col = await media();
+    const now = new Date();
+    for (const item of manifest) {
       const ext = path.extname(item.fileName) || ".pdf";
       const mime = mimeByExt[ext.toLowerCase()] ?? "application/octet-stream";
-      return { slug: item.slug, fileName: item.fileName, mime };
+      const titles = localizedTitle(item as ManifestItem);
+      const hit = await col.findOne({ slug: item.slug });
+      if (!hit) {
+        await col.insertOne({
+          slug: item.slug,
+          category: item.category as MediaCategory,
+          audience: "public",
+          title: titles,
+          summary: titles,
+          filePath: mediaApiPath(item.slug),
+          fileName: item.fileName,
+          mime,
+          size: 0,
+          tags: item.tags ?? [],
+          published: true,
+          storage: "missing",
+          createdBy: "CAREBASE",
+          createdAt: now,
+          updatedAt: now,
+        });
+      }
+    }
+
+    await col.updateMany(
+      { filePath: { $regex: "^/media/" } },
+      [
+        {
+          $set: {
+            filePath: { $concat: ["/api/media/", "$slug"] },
+            updatedAt: new Date(),
+          },
+        },
+      ],
+    );
+
+    await col.updateMany(
+      { createdBy: { $exists: false } },
+      { $set: { createdBy: "CAREBASE" } },
+    );
+
+    if (!process.env.MONGODB_URI || ingestStarted) return;
+
+    const pending = await col.countDocuments({
+      $or: [{ storage: { $ne: "gridfs" } }, { gridFsId: { $exists: false } }],
     });
-    void ingestAllMediaBinaries(jobs);
+    if (pending > 0) {
+      ingestStarted = true;
+      const jobs = manifest.map((item) => {
+        const ext = path.extname(item.fileName) || ".pdf";
+        const mime = mimeByExt[ext.toLowerCase()] ?? "application/octet-stream";
+        return { slug: item.slug, fileName: item.fileName, mime };
+      });
+      void ingestAllMediaBinaries(jobs);
+    }
+  } finally {
+    seedRunning = null;
   }
 }

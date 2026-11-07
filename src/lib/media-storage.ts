@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import { createReadStream } from "node:fs";
+import { Readable } from "node:stream";
 import path from "node:path";
 import { GridFSBucket, ObjectId } from "mongodb";
 import { getDatabase } from "@/lib/mongodb";
@@ -20,6 +21,25 @@ export async function removeGridFsBySlug(slug: string) {
   for (const file of files) {
     await b.delete(file._id);
   }
+}
+
+export async function uploadMediaBuffer(
+  slug: string,
+  data: Buffer,
+  meta: { mime: string; fileName: string },
+): Promise<{ gridFsId: string; size: number }> {
+  const b = await bucket();
+  await removeGridFsBySlug(slug);
+  return new Promise((resolve, reject) => {
+    const upload = b.openUploadStream(meta.fileName, {
+      metadata: { slug, mime: meta.mime },
+    });
+    upload.on("error", reject);
+    upload.on("finish", () => {
+      resolve({ gridFsId: upload.id.toString(), size: data.length });
+    });
+    Readable.from(data).pipe(upload);
+  });
 }
 
 export async function uploadMediaFileFromPath(

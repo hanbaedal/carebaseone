@@ -81,6 +81,7 @@ export type MediaDoc = {
   published: boolean;
   storage: MediaStorage;
   gridFsId?: string;
+  createdBy: string;
   createdAt: Date;
   updatedAt: Date;
 };

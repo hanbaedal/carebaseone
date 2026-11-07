@@ -7,7 +7,8 @@ import { deletePost, upsertPost } from "@/lib/posts";
 import { setMemberStatus, deleteMember } from "@/lib/members";
 import { updateOrderStatus } from "@/lib/orders";
 import { deleteInquiry } from "@/lib/inquiries";
-import { ensureIndexes, media } from "@/lib/db";
+import { ensureIndexes, media, type MediaCategory } from "@/lib/db";
+import { deleteMedia, upsertMedia } from "@/lib/media-crud";
 import type { MemberTier, PostType } from "@/lib/db";
 
 async function requireStaff() {
@@ -96,5 +97,40 @@ export async function toggleMedia(formData: FormData) {
   const slug = String(formData.get("slug") ?? "");
   const published = formData.get("published") === "true";
   await (await media()).updateOne({ slug }, { $set: { published, updatedAt: new Date() } });
+  redirect("/admin/media?status=saved");
+}
+
+export async function saveMedia(formData: FormData) {
+  const session = await requireStaff();
+  const slug = String(formData.get("slug") ?? "").trim();
+  if (!slug) redirect("/admin/media?status=error&message=slug");
+  const file = formData.get("file");
+  let buffer: Buffer | undefined;
+  let fileMeta: { name: string; type: string; buffer: Buffer } | undefined;
+  if (file instanceof File && file.size > 0) {
+    buffer = Buffer.from(await file.arrayBuffer());
+    fileMeta = { name: file.name, type: file.type, buffer };
+  }
+  const err = await upsertMedia({
+    slug,
+    category: String(formData.get("category") ?? "other") as MediaCategory,
+    audience: formData.get("audience") === "member" ? "member" : "public",
+    titleKo: String(formData.get("titleKo") ?? ""),
+    titleEn: String(formData.get("titleEn") ?? ""),
+    titleZh: String(formData.get("titleZh") ?? ""),
+    summaryKo: String(formData.get("summaryKo") ?? ""),
+    summaryEn: String(formData.get("summaryEn") ?? ""),
+    summaryZh: String(formData.get("summaryZh") ?? ""),
+    published: formData.get("published") === "on",
+    createdBy: session.username,
+    file: fileMeta,
+  });
+  if (err) redirect(`/admin/media?status=error&message=${encodeURIComponent(err)}`);
+  redirect("/admin/media?status=saved");
+}
+
+export async function removeMedia(formData: FormData) {
+  await requireStaff();
+  await deleteMedia(String(formData.get("slug") ?? ""));
   redirect("/admin/media?status=saved");
 }
