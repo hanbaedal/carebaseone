@@ -16,29 +16,28 @@ export function LanguageSwitcher({ light = false }: { light?: boolean }) {
   const router = useRouter();
 
   return (
-    <div className="flex items-center gap-1 text-[11px] tracking-[0.16em]">
-      {routing.locales.map((code, index) => (
-        <span key={code} className="flex items-center gap-1">
-          {index > 0 ? (
-            <span className={light ? "text-cream/35" : "text-ink/25"}>|</span>
-          ) : null}
+    <div className="flex items-center gap-3 text-[12px] font-medium tracking-[0.08em]">
+      {routing.locales.map((code) => {
+        const active = locale === code;
+        return (
           <button
+            key={code}
             type="button"
             onClick={() => router.replace(pathname, { locale: code })}
-            className={`px-1 py-0.5 transition-colors ${
-              locale === code
+            className={`border-b-2 pb-0.5 transition-colors ${
+              active
                 ? light
-                  ? "text-cream"
-                  : "text-forest"
+                  ? "border-white text-white"
+                  : "border-brand text-brand"
                 : light
-                  ? "text-cream/50 hover:text-cream"
-                  : "text-ink/45 hover:text-ink"
+                  ? "border-transparent text-white/65 hover:text-white"
+                  : "border-transparent text-brand-ink/45 hover:text-brand"
             }`}
           >
             {labels[code]}
           </button>
-        </span>
-      ))}
+        );
+      })}
     </div>
   );
 }

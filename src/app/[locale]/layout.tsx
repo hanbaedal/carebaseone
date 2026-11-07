@@ -90,7 +90,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       className={`${display.variable} ${sansKr.variable} ${sansSc.variable} h-full antialiased`}
     >
       <body
-        className="flex min-h-full flex-col bg-cream text-ink"
+        className="flex min-h-full flex-col bg-paper text-brand-ink"
         style={{
           fontFamily:
             "var(--font-sans-kr), var(--font-sans-sc), sans-serif",

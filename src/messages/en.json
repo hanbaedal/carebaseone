@@ -6,21 +6,24 @@
   },
   "nav": {
     "home": "HOME",
-    "technology": "TECHNOLOGY",
-    "solution": "SOLUTION",
-    "product": "PRODUCT",
-    "global": "GLOBAL",
-    "business": "BUSINESS",
-    "news": "NEWS",
-    "contact": "CONTACT",
+    "about": "About",
+    "technology": "Technology",
+    "solution": "Solution",
+    "product": "Product",
+    "global": "Global",
+    "business": "Partnership",
+    "news": "News",
+    "contact": "Contact",
+    "inquire": "Business Inquiry",
     "menu": "Menu",
     "close": "Close",
-    "login": "LOGIN",
-    "admin": "ADMIN"
+    "login": "Login",
+    "admin": "Admin"
   },
   "cta": {
     "solutions": "Explore Solutions",
-    "partner": "Partner with us",
+    "products": "Explore Products",
+    "partner": "Business Inquiry",
     "inquire": "Inquire",
     "details": "View details",
     "backHome": "Back home"
@@ -34,9 +37,9 @@
     "rights": "CAREBASE. Connecting a healthier tomorrow."
   },
   "home": {
-    "kicker": "Healthy People · Healthy Society · Healthy World",
-    "headline": "We are not a product company.",
-    "lede": "We are a platform that connects people, technology, nature, and health.",
+    "kicker": "HEALTHCARE BUSINESS PLATFORM",
+    "headline": "Technology for daily health, products for global opportunity",
+    "lede": "CAREBASE connects products, solutions, and global business on a technology foundation.",
     "whyTitle": "Why nitric oxide",
     "whyBody": "Nitric oxide is a signaling molecule involved in circulation, cells, immune response, and recovery. CAREBASE uses this science to open a new direction for everyday health.",
     "pillarsTitle": "Five connections",
@@ -52,33 +55,56 @@
     "pillars": {
       "technology": {
         "num": "01",
-        "title": "Technology",
-        "ko": "Health science from nature",
+        "title": "TECHNOLOGY",
+        "ko": "Science & evidence",
         "text": "NO metabolite technology begins with a principle found in nature."
       },
-      "solution": {
-        "num": "02",
-        "title": "Solution",
-        "ko": "Health solutions, differently needed",
-        "text": "Vascular health, sport, senior care, beauty, wellness."
-      },
       "product": {
-        "num": "03",
-        "title": "Product",
-        "ko": "A health platform for living",
+        "num": "02",
+        "title": "PRODUCT",
+        "ko": "Everyday products",
         "text": "Patches, drinks, health foods, and cosmetics."
+      },
+      "solution": {
+        "num": "03",
+        "title": "SOLUTION",
+        "ko": "Lifestyle health solutions",
+        "text": "Vascular health, sport, senior care, beauty, wellness."
       },
       "global": {
         "num": "04",
-        "title": "Global",
-        "ko": "A platform that connects the world",
+        "title": "GLOBAL",
+        "ko": "Global business",
         "text": "Korea, China, the United States. Health has no borders."
       },
       "business": {
         "num": "05",
-        "title": "Business",
-        "ko": "A health ecosystem we grow together",
+        "title": "BUSINESS",
+        "ko": "Business together",
         "text": "Connecting technology, people, companies, and markets."
+      }
+    }
+  },
+  "about": {
+    "kicker": "COMPANY",
+    "title": "A healthcare business platform for people",
+    "lede": "CAREBASE connects technology with products, solutions, and global business.",
+    "storyTitle": "From technology to daily life, from daily life to the world",
+    "storyBody": "We turn nitric oxide metabolite technology into healthier routines, and expand opportunity through products and partnerships. Research, brands, and markets meet on one platform.",
+    "ctaTechnology": "Explore technology",
+    "ctaContact": "Contact us",
+    "blocks": {
+      "mission": {
+        "title": "Mission",
+        "text": "Turn technology into healthy daily life, and products into global opportunity."
+      },
+      "platform": {
+        "title": "Platform",
+        "text": "Link technology, products, solutions, and global business in one flow."
+      },
+      "network": {
+        "title": "Network",
+        "text": "Grow research, production, distribution, and partner networks across Korea, China, and the U.S."
       }
     }
   },
@@ -184,7 +210,7 @@
     }
   },
   "business": {
-    "kicker": "05 Business",
+    "kicker": "05 Partnership",
     "title": "A health ecosystem we grow together",
     "lede": "CAREBASE is not a company that only sells products. It is a health business platform that connects technology, people, companies, and markets.",
     "center": "NO Metabolite",

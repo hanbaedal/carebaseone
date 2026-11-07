@@ -19,12 +19,15 @@ export const images = {
 } as const;
 
 export const navItems = [
-  { href: "/", key: "home" },
+  { href: "/about", key: "about" },
   { href: "/technology", key: "technology" },
-  { href: "/solution", key: "solution" },
   { href: "/product", key: "product" },
+  { href: "/solution", key: "solution" },
   { href: "/global", key: "global" },
   { href: "/business", key: "business" },
+] as const;
+
+export const footerExtraItems = [
   { href: "/news", key: "news" },
   { href: "/contact", key: "contact" },
 ] as const;

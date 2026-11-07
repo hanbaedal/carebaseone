@@ -6,13 +6,15 @@
   },
   "nav": {
     "home": "홈",
+    "about": "회사소개",
     "technology": "기술",
     "solution": "솔루션",
     "product": "제품",
     "global": "글로벌",
-    "business": "비즈니스",
+    "business": "사업협력",
     "news": "소식",
     "contact": "문의",
+    "inquire": "사업·제품 문의",
     "menu": "메뉴",
     "close": "닫기",
     "login": "로그인",
@@ -20,7 +22,8 @@
   },
   "cta": {
     "solutions": "솔루션 보기",
-    "partner": "파트너 문의",
+    "products": "제품 살펴보기",
+    "partner": "사업 협력 문의",
     "inquire": "문의하기",
     "details": "자세히 보기",
     "backHome": "홈으로"
@@ -34,9 +37,9 @@
     "rights": "CAREBASE. 더 건강한 내일을 연결합니다."
   },
   "home": {
-    "kicker": "건강한 사람 · 건강한 사회 · 건강한 세상",
-    "headline": "우리는 제품을 만드는 회사가 아닙니다.",
-    "lede": "사람과 기술, 자연과 건강을 연결하는 플랫폼입니다.",
+    "kicker": "HEALTHCARE BUSINESS PLATFORM",
+    "headline": "기술을 건강한 일상으로, 제품을 글로벌 기회로",
+    "lede": "케어베이스는 기술을 기반으로 제품·솔루션·글로벌 사업을 연결합니다.",
     "whyTitle": "왜 산화질소인가",
     "whyBody": "산화질소는 혈관, 순환, 세포, 면역, 회복과 관련된 중요한 생체 신호물질입니다. CAREBASE는 이 기술을 통해 현대인의 건강 문제에 새로운 방향을 제시합니다.",
     "pillarsTitle": "다섯 개의 연결",
@@ -52,33 +55,56 @@
     "pillars": {
       "technology": {
         "num": "01",
-        "title": "기술",
-        "ko": "자연에서 시작된 건강기술",
+        "title": "TECHNOLOGY",
+        "ko": "기술과 근거",
         "text": "산화질소 대사체 기술은 자연의 원리에서 출발합니다."
       },
-      "solution": {
-        "num": "02",
-        "title": "솔루션",
-        "ko": "건강을 위한 다양한 솔루션",
-        "text": "혈관, 스포츠, 시니어, 뷰티, 웰니스."
-      },
       "product": {
-        "num": "03",
-        "title": "제품",
-        "ko": "생활 속 건강 플랫폼",
+        "num": "02",
+        "title": "PRODUCT",
+        "ko": "일상 속 제품",
         "text": "패치, 음료, 건강식품, 화장품."
+      },
+      "solution": {
+        "num": "03",
+        "title": "SOLUTION",
+        "ko": "생활건강 솔루션",
+        "text": "혈관, 스포츠, 시니어, 뷰티, 웰니스."
       },
       "global": {
         "num": "04",
-        "title": "글로벌",
-        "ko": "세계를 연결하는 플랫폼",
+        "title": "GLOBAL",
+        "ko": "글로벌 사업",
         "text": "한국, 중국, 미국. 건강에는 국경이 없습니다."
       },
       "business": {
         "num": "05",
-        "title": "비즈니스",
-        "ko": "함께 성장하는 건강 생태계",
+        "title": "BUSINESS",
+        "ko": "함께하는 사업",
         "text": "기술과 사람, 기업과 시장을 연결합니다."
+      }
+    }
+  },
+  "about": {
+    "kicker": "COMPANY",
+    "title": "사람을 위한 헬스케어 비즈니스 플랫폼",
+    "lede": "CAREBASE는 기술을 제품과 솔루션, 글로벌 사업으로 연결하는 회사입니다.",
+    "storyTitle": "기술에서 일상으로, 일상에서 세계로",
+    "storyBody": "우리는 산화질소 대사체 기술을 바탕으로 건강한 일상을 만들고, 제품과 파트너십을 통해 글로벌 기회를 넓혀 갑니다. 연구와 현장, 브랜드와 시장이 한 플랫폼에서 만나도록 돕습니다.",
+    "ctaTechnology": "기술 살펴보기",
+    "ctaContact": "문의하기",
+    "blocks": {
+      "mission": {
+        "title": "미션",
+        "text": "기술을 건강한 일상으로 바꾸고, 제품을 글로벌 기회로 연결합니다."
+      },
+      "platform": {
+        "title": "플랫폼",
+        "text": "기술, 제품, 솔루션, 글로벌 사업을 하나의 흐름으로 이어 줍니다."
+      },
+      "network": {
+        "title": "네트워크",
+        "text": "한국·중국·미국을 잇는 연구, 생산, 유통, 파트너 네트워크를 키웁니다."
       }
     }
   },
@@ -184,7 +210,7 @@
     }
   },
   "business": {
-    "kicker": "05 비즈니스",
+    "kicker": "05 사업협력",
     "title": "함께 성장하는 건강 생태계",
     "lede": "CAREBASE는 제품을 판매하는 회사가 아니라, 기술과 사람, 기업과 시장을 연결하는 건강 비즈니스 플랫폼입니다.",
     "center": "NO Metabolite",

@@ -17,11 +17,12 @@ const cache = globalThis as typeof globalThis & {
 export const contentSections = [
   { key: "nav", label: "메뉴" },
   { key: "home", label: "홈" },
+  { key: "about", label: "회사소개" },
   { key: "technology", label: "기술" },
   { key: "solution", label: "솔루션" },
   { key: "product", label: "제품" },
   { key: "global", label: "글로벌" },
-  { key: "business", label: "비즈니스" },
+  { key: "business", label: "사업협력" },
   { key: "news", label: "소식" },
   { key: "contact", label: "문의" },
   { key: "cta", label: "버튼" },

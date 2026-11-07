@@ -7,8 +7,8 @@ import { images } from "@/lib/site";
 
 const pillars = [
   "technology",
-  "solution",
   "product",
+  "solution",
   "global",
   "business",
 ] as const;
@@ -38,42 +38,67 @@ export default async function HomePage({
 
   return (
     <div>
-      <section className="relative isolate min-h-screen overflow-hidden bg-navy text-cream">
+      <section className="relative isolate min-h-[calc(100dvh-4.5rem)] overflow-hidden bg-brand-ink text-brand-ink">
         <Image
           src={images.hero}
           alt=""
           fill
           priority
-          className="object-cover opacity-50"
+          className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-navy/45" />
-        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col justify-end px-6 pb-20 pt-32">
-          <p className="text-[11px] tracking-[0.28em] text-cream/75">
-            {t("home.kicker")}
-          </p>
-          <h1 className="font-display mt-6 max-w-4xl text-4xl leading-[1.15] md:text-7xl">
-            {t("home.headline")}
-          </h1>
-          <p className="mt-6 max-w-xl text-lg leading-8 text-cream/85">
-            {t("home.lede")}
-          </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <CtaLink href="/solution">{t("cta.solutions")}</CtaLink>
-            <CtaLink href="/business" variant="ghost">
-              {t("cta.partner")}
-            </CtaLink>
+        <div className="absolute inset-0 bg-gradient-to-r from-white/92 via-white/72 to-white/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent md:from-white/80" />
+
+        <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-7xl flex-col px-6 pt-16 pb-0 md:pt-24">
+          <div className="flex flex-1 flex-col justify-center pb-16 md:max-w-2xl md:pb-24">
+            <p className="animate-[fadeUp_0.7s_ease_both] text-[12px] font-semibold tracking-[0.22em] text-brand">
+              {t("home.kicker")}
+            </p>
+            <h1 className="font-display animate-[fadeUp_0.8s_ease_both] mt-5 text-4xl leading-[1.2] text-brand-ink md:text-6xl">
+              {t("home.headline")}
+            </h1>
+            <p className="animate-[fadeUp_0.9s_ease_both] mt-6 max-w-xl text-base leading-8 text-brand-ink/75 md:text-lg">
+              {t("home.lede")}
+            </p>
+            <div className="animate-[fadeUp_1s_ease_both] mt-10 flex flex-wrap gap-3">
+              <CtaLink href="/product">
+                {t("cta.products")}
+                <span aria-hidden="true">→</span>
+              </CtaLink>
+              <CtaLink href="/business" variant="ghost">
+                {t("cta.partner")}
+                <span aria-hidden="true">↗</span>
+              </CtaLink>
+            </div>
+          </div>
+
+          <div className="grid divide-y divide-line border-t border-line bg-white/95 backdrop-blur-sm md:grid-cols-5 md:divide-x md:divide-y-0">
+            {pillars.map((key) => (
+              <Link
+                key={key}
+                href={`/${key}`}
+                className="group px-5 py-5 transition-colors hover:bg-brand/5 md:py-6"
+              >
+                <p className="text-[11px] font-semibold tracking-[0.18em] text-brand">
+                  {t(`home.pillars.${key}.num`)} {t(`home.pillars.${key}.title`)}
+                </p>
+                <p className="mt-2 text-[15px] font-semibold text-brand-ink group-hover:text-brand">
+                  {t(`home.pillars.${key}.ko`)}
+                </p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-6xl gap-12 px-6 py-24 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+      <section className="mx-auto grid max-w-7xl gap-12 px-6 py-20 md:grid-cols-[1.1fr_0.9fr] md:items-center">
         <div>
-          <p className="text-[11px] tracking-[0.28em] text-sage">01</p>
-          <h2 className="font-display mt-3 text-4xl md:text-5xl">
+          <p className="text-[12px] font-semibold tracking-[0.22em] text-brand">01</p>
+          <h2 className="font-display mt-3 text-3xl text-brand-ink md:text-5xl">
             {t("home.whyTitle")}
           </h2>
-          <p className="mt-6 max-w-xl text-base leading-8 text-ink/75">
+          <p className="mt-6 max-w-xl text-base leading-8 text-brand-ink/70">
             {t("home.whyBody")}
           </p>
           <div className="mt-8">
@@ -82,7 +107,7 @@ export default async function HomePage({
             </CtaLink>
           </div>
         </div>
-        <div className="relative aspect-[4/5] overflow-hidden">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-3xl">
           <Image
             src={images.leaves}
             alt=""
@@ -93,40 +118,18 @@ export default async function HomePage({
         </div>
       </section>
 
-      <section className="border-y border-ink/10 bg-sand/40 px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="font-display text-3xl md:text-4xl">
-            {t("home.pillarsTitle")}
-          </h2>
-          <div className="mt-12 grid gap-10 md:grid-cols-5">
-            {pillars.map((key) => (
-              <Link key={key} href={`/${key}`} className="group">
-                <p className="text-[11px] tracking-[0.2em] text-sage">
-                  {t(`home.pillars.${key}.num`)}
-                </p>
-                <p className="mt-2 text-[12px] tracking-[0.16em]">
-                  {t(`home.pillars.${key}.title`)}
-                </p>
-                <p className="font-display mt-3 text-2xl leading-snug group-hover:text-forest">
-                  {t(`home.pillars.${key}.ko`)}
-                </p>
-                <p className="mt-3 text-sm leading-6 text-ink/65">
-                  {t(`home.pillars.${key}.text`)}
-                </p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-6 py-24">
-        <p className="text-[11px] tracking-[0.28em] text-sage">{t("home.forPeopleMark")}</p>
-        <h2 className="font-display mt-3 text-4xl">{t("home.forPeople")}</h2>
-        <p className="mt-4 max-w-xl text-ink/70">{t("home.forPeopleLede")}</p>
+      <section className="mx-auto max-w-7xl px-6 py-20">
+        <p className="text-[12px] font-semibold tracking-[0.22em] text-brand">
+          {t("home.forPeopleMark")}
+        </p>
+        <h2 className="font-display mt-3 text-3xl text-brand-ink md:text-4xl">
+          {t("home.forPeople")}
+        </h2>
+        <p className="mt-4 max-w-xl text-brand-ink/70">{t("home.forPeopleLede")}</p>
         <div className="mt-12 grid gap-4 md:grid-cols-5">
           {solutions.map((item) => (
             <Link key={item.key} href="/solution" className="group">
-              <div className="relative aspect-[3/4] overflow-hidden">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-2xl">
                 <Image
                   src={item.image}
                   alt=""
@@ -135,23 +138,27 @@ export default async function HomePage({
                   sizes="(min-width: 768px) 20vw, 50vw"
                 />
               </div>
-              <p className="mt-3 text-sm">{t(`solution.items.${item.key}.title`)}</p>
+              <p className="mt-3 text-sm font-medium text-brand-ink">
+                {t(`solution.items.${item.key}.title`)}
+              </p>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="bg-forest text-cream">
-        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-24 md:grid-cols-2 md:items-center">
+      <section className="bg-brand text-white">
+        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 md:grid-cols-2 md:items-center">
           <div>
-            <p className="text-[11px] tracking-[0.28em] text-sage">{t("home.inLifeMark")}</p>
-            <h2 className="font-display mt-3 text-4xl">{t("home.inLife")}</h2>
-            <p className="mt-4 text-cream/75">{t("home.inLifeLede")}</p>
+            <p className="text-[12px] font-semibold tracking-[0.22em] text-white/75">
+              {t("home.inLifeMark")}
+            </p>
+            <h2 className="font-display mt-3 text-3xl md:text-4xl">{t("home.inLife")}</h2>
+            <p className="mt-4 text-white/80">{t("home.inLifeLede")}</p>
             <div className="mt-8 grid gap-4">
               {products.map((item) => (
-                <p key={item.key} className="border-t border-cream/15 pt-4 text-sm tracking-[0.08em]">
+                <p key={item.key} className="border-t border-white/20 pt-4 text-sm">
                   {t(`product.categories.${item.key}.title`)}
-                  <span className="mt-1 block font-normal tracking-normal text-cream/65">
+                  <span className="mt-1 block font-normal text-white/70">
                     {t(`product.categories.${item.key}.items`)}
                   </span>
                 </p>
@@ -163,7 +170,7 @@ export default async function HomePage({
               </CtaLink>
             </div>
           </div>
-          <div className="relative min-h-[420px] overflow-hidden">
+          <div className="relative min-h-[420px] overflow-hidden rounded-3xl">
             <Image
               src={images.breakfast}
               alt=""
@@ -175,10 +182,14 @@ export default async function HomePage({
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-24">
-        <p className="text-[11px] tracking-[0.28em] text-sage">{t("home.forPartnersMark")}</p>
-        <h2 className="font-display mt-3 text-4xl">{t("home.forPartners")}</h2>
-        <p className="mt-4 max-w-xl text-ink/70">{t("home.forPartnersLede")}</p>
+      <section className="mx-auto max-w-7xl px-6 py-20">
+        <p className="text-[12px] font-semibold tracking-[0.22em] text-brand">
+          {t("home.forPartnersMark")}
+        </p>
+        <h2 className="font-display mt-3 text-3xl text-brand-ink md:text-4xl">
+          {t("home.forPartners")}
+        </h2>
+        <p className="mt-4 max-w-xl text-brand-ink/70">{t("home.forPartnersLede")}</p>
         <div className="mt-12 grid gap-4 md:grid-cols-3">
           {(
             [
@@ -188,7 +199,7 @@ export default async function HomePage({
             ] as const
           ).map(([key, image]) => (
             <Link key={key} href="/global" className="group">
-              <div className="relative aspect-[4/3] overflow-hidden">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
                 <Image
                   src={image}
                   alt=""
@@ -197,10 +208,10 @@ export default async function HomePage({
                   sizes="(min-width: 768px) 30vw, 100vw"
                 />
               </div>
-              <p className="mt-3 text-[12px] tracking-[0.16em]">
+              <p className="mt-3 text-[13px] font-semibold tracking-[0.08em] text-brand-ink">
                 {t(`global.nodes.${key}.title`)}
               </p>
-              <p className="text-sm text-ink/65">{t(`global.nodes.${key}.text`)}</p>
+              <p className="text-sm text-brand-ink/65">{t(`global.nodes.${key}.text`)}</p>
             </Link>
           ))}
         </div>

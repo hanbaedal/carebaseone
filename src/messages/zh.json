@@ -6,13 +6,15 @@
   },
   "nav": {
     "home": "首页",
+    "about": "公司介绍",
     "technology": "技术",
     "solution": "方案",
     "product": "产品",
     "global": "全球",
-    "business": "事业",
+    "business": "事业合作",
     "news": "动态",
     "contact": "联系",
+    "inquire": "事业·产品咨询",
     "menu": "菜单",
     "close": "关闭",
     "login": "登录",
@@ -20,7 +22,8 @@
   },
   "cta": {
     "solutions": "了解方案",
-    "partner": "合作咨询",
+    "products": "了解产品",
+    "partner": "事业合作咨询",
     "inquire": "咨询",
     "details": "查看详情",
     "backHome": "返回首页"
@@ -34,9 +37,9 @@
     "rights": "CAREBASE. 连接更健康的明天。"
   },
   "home": {
-    "kicker": "健康的人 · 健康的社会 · 健康的世界",
-    "headline": "我们不是一家产品公司。",
-    "lede": "我们是连接人与技术、自然与健康的平台。",
+    "kicker": "HEALTHCARE BUSINESS PLATFORM",
+    "headline": "把技术变成健康日常，把产品变成全球机会",
+    "lede": "CAREBASE 以技术为基础，连接产品、方案与全球事业。",
     "whyTitle": "为什么是一氧化氮",
     "whyBody": "一氧化氮与血管、循环、细胞、免疫和恢复相关，是重要的生物信号物质。CAREBASE 希望以这项技术，为当代健康课题提供新的方向。",
     "pillarsTitle": "五条连接",
@@ -52,33 +55,56 @@
     "pillars": {
       "technology": {
         "num": "01",
-        "title": "技术",
-        "ko": "源于自然的健康技术",
+        "title": "TECHNOLOGY",
+        "ko": "技术与依据",
         "text": "一氧化氮代谢体技术，从自然的原理出发。"
       },
-      "solution": {
-        "num": "02",
-        "title": "方案",
-        "ko": "多样的健康方案",
-        "text": "血管、运动、长者、美容、身心。"
-      },
       "product": {
-        "num": "03",
-        "title": "产品",
-        "ko": "生活中的健康平台",
+        "num": "02",
+        "title": "PRODUCT",
+        "ko": "日常中的产品",
         "text": "贴剂、饮品、健康食品、化妆品。"
+      },
+      "solution": {
+        "num": "03",
+        "title": "SOLUTION",
+        "ko": "生活健康方案",
+        "text": "血管、运动、长者、美容、身心。"
       },
       "global": {
         "num": "04",
-        "title": "全球",
-        "ko": "连接世界的平台",
+        "title": "GLOBAL",
+        "ko": "全球事业",
         "text": "韩国、中国、美国。健康没有国界。"
       },
       "business": {
         "num": "05",
-        "title": "事业",
-        "ko": "共同成长的健康生态",
+        "title": "BUSINESS",
+        "ko": "一起的事业",
         "text": "连接技术、人、企业与市场。"
+      }
+    }
+  },
+  "about": {
+    "kicker": "COMPANY",
+    "title": "面向人的健康事业平台",
+    "lede": "CAREBASE 把技术与产品、方案、全球事业连接在一起。",
+    "storyTitle": "从技术到日常，从日常到世界",
+    "storyBody": "我们以一氧化氮代谢体技术为基础，创造更健康的日常，并通过产品与合作拓展全球机会。研究、品牌与市场在同一平台相遇。",
+    "ctaTechnology": "了解技术",
+    "ctaContact": "联系我们",
+    "blocks": {
+      "mission": {
+        "title": "使命",
+        "text": "把技术变成健康日常，把产品变成全球机会。"
+      },
+      "platform": {
+        "title": "平台",
+        "text": "把技术、产品、方案与全球事业连成一条线。"
+      },
+      "network": {
+        "title": "网络",
+        "text": "在韩国、中国、美国拓展研究、生产、流通与伙伴网络。"
       }
     }
   },
@@ -184,7 +210,7 @@
     }
   },
   "business": {
-    "kicker": "05 事业",
+    "kicker": "05 事业合作",
     "title": "共同成长的健康生态",
     "lede": "CAREBASE 不是只销售产品的公司，而是连接技术、人、企业与市场的健康商业平台。",
     "center": "NO Metabolite",
