@@ -21,13 +21,29 @@ export const images = {
 export const navItems = [
   { href: "/about", key: "about" },
   { href: "/technology", key: "technology" },
+  { href: "/patents", key: "patents" },
   { href: "/product", key: "product" },
   { href: "/solution", key: "solution" },
   { href: "/global", key: "global" },
   { href: "/business", key: "business" },
 ] as const;
 
+export const evidenceNavItems = [
+  { href: "/patents", key: "patents" },
+  { href: "/certifications", key: "certifications" },
+  { href: "/research", key: "research" },
+] as const;
+
+export const communityNavItems = [
+  { href: "/community", key: "community" },
+  { href: "/community/notice", key: "notice" },
+  { href: "/community/archive", key: "archive" },
+  { href: "/community/gallery", key: "gallery" },
+] as const;
+
 export const footerExtraItems = [
-  { href: "/news", key: "news" },
+  ...evidenceNavItems,
+  ...communityNavItems,
+  { href: "/store", key: "store" },
   { href: "/contact", key: "contact" },
 ] as const;

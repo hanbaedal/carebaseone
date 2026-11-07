@@ -45,6 +45,12 @@ export function SiteHeader({ showAdmin = false }: { showAdmin?: boolean }) {
           <div className="hidden sm:block">
             <LanguageSwitcher />
           </div>
+          <Link
+            href="/member/login"
+            className="hidden whitespace-nowrap px-1 text-[12px] text-brand-ink/45 hover:text-brand md:inline"
+          >
+            {t("memberLogin")}
+          </Link>
           <a
             href={accountHref}
             className="whitespace-nowrap px-1 text-[12px] text-brand-ink/45 hover:text-brand"

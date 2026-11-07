@@ -6,6 +6,15 @@ import type { Role } from "@/lib/session";
 
 const links = [
   { href: "/admin", label: "콘텐츠", match: (path: string) => path === "/admin" },
+  { href: "/admin/posts", label: "게시", match: (path: string) => path.startsWith("/admin/posts") },
+  {
+    href: "/admin/inquiries",
+    label: "문의",
+    match: (path: string) => path.startsWith("/admin/inquiries"),
+  },
+  { href: "/admin/media", label: "자료", match: (path: string) => path.startsWith("/admin/media") },
+  { href: "/admin/members", label: "회원", match: (path: string) => path.startsWith("/admin/members") },
+  { href: "/admin/orders", label: "주문", match: (path: string) => path.startsWith("/admin/orders") },
   {
     href: "/admin/users",
     label: "계정",

@@ -1,0 +1,247 @@
+[
+  {
+    "slug": "kr-10-2129038-nitrogen-fermentation",
+    "category": "patent",
+    "fileName": "10-2019-0135814(10-2129038) - 질소 함유 천연물의 발효를 통한 산화질소 대사체의 고정화 및 안정화 방법.pdf",
+    "titleKo": "질소 함유 천연물 발효를 통한 NO 대사체 고정화·안정화 (10-2129038)",
+    "tags": ["korea", "nitrogen", "fermentation"]
+  },
+  {
+    "slug": "kr-10-2403429-enteric",
+    "category": "patent",
+    "fileName": "10-2403429_등록공보 _ 장용정 특허.pdf",
+    "titleKo": "장용정 특허 (10-2403429)",
+    "tags": ["korea", "enteric"]
+  },
+  {
+    "slug": "kr-10-2602347-gsh",
+    "category": "patent",
+    "fileName": "10-2602347_등록공보 _ 위장내 엔-니트로 사민 (GSH) 특허.pdf",
+    "titleKo": "위장내 엔-니트로사민 억제·NO 촉진 (10-2602347)",
+    "tags": ["korea", "gsh"]
+  },
+  {
+    "slug": "kr-10-2760247-nitrosamine",
+    "category": "patent",
+    "fileName": "10-2760247_등록증 _ 위장내 발암성 엔-니트로사민 생성 억제용 조성물 및 이의 용도.pdf",
+    "titleKo": "엔-니트로사민 생성 억제 조성물 (10-2760247)",
+    "tags": ["korea"]
+  },
+  {
+    "slug": "pct-kr2020-014881",
+    "category": "patent",
+    "fileName": "PCT-KR2020-014881-국제출원번호 및 국제출원일 통지서.pdf",
+    "titleKo": "PCT 국제출원 KR2020/014881",
+    "tags": ["pct"]
+  },
+  {
+    "slug": "us-patent",
+    "category": "patent",
+    "fileName": "미국특허.pdf",
+    "titleKo": "미국 특허",
+    "tags": ["usa"]
+  },
+  {
+    "slug": "us-patent-cert",
+    "category": "patent",
+    "fileName": "미국-특허등록 확인서.pdf",
+    "titleKo": "미국 특허 등록 확인서",
+    "tags": ["usa"]
+  },
+  {
+    "slug": "cn-patent-zh",
+    "category": "patent",
+    "fileName": "중국특허(중문).pdf",
+    "titleKo": "중국 특허 (中文)",
+    "tags": ["china"]
+  },
+  {
+    "slug": "cn-patent-en",
+    "category": "patent",
+    "fileName": "중국특허(영문).pdf",
+    "titleKo": "중국 특허 (English)",
+    "tags": ["china"]
+  },
+  {
+    "slug": "jp-garlic-ferment",
+    "category": "patent",
+    "fileName": "마늘발효 - 일본특허.pdf",
+    "titleKo": "마늘 발효 — 일본 특허",
+    "tags": ["japan", "garlic"]
+  },
+  {
+    "slug": "cn-garlic-ferment",
+    "category": "patent",
+    "fileName": "마늘발효 - 중국특허.pdf",
+    "titleKo": "마늘 발효 — 중국 특허",
+    "tags": ["china", "garlic"]
+  },
+  {
+    "slug": "mulberry-patent",
+    "category": "patent",
+    "fileName": "뽕잎특허.pdf",
+    "titleKo": "뽕잎 특허",
+    "tags": ["korea"]
+  },
+  {
+    "slug": "kalangco-patent",
+    "category": "patent",
+    "fileName": "칼랑코에 특허 등록증.pdf",
+    "titleKo": "칼랑코에 특허 등록증",
+    "tags": ["korea"]
+  },
+  {
+    "slug": "fda-establishment-2026",
+    "category": "certification",
+    "fileName": "BEONE_FDA_Establishment_Registration_2026.pdf",
+    "titleKo": "FDA Establishment Registration 2026",
+    "tags": ["fda", "usa"]
+  },
+  {
+    "slug": "beoletd-gdp",
+    "category": "certification",
+    "fileName": "BEOLETD GDP PO4400004105[PAS01-PAS02]_REV.pdf",
+    "titleKo": "BEOLETD GDP",
+    "tags": ["gdp"]
+  },
+  {
+    "slug": "otc-fda-guide",
+    "category": "certification",
+    "fileName": "OTC Drug FDA 등록정보 검색방법(휴먼에노스,230317).pdf",
+    "titleKo": "OTC Drug FDA 등록정보 검색 방법",
+    "tags": ["otc", "fda"]
+  },
+  {
+    "slug": "us-otc",
+    "category": "certification",
+    "fileName": "미국OTC.pdf",
+    "titleKo": "미국 OTC",
+    "tags": ["otc", "usa"]
+  },
+  {
+    "slug": "hl-bp-csr",
+    "category": "research",
+    "fileName": "HL-BP-FG_CSR_CTCF2_150828(혈압).pdf",
+    "titleKo": "HL-BP-FG CSR (혈압)",
+    "tags": ["csr", "blood-pressure"]
+  },
+  {
+    "slug": "nutrients-14-05238",
+    "category": "research",
+    "fileName": "nutrients-14-05238-v3.pdf",
+    "titleKo": "Nutrients 논문 (14-05238)",
+    "tags": ["paper"]
+  },
+  {
+    "slug": "maneul-analysis",
+    "category": "research",
+    "fileName": "MaNeul ES+ Main Compound Analysis Result.pdf",
+    "titleKo": "MaNeul ES+ 성분 분석",
+    "tags": ["analysis"]
+  },
+  {
+    "slug": "skin-irritation-beone",
+    "category": "research",
+    "fileName": "피부임상테스트 I37R (230728) (주)비원 (바이오힐링패치) 일차자극 결과보고서(전성분O)-최종.pdf",
+    "titleKo": "바이오힐링패치 피부 일차자극 시험",
+    "tags": ["clinical", "patch"]
+  },
+  {
+    "slug": "patch-coi",
+    "category": "product",
+    "fileName": "COI (PAS01-PS02)_근육관절엔패치-국문,영문_cas_효능효과 (1).pdf",
+    "titleKo": "근육관절엔패치 COI·효능효과",
+    "tags": ["patch"]
+  },
+  {
+    "slug": "patch-ingredients-2026",
+    "category": "product",
+    "fileName": "성분분석표-2026.0109_근육관절엔패치-국문,영문_cas_효능효과.pdf",
+    "titleKo": "근육관절엔패치 성분분석표 (2026)",
+    "tags": ["patch"]
+  },
+  {
+    "slug": "fixed-no",
+    "category": "research",
+    "fileName": "고정된산화질소.pdf",
+    "titleKo": "고정된 산화질소",
+    "tags": ["no"]
+  },
+  {
+    "slug": "infrared-report",
+    "category": "research",
+    "fileName": "원적외선자료.pdf",
+    "titleKo": "원적외선 방사 관련 시험자료",
+    "tags": ["infrared"]
+  },
+  {
+    "slug": "beone-intro-kr",
+    "category": "other",
+    "fileName": "비원(BEONE) 회사·기술·제품 소개서(한국용).docx",
+    "titleKo": "비원(BEONE) 회사·기술·제품 소개서",
+    "tags": ["beone"]
+  },
+  {
+    "slug": "maneul-total-compound-xlsx",
+    "category": "research",
+    "fileName": "MaNeul ES+ Total Compound Analysis Result.xlsx",
+    "titleKo": "MaNeul ES+ Total Compound 분석",
+    "tags": ["maneul", "analysis"]
+  },
+  {
+    "slug": "ingredients-2026-xlsx",
+    "category": "product",
+    "fileName": "성분분석표-2026.0109_근육관절엔패치-국문,영문_cas_효능효과 (1).xlsx",
+    "titleKo": "근육관절엔패치 성분분석표 (2026, Excel)",
+    "tags": ["patch"]
+  },
+  {
+    "slug": "spec-muscle-joint",
+    "category": "product",
+    "fileName": "바이오힐링패치 근육관절패치 상품기술서-1.xlsx",
+    "titleKo": "근육관절 패치 상품기술서",
+    "tags": ["patch", "spec"]
+  },
+  {
+    "slug": "spec-muscle-joint-hot",
+    "category": "product",
+    "fileName": "바이오힐링 근육관절핫패치 상품기술서.xlsx",
+    "titleKo": "근육관절 핫패치 상품기술서",
+    "tags": ["patch", "spec"]
+  },
+  {
+    "slug": "spec-slim-hot-no",
+    "category": "product",
+    "fileName": "바이오힐링패치 슬림핫패치 상품기술서_산화질소 (1).xlsx",
+    "titleKo": "슬림 핫패치 상품기술서 (산화질소)",
+    "tags": ["patch", "spec"]
+  },
+  {
+    "slug": "spec-good-night-nose",
+    "category": "product",
+    "fileName": "바이오힐링 굿나잇코패치 상품기술서.xlsx",
+    "titleKo": "굿나잇 코패치 상품기술서",
+    "tags": ["patch", "spec"]
+  },
+  {
+    "slug": "spec-multi-memory",
+    "category": "product",
+    "fileName": "바이오힐링 다기억패치 상품기술서.xlsx",
+    "titleKo": "다기억 패치 상품기술서",
+    "tags": ["patch", "spec"]
+  },
+  {
+    "slug": "spec-energy-focus",
+    "category": "product",
+    "fileName": "바이오힐링 에너이자패치 상품기술서.xlsx",
+    "titleKo": "에너이자 패치 상품기술서",
+    "tags": ["patch", "spec"]
+  },
+  {
+    "slug": "us-miracle-patch-pdf",
+    "category": "product",
+    "fileName": "미국)바이오힐링패치 미라클패치_(1P+2P+4P+12P).pdf",
+    "titleKo": "미국 수출 미라클 패치 패키지",
+    "tags": ["us", "patch"]
+  }
+]

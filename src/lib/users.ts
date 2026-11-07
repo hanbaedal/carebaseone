@@ -128,8 +128,8 @@ export async function recentFailures(username: string) {
 
 export async function recordActivity(entry: {
   username: string;
-  role: UserDoc["role"] | "unknown";
-  action: "login" | "login-failed" | "save-content" | "create-admin" | "update-admin";
+  role: UserDoc["role"] | "unknown" | "member";
+  action: string;
   detail: string;
 }) {
   await (await activity()).insertOne({ ...entry, createdAt: new Date() });

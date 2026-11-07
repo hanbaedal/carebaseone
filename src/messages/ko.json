@@ -12,6 +12,15 @@
     "product": "제품",
     "global": "글로벌",
     "business": "사업협력",
+    "patents": "지식재산권",
+    "certifications": "인증·규제",
+    "research": "연구·임상",
+    "community": "커뮤니티",
+    "notice": "공지사항",
+    "archive": "자료실",
+    "gallery": "갤러리",
+    "store": "스토어",
+    "memberLogin": "회원",
     "news": "소식",
     "contact": "문의",
     "inquire": "사업·제품 문의",
@@ -161,13 +170,15 @@
   "product": {
     "kicker": "03 제품",
     "title": "생활 속 건강 플랫폼",
-    "lede": "기술은 생활 속에서 제품으로 완성됩니다. 지금은 소개만 제공합니다. 구매는 다음 단계에서 연결됩니다.",
-    "note": "제품 구매와 가격 안내는 준비 중입니다. 궁금한 점은 문의해 주세요.",
+    "lede": "바이오힐링 패치·뷰티·음료 라인을 BEONE 기술자료와 연결해 소개합니다.",
+    "note": "상품기술서·성분표·시험자료는 자료실과 각 제품 카드에서 열람할 수 있습니다. 회원 스토어는 승인 후 주문 신청(결제 없음)만 가능합니다.",
+    "proofLink": "연구·임상 자료",
+    "certLink": "인증·규제",
     "categories": {
       "patch": {
         "title": "패치",
         "text": "일상과 스포츠 현장에 가볍게 더하는 패치.",
-        "items": "근육관절패치 · 스포츠패치 · 비타민패치"
+        "items": "바이오힐링 패치 라인"
       },
       "beverage": {
         "title": "음료",
@@ -182,7 +193,7 @@
       "cosmetics": {
         "title": "화장품",
         "text": "피부와 모발을 위한 데일리 케어.",
-        "items": "올케어 · 샴푸 · 에센스 · 바디로션"
+        "items": "慈蓮(자련) 쿠션 등"
       }
     }
   },
@@ -247,6 +258,52 @@
         "title": "한국, 중국, 미국을 잇는 네트워크",
         "text": "기술, 생산, 판매가 한 플랫폼 위에서 만나도록 거점을 넓혀 갑니다."
       }
+    }
+  },
+  "patents": {
+    "kicker": "IP",
+    "title": "지식재산권",
+    "lede": "한국·미국·중국·일본 및 PCT 등록 특허와 관련 공보를 확인할 수 있습니다."
+  },
+  "certifications": {
+    "kicker": "CERTIFICATION",
+    "title": "인증·규제",
+    "lede": "FDA Establishment, OTC, GDP 등 규제·인증 자료입니다."
+  },
+  "researchPage": {
+    "kicker": "RESEARCH",
+    "title": "연구·임상",
+    "lede": "CSR, 논문, 성분·피부 시험, 제품 성분 자료를 제공합니다.",
+    "researchHeading": "연구·논문",
+    "productHeading": "제품·성분"
+  },
+  "community": {
+    "title": "커뮤니티",
+    "lede": "공지, 자료, 갤러리, 문의를 한곳에서 확인합니다.",
+    "noticeLede": "운영 공지와 업데이트 소식입니다.",
+    "archiveLede": "인증·연구·제품 PDF와 관리자 등록 자료입니다. (특허는 지식재산권 메뉴)",
+    "archivePosts": "등록 글",
+    "galleryLede": "제품·전시·해외 패키징 사진과 관리자 등록 갤러리입니다.",
+    "sections": {
+      "notice": "공지사항",
+      "archive": "자료실",
+      "gallery": "갤러리",
+      "contact": "문의"
+    }
+  },
+  "store": {
+    "title": "회원 스토어",
+    "loginRequired": "승인된 회원만 주문할 수 있습니다.",
+    "login": "로그인",
+    "signup": "가입 신청",
+    "orderNote": "1단계: 결제 없이 주문 신청만 접수합니다.",
+    "myOrders": "내 주문 보기",
+    "tier": {
+      "general": "일반",
+      "silver": "실버",
+      "gold": "골드",
+      "vip": "VIP",
+      "vvip": "VVIP"
     }
   },
   "contact": {

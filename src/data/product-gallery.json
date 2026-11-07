@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "jaryeon-cushion-hero",
+    "src": "/images/products/jaryeon-cushion.jpg",
+    "titleKo": "慈蓮 뷰티 쿠션",
+    "captionKo": "연꽃 디자인 프리미엄 쿠션"
+  },
+  {
+    "slug": "jaryeon-cushion-detail",
+    "src": "/images/products/jaryeon-cushion-open.jpg",
+    "titleKo": "쿠션 구성",
+    "captionKo": "미러·퍼프 포함 구성"
+  },
+  {
+    "slug": "us-recoverx",
+    "src": "/images/products/us-recoverx-line.jpg",
+    "titleKo": "미국 패치 패키징",
+    "captionKo": "ICY / HOT 리커버리 패치 라인"
+  },
+  {
+    "slug": "patent-garlic-cert",
+    "src": "/images/products/patent-garlic-sample.jpg",
+    "titleKo": "마늘 발효 특허",
+    "captionKo": "특허 등록 증빙 (예: 10-1609918)"
+  }
+]

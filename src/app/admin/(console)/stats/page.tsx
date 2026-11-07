@@ -4,13 +4,13 @@ import { getDashboard } from "@/lib/stats";
 
 export const dynamic = "force-dynamic";
 
-const actionLabel = {
+const actionLabel: Record<string, string> = {
   login: "로그인",
   "login-failed": "로그인 실패",
   "save-content": "내용 저장",
   "create-admin": "관리자 생성",
   "update-admin": "관리자 수정",
-} as const;
+};
 
 function countOf(rows: { _id: string; count: number }[], id: string) {
   return rows.find((row) => row._id === id)?.count ?? 0;
@@ -83,7 +83,7 @@ export default async function StatsPage() {
                   {item.createdAt.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })}
                 </span>
                 <br />
-                {item.username} · {actionLabel[item.action]}
+                {item.username} · {actionLabel[item.action] ?? item.action}
                 {item.detail ? ` · ${item.detail}` : ""}
               </li>
             ))}

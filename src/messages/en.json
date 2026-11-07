@@ -12,6 +12,15 @@
     "product": "Product",
     "global": "Global",
     "business": "Partnership",
+    "patents": "Patents",
+    "certifications": "Certification",
+    "research": "Research",
+    "community": "Community",
+    "notice": "Notice",
+    "archive": "Archive",
+    "gallery": "Gallery",
+    "store": "Store",
+    "memberLogin": "Members",
     "news": "News",
     "contact": "Contact",
     "inquire": "Business Inquiry",
@@ -161,8 +170,10 @@
   "product": {
     "kicker": "03 Product",
     "title": "A health platform for living",
-    "lede": "Technology is completed as products in daily life. This site introduces the lines only. Purchasing will come later.",
-    "note": "Pricing and checkout are not available yet. Please inquire if you would like to know more.",
+    "lede": "Bio Healing patch, beauty, and beverage lines linked to BEONE technical files.",
+    "note": "Spec sheets and test reports open from each card or the archive. The member store accepts order requests only after approval (no checkout yet).",
+    "proofLink": "Research & clinical",
+    "certLink": "Certifications",
     "categories": {
       "patch": {
         "title": "Patch",
@@ -247,6 +258,52 @@
         "title": "A network across Korea, China, and the United States",
         "text": "We are widening the places where technology, production, and sales can meet on one platform."
       }
+    }
+  },
+  "patents": {
+    "kicker": "IP",
+    "title": "Intellectual property",
+    "lede": "Patents and publications for Korea, the U.S., China, Japan, and PCT filings."
+  },
+  "certifications": {
+    "kicker": "CERTIFICATION",
+    "title": "Certification & regulation",
+    "lede": "FDA establishment, OTC, and GDP documentation."
+  },
+  "researchPage": {
+    "kicker": "RESEARCH",
+    "title": "Research & clinical",
+    "lede": "CSR reports, papers, analyses, and product evidence files.",
+    "researchHeading": "Research",
+    "productHeading": "Product evidence"
+  },
+  "community": {
+    "title": "Community",
+    "lede": "Notices, archives, gallery, and contact.",
+    "noticeLede": "Site notices and updates.",
+    "archiveLede": "Certification, research, and product PDFs. Patents are under Patents.",
+    "archivePosts": "Articles",
+    "galleryLede": "Exhibitions and events.",
+    "sections": {
+      "notice": "Notice",
+      "archive": "Archive",
+      "gallery": "Gallery",
+      "contact": "Contact"
+    }
+  },
+  "store": {
+    "title": "Member store",
+    "loginRequired": "Approved members can place orders.",
+    "login": "Log in",
+    "signup": "Sign up",
+    "orderNote": "Phase 1: order requests without online payment.",
+    "myOrders": "My orders",
+    "tier": {
+      "general": "General",
+      "silver": "Silver",
+      "gold": "Gold",
+      "vip": "VIP",
+      "vvip": "VVIP"
     }
   },
   "contact": {

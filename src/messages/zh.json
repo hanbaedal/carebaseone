@@ -12,6 +12,15 @@
     "product": "产品",
     "global": "全球",
     "business": "事业合作",
+    "patents": "知识产权",
+    "certifications": "认证法规",
+    "research": "研究临床",
+    "community": "社区",
+    "notice": "公告",
+    "archive": "资料室",
+    "gallery": "图库",
+    "store": "商店",
+    "memberLogin": "会员",
     "news": "动态",
     "contact": "联系",
     "inquire": "事业·产品咨询",
@@ -161,8 +170,10 @@
   "product": {
     "kicker": "03 产品",
     "title": "生活中的健康平台",
-    "lede": "技术在生活中成为产品，才算完成。本阶段仅作介绍，购买将在下一步开放。",
-    "note": "价格与购买功能尚未开放。如需了解，请先咨询。",
+    "lede": "Bio Healing 贴剂、美妆与饮品系列，关联 BEONE 技术资料。",
+    "note": "技术书与试验资料可在产品卡片或资料室打开。会员商店需审核后提交订单申请（暂无支付）。",
+    "proofLink": "研究·临床",
+    "certLink": "认证·法规",
     "categories": {
       "patch": {
         "title": "贴剂",
@@ -247,6 +258,52 @@
         "title": "连接韩国、中国与美国的网络",
         "text": "我们正在扩大技术、生产与销售在同一平台相遇的据点。"
       }
+    }
+  },
+  "patents": {
+    "kicker": "IP",
+    "title": "知识产权",
+    "lede": "韩国、美国、中国、日本及 PCT 专利与公告。"
+  },
+  "certifications": {
+    "kicker": "CERTIFICATION",
+    "title": "认证与法规",
+    "lede": "FDA、OTC、GDP 等认证资料。"
+  },
+  "researchPage": {
+    "kicker": "RESEARCH",
+    "title": "研究与临床",
+    "lede": "CSR、论文、成分与皮肤试验资料。",
+    "researchHeading": "研究",
+    "productHeading": "产品资料"
+  },
+  "community": {
+    "title": "社区",
+    "lede": "公告、资料、图库与咨询。",
+    "noticeLede": "网站公告与更新。",
+    "archiveLede": "认证、研究与产品 PDF；专利请见知识产权栏目。",
+    "archivePosts": "文章",
+    "galleryLede": "展会与活动记录。",
+    "sections": {
+      "notice": "公告",
+      "archive": "资料室",
+      "gallery": "图库",
+      "contact": "咨询"
+    }
+  },
+  "store": {
+    "title": "会员商店",
+    "loginRequired": "仅获批会员可下单。",
+    "login": "登录",
+    "signup": "注册申请",
+    "orderNote": "第一阶段：不接在线支付，仅受理订单。",
+    "myOrders": "我的订单",
+    "tier": {
+      "general": "普通",
+      "silver": "银卡",
+      "gold": "金卡",
+      "vip": "VIP",
+      "vvip": "VVIP"
     }
   },
   "contact": {
