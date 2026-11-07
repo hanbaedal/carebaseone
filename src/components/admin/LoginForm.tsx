@@ -5,7 +5,7 @@ import { login } from "@/app/admin/actions";
 
 export function LoginForm() {
   const [state, action, pending] = useActionState(login, {});
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     if (state.ok) {

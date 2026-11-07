@@ -23,8 +23,8 @@ function EyeToggle({
 
 export function MemberSignupForm() {
   const [state, action, pending] = useActionState(signupMember, {});
-  const [showPw, setShowPw] = useState(false);
-  const [showPw2, setShowPw2] = useState(false);
+  const [showPw, setShowPw] = useState(true);
+  const [showPw2, setShowPw2] = useState(true);
   const [usernameHint, setUsernameHint] = useState<string | null>(null);
 
   const checkUsername = useCallback(async (value: string) => {

@@ -7,7 +7,7 @@ import { loginMember } from "@/app/[locale]/member/actions";
 export function MemberLoginForm() {
   const router = useRouter();
   const [state, action, pending] = useActionState(loginMember, {});
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     if (state.ok) {

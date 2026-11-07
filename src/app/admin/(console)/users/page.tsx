@@ -48,9 +48,10 @@ export default async function UsersPage({
           비밀번호
           <input
             name="password"
-            type="password"
+            type="text"
             required
             minLength={8}
+            autoComplete="new-password"
             className="border border-ink/15 px-2 py-1.5 text-sm outline-none focus:border-forest"
           />
         </label>
@@ -81,8 +82,9 @@ export default async function UsersPage({
                       <input type="hidden" name="username" value={account.username} />
                       <input
                         name="password"
-                        type="password"
+                        type="text"
                         placeholder="새 비밀번호"
+                        autoComplete="new-password"
                         className="w-28 border border-ink/15 px-1.5 py-1 text-[11px] outline-none focus:border-forest"
                       />
                       <button
