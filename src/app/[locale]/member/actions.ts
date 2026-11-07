@@ -41,18 +41,28 @@ export async function signupMember(
 export async function loginMember(
   _prev: { error?: string },
   formData: FormData,
-): Promise<{ error?: string }> {
+): Promise<{ error?: string; ok?: boolean }> {
   const username = String(formData.get("username") ?? "").trim();
   const password = String(formData.get("password") ?? "");
-  const result = await authenticateMember(username, password);
-  if (!result) return { error: "아이디 또는 비밀번호가 올바르지 않습니다." };
-  if ("error" in result) {
-    if (result.status === "pending") return { error: "관리자 승인 대기 중입니다." };
-    if (result.status === "held") return { error: "가입이 보류되었습니다. 문의해 주세요." };
-    return { error: "로그인할 수 없습니다." };
+  if (!username || !password) {
+    return { error: "아이디와 비밀번호를 입력해 주세요." };
   }
-  await setMemberSession(result.member.username);
-  redirect("/store");
+  if (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32) {
+    return { error: "서버 로그인 설정이 필요합니다. 관리자에게 문의해 주세요." };
+  }
+  try {
+    const result = await authenticateMember(username, password);
+    if (!result) return { error: "아이디 또는 비밀번호가 올바르지 않습니다." };
+    if ("error" in result) {
+      if (result.status === "pending") return { error: "관리자 승인 대기 중입니다." };
+      if (result.status === "held") return { error: "가입이 보류되었습니다. 문의해 주세요." };
+      return { error: "로그인할 수 없습니다." };
+    }
+    await setMemberSession(result.member.username);
+    return { ok: true };
+  } catch {
+    return { error: "데이터베이스에 연결할 수 없습니다." };
+  }
 }
 
 export async function logoutMember() {

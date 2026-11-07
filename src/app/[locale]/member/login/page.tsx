@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import { MemberLoginForm } from "@/components/member/MemberLoginForm";
 import { getApprovedMember } from "@/lib/member-session";
@@ -11,9 +11,10 @@ export default async function MemberLoginPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  resolveLocale((await params).locale);
+  const { locale } = await params;
+  resolveLocale(locale);
   const member = await getApprovedMember();
-  if (member) redirect("/store");
+  if (member) redirect({ href: "/store", locale: resolveLocale(locale) });
 
   const kakao = kakaoAuthUrl(siteUrl);
   const google = googleAuthUrl(siteUrl);

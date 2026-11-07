@@ -1,11 +1,17 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { login } from "@/app/admin/actions";
 
 export function LoginForm() {
   const [state, action, pending] = useActionState(login, {});
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (state.ok) {
+      window.location.assign("/admin");
+    }
+  }, [state.ok]);
 
   return (
     <form action={action} className="grid gap-3">

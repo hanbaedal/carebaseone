@@ -26,7 +26,7 @@ async function requireSession() {
 export async function login(
   _prev: { error?: string },
   formData: FormData,
-): Promise<{ error?: string }> {
+): Promise<{ error?: string; ok?: boolean }> {
   const username = String(formData.get("username") ?? "").trim();
   const password = String(formData.get("password") ?? "");
   if (!username || !password) {
@@ -57,11 +57,10 @@ export async function login(
       detail: "",
     });
     await setSession({ username: user.username, role: user.role });
+    return { ok: true as const };
   } catch {
     return { error: "데이터베이스에 연결할 수 없습니다." };
   }
-
-  redirect("/admin");
 }
 
 export async function logout() {

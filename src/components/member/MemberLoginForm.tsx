@@ -1,11 +1,20 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
+import { useRouter } from "@/i18n/navigation";
 import { loginMember } from "@/app/[locale]/member/actions";
 
 export function MemberLoginForm() {
+  const router = useRouter();
   const [state, action, pending] = useActionState(loginMember, {});
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (state.ok) {
+      router.replace("/store");
+      router.refresh();
+    }
+  }, [state.ok, router]);
 
   return (
     <form action={action} className="grid gap-3">
@@ -21,6 +30,7 @@ export function MemberLoginForm() {
             name="password"
             type={visible ? "text" : "password"}
             required
+            autoComplete="current-password"
             className="w-full border border-line px-3 py-2 pr-12"
           />
           <button
