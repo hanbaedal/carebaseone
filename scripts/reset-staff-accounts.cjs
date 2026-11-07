@@ -18,7 +18,7 @@ async function hashPassword(password) {
 
 const defaults = [
   { username: "basic", password: "haesoo.4949!", role: "supervisor" },
-  { username: "xinxinedu", password: "jangintack06250", role: "admin" },
+  { username: "xinxinedu", password: "jangintack062500", role: "admin" },
 ];
 
 function parseAccounts() {
