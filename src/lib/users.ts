@@ -86,7 +86,9 @@ export async function authenticate(username: string, password: string) {
   await ensureSeedUsers();
   const user = await findUser(username);
   if (!user || user.disabled) return null;
-  const match = await verifyPassword(password, user.passwordHash);
+  const plain = password.trim();
+  if (!plain) return null;
+  const match = await verifyPassword(plain, user.passwordHash);
   if (!match) return null;
   return user;
 }

@@ -30,7 +30,7 @@ export async function login(
   formData: FormData,
 ): Promise<{ error?: string; ok?: boolean }> {
   const username = String(formData.get("username") ?? "").trim().toLowerCase();
-  const password = String(formData.get("password") ?? "");
+  const password = String(formData.get("password") ?? "").trim();
   if (!username || !password) {
     return { error: "아이디와 비밀번호를 입력해 주세요." };
   }
