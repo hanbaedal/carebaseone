@@ -3,28 +3,8 @@
 import { useActionState, useState, useCallback } from "react";
 import { signupMember } from "@/app/[locale]/member/actions";
 
-function EyeToggle({
-  visible,
-  onToggle,
-}: {
-  visible: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onToggle}
-      className="absolute inset-y-0 right-0 w-10 text-xs text-brand-ink/50"
-    >
-      {visible ? "숨김" : "보기"}
-    </button>
-  );
-}
-
 export function MemberSignupForm() {
   const [state, action, pending] = useActionState(signupMember, {});
-  const [showPw, setShowPw] = useState(true);
-  const [showPw2, setShowPw2] = useState(true);
   const [usernameHint, setUsernameHint] = useState<string | null>(null);
 
   const checkUsername = useCallback(async (value: string) => {
@@ -61,34 +41,30 @@ export function MemberSignupForm() {
           </span>
         ) : null}
       </label>
-      <div className="grid gap-1 text-sm">
-        <label htmlFor="password">비밀번호</label>
-        <div className="relative">
-          <input
-            id="password"
-            name="password"
-            type={showPw ? "text" : "password"}
-            required
-            minLength={8}
-            className="w-full border border-line px-3 py-2 pr-12"
-          />
-          <EyeToggle visible={showPw} onToggle={() => setShowPw((v) => !v)} />
-        </div>
-      </div>
-      <div className="grid gap-1 text-sm">
-        <label htmlFor="password2">비밀번호 확인</label>
-        <div className="relative">
-          <input
-            id="password2"
-            name="password2"
-            type={showPw2 ? "text" : "password"}
-            required
-            minLength={8}
-            className="w-full border border-line px-3 py-2 pr-12"
-          />
-          <EyeToggle visible={showPw2} onToggle={() => setShowPw2((v) => !v)} />
-        </div>
-      </div>
+      <label className="grid gap-1 text-sm" htmlFor="password">
+        비밀번호
+        <input
+          id="password"
+          name="password"
+          type="text"
+          required
+          minLength={8}
+          autoComplete="off"
+          className="border border-line px-3 py-2"
+        />
+      </label>
+      <label className="grid gap-1 text-sm" htmlFor="password2">
+        비밀번호 확인
+        <input
+          id="password2"
+          name="password2"
+          type="text"
+          required
+          minLength={8}
+          autoComplete="off"
+          className="border border-line px-3 py-2"
+        />
+      </label>
       <label className="grid gap-1 text-sm">
         이메일
         <input name="email" type="email" required className="border border-line px-3 py-2" />

@@ -1,12 +1,11 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState } from "react";
 import { updateProfile, logoutMember } from "@/app/[locale]/member/actions";
 import type { MemberPublic } from "@/lib/members";
 
 export function MemberProfileForm({ member }: { member: MemberPublic }) {
   const [state, action, pending] = useActionState(updateProfile, {});
-  const [showPw, setShowPw] = useState(true);
 
   return (
     <div className="grid gap-4">
@@ -19,22 +18,13 @@ export function MemberProfileForm({ member }: { member: MemberPublic }) {
       <form action={action} className="grid gap-3 border-t border-line pt-4">
         <label className="grid gap-1 text-sm">
           새 비밀번호 (선택)
-          <div className="relative">
-            <input
-              name="password"
-              type={showPw ? "text" : "password"}
-              minLength={8}
-              autoComplete="new-password"
-              className="w-full border border-line px-3 py-2 pr-12"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPw((v) => !v)}
-              className="absolute inset-y-0 right-0 px-3 text-xs text-brand-ink/50"
-            >
-              {showPw ? "숨김" : "보기"}
-            </button>
-          </div>
+          <input
+            name="password"
+            type="text"
+            minLength={8}
+            autoComplete="off"
+            className="border border-line px-3 py-2"
+          />
         </label>
         <label className="grid gap-1 text-sm">
           이메일
