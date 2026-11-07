@@ -17,7 +17,7 @@ export default async function PatentsPage({
 
   return (
     <div>
-      <PageHero kicker={t("kicker")} title={t("title")} lede={t("lede")} image={images.lab} />
+      <PageHero kicker={t("kicker")} title={t("title")} image={images.lab} />
       <section className="mx-auto max-w-5xl px-6 py-14">
         <MediaList items={items} locale={locale} />
       </section>

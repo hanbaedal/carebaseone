@@ -14,7 +14,6 @@ export default async function CommunityPage({
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
       <h1 className="font-display text-4xl text-brand-ink">{t("title")}</h1>
-      <p className="mt-4 max-w-2xl text-brand-ink/70">{t("lede")}</p>
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
         {communityNavItems
           .filter((item) => item.href !== "/community")

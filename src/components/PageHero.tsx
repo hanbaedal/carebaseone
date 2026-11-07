@@ -3,7 +3,7 @@ import Image from "next/image";
 type Props = {
   kicker: string;
   title: string;
-  lede: string;
+  lede?: string;
   image: string;
 };
 
@@ -26,9 +26,9 @@ export function PageHero({ kicker, title, lede, image }: Props) {
         <h1 className="font-display mt-4 max-w-3xl text-4xl leading-tight md:text-6xl">
           {title}
         </h1>
-        <p className="mt-6 max-w-2xl text-base leading-8 text-white/85 md:text-lg">
-          {lede}
-        </p>
+        {lede ? (
+          <p className="mt-6 max-w-2xl text-base leading-8 text-white/85 md:text-lg">{lede}</p>
+        ) : null}
       </div>
     </section>
   );

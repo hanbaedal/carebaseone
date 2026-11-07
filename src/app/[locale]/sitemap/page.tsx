@@ -18,8 +18,6 @@ export default async function SiteMapPage({
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
       <h1 className="font-display text-4xl text-brand-ink">{t("title")}</h1>
-      <p className="mt-3 max-w-2xl text-brand-ink/65">{t("lede")}</p>
-      <p className="mt-2 text-sm text-brand-ink/50">{t("cardHint")}</p>
       <SitemapLocaleLinks activeLocale={active} caption={t("localeSwitch")} />
       <SitemapCardGrid items={headerNav} tNav={tNav} tHome={tHome} />
       <p className="mt-10 text-sm text-brand-ink/45">

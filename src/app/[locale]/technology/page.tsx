@@ -18,7 +18,6 @@ export default async function TechnologyPage({
       <PageHero
         kicker={t("kicker")}
         title={t("title")}
-        lede={t("lede")}
         image={images.leaves}
       />
       <section className="mx-auto grid max-w-6xl gap-px bg-ink/10 px-0 py-0 md:grid-cols-2">

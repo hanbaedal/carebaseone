@@ -18,13 +18,11 @@ export default async function ProductPage({
       <PageHero
         kicker={t("product.kicker")}
         title={t("product.title")}
-        lede={t("product.lede")}
         image={images.breakfast}
       />
       <section className="mx-auto max-w-6xl px-6 py-16">
         <ProductBeoneNote />
-        <p className="mt-6 max-w-2xl text-sm leading-7 text-ink/65">{t("product.note")}</p>
-        <p className="mt-4 text-sm text-brand-ink/60">
+        <p className="mt-6 text-sm text-brand-ink/60">
           <Link href="/research" className="text-brand">
             {t("product.proofLink")}
           </Link>

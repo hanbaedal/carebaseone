@@ -25,7 +25,6 @@ export default async function GlobalPage({
       <PageHero
         kicker={t("global.kicker")}
         title={t("global.title")}
-        lede={t("global.lede")}
         image={images.close}
       />
       <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2">

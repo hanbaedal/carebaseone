@@ -34,7 +34,7 @@ export async function ArchivePostsTable({
               const summary = body.length > 120 ? `${body.slice(0, 120)}…` : body || "—";
               return (
                 <tr key={item.slug} className="border-b border-line/80 last:border-0 hover:bg-brand/[0.03]">
-                  <td className="px-4 py-3 text-brand-ink/45 tabular-nums">{items.length - index}</td>
+                  <td className="px-4 py-3 text-brand-ink/45 tabular-nums">{index + 1}</td>
                   <td className="px-4 py-3 font-medium">
                     <Link href={`/community/notice/${item.slug}`} className="text-brand hover:underline">
                       {item.title[loc] ?? item.title.ko}

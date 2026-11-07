@@ -17,7 +17,7 @@ export default async function CertificationsPage({
 
   return (
     <div>
-      <PageHero kicker={t("kicker")} title={t("title")} lede={t("lede")} image={images.usa} />
+      <PageHero kicker={t("kicker")} title={t("title")} image={images.usa} />
       <section className="mx-auto max-w-5xl px-6 py-14">
         <MediaList items={items} locale={locale} />
       </section>

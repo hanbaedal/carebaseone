@@ -58,9 +58,6 @@ export default async function HomePage({
             <h1 className="font-display animate-[fadeUp_0.8s_ease_both] mt-5 text-4xl leading-[1.2] text-brand-ink md:text-6xl">
               {t("home.headline")}
             </h1>
-            <p className="animate-[fadeUp_0.9s_ease_both] mt-6 max-w-xl text-base leading-8 text-brand-ink/75 md:text-lg">
-              {t("home.lede")}
-            </p>
             <div className="animate-[fadeUp_1s_ease_both] mt-10 flex flex-wrap gap-3">
               <CtaLink href="/product">
                 {t("cta.products")}
@@ -125,7 +122,6 @@ export default async function HomePage({
         <h2 className="font-display mt-3 text-3xl text-brand-ink md:text-4xl">
           {t("home.forPeople")}
         </h2>
-        <p className="mt-4 max-w-xl text-brand-ink/70">{t("home.forPeopleLede")}</p>
         <div className="mt-12 grid gap-4 md:grid-cols-5">
           {solutions.map((item) => (
             <Link key={item.key} href="/solution" className="group">
@@ -153,7 +149,6 @@ export default async function HomePage({
               {t("home.inLifeMark")}
             </p>
             <h2 className="font-display mt-3 text-3xl md:text-4xl">{t("home.inLife")}</h2>
-            <p className="mt-4 text-white/80">{t("home.inLifeLede")}</p>
             <div className="mt-8 grid gap-4">
               {products.map((item) => (
                 <p key={item.key} className="border-t border-white/20 pt-4 text-sm">
@@ -189,7 +184,6 @@ export default async function HomePage({
         <h2 className="font-display mt-3 text-3xl text-brand-ink md:text-4xl">
           {t("home.forPartners")}
         </h2>
-        <p className="mt-4 max-w-xl text-brand-ink/70">{t("home.forPartnersLede")}</p>
         <div className="mt-12 grid gap-4 md:grid-cols-3">
           {(
             [

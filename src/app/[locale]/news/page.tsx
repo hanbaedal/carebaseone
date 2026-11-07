@@ -18,7 +18,6 @@ export default async function NewsPage({
       <PageHero
         kicker={t("kicker")}
         title={t("title")}
-        lede={t("lede")}
         image={images.lab}
       />
       <section className="mx-auto max-w-6xl px-6 py-20">

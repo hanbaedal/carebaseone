@@ -30,15 +30,11 @@ export default async function BusinessPage({
       <PageHero
         kicker={t("business.kicker")}
         title={t("business.title")}
-        lede={t("business.lede")}
         image={images.lab}
       />
       <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-[1.1fr_0.9fr]">
         <div>
-          <p className="max-w-lg text-base leading-8 text-ink/75">
-            {t("business.invite")}
-          </p>
-          <ul className="mt-8 grid gap-2 text-sm tracking-[0.04em] text-ink/70">
+          <ul className="grid gap-2 text-sm tracking-[0.04em] text-ink/70">
             {nodeKeys.map((key) => (
               <li key={key} className="border-b border-ink/10 py-2">
                 {t(`business.nodes.${key}`)}

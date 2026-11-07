@@ -8,9 +8,11 @@ function fileHref(item: MediaDoc) {
 export async function MediaArchiveTable({
   items,
   locale,
+  rowOffset = 0,
 }: {
   items: MediaDoc[];
   locale: string;
+  rowOffset?: number;
 }) {
   const t = await getTranslations("community");
   if (items.length === 0) {
@@ -35,9 +37,10 @@ export async function MediaArchiveTable({
           {items.map((item, index) => {
             const title = item.title[loc] ?? item.title.ko;
             const summary = (item.summary[loc] ?? item.summary.ko) || "—";
+            const rowNo = rowOffset + index + 1;
             return (
               <tr key={item.slug} className="border-b border-line/80 last:border-0 hover:bg-brand/[0.03]">
-                <td className="px-4 py-3 text-brand-ink/45 tabular-nums">{items.length - index}</td>
+                <td className="px-4 py-3 text-brand-ink/45 tabular-nums">{rowNo}</td>
                 <td className="px-4 py-3 font-medium text-brand-ink">
                   <a
                     href={fileHref(item)}

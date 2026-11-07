@@ -26,7 +26,6 @@ export default async function SolutionPage({
       <PageHero
         kicker={t("solution.kicker")}
         title={t("solution.title")}
-        lede={t("solution.lede")}
         image={images.wellness}
       />
       <section className="mx-auto max-w-6xl px-6 py-20">

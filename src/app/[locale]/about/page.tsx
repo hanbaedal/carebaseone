@@ -20,7 +20,6 @@ export default async function AboutPage({
       <PageHero
         kicker={t("kicker")}
         title={t("title")}
-        lede={t("lede")}
         image={images.close}
       />
       <section className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-3">
