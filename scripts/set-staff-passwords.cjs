@@ -8,6 +8,7 @@ const { randomBytes, scrypt } = require("node:crypto");
 const { promisify } = require("node:util");
 
 const scryptAsync = promisify(scrypt);
+const { formatKoreaDateTimeStorage } = require("./korea-time.cjs");
 
 async function hashPassword(password) {
   const salt = randomBytes(16).toString("hex");
@@ -36,13 +37,15 @@ async function main() {
     const username = args[i].trim().toLowerCase();
     const password = args[i + 1];
     const passwordHash = await hashPassword(password);
+    const synced = new Date();
     const res = await users.updateOne(
       { username },
       {
         $set: {
           passwordHash,
           passwordPlain: password,
-          seedSyncedAt: new Date(),
+          seedSyncedAt: synced,
+          seedSyncedAtKst: formatKoreaDateTimeStorage(synced),
           disabled: false,
         },
       },

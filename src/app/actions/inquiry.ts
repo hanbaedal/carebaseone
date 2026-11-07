@@ -1,21 +1,12 @@
 "use server";
 
+import type { InquiryDoc } from "@/lib/db";
+import { mongoCreated } from "@/lib/korea-time";
 import { getCollection } from "@/lib/mongodb";
 
 export type InquiryState = {
   ok: boolean;
   message?: string;
-};
-
-type Inquiry = {
-  audience: string;
-  name: string;
-  email: string;
-  organization: string;
-  country: string;
-  partnerType: string;
-  message: string;
-  createdAt: Date;
 };
 
 export async function submitInquiry(
@@ -31,7 +22,7 @@ export async function submitInquiry(
     return { ok: false, message: "required" };
   }
 
-  const inquiry: Inquiry = {
+  const inquiry: InquiryDoc = {
     audience,
     name,
     email,
@@ -39,11 +30,11 @@ export async function submitInquiry(
     country: String(formData.get("country") ?? "").trim(),
     partnerType: String(formData.get("partnerType") ?? "").trim(),
     message,
-    createdAt: new Date(),
+    ...mongoCreated(),
   };
 
   try {
-    const inquiries = await getCollection<Inquiry>("inquiries");
+    const inquiries = await getCollection<InquiryDoc>("inquiries");
     await inquiries.insertOne(inquiry);
   } catch (error) {
     console.error("[CAREBASE inquiry]", error);

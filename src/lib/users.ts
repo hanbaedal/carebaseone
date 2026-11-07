@@ -1,3 +1,4 @@
+import { formatKoreaDateTimeStorage, mongoCreated } from "@/lib/korea-time";
 import { hashPassword, verifyPassword } from "@/lib/password";
 import type { Role } from "@/lib/session";
 import { activity, ensureIndexes, users, type UserDoc } from "@/lib/db";
@@ -51,14 +52,16 @@ export async function ensureSeedUsers(options?: { syncPasswords?: boolean }) {
     const existing = await findSeedUser(collection, { username, role: seed.role });
 
     if (!existing) {
+      const synced = new Date();
       await collection.insertOne({
         username,
         passwordHash: await hashPassword(password),
         passwordPlain: password,
-        seedSyncedAt: new Date(),
+        seedSyncedAt: synced,
+        seedSyncedAtKst: formatKoreaDateTimeStorage(synced),
         role: seed.role,
         disabled: false,
-        createdAt: new Date(),
+        ...mongoCreated(synced),
         createdBy: "seed",
       });
       continue;
@@ -71,7 +74,9 @@ export async function ensureSeedUsers(options?: { syncPasswords?: boolean }) {
     if (syncPasswords) {
       update.passwordHash = await hashPassword(password);
       update.passwordPlain = password;
-      update.seedSyncedAt = new Date();
+      const synced = new Date();
+      update.seedSyncedAt = synced;
+      update.seedSyncedAtKst = formatKoreaDateTimeStorage(synced);
     }
     if (existing.username !== username) {
       update.username = username;
@@ -167,7 +172,7 @@ export async function createAdmin(input: {
     passwordPlain: input.password,
     role: "admin",
     disabled: false,
-    createdAt: new Date(),
+    ...mongoCreated(),
     createdBy: input.createdBy,
   });
   await recordActivity({
@@ -222,5 +227,5 @@ export async function recordActivity(entry: {
   action: string;
   detail: string;
 }) {
-  await (await activity()).insertOne({ ...entry, createdAt: new Date() });
+  await (await activity()).insertOne({ ...entry, ...mongoCreated() });
 }

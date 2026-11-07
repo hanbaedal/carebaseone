@@ -2,6 +2,7 @@ import ko from "@/messages/ko.json";
 import en from "@/messages/en.json";
 import zh from "@/messages/zh.json";
 import { contents, ensureIndexes } from "@/lib/db";
+import { mongoUpdated } from "@/lib/korea-time";
 import { recordActivity } from "@/lib/users";
 import type { Role } from "@/lib/session";
 import { translateFromKorean } from "@/lib/translate";
@@ -150,7 +151,6 @@ export async function saveSection(input: {
 
   await ensureIndexes();
   const collection = await contents();
-  const now = new Date();
   for (const [locale, messages] of [
     ["ko", koDoc],
     ["en", enDoc],
@@ -161,7 +161,7 @@ export async function saveSection(input: {
       {
         $set: {
           messages,
-          updatedAt: now,
+          ...mongoUpdated(),
           updatedBy: input.username,
         },
       },

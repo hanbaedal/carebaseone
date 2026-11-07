@@ -9,6 +9,7 @@ import { updateOrderStatus } from "@/lib/orders";
 import { deleteInquiry } from "@/lib/inquiries";
 import { ensureIndexes, media, type MediaCategory } from "@/lib/db";
 import { deleteMedia, upsertMedia } from "@/lib/media-crud";
+import { mongoUpdated } from "@/lib/korea-time";
 import type { MemberTier, PostType } from "@/lib/db";
 
 async function requireStaff() {
@@ -96,7 +97,7 @@ export async function toggleMedia(formData: FormData) {
   await ensureIndexes();
   const slug = String(formData.get("slug") ?? "");
   const published = formData.get("published") === "true";
-  await (await media()).updateOne({ slug }, { $set: { published, updatedAt: new Date() } });
+  await (await media()).updateOne({ slug }, { $set: { published, ...mongoUpdated() } });
   redirect("/admin/media?status=saved");
 }
 

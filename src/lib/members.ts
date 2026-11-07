@@ -1,3 +1,4 @@
+import { formatKoreaDateTimeStorage, mongoCreated, mongoCreatedUpdated, mongoUpdated } from "@/lib/korea-time";
 import { hashPassword, verifyPassword } from "@/lib/password";
 import {
   ensureIndexes,
@@ -60,7 +61,6 @@ export async function registerMember(input: {
   }
   const col = await members();
   if (await col.findOne({ username })) return "이미 사용 중인 아이디입니다.";
-  const now = new Date();
   await col.insertOne({
     username,
     passwordHash: await hashPassword(input.password),
@@ -77,8 +77,7 @@ export async function registerMember(input: {
     signupChannel: input.signupChannel ?? "local",
     oauthId: input.oauthId,
     phoneVerified: false,
-    createdAt: now,
-    updatedAt: now,
+    ...mongoCreatedUpdated(),
   });
   return null;
 }
@@ -116,14 +115,15 @@ export async function setMemberStatus(input: {
   const col = await members();
   const doc = await col.findOne({ username: input.username });
   if (!doc) return "회원을 찾을 수 없습니다.";
-  const now = new Date();
   const update: Partial<MemberDoc> = {
     status: input.status,
-    updatedAt: now,
+    ...mongoUpdated(),
   };
   if (input.tier) update.tier = input.tier;
   if (input.status === "approved") {
-    update.approvedAt = now;
+    const approvedAt = update.updatedAt!;
+    update.approvedAt = approvedAt;
+    update.approvedAtKst = formatKoreaDateTimeStorage(approvedAt);
     update.approvedBy = input.actor;
     if (!input.tier) update.tier = doc.tier ?? "general";
   }
@@ -156,7 +156,7 @@ export async function updateMemberProfile(
   const col = await members();
   const doc = await col.findOne({ username });
   if (!doc || doc.status !== "approved") return "수정할 수 없습니다.";
-  const update: Partial<MemberDoc> = { updatedAt: new Date() };
+  const update: Partial<MemberDoc> = { ...mongoUpdated() };
   if (input.email) update.email = input.email.trim();
   if (input.phone) update.phone = input.phone.trim();
   if (input.zipcode) update.zipcode = input.zipcode.trim();

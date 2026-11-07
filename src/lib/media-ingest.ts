@@ -1,4 +1,5 @@
 import { ensureIndexes, media } from "@/lib/db";
+import { mongoUpdated } from "@/lib/korea-time";
 import {
   mediaApiPath,
   resolveMediaDiskPath,
@@ -17,7 +18,7 @@ export async function ensureMediaBinary(slug: string, fileName: string, mime: st
   if (!disk) {
     await col.updateOne(
       { slug },
-      { $set: { storage: "missing", updatedAt: new Date() } },
+      { $set: { storage: "missing", ...mongoUpdated() } },
     );
     return;
   }
@@ -34,7 +35,7 @@ export async function ensureMediaBinary(slug: string, fileName: string, mime: st
         size,
         storage: "gridfs",
         filePath: mediaApiPath(slug),
-        updatedAt: new Date(),
+        ...mongoUpdated(),
       },
     },
   );

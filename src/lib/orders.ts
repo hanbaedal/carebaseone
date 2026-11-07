@@ -1,6 +1,6 @@
 import { randomBytes } from "node:crypto";
 import { ensureIndexes, orders, type OrderStatus } from "@/lib/db";
-import { koreaYmd } from "@/lib/korea-time";
+import { koreaYmd, mongoCreatedUpdated, mongoUpdated } from "@/lib/korea-time";
 import { listActiveProducts, ensureProductSeed } from "@/lib/products";
 
 function orderNo() {
@@ -23,7 +23,6 @@ export async function createOrder(input: {
   const qty = Math.max(1, Math.min(99, input.qty));
   const price = product.price;
   const total = price * qty;
-  const now = new Date();
   await ensureIndexes();
   await (await orders()).insertOne({
     orderNo: orderNo(),
@@ -42,8 +41,7 @@ export async function createOrder(input: {
     shippingPhone: input.shippingPhone.trim(),
     shippingAddress: input.shippingAddress.trim(),
     note: input.note.trim(),
-    createdAt: now,
-    updatedAt: now,
+    ...mongoCreatedUpdated(),
   });
   return null;
 }
@@ -67,7 +65,7 @@ export async function updateOrderStatus(orderNo: string, status: string) {
   if (!allowed.includes(status as OrderStatus)) return "상태값이 올바르지 않습니다.";
   await (await orders()).updateOne(
     { orderNo },
-    { $set: { status: status as OrderStatus, updatedAt: new Date() } },
+    { $set: { status: status as OrderStatus, ...mongoUpdated() } },
   );
   return null;
 }

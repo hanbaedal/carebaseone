@@ -9,6 +9,7 @@ const { randomBytes, scrypt } = require("node:crypto");
 const { promisify } = require("node:util");
 
 const scryptAsync = promisify(scrypt);
+const { formatKoreaDateTimeStorage, mongoCreatedUpdated } = require("./korea-time.cjs");
 
 async function hashPassword(password) {
   const salt = randomBytes(16).toString("hex");
@@ -49,16 +50,17 @@ async function main() {
   const deleted = await users.deleteMany({});
   console.log(`[reset-staff] 기존 계정 ${deleted.deletedCount}건 삭제`);
 
-  const now = new Date();
   for (const account of accounts) {
+    const synced = new Date();
     await users.insertOne({
       username: account.username,
       passwordHash: await hashPassword(account.password),
       passwordPlain: account.password,
-      seedSyncedAt: now,
+      seedSyncedAt: synced,
+      seedSyncedAtKst: formatKoreaDateTimeStorage(synced),
       role: account.role,
       disabled: false,
-      createdAt: now,
+      ...mongoCreatedUpdated(synced),
       createdBy: "seed",
     });
     console.log(`[reset-staff] 생성: ${account.username} (${account.role})`);

@@ -2,6 +2,7 @@ import path from "node:path";
 import manifest from "@/data/media-manifest.json";
 import mediaI18n from "@/data/media-i18n.json";
 import { ensureIndexes, media, type MediaCategory } from "@/lib/db";
+import { mongoCreatedUpdated, mongoUpdated } from "@/lib/korea-time";
 import { ingestAllMediaBinaries } from "@/lib/media-ingest";
 import { mediaApiPath } from "@/lib/media-storage";
 
@@ -51,7 +52,6 @@ async function runMediaSeed() {
   try {
     await ensureIndexes();
     const col = await media();
-    const now = new Date();
     for (const item of manifest) {
       const ext = path.extname(item.fileName) || ".pdf";
       const mime = mimeByExt[ext.toLowerCase()] ?? "application/octet-stream";
@@ -72,8 +72,7 @@ async function runMediaSeed() {
           published: true,
           storage: "missing",
           createdBy: "CAREBASE",
-          createdAt: now,
-          updatedAt: now,
+          ...mongoCreatedUpdated(),
         });
       }
     }
@@ -84,7 +83,7 @@ async function runMediaSeed() {
         {
           $set: {
             filePath: { $concat: ["/api/media/", "$slug"] },
-            updatedAt: new Date(),
+            ...mongoUpdated(),
           },
         },
       ],

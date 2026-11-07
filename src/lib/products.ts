@@ -3,6 +3,7 @@ import ko from "@/messages/ko.json";
 import en from "@/messages/en.json";
 import zh from "@/messages/zh.json";
 import { ensureIndexes, products } from "@/lib/db";
+import { mongoCreated, mongoUpdated } from "@/lib/korea-time";
 
 type CatalogLines = Record<string, { title: string; summary: string }>;
 
@@ -27,9 +28,9 @@ const storeLines = catalog.lines.filter((line) =>
 export async function ensureProductSeed() {
   await ensureIndexes();
   const col = await products();
-  const now = new Date();
   for (const item of storeLines) {
     const text = lineTexts(item.slug);
+    const insert = mongoCreated();
     await col.updateOne(
       { slug: item.slug },
       {
@@ -37,11 +38,11 @@ export async function ensureProductSeed() {
           title: text.title,
           summary: text.summary,
           active: true,
-          updatedAt: now,
+          ...mongoUpdated(),
         },
         $setOnInsert: {
           price: 0,
-          createdAt: now,
+          ...insert,
         },
       },
       { upsert: true },

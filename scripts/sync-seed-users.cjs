@@ -7,6 +7,7 @@ const { randomBytes, scrypt } = require("node:crypto");
 const { promisify } = require("node:util");
 
 const scryptAsync = promisify(scrypt);
+const { formatKoreaDateTimeStorage, mongoCreated } = require("./korea-time.cjs");
 
 async function hashPassword(password) {
   const salt = randomBytes(16).toString("hex");
@@ -63,25 +64,28 @@ async function main() {
     const existing = await findSeedUser(users, seed);
 
     if (!existing) {
-      const now = new Date();
+      const synced = new Date();
       await users.insertOne({
         username: seed.username,
         passwordHash,
         passwordPlain: seed.password,
-        seedSyncedAt: now,
+        seedSyncedAt: synced,
+        seedSyncedAtKst: formatKoreaDateTimeStorage(synced),
         role: seed.role,
         disabled: false,
-        createdAt: now,
+        ...mongoCreated(synced),
         createdBy: "seed",
       });
       console.log(`[sync-seed-users] 생성: ${seed.username} (${seed.role})`);
       continue;
     }
 
+    const synced = new Date();
     const set = {
       passwordHash,
       passwordPlain: seed.password,
-      seedSyncedAt: new Date(),
+      seedSyncedAt: synced,
+      seedSyncedAtKst: formatKoreaDateTimeStorage(synced),
       role: seed.role,
       disabled: false,
     };

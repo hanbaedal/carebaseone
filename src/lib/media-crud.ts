@@ -1,4 +1,5 @@
 import { ensureIndexes, media, type MediaAudience, type MediaCategory } from "@/lib/db";
+import { mongoCreatedUpdated, mongoUpdated } from "@/lib/korea-time";
 import { removeGridFsBySlug, uploadMediaBuffer, mediaApiPath } from "@/lib/media-storage";
 
 const slugRe = /^[a-z0-9][a-z0-9-]{2,48}$/;
@@ -24,7 +25,6 @@ export async function upsertMedia(input: {
   }
 
   const col = await media();
-  const now = new Date();
   const existing = await col.findOne({ slug });
 
   let gridFsId = existing?.gridFsId;
@@ -64,13 +64,12 @@ export async function upsertMedia(input: {
     storage,
     gridFsId,
     createdBy: existing?.createdBy ?? input.createdBy,
-    updatedAt: now,
   };
 
   if (!existing) {
-    await col.insertOne({ ...doc, createdAt: now });
+    await col.insertOne({ ...doc, ...mongoCreatedUpdated() });
   } else {
-    await col.updateOne({ slug }, { $set: doc });
+    await col.updateOne({ slug }, { $set: { ...doc, ...mongoUpdated() } });
   }
   return null;
 }

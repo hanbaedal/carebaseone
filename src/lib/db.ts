@@ -8,9 +8,11 @@ export type UserDoc = {
   /** 가입·변경 시 입력값 그대로(Compass 확인용). 로그인은 passwordHash 만 사용 */
   passwordPlain?: string;
   seedSyncedAt?: Date;
+  seedSyncedAtKst?: string;
   role: Role;
   disabled: boolean;
   createdAt: Date;
+  createdAtKst?: string;
   createdBy: string;
 };
 
@@ -36,8 +38,11 @@ export type MemberDoc = {
   oauthId?: string;
   phoneVerified: boolean;
   createdAt: Date;
+  createdAtKst?: string;
   updatedAt: Date;
+  updatedAtKst?: string;
   approvedAt?: Date;
+  approvedAtKst?: string;
   approvedBy?: string;
 };
 
@@ -51,12 +56,15 @@ export type PostDoc = {
   title: Record<"ko" | "en" | "zh", string>;
   body: Record<"ko" | "en" | "zh", string>;
   eventAt?: Date;
+  eventAtKst?: string;
   eventPlace?: string;
   mediaIds: string[];
   pinned: boolean;
   published: boolean;
   createdAt: Date;
+  createdAtKst?: string;
   updatedAt: Date;
+  updatedAtKst?: string;
   createdBy: string;
 };
 
@@ -88,7 +96,9 @@ export type MediaDoc = {
   gridFsId?: string;
   createdBy: string;
   createdAt: Date;
+  createdAtKst?: string;
   updatedAt: Date;
+  updatedAtKst?: string;
 };
 
 export type ProductDoc = {
@@ -98,7 +108,9 @@ export type ProductDoc = {
   price: number;
   active: boolean;
   createdAt: Date;
+  createdAtKst?: string;
   updatedAt: Date;
+  updatedAtKst?: string;
 };
 
 export type OrderStatus =
@@ -119,13 +131,16 @@ export type OrderDoc = {
   shippingAddress: string;
   note: string;
   createdAt: Date;
+  createdAtKst?: string;
   updatedAt: Date;
+  updatedAtKst?: string;
 };
 
 export type ContentDoc = {
   locale: "ko" | "en" | "zh";
   messages: Record<string, Json>;
   updatedAt: Date;
+  updatedAtKst?: string;
   updatedBy: string;
 };
 
@@ -135,6 +150,7 @@ export type PageViewDoc = {
   device: "pc" | "mobile";
   kind: "guest" | "staff";
   createdAt: Date;
+  createdAtKst?: string;
 };
 
 export type InquiryDoc = {
@@ -147,6 +163,7 @@ export type InquiryDoc = {
   message: string;
   memberUsername?: string;
   createdAt: Date;
+  createdAtKst?: string;
 };
 
 export type ActivityDoc = {
@@ -155,6 +172,7 @@ export type ActivityDoc = {
   action: string;
   detail: string;
   createdAt: Date;
+  createdAtKst?: string;
 };
 
 let indexesReady = false;

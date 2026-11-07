@@ -1,4 +1,5 @@
 import { ensureIndexes, posts, type PostDoc, type PostType } from "@/lib/db";
+import { formatKoreaDateTimeStorage, mongoCreated, mongoUpdated } from "@/lib/korea-time";
 import { ensurePostSeed } from "@/lib/seed-posts";
 
 export async function listPosts(type: PostType, memberOk: boolean) {
@@ -27,12 +28,16 @@ export async function upsertPost(
   input: Omit<PostDoc, "createdAt" | "updatedAt"> & { createdAt?: Date },
 ) {
   await ensureIndexes();
-  const now = new Date();
+  const createdAt = input.createdAt ?? new Date();
+  const updated = mongoUpdated();
+  const insert = mongoCreated(createdAt);
+  const eventAtKst =
+    input.eventAt != null ? { eventAtKst: formatKoreaDateTimeStorage(input.eventAt) } : {};
   await (await posts()).updateOne(
     { slug: input.slug },
     {
-      $set: { ...input, updatedAt: now },
-      $setOnInsert: { createdAt: input.createdAt ?? now },
+      $set: { ...input, ...updated, ...eventAtKst },
+      $setOnInsert: insert,
     },
     { upsert: true },
   );

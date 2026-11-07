@@ -1,5 +1,5 @@
 import { activity, ensureIndexes, pageviews, type PageViewDoc } from "@/lib/db";
-import { startOfKoreaToday } from "@/lib/korea-time";
+import { mongoCreated, startOfKoreaToday } from "@/lib/korea-time";
 
 export async function recordPageView(input: {
   path: string;
@@ -8,7 +8,7 @@ export async function recordPageView(input: {
   kind: PageViewDoc["kind"];
 }) {
   await ensureIndexes();
-  await (await pageviews()).insertOne({ ...input, createdAt: new Date() });
+  await (await pageviews()).insertOne({ ...input, ...mongoCreated() });
 }
 
 export async function getDashboard() {
