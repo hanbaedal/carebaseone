@@ -214,6 +214,9 @@
   "productCatalog": {
     "doc": "File",
     "archiveLink": "Archive",
+    "viewDetail": "View details",
+    "close": "Close",
+    "relatedDocs": "Related files (PDF)",
     "lines": {
       "muscle-joint-patch": {
         "title": "Bio Healing muscle & joint patch",

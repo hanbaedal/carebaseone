@@ -1,6 +1,9 @@
 import { getLocale, getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
 import catalog from "@/data/product-catalog.json";
+import {
+  ProductCatalogCards,
+  type ProductCatalogCard,
+} from "@/components/ProductCatalogCards";
 
 export async function ProductLineGrid({
   category,
@@ -13,42 +16,28 @@ export async function ProductLineGrid({
   const lineText = t as unknown as (key: string) => string;
   const lines = catalog.lines.filter((l) => l.category === category);
 
+  const items: ProductCatalogCard[] = lines.map((line) => ({
+    slug: line.slug,
+    title: lineText(`lines.${line.slug}.title`),
+    summary: lineText(`lines.${line.slug}.summary`),
+    image: line.image,
+    gallery: line.gallery ?? [],
+    mediaHrefs: line.mediaHrefs ?? [],
+  }));
+
   return (
     <section className="mt-14">
       <h2 className="font-display text-2xl text-brand-ink">{heading}</h2>
-      <div className="mt-8 grid gap-8 sm:grid-cols-2">
-        {lines.map((line) => (
-          <article
-            key={line.slug}
-            className="flex flex-col rounded-2xl border border-line bg-white p-5"
-          >
-            <h3 className="text-lg font-semibold text-brand-ink">
-              {lineText(`lines.${line.slug}.title`)}
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-brand-ink/70">
-              {lineText(`lines.${line.slug}.summary`)}
-            </p>
-            {line.mediaHrefs && line.mediaHrefs.length > 0 ? (
-              <div className="mt-4 flex flex-wrap gap-2">
-                {line.mediaHrefs.map((href) => (
-                  <a
-                    key={href}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-brand underline-offset-2 hover:underline"
-                  >
-                    {t("doc")}
-                  </a>
-                ))}
-                <Link href="/community/archive" className="text-xs text-brand-ink/50">
-                  {t("archiveLink")} →
-                </Link>
-              </div>
-            ) : null}
-          </article>
-        ))}
-      </div>
+      <ProductCatalogCards
+        items={items}
+        labels={{
+          doc: t("doc"),
+          archiveLink: t("archiveLink"),
+          viewDetail: t("viewDetail"),
+          close: t("close"),
+          relatedDocs: t("relatedDocs"),
+        }}
+      />
     </section>
   );
 }

@@ -214,6 +214,9 @@
   "productCatalog": {
     "doc": "资料",
     "archiveLink": "资料室",
+    "viewDetail": "查看详情",
+    "close": "关闭",
+    "relatedDocs": "相关资料（PDF）",
     "lines": {
       "muscle-joint-patch": {
         "title": "Bio Healing 肌肉关节贴",

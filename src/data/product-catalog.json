@@ -8,6 +8,7 @@
     {
       "slug": "muscle-joint-patch",
       "category": "patch",
+      "image": "/images/products/patch-line-promo.png",
       "mediaHrefs": [
         "/api/media/patch-coi",
         "/api/media/patch-ingredients-2026",
@@ -18,46 +19,62 @@
     {
       "slug": "muscle-joint-hot-patch",
       "category": "patch",
+      "image": "/images/products/patch-line-promo.png",
       "mediaHrefs": ["/api/media/spec-muscle-joint-hot"]
     },
     {
       "slug": "slim-hot-patch",
       "category": "patch",
+      "image": "/images/products/patch-line-promo.png",
       "mediaHrefs": ["/api/media/spec-slim-hot-no"]
     },
     {
       "slug": "good-night-nose-patch",
       "category": "patch",
+      "image": "/images/products/patch-line-promo.png",
       "mediaHrefs": ["/api/media/spec-good-night-nose"]
     },
     {
       "slug": "multi-memory-patch",
       "category": "patch",
+      "image": "/images/products/patch-line-promo.png",
       "mediaHrefs": ["/api/media/spec-multi-memory"]
     },
     {
       "slug": "energy-focus-patch",
       "category": "patch",
+      "image": "/images/products/patch-line-promo.png",
       "mediaHrefs": ["/api/media/spec-energy-focus"]
     },
     {
       "slug": "us-miracle-patch",
       "category": "patch",
+      "image": "/images/products/us-recoverx-line.jpg",
+      "gallery": ["/images/products/us-recoverx-line.jpg", "/images/products/patch-line-promo.png"],
       "mediaHrefs": ["/api/media/us-miracle-patch-pdf"]
     },
     {
       "slug": "us-hot-patch",
       "category": "patch",
+      "image": "/images/products/us-recoverx-line.jpg",
+      "gallery": ["/images/products/us-recoverx-line.jpg"],
       "mediaHrefs": ["/api/media/us-miracle-patch-pdf"]
     },
     {
       "slug": "jaryeon-cushion",
       "category": "cosmetics",
+      "image": "/images/products/jaryeon-cushion.jpg",
+      "gallery": [
+        "/images/products/jaryeon-cushion.jpg",
+        "/images/products/jaryeon-cushion-open.jpg",
+        "/images/products/jaryeon-cushion-box.jpg"
+      ],
       "mediaHrefs": []
     },
     {
       "slug": "happy-no",
       "category": "beverage",
+      "image": "/images/site/drink.jpg",
       "mediaHrefs": []
     }
   ]

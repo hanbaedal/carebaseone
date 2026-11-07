@@ -214,6 +214,9 @@
   "productCatalog": {
     "doc": "자료",
     "archiveLink": "자료실",
+    "viewDetail": "자세히 보기",
+    "close": "닫기",
+    "relatedDocs": "관련 자료 (PDF)",
     "lines": {
       "muscle-joint-patch": {
         "title": "바이오힐링 근육관절 패치",
