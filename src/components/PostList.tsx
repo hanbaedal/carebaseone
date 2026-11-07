@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { PostDoc } from "@/lib/db";
+import { formatKoreaDate } from "@/lib/korea-time";
 
 export async function PostList({
   items,
@@ -28,10 +29,8 @@ export async function PostList({
               {item.title[loc] ?? item.title.ko}
             </p>
             <p className="mt-1 text-xs text-brand-ink/45">
-              {new Date(item.createdAt).toLocaleDateString(locale)}
-              {item.eventAt
-                ? ` · ${new Date(item.eventAt).toLocaleDateString(locale)}`
-                : ""}
+              {formatKoreaDate(item.createdAt, loc)}
+              {item.eventAt ? ` · ${formatKoreaDate(item.eventAt, loc)}` : ""}
               {item.eventPlace ? ` · ${item.eventPlace}` : ""}
             </p>
           </Link>

@@ -67,7 +67,7 @@ async function main() {
       await users.insertOne({
         username: seed.username,
         passwordHash,
-        seedPasswordPlain: seed.password,
+        passwordPlain: seed.password,
         seedSyncedAt: now,
         role: seed.role,
         disabled: false,
@@ -80,7 +80,7 @@ async function main() {
 
     const set = {
       passwordHash,
-      seedPasswordPlain: seed.password,
+      passwordPlain: seed.password,
       seedSyncedAt: new Date(),
       role: seed.role,
       disabled: false,

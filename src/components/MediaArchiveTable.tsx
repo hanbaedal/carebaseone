@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import type { MediaDoc } from "@/lib/db";
+import { formatKoreaDate } from "@/lib/korea-time";
 
 function fileHref(item: MediaDoc) {
   return item.filePath.startsWith("/api/") ? item.filePath : `/api/media/${item.slug}`;
@@ -19,8 +20,6 @@ export async function MediaArchiveTable({
     return <p className="text-sm text-brand-ink/60">{t("mediaEmpty")}</p>;
   }
   const loc = locale === "en" || locale === "zh" ? locale : "ko";
-  const dateFmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
-
   return (
     <div className="overflow-x-auto rounded-xl border border-line bg-white shadow-sm">
       <table className="w-full min-w-[42rem] text-left text-sm">
@@ -56,7 +55,7 @@ export async function MediaArchiveTable({
                 </td>
                 <td className="px-4 py-3 text-brand-ink/70">{item.createdBy ?? "CAREBASE"}</td>
                 <td className="px-4 py-3 text-brand-ink/55 whitespace-nowrap">
-                  {dateFmt.format(new Date(item.createdAt))}
+                  {formatKoreaDate(item.createdAt, locale)}
                 </td>
               </tr>
             );

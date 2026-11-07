@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getApprovedMember } from "@/lib/member-session";
 import { listOrdersForMember } from "@/lib/orders";
 import { resolveLocale } from "@/lib/locale";
+import { formatKoreaDateTime } from "@/lib/korea-time";
 
 const labels: Record<string, string> = {
   received: "접수",
@@ -16,7 +17,8 @@ export default async function MemberOrdersPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  resolveLocale((await params).locale);
+  const { locale } = await params;
+  resolveLocale(locale);
   const member = await getApprovedMember();
   if (!member) redirect("/member/login");
   const orders = await listOrdersForMember(member.username);
@@ -33,7 +35,7 @@ export default async function MemberOrdersPage({
             </p>
             <p className="mt-1 text-brand-ink/50">
               {labels[order.status] ?? order.status} ·{" "}
-              {new Date(order.createdAt).toLocaleString("ko-KR")}
+              {formatKoreaDateTime(order.createdAt, locale)}
             </p>
           </li>
         ))}

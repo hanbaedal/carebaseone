@@ -1,14 +1,5 @@
 import { activity, ensureIndexes, pageviews, type PageViewDoc } from "@/lib/db";
-
-function seoulStartOfToday() {
-  const day = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Asia/Seoul",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(new Date());
-  return new Date(`${day}T00:00:00+09:00`);
-}
+import { startOfKoreaToday } from "@/lib/korea-time";
 
 export async function recordPageView(input: {
   path: string;
@@ -23,7 +14,7 @@ export async function recordPageView(input: {
 export async function getDashboard() {
   await ensureIndexes();
   const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-  const today = seoulStartOfToday();
+  const today = startOfKoreaToday();
   const views = await pageviews();
   const logs = await activity();
 

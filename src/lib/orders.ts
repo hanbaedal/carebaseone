@@ -1,9 +1,10 @@
 import { randomBytes } from "node:crypto";
 import { ensureIndexes, orders, type OrderStatus } from "@/lib/db";
+import { koreaYmd } from "@/lib/korea-time";
 import { listActiveProducts, ensureProductSeed } from "@/lib/products";
 
 function orderNo() {
-  const stamp = new Date().toISOString().slice(0, 10).replaceAll("-", "");
+  const stamp = koreaYmd().replaceAll("-", "");
   return `CB${stamp}${randomBytes(3).toString("hex").toUpperCase()}`;
 }
 

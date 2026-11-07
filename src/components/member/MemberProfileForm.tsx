@@ -17,12 +17,13 @@ export function MemberProfileForm({ member }: { member: MemberPublic }) {
       </p>
       <form action={action} className="grid gap-3 border-t border-line pt-4">
         <label className="grid gap-1 text-sm">
-          새 비밀번호 (선택)
+          새 비밀번호 (선택, 입력한 대로 표시)
           <input
             name="password"
             type="text"
             minLength={8}
             autoComplete="off"
+            spellCheck={false}
             className="border border-line px-3 py-2"
           />
         </label>

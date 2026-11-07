@@ -45,13 +45,14 @@ export default async function UsersPage({
           />
         </label>
         <label className="grid gap-1 text-[11px]">
-          비밀번호
+          비밀번호 (입력한 대로 표시)
           <input
             name="password"
             type="text"
             required
             minLength={8}
-            autoComplete="new-password"
+            autoComplete="off"
+            spellCheck={false}
             className="border border-ink/15 px-2 py-1.5 text-sm outline-none focus:border-forest"
           />
         </label>
@@ -84,8 +85,9 @@ export default async function UsersPage({
                         name="password"
                         type="text"
                         placeholder="새 비밀번호"
-                        autoComplete="new-password"
-                        className="w-28 border border-ink/15 px-1.5 py-1 text-[11px] outline-none focus:border-forest"
+                        autoComplete="off"
+                        spellCheck={false}
+                        className="min-w-36 border border-ink/15 px-1.5 py-1 text-[11px] outline-none focus:border-forest"
                       />
                       <button
                         name="intent"

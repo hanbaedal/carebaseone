@@ -24,12 +24,13 @@ export function LoginForm() {
         />
       </label>
       <label className="grid gap-1 text-xs" htmlFor="password">
-        비밀번호
+        비밀번호 (입력한 대로 표시)
         <input
           id="password"
           name="password"
           type="text"
           autoComplete="off"
+          spellCheck={false}
           required
           className="border border-ink/15 bg-white px-2 py-1.5 text-sm outline-none focus:border-forest"
         />

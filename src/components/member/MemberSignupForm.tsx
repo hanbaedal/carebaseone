@@ -42,7 +42,7 @@ export function MemberSignupForm() {
         ) : null}
       </label>
       <label className="grid gap-1 text-sm" htmlFor="password">
-        비밀번호
+        비밀번호 (입력한 대로 표시)
         <input
           id="password"
           name="password"
@@ -50,6 +50,7 @@ export function MemberSignupForm() {
           required
           minLength={8}
           autoComplete="off"
+          spellCheck={false}
           className="border border-line px-3 py-2"
         />
       </label>
@@ -62,6 +63,7 @@ export function MemberSignupForm() {
           required
           minLength={8}
           autoComplete="off"
+          spellCheck={false}
           className="border border-line px-3 py-2"
         />
       </label>

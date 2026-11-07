@@ -1,4 +1,5 @@
 import { listAllMedia } from "@/lib/media-lib";
+import { formatKoreaDate } from "@/lib/korea-time";
 import { removeMedia, saveMedia, toggleMedia } from "@/app/admin/ops-actions";
 
 export const dynamic = "force-dynamic";
@@ -79,7 +80,7 @@ export default async function AdminMediaPage({
                 <td className="max-w-[14rem] truncate px-2 py-2">{item.title.ko}</td>
                 <td className="px-2 py-2">{item.createdBy ?? "—"}</td>
                 <td className="px-2 py-2 whitespace-nowrap">
-                  {new Date(item.createdAt).toLocaleDateString("ko-KR")}
+                  {formatKoreaDate(item.createdAt)}
                 </td>
                 <td className="px-2 py-2">
                   <a href={item.filePath} className="text-forest" target="_blank" rel="noreferrer">

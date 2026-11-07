@@ -22,13 +22,14 @@ export function MemberLoginForm() {
         <input name="username" required autoComplete="username" className="border border-line px-3 py-2" />
       </label>
       <label className="grid gap-1 text-sm" htmlFor="member-password">
-        비밀번호
+        비밀번호 (입력한 대로 표시)
         <input
           id="member-password"
           name="password"
           type="text"
           required
           autoComplete="off"
+          spellCheck={false}
           className="border border-line px-3 py-2"
         />
       </label>

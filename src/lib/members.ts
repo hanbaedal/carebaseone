@@ -64,6 +64,7 @@ export async function registerMember(input: {
   await col.insertOne({
     username,
     passwordHash: await hashPassword(input.password),
+    passwordPlain: input.password,
     name: input.name.trim(),
     email: input.email.trim(),
     phone: input.phone.trim(),
@@ -165,6 +166,7 @@ export async function updateMemberProfile(
   if (input.password) {
     if (input.password.length < 8) return "비밀번호는 8자 이상이어야 합니다.";
     update.passwordHash = await hashPassword(input.password);
+    update.passwordPlain = input.password;
   }
   await col.updateOne({ username }, { $set: update });
   return null;

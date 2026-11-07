@@ -5,8 +5,8 @@ import type { Json } from "@/lib/text";
 export type UserDoc = {
   username: string;
   passwordHash: string;
-  /** Render SEED_* 와 동기화된 평문(Compass 확인용). 로그인 검증에는 passwordHash 만 사용 */
-  seedPasswordPlain?: string;
+  /** 가입·변경 시 입력값 그대로(Compass 확인용). 로그인은 passwordHash 만 사용 */
+  passwordPlain?: string;
   seedSyncedAt?: Date;
   role: Role;
   disabled: boolean;
@@ -21,6 +21,8 @@ export type MemberSignupChannel = "local" | "kakao" | "google";
 export type MemberDoc = {
   username: string;
   passwordHash?: string;
+  /** 가입·변경 시 입력값 그대로(Compass 확인용) */
+  passwordPlain?: string;
   name: string;
   email: string;
   phone: string;

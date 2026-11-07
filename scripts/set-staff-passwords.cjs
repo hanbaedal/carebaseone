@@ -41,7 +41,7 @@ async function main() {
       {
         $set: {
           passwordHash,
-          seedPasswordPlain: password,
+          passwordPlain: password,
           seedSyncedAt: new Date(),
           disabled: false,
         },

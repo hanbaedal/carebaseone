@@ -1,14 +1,8 @@
 import { listInquiries } from "@/lib/inquiries";
 import { removeInquiry } from "@/app/admin/ops-actions";
+import { formatKoreaDateTime } from "@/lib/korea-time";
 
 export const dynamic = "force-dynamic";
-
-function fmt(d: Date) {
-  return new Intl.DateTimeFormat("ko-KR", {
-    dateStyle: "short",
-    timeStyle: "short",
-  }).format(d);
-}
 
 export default async function AdminInquiriesPage({
   searchParams,
@@ -41,7 +35,7 @@ export default async function AdminInquiriesPage({
           <tbody>
             {rows.map((row) => (
               <tr key={String(row._id)} className="border-t border-ink/10 align-top">
-                <td className="whitespace-nowrap px-2 py-2">{fmt(row.createdAt)}</td>
+                <td className="whitespace-nowrap px-2 py-2">{formatKoreaDateTime(row.createdAt)}</td>
                 <td className="px-2 py-2">{row.audience}</td>
                 <td className="px-2 py-2">{row.name}</td>
                 <td className="px-2 py-2">{row.email}</td>

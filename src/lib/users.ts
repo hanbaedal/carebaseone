@@ -54,7 +54,7 @@ export async function ensureSeedUsers(options?: { syncPasswords?: boolean }) {
       await collection.insertOne({
         username,
         passwordHash: await hashPassword(password),
-        seedPasswordPlain: password,
+        passwordPlain: password,
         seedSyncedAt: new Date(),
         role: seed.role,
         disabled: false,
@@ -70,7 +70,7 @@ export async function ensureSeedUsers(options?: { syncPasswords?: boolean }) {
     };
     if (syncPasswords) {
       update.passwordHash = await hashPassword(password);
-      update.seedPasswordPlain = password;
+      update.passwordPlain = password;
       update.seedSyncedAt = new Date();
     }
     if (existing.username !== username) {
@@ -140,7 +140,7 @@ export function configuredSeedUsernames() {
 export async function listUsers() {
   await ensureIndexes();
   return (await users())
-    .find({}, { projection: { passwordHash: 0, seedPasswordPlain: 0 } })
+    .find({}, { projection: { passwordHash: 0, passwordPlain: 0 } })
     .sort({ role: -1, username: 1 })
     .toArray();
 }
@@ -164,6 +164,7 @@ export async function createAdmin(input: {
   await collection.insertOne({
     username,
     passwordHash: await hashPassword(input.password),
+    passwordPlain: input.password,
     role: "admin",
     disabled: false,
     createdAt: new Date(),
@@ -193,6 +194,7 @@ export async function updateAdmin(input: {
   if (input.password) {
     if (input.password.length < 8) return "비밀번호는 8자 이상이어야 합니다.";
     update.passwordHash = await hashPassword(input.password);
+    update.passwordPlain = input.password;
   }
   if (Object.keys(update).length === 0) return null;
   await collection.updateOne({ username: user.username }, { $set: update });

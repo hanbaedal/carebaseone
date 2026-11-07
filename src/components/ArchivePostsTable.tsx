@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { PostDoc } from "@/lib/db";
+import { formatKoreaDate } from "@/lib/korea-time";
 
 export async function ArchivePostsTable({
   items,
@@ -12,8 +13,6 @@ export async function ArchivePostsTable({
   const t = await getTranslations("community");
   if (items.length === 0) return null;
   const loc = locale === "en" || locale === "zh" ? locale : "ko";
-  const dateFmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
-
   return (
     <div className="mt-12">
       <h2 className="text-sm font-semibold text-brand-ink">{t("archivePosts")}</h2>
@@ -45,7 +44,7 @@ export async function ArchivePostsTable({
                   </td>
                   <td className="px-4 py-3 text-brand-ink/70">{item.createdBy}</td>
                   <td className="px-4 py-3 text-brand-ink/55 whitespace-nowrap">
-                    {dateFmt.format(new Date(item.createdAt))}
+                    {formatKoreaDate(item.createdAt, locale)}
                   </td>
                 </tr>
               );

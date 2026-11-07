@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 import { getDashboard } from "@/lib/stats";
+import { formatKoreaDateTime } from "@/lib/korea-time";
 
 export const dynamic = "force-dynamic";
 
@@ -80,7 +81,7 @@ export default async function StatsPage() {
             {stats.recent.map((item) => (
               <li key={`${item.createdAt.toISOString()}-${item.username}-${item.action}`} className="text-[11px] leading-5">
                 <span className="text-ink/45">
-                  {item.createdAt.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })}
+                  {formatKoreaDateTime(item.createdAt)}
                 </span>
                 <br />
                 {item.username} · {actionLabel[item.action] ?? item.action}
