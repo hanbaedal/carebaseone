@@ -5,6 +5,9 @@ import type { Json } from "@/lib/text";
 export type UserDoc = {
   username: string;
   passwordHash: string;
+  /** Render SEED_* 와 동기화된 평문(Compass 확인용). 로그인 검증에는 passwordHash 만 사용 */
+  seedPasswordPlain?: string;
+  seedSyncedAt?: Date;
   role: Role;
   disabled: boolean;
   createdAt: Date;

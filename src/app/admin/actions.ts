@@ -50,6 +50,13 @@ export async function login(
         action: "login-failed",
         detail: "",
       });
+      const existing = await findUser(username);
+      if (existing && !existing.passwordHash) {
+        return {
+          error:
+            "관리자 계정에 passwordHash 필드가 없습니다. MongoDB carebaseone → users 컬렉션 필드를 확인하세요.",
+        };
+      }
       const userCount = await (await users()).countDocuments({});
       if (userCount === 0) {
         return {

@@ -63,12 +63,15 @@ async function main() {
     const existing = await findSeedUser(users, seed);
 
     if (!existing) {
+      const now = new Date();
       await users.insertOne({
         username: seed.username,
         passwordHash,
+        seedPasswordPlain: seed.password,
+        seedSyncedAt: now,
         role: seed.role,
         disabled: false,
-        createdAt: new Date(),
+        createdAt: now,
         createdBy: "seed",
       });
       console.log(`[sync-seed-users] 생성: ${seed.username} (${seed.role})`);
@@ -77,6 +80,8 @@ async function main() {
 
     const set = {
       passwordHash,
+      seedPasswordPlain: seed.password,
+      seedSyncedAt: new Date(),
       role: seed.role,
       disabled: false,
     };

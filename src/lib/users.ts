@@ -54,6 +54,8 @@ export async function ensureSeedUsers(options?: { syncPasswords?: boolean }) {
       await collection.insertOne({
         username,
         passwordHash: await hashPassword(password),
+        seedPasswordPlain: password,
+        seedSyncedAt: new Date(),
         role: seed.role,
         disabled: false,
         createdAt: new Date(),
@@ -68,6 +70,8 @@ export async function ensureSeedUsers(options?: { syncPasswords?: boolean }) {
     };
     if (syncPasswords) {
       update.passwordHash = await hashPassword(password);
+      update.seedPasswordPlain = password;
+      update.seedSyncedAt = new Date();
     }
     if (existing.username !== username) {
       update.username = username;
@@ -77,18 +81,52 @@ export async function ensureSeedUsers(options?: { syncPasswords?: boolean }) {
   }
 }
 
+type StaffRecord = UserDoc & { _id: unknown; password?: string };
+
+async function normalizeStaffRecord(
+  collection: Awaited<ReturnType<typeof users>>,
+  doc: StaffRecord,
+) {
+  const set: Partial<UserDoc> = {};
+  const unset: Record<string, ""> = {};
+
+  if (!doc.passwordHash && typeof doc.password === "string" && doc.password.startsWith("scrypt$")) {
+    set.passwordHash = doc.password;
+    unset.password = "";
+    doc.passwordHash = doc.password;
+  }
+  if (doc.disabled === undefined) {
+    set.disabled = false;
+    doc.disabled = false;
+  }
+  if (Object.keys(set).length || Object.keys(unset).length) {
+    await collection.updateOne(
+      { _id: doc._id },
+      {
+        ...(Object.keys(set).length ? { $set: set } : {}),
+        ...(Object.keys(unset).length ? { $unset: unset } : {}),
+      },
+    );
+  }
+  return doc;
+}
+
 export async function findUser(username: string) {
   await ensureIndexes();
-  return (await users()).findOne({ username: username.trim().toLowerCase() });
+  const collection = await users();
+  const doc = await collection.findOne({ username: username.trim().toLowerCase() });
+  if (!doc) return null;
+  return normalizeStaffRecord(collection, doc as StaffRecord);
 }
 
 export async function authenticate(username: string, password: string) {
-  await ensureSeedUsers();
   const user = await findUser(username);
   if (!user || user.disabled) return null;
   const plain = password.trim();
   if (!plain) return null;
-  const match = await verifyPassword(plain, user.passwordHash);
+  const stored = user.passwordHash;
+  if (!stored || !stored.startsWith("scrypt$")) return null;
+  const match = await verifyPassword(plain, stored);
   if (!match) return null;
   return user;
 }
@@ -102,7 +140,7 @@ export function configuredSeedUsernames() {
 export async function listUsers() {
   await ensureIndexes();
   return (await users())
-    .find({}, { projection: { passwordHash: 0 } })
+    .find({}, { projection: { passwordHash: 0, seedPasswordPlain: 0 } })
     .sort({ role: -1, username: 1 })
     .toArray();
 }

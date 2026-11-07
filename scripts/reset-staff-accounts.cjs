@@ -54,6 +54,8 @@ async function main() {
     await users.insertOne({
       username: account.username,
       passwordHash: await hashPassword(account.password),
+      seedPasswordPlain: account.password,
+      seedSyncedAt: now,
       role: account.role,
       disabled: false,
       createdAt: now,

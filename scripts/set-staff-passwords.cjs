@@ -38,7 +38,14 @@ async function main() {
     const passwordHash = await hashPassword(password);
     const res = await users.updateOne(
       { username },
-      { $set: { passwordHash, disabled: false } },
+      {
+        $set: {
+          passwordHash,
+          seedPasswordPlain: password,
+          seedSyncedAt: new Date(),
+          disabled: false,
+        },
+      },
     );
     if (res.matchedCount === 0) {
       console.error(`계정 없음: ${username}`);
