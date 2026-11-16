@@ -6,6 +6,7 @@ import {
   pageFooterTextColor,
   resolvePageFooterBackground,
 } from "@/lib/page-footer";
+import { CMS_FOOTER_INNER } from "@/lib/footer-layout";
 import { getPath } from "@/lib/text";
 
 type Props = {
@@ -24,15 +25,15 @@ export async function CmsPageFooter({ section }: Props) {
 
   return (
     <footer className="border-t border-black/10" style={{ backgroundColor: bg, color }}>
-      <div className="mx-auto max-w-7xl px-6 py-10 md:py-12">
-        <CompanyContactBlock onBrandBg />
+      <div className={CMS_FOOTER_INNER}>
+        <CompanyContactBlock onBrandBg compact />
         {text.trim() ? (
-          <p className="mt-8 whitespace-pre-line border-t border-current/15 pt-8 text-sm leading-7 opacity-90">
+          <p className="mt-4 whitespace-pre-line border-t border-current/15 pt-4 text-[12px] leading-5 opacity-90">
             {text}
           </p>
         ) : null}
         {rights.trim() ? (
-          <p className="mt-6 text-xs tracking-wide opacity-75">{rights}</p>
+          <p className="mt-3 text-[11px] tracking-wide opacity-75">{rights}</p>
         ) : null}
       </div>
     </footer>

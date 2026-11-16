@@ -58,34 +58,46 @@ const iconClass = "mt-0.5 h-4 w-4 shrink-0 text-brand";
 export function CompanyContactBlock({
   className = "",
   onBrandBg = false,
+  compact = false,
 }: {
   className?: string;
   /** 풋터 배경색 위 — 부모 color 상속 */
   onBrandBg?: boolean;
+  compact?: boolean;
 }) {
-  const icon = onBrandBg ? "mt-0.5 h-4 w-4 shrink-0 opacity-90" : iconClass;
-  const body = onBrandBg ? "text-sm opacity-90" : "text-sm text-brand-ink/70";
+  const iconSize = compact ? "h-3.5 w-3.5" : "h-4 w-4";
+  const icon = onBrandBg
+    ? `mt-0.5 ${iconSize} shrink-0 opacity-90`
+    : `${iconClass.replace("h-4 w-4", iconSize)}`;
+  const body = compact
+    ? onBrandBg
+      ? "text-[12px] leading-5 opacity-90"
+      : "text-[12px] leading-5 text-brand-ink/70"
+    : onBrandBg
+      ? "text-sm opacity-90"
+      : "text-sm text-brand-ink/70";
+  const gap = compact ? "gap-1.5" : "gap-3";
   const name = onBrandBg ? "font-medium" : "font-medium text-brand-ink";
   const link = onBrandBg ? "hover:opacity-100" : "hover:text-brand";
 
   return (
-    <ul className={`grid gap-3 ${body} ${className}`}>
-      <li className="flex items-start gap-2.5">
+    <ul className={`grid ${gap} ${body} ${className}`}>
+      <li className={`flex items-start ${compact ? "gap-2" : "gap-2.5"}`}>
         <IconBuilding className={icon} />
         <span className={name}>{FOOTER_COMPANY.name}</span>
       </li>
-      <li className="flex items-start gap-2.5">
+      <li className={`flex items-start ${compact ? "gap-2" : "gap-2.5"}`}>
         <IconPin className={icon} />
         <span>{FOOTER_COMPANY.address}</span>
       </li>
-      <li className="flex flex-wrap items-start gap-x-6 gap-y-2">
-        <span className="inline-flex items-start gap-2.5">
+      <li className={`flex flex-wrap items-start ${compact ? "gap-x-4 gap-y-1" : "gap-x-6 gap-y-2"}`}>
+        <span className={`inline-flex items-start ${compact ? "gap-2" : "gap-2.5"}`}>
           <IconPhone className={icon} />
           <a href={`tel:${FOOTER_COMPANY.phone}`} className={link}>
             {FOOTER_COMPANY.phone}
           </a>
         </span>
-        <span className="inline-flex items-start gap-2.5">
+        <span className={`inline-flex items-start ${compact ? "gap-2" : "gap-2.5"}`}>
           <IconMail className={icon} />
           <a href={`mailto:${FOOTER_COMPANY.email}`} className={link}>
             {FOOTER_COMPANY.email}

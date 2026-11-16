@@ -16,6 +16,7 @@ import {
   HOME_KICKER_FONT_DEFAULT,
 } from "@/lib/home-hero";
 import { pageFooterTextColor, resolvePageFooterBackground, PAGE_FOOTER_BG_DEFAULT } from "@/lib/page-footer";
+import { CMS_FOOTER_INNER } from "@/lib/footer-layout";
 
 type SlotKey = "home.heroImage" | "home.kicker" | "home.headline" | "home.footerText";
 
@@ -133,16 +134,16 @@ export function HomeCmsCanvas({
         className={`w-full border-t border-black/10 text-left ${ring("home.footerText")}`}
         style={{ backgroundColor: footerBgHex, color: footerColor }}
       >
-        <div className="mx-auto max-w-7xl px-6 py-8">
-          <CompanyContactBlock onBrandBg />
+        <div className={CMS_FOOTER_INNER}>
+          <CompanyContactBlock onBrandBg compact />
           {footerText.trim() ? (
-            <p className="mt-6 whitespace-pre-line border-t border-current/15 pt-6 text-sm leading-7 opacity-90">
+            <p className="mt-4 whitespace-pre-line border-t border-current/15 pt-4 text-[12px] leading-5 opacity-90">
               {footerText}
             </p>
           ) : (
-            <p className="mt-6 text-[11px] opacity-60">풋터 추가 문구(CMS)는 여기 표시됩니다.</p>
+            <p className="mt-4 text-[11px] opacity-60">풋터 추가 문구(CMS)는 여기 표시됩니다.</p>
           )}
-          <p className="mt-4 text-xs tracking-wide opacity-75">© haesoo</p>
+          <p className="mt-3 text-[11px] tracking-wide opacity-75">© haesoo</p>
         </div>
       </button>
     </div>

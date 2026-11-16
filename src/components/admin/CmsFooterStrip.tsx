@@ -6,6 +6,7 @@ import {
   pageFooterTextColor,
   resolvePageFooterBackground,
 } from "@/lib/page-footer";
+import { CMS_FOOTER_INNER } from "@/lib/footer-layout";
 
 export function CmsFooterStrip({
   bgId,
@@ -29,14 +30,14 @@ export function CmsFooterStrip({
       }`}
       style={{ backgroundColor: bg, color }}
     >
-      <div className="mx-auto max-w-7xl px-6 py-8">
-        <CompanyContactBlock onBrandBg />
+      <div className={CMS_FOOTER_INNER}>
+        <CompanyContactBlock onBrandBg compact />
         {text.trim() ? (
-          <p className="mt-6 whitespace-pre-line border-t border-current/15 pt-6 text-sm leading-7 opacity-90">
+          <p className="mt-4 whitespace-pre-line border-t border-current/15 pt-4 text-[12px] leading-5 opacity-90">
             {text}
           </p>
         ) : null}
-        <p className="mt-4 text-xs tracking-wide opacity-75">© haesoo</p>
+        <p className="mt-3 text-[11px] tracking-wide opacity-75">© haesoo</p>
       </div>
     </button>
   );
