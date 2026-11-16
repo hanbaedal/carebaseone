@@ -28,12 +28,12 @@ export const memberHeaderGroup: HeaderRoleGroup = {
   ],
 };
 
-/** 관리자·슈퍼바이저 로그인 시 헤더 메뉴 (권한별) */
+/** 관리자·슈퍼바이저 로그인 시 헤더 메뉴 (권한별) — 공개 커뮤니티 바로 다음에 붙음 */
 export function staffHeaderGroups(role: Role): HeaderRoleGroup[] {
   return menuGroupsForRole(role).map((group) => ({
     key: group.key,
     label: group.label,
-    href: group.items[0]?.href ?? "/admin",
+    href: group.href ?? group.items[0]?.href ?? "/admin",
     links: group.items.map((item) => ({
       href: item.href,
       label: item.label,

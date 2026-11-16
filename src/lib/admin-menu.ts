@@ -8,12 +8,38 @@ export type AdminMenuItem = {
 export type AdminMenuGroup = {
   key: string;
   label: string;
+  /** 헤더 상위 링크 (없으면 첫 소메뉴) */
+  href?: string;
   supervisorOnly?: boolean;
   items: AdminMenuItem[];
 };
 
-/** 관리자·슈퍼바이저 메뉴 (홈페이지 관리 제거) */
+/** 관리자·슈퍼바이저 메뉴 — 헤더에서 공개 커뮤니티 다음에 표시 */
 export const adminMenuGroups: AdminMenuGroup[] = [
+  {
+    key: "homepage",
+    label: "홈페이지관리",
+    href: "/admin/cms",
+    items: [
+      { href: "/admin/content?section=about&page=greeting", label: "인사말" },
+      { href: "/admin/content?section=about&page=features", label: "회사특징" },
+      { href: "/admin/content?section=solution", label: "솔루션" },
+      { href: "/admin/content?section=global", label: "글로벌" },
+      { href: "/admin/content?section=business", label: "사업협력" },
+      { href: "/admin/content?section=product&page=health-food", label: "건강식품" },
+      { href: "/admin/content?section=product&page=general-food", label: "일반식품" },
+      { href: "/admin/content?section=product&page=cosmetics", label: "화장품" },
+      { href: "/admin/content?section=product&page=patch", label: "패치" },
+      { href: "/admin/content?section=product&page=health-platform", label: "건강관리플랫폼" },
+      { href: "/admin/media?focus=patents", label: "지식재산권" },
+      { href: "/admin/media?focus=certifications", label: "인증·규제" },
+      { href: "/admin/media?focus=research", label: "연구·임상" },
+      { href: "/admin/notices", label: "공지사항" },
+      { href: "/admin/posts?type=archive", label: "자료실" },
+      { href: "/admin/posts?type=gallery", label: "갤러리" },
+      { href: "/admin/content?section=contact", label: "문의" },
+    ],
+  },
   {
     key: "members",
     label: "회원 관리",

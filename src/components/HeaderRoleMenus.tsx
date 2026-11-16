@@ -40,11 +40,11 @@ function RoleDropdown({
           </span>
         </Link>
       )}
-      <div className="invisible absolute left-0 top-full z-50 min-w-[11rem] rounded-xl border border-line bg-white py-2 pt-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+      <div className="invisible absolute left-0 top-full z-50 max-h-[min(70vh,28rem)] min-w-[12rem] overflow-y-auto rounded-xl border border-line bg-white py-2 pt-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
         {group.links.map((link) =>
           isAdminHref(link.href) ? (
             <a
-              key={link.href}
+              key={`${link.label}-${link.href}`}
               href={link.href}
               className="block px-4 py-2 text-[13px] text-brand-ink/80 hover:bg-brand/5 hover:text-brand"
               onClick={onNavigate}
@@ -53,7 +53,7 @@ function RoleDropdown({
             </a>
           ) : (
             <Link
-              key={link.href}
+              key={`${link.label}-${link.href}`}
               href={link.href}
               className="block px-4 py-2 text-[13px] text-brand-ink/80 hover:bg-brand/5 hover:text-brand"
               onClick={onNavigate}
@@ -153,7 +153,7 @@ export function HeaderRoleMenusMobile({
                 {group.links.map((link) =>
                   isAdminHref(link.href) ? (
                     <a
-                      key={link.href}
+                      key={`${link.label}-${link.href}`}
                       href={link.href}
                       onClick={onClose}
                       className="text-[14px] text-brand-ink/75"
@@ -162,7 +162,7 @@ export function HeaderRoleMenusMobile({
                     </a>
                   ) : (
                     <Link
-                      key={link.href}
+                      key={`${link.label}-${link.href}`}
                       href={link.href}
                       onClick={onClose}
                       className="text-[14px] text-brand-ink/75"

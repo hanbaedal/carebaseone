@@ -53,7 +53,7 @@ export function AdminSidebar({ role }: { role: Role }) {
                 {group.items.map((item) => {
                   const active = itemActive(pathname, searchParams, item.href);
                   return (
-                    <li key={item.href}>
+                    <li key={`${item.label}-${item.href}`}>
                       <a
                         href={item.href}
                         className={`block rounded px-2 py-1 text-[11px] leading-snug ${

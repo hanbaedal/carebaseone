@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { LOGIN_PATH } from "@/lib/login-path";
 import { requireStaffSession } from "@/lib/admin-access";
+import { saveSection } from "@/lib/content";
 import { clearMemberSession } from "@/lib/member-session";
 import { clearSession, getSession, setSession } from "@/lib/session";
 import { users } from "@/lib/db";
@@ -80,6 +81,44 @@ export async function logout() {
   await clearSession();
   await clearMemberSession();
   redirect("/ko");
+}
+
+export async function saveContent(formData: FormData) {
+  const session = await requireSession();
+  const section = String(formData.get("section") ?? "");
+  const values: Record<string, { ko: string; en: string; zh: string }> = {};
+
+  for (const [key, raw] of formData.entries()) {
+    if (typeof raw !== "string") continue;
+    const match = /^(ko|en|zh):(.*)$/.exec(key);
+    if (!match) continue;
+    const path = decodeURIComponent(match[2]);
+    values[path] ??= { ko: "", en: "", zh: "" };
+    values[path][match[1] as "ko" | "en" | "zh"] = raw;
+  }
+
+  let status = "saved";
+  let message = "";
+  try {
+    const result = await saveSection({
+      section,
+      username: session.username,
+      role: session.role,
+      values,
+    });
+    if (result.error === "partial") status = "partial";
+    else if (result.error) {
+      status = "error";
+      message = result.error;
+    }
+  } catch {
+    status = "error";
+    message = "저장하지 못했습니다.";
+  }
+
+  redirect(
+    `/admin/content?section=${encodeURIComponent(section)}&status=${status}&message=${encodeURIComponent(message)}`,
+  );
 }
 
 function profileFromForm(formData: FormData): CompanyProfileInput {
