@@ -12,6 +12,9 @@ import {
   resolveHomeTextColorHex,
   HOME_KICKER_COLOR_DEFAULT,
   HOME_HEADLINE_COLOR_DEFAULT,
+  HOME_KICKER_FONT_DEFAULT,
+  HOME_HEADLINE_FONT_DEFAULT,
+  resolveHomeFontFamily,
 } from "@/lib/home-hero";
 
 export default async function HomePage({
@@ -30,6 +33,8 @@ export default async function HomePage({
     t("home.headlineColor"),
     HOME_HEADLINE_COLOR_DEFAULT,
   );
+  const kickerFamily = resolveHomeFontFamily(t("home.kickerFont"), HOME_KICKER_FONT_DEFAULT);
+  const headlineFamily = resolveHomeFontFamily(t("home.headlineFont"), HOME_HEADLINE_FONT_DEFAULT);
 
   return (
     <div>
@@ -48,15 +53,20 @@ export default async function HomePage({
           <div className="flex flex-1 flex-col justify-center md:max-w-2xl">
             <p
               className="animate-[fadeUp_0.7s_ease_both] font-semibold tracking-[0.22em]"
-              style={{ fontSize: homeKickerFontSize(kickerScale), color: kickerColor }}
+              style={{
+                fontSize: homeKickerFontSize(kickerScale),
+                color: kickerColor,
+                fontFamily: kickerFamily,
+              }}
             >
               {t("home.kicker")}
             </p>
             <h1
-              className="font-display animate-[fadeUp_0.8s_ease_both] mt-5 whitespace-pre-line leading-[1.2]"
+              className="animate-[fadeUp_0.8s_ease_both] mt-5 whitespace-pre-line font-bold leading-[1.2] tracking-[-0.03em]"
               style={{
                 fontSize: homeHeadlineFontSize(headlineScale),
                 color: headlineColor,
+                fontFamily: headlineFamily,
               }}
             >
               {t("home.headline")}

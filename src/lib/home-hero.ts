@@ -94,3 +94,74 @@ export function colorPathFor(textPath: string) {
 export function defaultColorForTextPath(textPath: string): HomeTextColorId {
   return textPath === "home.kicker" ? HOME_KICKER_COLOR_DEFAULT : HOME_HEADLINE_COLOR_DEFAULT;
 }
+
+export const HOME_FONTS = [
+  {
+    id: "gothic",
+    label: "고딕",
+    family: '"Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif',
+  },
+  {
+    id: "gyeon-gothic",
+    label: "견고딕",
+    family: '"HY견고딕", "Malgun Gothic", "Noto Sans KR", sans-serif',
+  },
+  {
+    id: "myeongjo",
+    label: "명조",
+    family: '"Batang", "BatangChe", "AppleMyungjo", "Noto Serif KR", serif',
+  },
+  {
+    id: "shin-myeongjo",
+    label: "신명조",
+    family: '"신명조", "Batang", "Noto Serif KR", serif',
+  },
+  {
+    id: "gyeon-myeongjo",
+    label: "견명조",
+    family: '"HY견명조", "Batang", "Noto Serif KR", serif',
+  },
+  {
+    id: "gungsuh",
+    label: "궁서",
+    family: '"Gungsuh", "GungSeo", "Batang", serif',
+  },
+  {
+    id: "headline-m",
+    label: "헤드라인M",
+    family: '"Headline M", "Malgun Gothic", "Noto Sans KR", sans-serif',
+  },
+] as const;
+
+export type HomeFontId = (typeof HOME_FONTS)[number]["id"];
+
+const FONT_IDS = new Set<string>(HOME_FONTS.map((f) => f.id));
+
+export const HOME_KICKER_FONT_DEFAULT: HomeFontId = "gothic";
+export const HOME_HEADLINE_FONT_DEFAULT: HomeFontId = "gothic";
+
+export function parseHomeFont(value: string | undefined, fallback: HomeFontId): HomeFontId {
+  const raw = (value ?? "").trim();
+  if (FONT_IDS.has(raw)) return raw as HomeFontId;
+  return fallback;
+}
+
+export function resolveHomeFontFamily(value: string | undefined, fallback: HomeFontId): string {
+  const id = parseHomeFont(value, fallback);
+  return HOME_FONTS.find((f) => f.id === id)?.family ?? HOME_FONTS[0].family;
+}
+
+export function fontPathFor(textPath: string) {
+  if (textPath === "home.kicker") return "home.kickerFont";
+  if (textPath === "home.headline") return "home.headlineFont";
+  return null;
+}
+
+export function defaultFontForTextPath(textPath: string): HomeFontId {
+  return textPath === "home.kicker" ? HOME_KICKER_FONT_DEFAULT : HOME_HEADLINE_FONT_DEFAULT;
+}
+
+export function homeFontLabel(value: string | undefined, fallback: HomeFontId): string {
+  const id = parseHomeFont(value, fallback);
+  return HOME_FONTS.find((f) => f.id === id)?.label ?? HOME_FONTS[0].label;
+}

@@ -38,7 +38,7 @@ export function TextColorModal({
         <h2 id="text-color-title" className="text-sm font-semibold text-brand-ink">
           글자 컬러
         </h2>
-        <p className="mt-1 text-[10px] text-ink/50">색을 선택하면 저장 후 닫힙니다.</p>
+        <p className="mt-1 text-[10px] text-ink/50">미리보기에 반영됩니다. 저장 버튼으로 확정하세요.</p>
         <div className="mt-3 grid grid-cols-4 gap-2">
           {HOME_TEXT_COLORS.map((item) => {
             const isSelected = item.id === selected;

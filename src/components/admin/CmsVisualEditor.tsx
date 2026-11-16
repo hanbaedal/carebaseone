@@ -1,8 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { saveContentInline } from "@/app/admin/actions";
 import { HomeCmsCanvas } from "@/components/admin/HomeCmsCanvas";
+import { FontFamilyModal } from "@/components/admin/FontFamilyModal";
 import { FontScaleModal } from "@/components/admin/FontScaleModal";
 import { FontScaleStepper } from "@/components/admin/FontScaleStepper";
 import { MediaPickerModal, type CmsMediaOption } from "@/components/admin/MediaPickerModal";
@@ -12,19 +14,25 @@ import { fieldLabelFor, type CmsPageDef } from "@/lib/cms-pages";
 import {
   colorPathFor,
   defaultColorForTextPath,
+  defaultFontForTextPath,
+  fontPathFor,
   clampHomeScale,
+  homeFontLabel,
   resolveHeroImageSrc,
   resolveHomeTextColorHex,
   parseHomeScale,
+  type HomeFontId,
   type HomeTextColorId,
 } from "@/lib/home-hero";
 
 const HOME_CMS_PATHS = [
   "home.heroImage",
   "home.kicker",
+  "home.kickerFont",
   "home.kickerScale",
   "home.kickerColor",
   "home.headline",
+  "home.headlineFont",
   "home.headlineScale",
   "home.headlineColor",
   "home.lede",
@@ -48,10 +56,10 @@ function textareaRows(path: string, multiline: boolean) {
 const HOME_TEXT_PATHS = new Set(["home.kicker", "home.headline", "home.lede"]);
 
 function resolveHomeTextSlot(path: string) {
-  if (path === "home.kickerScale") return "home.kicker";
-  if (path === "home.headlineScale") return "home.headline";
-  if (path === "home.kickerColor") return "home.kicker";
-  if (path === "home.headlineColor") return "home.headline";
+  if (path === "home.kickerScale" || path === "home.kickerFont" || path === "home.kickerColor")
+    return "home.kicker";
+  if (path === "home.headlineScale" || path === "home.headlineFont" || path === "home.headlineColor")
+    return "home.headline";
   if (HOME_TEXT_PATHS.has(path)) return path;
   return null;
 }
@@ -91,6 +99,7 @@ export function CmsVisualEditor({
   mediaOptions?: CmsMediaOption[];
 }) {
   const isHome = page.key === "home";
+  const router = useRouter();
   const [mediaOptions, setMediaOptions] = useState<CmsMediaOption[]>(mediaOptionsProp);
   const mediaFetchStarted = useRef(false);
   const editorFields = useMemo(
@@ -112,6 +121,7 @@ export function CmsVisualEditor({
   const [mediaOpen, setMediaOpen] = useState(false);
   const [scaleOpen, setScaleOpen] = useState(false);
   const [colorOpen, setColorOpen] = useState(false);
+  const [fontOpen, setFontOpen] = useState(false);
   const [previewPin, setPreviewPin] = useState<HomePreviewSlot | null>(null);
   const [saving, setSaving] = useState(false);
   const [inlineNotice, setInlineNotice] = useState<{ text: string; error?: boolean } | null>(
@@ -149,8 +159,10 @@ export function CmsVisualEditor({
 
   useEffect(() => {
     if (!isHome) return;
-    if (slot === "home.kickerScale" || slot === "home.kickerColor") setSlot("home.kicker");
-    if (slot === "home.headlineScale" || slot === "home.headlineColor") setSlot("home.headline");
+    if (slot === "home.kickerScale" || slot === "home.kickerColor" || slot === "home.kickerFont")
+      setSlot("home.kicker");
+    if (slot === "home.headlineScale" || slot === "home.headlineColor" || slot === "home.headlineFont")
+      setSlot("home.headline");
   }, [isHome, slot]);
 
   const slotTitle = active
@@ -174,6 +186,7 @@ export function CmsVisualEditor({
   );
   const linkedScalePath = homeTextPath ? scalePathFor(homeTextPath) : null;
   const linkedColorPath = homeTextPath ? colorPathFor(homeTextPath) : null;
+  const linkedFontPath = homeTextPath ? fontPathFor(homeTextPath) : null;
   const colorFallback =
     homeTextPath && (homeTextPath === "home.kicker" || homeTextPath === "home.headline")
       ? defaultColorForTextPath(homeTextPath)
@@ -194,17 +207,44 @@ export function CmsVisualEditor({
           text: result.message,
           error: result.status === "error",
         });
+        if (result.status !== "error") router.refresh();
       } catch {
         setInlineNotice({ text: "저장하지 못했습니다.", error: true });
       } finally {
         setSaving(false);
       }
     },
-    [page.section],
+    [page.section, router],
   );
 
-  const submitQuick = (path: string, koValue: string) => {
-    void persistKoFields({ [path]: koValue });
+  const buildSavePayload = useCallback((): Record<string, string> => {
+    if (isHome) {
+      const payload: Record<string, string> = {};
+      for (const path of HOME_CMS_PATHS) {
+        payload[path] = draft[path] ?? valueByPath[path] ?? "";
+      }
+      return payload;
+    }
+    const path = active?.path;
+    if (!path) return {};
+    const payload: Record<string, string> = {};
+    if (path.endsWith("Scale")) {
+      payload[path] = draft[path] ?? valueByPath[path] ?? "100";
+      return payload;
+    }
+    payload[path] = draft[path] ?? valueByPath[path] ?? "";
+    const linkedScale = scalePathFor(path);
+    if (linkedScale) {
+      payload[linkedScale] = draft[linkedScale] ?? valueByPath[linkedScale] ?? "100";
+    }
+    return payload;
+  }, [active?.path, draft, isHome, valueByPath]);
+
+  const handleSave = () => {
+    if (saving) return;
+    const payload = buildSavePayload();
+    if (Object.keys(payload).length === 0) return;
+    void persistKoFields(payload);
   };
 
   const openBackgroundPicker = () => {
@@ -257,7 +297,18 @@ export function CmsVisualEditor({
       setPreviewPin(textPath);
       setSlot(textPath);
     }
-    submitQuick(path, String(next));
+  };
+
+  const pickFont = (fontId: HomeFontId) => {
+    if (!linkedFontPath) return;
+    const textPath =
+      previewPin ??
+      (homeTextPath === "home.kicker" || homeTextPath === "home.headline" ? homeTextPath : null);
+    setDraft((d) => ({ ...d, [linkedFontPath]: fontId }));
+    if (isHome && textPath) {
+      setPreviewPin(textPath);
+      setSlot(textPath);
+    }
   };
 
   const pickColor = (colorId: HomeTextColorId) => {
@@ -270,7 +321,6 @@ export function CmsVisualEditor({
       setPreviewPin(textPath);
       setSlot(textPath);
     }
-    submitQuick(linkedColorPath, colorId);
   };
 
   const heroSrc = resolveHeroImageSrc(draft["home.heroImage"]);
@@ -282,6 +332,10 @@ export function CmsVisualEditor({
 
   const showNotice = inlineNotice?.text ?? notice;
   const showNoticeError = inlineNotice ? inlineNotice.error : noticeError;
+
+  const showTextEditor =
+    (isHome && homeTextPath && textField) || Boolean(active && !isHeroField && !isScaleField);
+  const showSaveFooter = isHome || showTextEditor || (isScaleField && !isHome) || isHeroField;
 
   return (
     <div className={isHome ? "" : "grid gap-3"}>
@@ -324,6 +378,8 @@ export function CmsVisualEditor({
               headlineScale={draft["home.headlineScale"] ?? "100"}
               kickerColor={draft["home.kickerColor"] ?? "blue"}
               headlineColor={draft["home.headlineColor"] ?? "black"}
+              kickerFont={draft["home.kickerFont"] ?? "gothic"}
+              headlineFont={draft["home.headlineFont"] ?? "gothic"}
               activeSlot={previewActiveSlot}
               onSelectSlot={handleHomeSlot}
               onPickBackground={openBackgroundPicker}
@@ -383,7 +439,12 @@ export function CmsVisualEditor({
                 {editorFields
                   .filter(
                     (field) =>
-                      !(isHome && (field.path.endsWith("Scale") || field.path.endsWith("Color"))),
+                      !(
+                        isHome &&
+                        (field.path.endsWith("Scale") ||
+                          field.path.endsWith("Color") ||
+                          field.path.endsWith("Font"))
+                      ),
                   )
                   .map((field) => (
                     <option key={field.path} value={field.path}>
@@ -402,6 +463,26 @@ export function CmsVisualEditor({
                 className="w-full rounded-md border border-ink/15 bg-ink/5 px-2 py-2 text-[12px] text-brand hover:bg-brand/5"
               >
                 갤러리에서 이미지 선택
+              </button>
+            </div>
+          ) : null}
+
+          {isHome && linkedFontPath && homeTextPath && !isHeroField ? (
+            <div className="shrink-0 border-b border-ink/10 px-3 py-2">
+              <button
+                type="button"
+                onClick={() => {
+                  pinPreviewForTextTools();
+                  setFontOpen(true);
+                }}
+                className="w-full rounded-md border border-ink/15 bg-ink/5 px-2 py-2 text-[12px] text-brand hover:bg-brand/5"
+              >
+                글자 폰트 (
+                {homeFontLabel(
+                  linkedFontPath ? (draft[linkedFontPath] ?? "") : "",
+                  defaultFontForTextPath(homeTextPath),
+                )}
+                )
               </button>
             </div>
           ) : null}
@@ -450,22 +531,17 @@ export function CmsVisualEditor({
             </div>
           ) : null}
 
-          {((isHome && homeTextPath && textField) || (active && !isHeroField && !isScaleField)) ? (
+          {showTextEditor ? (
             <form
               className="flex min-h-0 flex-1 flex-col"
               onSubmit={(e) => {
                 e.preventDefault();
-                if (saving) return;
-                const editPath = isHome && homeTextPath ? homeTextPath : active!.path;
-                const field = isHome && textField ? textField : active!;
-                void persistKoFields({
-                  [editPath]: draft[editPath] ?? field.ko,
-                });
+                handleSave();
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
                   e.preventDefault();
-                  e.currentTarget.requestSubmit();
+                  handleSave();
                 }
               }}
             >
@@ -505,33 +581,31 @@ export function CmsVisualEditor({
                   );
                 })()}
               </div>
-
-              <div className="shrink-0 space-y-2 border-t border-ink/10 bg-white p-3">
-                <p className="text-[10px] leading-4 text-ink/40">
-                  {multiline ? "Enter 줄바꿈 · Ctrl+Enter 저장" : "Ctrl+Enter 저장"}
-                  {" · "}
-                  저장 시 서버에서 영·중 반영 (공개 /en · /zh)
-                </p>
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="w-full rounded-md bg-forest px-3 py-2.5 text-[12px] font-medium tracking-wide text-cream hover:opacity-95 disabled:opacity-60"
-                >
-                  {saving ? "저장 중…" : "저장"}
-                </button>
-              </div>
             </form>
           ) : isScaleField && !isHome ? (
             <p className="p-3 text-[11px] leading-5 text-ink/50">
-              「글자 크기」에서 50~300%를 고르세요. 선택하면 저장됩니다.
+              「글자 크기」에서 50~300%를 고른 뒤 저장 버튼을 누르세요.
             </p>
           ) : isHeroField ? (
             <p className="p-3 text-[11px] leading-5 text-ink/50">
-              미리보기 배경을 클릭하거나 위 버튼으로 이미지를 선택하세요.
+              미리보기 배경을 클릭하거나 위 버튼으로 이미지를 선택한 뒤 저장하세요.
             </p>
           ) : (
             <p className="p-3 text-[11px] text-ink/45">편집할 문구가 없습니다.</p>
           )}
+
+          {showSaveFooter ? (
+            <div className="mt-auto shrink-0 border-t border-ink/10 bg-white p-3">
+              <button
+                type="button"
+                disabled={saving}
+                onClick={handleSave}
+                className="w-full rounded-md bg-forest px-3 py-2.5 text-[12px] font-medium tracking-wide text-cream hover:opacity-95 disabled:opacity-60"
+              >
+                {saving ? "저장 중…" : "저장"}
+              </button>
+            </div>
+          ) : null}
         </aside>
       </div>
 
@@ -542,8 +616,19 @@ export function CmsVisualEditor({
         onClose={() => setMediaOpen(false)}
         onSelect={(slug) => {
           setDraft((d) => ({ ...d, "home.heroImage": slug }));
-          submitQuick("home.heroImage", slug);
         }}
+      />
+
+      <FontFamilyModal
+        open={fontOpen}
+        value={linkedFontPath ? (draft[linkedFontPath] ?? "") : ""}
+        fallback={
+          homeTextPath && (homeTextPath === "home.kicker" || homeTextPath === "home.headline")
+            ? defaultFontForTextPath(homeTextPath)
+            : "gothic"
+        }
+        onClose={() => setFontOpen(false)}
+        onSelect={pickFont}
       />
 
       <TextColorModal

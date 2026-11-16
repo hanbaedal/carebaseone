@@ -22,9 +22,11 @@ export const CMS_PAGES: CmsPageDef[] = [
     fieldLabels: {
       "home.heroImage": "배경 이미지",
       "home.kicker": "키커",
+      "home.kickerFont": "키커 글자 폰트",
       "home.kickerScale": "키커 글자 크기(50~300%)",
       "home.kickerColor": "키커 글자 컬러",
       "home.headline": "메인 헤드라인",
+      "home.headlineFont": "헤드라인 글자 폰트",
       "home.headlineScale": "헤드라인 글자 크기(50~300%)",
       "home.headlineColor": "헤드라인 글자 컬러",
       "home.lede": "소개 문구",

@@ -89,7 +89,8 @@ function allowedPaths() {
 
 /** URL·숫자·스케일 등 — 번역 API 호출 생략 */
 function skipAutoTranslate(path: string, koText: string) {
-  if (path.endsWith("Scale") || path.endsWith("Color") || path.endsWith("heroImage")) return true;
+  if (path.endsWith("Scale") || path.endsWith("Color") || path.endsWith("Font") || path.endsWith("heroImage"))
+    return true;
   if (/\.(heroImage|image)$/i.test(path)) return true;
   if (!/[가-힣]/.test(koText)) return true;
   return false;

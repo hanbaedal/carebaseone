@@ -10,7 +10,10 @@ import {
   homeHeadlineFontSize,
   homeKickerFontSize,
   parseHomeScale,
+  resolveHomeFontFamily,
   resolveHomeTextColorHex,
+  HOME_HEADLINE_FONT_DEFAULT,
+  HOME_KICKER_FONT_DEFAULT,
 } from "@/lib/home-hero";
 
 type SlotKey = "home.heroImage" | "home.kicker" | "home.headline";
@@ -23,6 +26,8 @@ export function HomeCmsCanvas({
   headlineScale,
   kickerColor,
   headlineColor,
+  kickerFont,
+  headlineFont,
   activeSlot,
   onSelectSlot,
   onPickBackground,
@@ -35,6 +40,8 @@ export function HomeCmsCanvas({
   headlineScale: string;
   kickerColor: string;
   headlineColor: string;
+  kickerFont: string;
+  headlineFont: string;
   activeSlot: SlotKey | null;
   onSelectSlot: (slot: SlotKey) => void;
   onPickBackground: () => void;
@@ -45,6 +52,8 @@ export function HomeCmsCanvas({
   const hScale = parseHomeScale(headlineScale);
   const kickerHex = resolveHomeTextColorHex(kickerColor, HOME_KICKER_COLOR_DEFAULT);
   const headlineHex = resolveHomeTextColorHex(headlineColor, HOME_HEADLINE_COLOR_DEFAULT);
+  const kickerFamily = resolveHomeFontFamily(kickerFont, HOME_KICKER_FONT_DEFAULT);
+  const headlineFamily = resolveHomeFontFamily(headlineFont, HOME_HEADLINE_FONT_DEFAULT);
 
   const ring = (slot: SlotKey) =>
     activeSlot === slot
@@ -75,7 +84,11 @@ export function HomeCmsCanvas({
           >
             <p
               className="font-semibold tracking-[0.22em]"
-              style={{ fontSize: homeKickerFontSize(kScale), color: kickerHex }}
+              style={{
+                fontSize: homeKickerFontSize(kScale),
+                color: kickerHex,
+                fontFamily: kickerFamily,
+              }}
             >
               {kicker || "키커"}
             </p>
@@ -86,8 +99,12 @@ export function HomeCmsCanvas({
             className={`mt-5 block w-fit max-w-2xl border-0 bg-transparent p-0 text-left ${ring("home.headline")}`}
           >
             <span
-              className="block whitespace-pre-line font-display leading-[1.2]"
-              style={{ fontSize: homeHeadlineFontSize(hScale), color: headlineHex }}
+              className="block whitespace-pre-line leading-[1.2]"
+              style={{
+                fontSize: homeHeadlineFontSize(hScale),
+                color: headlineHex,
+                fontFamily: headlineFamily,
+              }}
             >
               {headline || "헤드라인"}
             </span>
