@@ -8,13 +8,16 @@ import {
   heroImageUnoptimized,
   homeHeadlineFontSizeFluid,
   homeKickerFontSizeFluid,
+  homeLedeFontSizeFluid,
   parseHomeScale,
   resolveHeroImageSrc,
   resolveHomeTextColorHex,
   HOME_KICKER_COLOR_DEFAULT,
   HOME_HEADLINE_COLOR_DEFAULT,
+  HOME_LEDE_COLOR_DEFAULT,
   HOME_KICKER_FONT_DEFAULT,
   HOME_HEADLINE_FONT_DEFAULT,
+  HOME_LEDE_FONT_DEFAULT,
   resolveHomeFontFamily,
 } from "@/lib/home-hero";
 
@@ -29,13 +32,16 @@ export default async function HomePage({
   const heroSrc = resolveHeroImageSrc(t("home.heroImage"));
   const kickerScale = parseHomeScale(t("home.kickerScale"));
   const headlineScale = parseHomeScale(t("home.headlineScale"));
+  const ledeScale = parseHomeScale(t("home.ledeScale"));
   const kickerColor = resolveHomeTextColorHex(t("home.kickerColor"), HOME_KICKER_COLOR_DEFAULT);
   const headlineColor = resolveHomeTextColorHex(
     t("home.headlineColor"),
     HOME_HEADLINE_COLOR_DEFAULT,
   );
+  const ledeColor = resolveHomeTextColorHex(t("home.ledeColor"), HOME_LEDE_COLOR_DEFAULT);
   const kickerFamily = resolveHomeFontFamily(t("home.kickerFont"), HOME_KICKER_FONT_DEFAULT);
   const headlineFamily = resolveHomeFontFamily(t("home.headlineFont"), HOME_HEADLINE_FONT_DEFAULT);
+  const ledeFamily = resolveHomeFontFamily(t("home.ledeFont"), HOME_LEDE_FONT_DEFAULT);
 
   return (
     <div className={HOME_VIEWPORT_SHELL}>
@@ -51,7 +57,7 @@ export default async function HomePage({
         />
 
         <div className={`relative flex h-full min-h-0 flex-col py-4 sm:py-5 md:py-6 ${HOME_CONTENT_GUTTER}`}>
-          <div className="flex min-h-0 flex-1 flex-col justify-center md:max-w-2xl">
+          <div className="flex min-h-0 flex-1 flex-col justify-center gap-0 md:max-w-2xl">
             <p
               className="animate-[fadeUp_0.7s_ease_both] font-semibold tracking-[0.18em] sm:tracking-[0.22em]"
               style={{
@@ -74,11 +80,11 @@ export default async function HomePage({
             </h1>
             {t("home.lede").trim() ? (
               <p
-                className="animate-[fadeUp_0.9s_ease_both] mt-[1lh] max-w-xl whitespace-pre-line text-base font-medium leading-7 tracking-[-0.01em]"
+                className="animate-[fadeUp_0.9s_ease_both] mt-7 max-w-xl whitespace-pre-line font-normal leading-7 tracking-[-0.01em] sm:mt-8"
                 style={{
-                  color: headlineColor,
-                  fontFamily: headlineFamily,
-                  opacity: 0.88,
+                  fontSize: homeLedeFontSizeFluid(ledeScale),
+                  color: ledeColor,
+                  fontFamily: ledeFamily,
                 }}
               >
                 {t("home.lede")}

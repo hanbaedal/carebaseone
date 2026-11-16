@@ -43,6 +43,9 @@ const HOME_CMS_PATHS = [
   "home.headlineScale",
   "home.headlineColor",
   "home.lede",
+  "home.ledeFont",
+  "home.ledeScale",
+  "home.ledeColor",
   "home.footerBg",
 ] as const;
 
@@ -51,6 +54,7 @@ type HomeSlot = (typeof HOME_CMS_PATHS)[number];
 function scalePathFor(textPath: string) {
   if (textPath === "home.kicker") return "home.kickerScale";
   if (textPath === "home.headline") return "home.headlineScale";
+  if (textPath === "home.lede") return "home.ledeScale";
   return null;
 }
 
@@ -68,19 +72,13 @@ function resolveHomeTextSlot(path: string) {
     return "home.kicker";
   if (path === "home.headlineScale" || path === "home.headlineFont" || path === "home.headlineColor")
     return "home.headline";
+  if (path === "home.ledeScale" || path === "home.ledeFont" || path === "home.ledeColor")
+    return "home.lede";
   if (HOME_TEXT_PATHS.has(path)) return path;
   return null;
 }
 
 const HOME_TYPO_SLOTS = new Set(["home.kicker", "home.headline", "home.lede"]);
-
-/** 소개 문구(lede)는 헤드라인 색·폰트와 동일 */
-function homeStylePathFor(textPath: string | null) {
-  if (!textPath) return null;
-  if (textPath === "home.lede") return "home.headline";
-  if (textPath === "home.kicker" || textPath === "home.headline") return textPath;
-  return null;
-}
 
 type HomePreviewSlot = "home.heroImage" | "home.kicker" | "home.headline" | "home.lede";
 
@@ -187,6 +185,8 @@ export function CmsVisualEditor({
       setSlot("home.kicker");
     if (slot === "home.headlineScale" || slot === "home.headlineColor" || slot === "home.headlineFont")
       setSlot("home.headline");
+    if (slot === "home.ledeScale" || slot === "home.ledeColor" || slot === "home.ledeFont")
+      setSlot("home.lede");
   }, [isHome, slot]);
 
   const slotTitle = active
@@ -208,16 +208,12 @@ export function CmsVisualEditor({
     () => (homeTextPath ? editorFields.find((f) => f.path === homeTextPath) : active),
     [homeTextPath, editorFields, active],
   );
-  const homeStylePath = homeStylePathFor(homeTextPath);
-  const linkedScalePath =
-    homeTextPath === "home.kicker" || homeTextPath === "home.headline"
-      ? scalePathFor(homeTextPath)
-      : null;
-  const linkedColorPath = homeStylePath ? colorPathFor(homeStylePath) : null;
-  const linkedFontPath = homeStylePath ? fontPathFor(homeStylePath) : null;
+  const linkedScalePath = homeTextPath ? scalePathFor(homeTextPath) : null;
+  const linkedColorPath = homeTextPath ? colorPathFor(homeTextPath) : null;
+  const linkedFontPath = homeTextPath ? fontPathFor(homeTextPath) : null;
   const showHomeTypography =
     isHome && Boolean(homeTextPath && HOME_TYPO_SLOTS.has(homeTextPath)) && !isHeroField;
-  const colorFallback = homeStylePath ? defaultColorForTextPath(homeStylePath) : "blue";
+  const colorFallback = homeTextPath ? defaultColorForTextPath(homeTextPath) : "blue";
 
   const footerPaths = pageFooterPaths(page.section);
   const hasPageFooter = useMemo(
@@ -413,10 +409,13 @@ export function CmsVisualEditor({
               lede={draft["home.lede"] ?? ""}
               kickerScale={draft["home.kickerScale"] ?? "100"}
               headlineScale={draft["home.headlineScale"] ?? "100"}
+              ledeScale={draft["home.ledeScale"] ?? "100"}
               kickerColor={draft["home.kickerColor"] ?? "blue"}
               headlineColor={draft["home.headlineColor"] ?? "black"}
+              ledeColor={draft["home.ledeColor"] ?? "white"}
               kickerFont={draft["home.kickerFont"] ?? "gothic"}
               headlineFont={draft["home.headlineFont"] ?? "gothic"}
+              ledeFont={draft["home.ledeFont"] ?? "myeongjo"}
               footerBg={draft["home.footerBg"] ?? "white"}
               activeSlot={previewActiveSlot}
               onSelectSlot={handleHomeSlot}
@@ -521,12 +520,7 @@ export function CmsVisualEditor({
 
           {showHomeTypography ? (
             <div className="shrink-0 border-b border-ink/10 bg-ink/[0.02] px-3 py-2">
-              <p className="mb-2 text-[10px] font-medium text-ink/55">글자 스타일</p>
-              {homeTextPath === "home.lede" ? (
-                <p className="mb-2 text-[10px] leading-4 text-ink/45">
-                  소개 문구는 헤드라인과 같은 색·폰트를 씁니다.
-                </p>
-              ) : null}
+              <p className="text-[10px] font-medium text-ink/55">글자 스타일</p>
             </div>
           ) : null}
 
@@ -543,14 +537,14 @@ export function CmsVisualEditor({
                 글자 폰트 (
                 {homeFontLabel(
                   draft[linkedFontPath] ?? "",
-                  defaultFontForTextPath(homeStylePath!),
+                  defaultFontForTextPath(homeTextPath!),
                 )}
                 )
               </button>
             </div>
           ) : null}
 
-          {isHome && linkedScalePath && !isHeroField ? (
+          {showHomeTypography && linkedScalePath ? (
             <div className="shrink-0 border-b border-ink/10 px-3 py-2">
               <FontScaleStepper value={currentScaleValue()} onChange={pickScale} />
               <p className="mt-1 text-[10px] text-ink/45">100% = 기준 크기 · 50~300% (10% 단위)</p>
@@ -586,7 +580,7 @@ export function CmsVisualEditor({
                   style={{
                     backgroundColor: resolveHomeTextColorHex(
                       draft[linkedColorPath],
-                      defaultColorForTextPath(homeStylePath!),
+                      defaultColorForTextPath(homeTextPath!),
                     ),
                   }}
                 />
@@ -707,7 +701,7 @@ export function CmsVisualEditor({
       <FontFamilyModal
         open={fontOpen}
         value={linkedFontPath ? (draft[linkedFontPath] ?? "") : ""}
-        fallback={homeStylePath ? defaultFontForTextPath(homeStylePath) : "gothic"}
+        fallback={homeTextPath ? defaultFontForTextPath(homeTextPath) : "gothic"}
         onClose={() => setFontOpen(false)}
         onSelect={pickFont}
       />

@@ -9,11 +9,14 @@ import {
   heroImageUnoptimized,
   homeHeadlineFontSizeFluid,
   homeKickerFontSizeFluid,
+  homeLedeFontSizeFluid,
   parseHomeScale,
   resolveHomeFontFamily,
   resolveHomeTextColorHex,
   HOME_HEADLINE_FONT_DEFAULT,
   HOME_KICKER_FONT_DEFAULT,
+  HOME_LEDE_COLOR_DEFAULT,
+  HOME_LEDE_FONT_DEFAULT,
 } from "@/lib/home-hero";
 import { HOME_CONTENT_GUTTER, HOME_VIEWPORT_SHELL } from "@/lib/home-layout";
 import { SnsIconLinkRow } from "@/components/sns/SnsIconLinkRow";
@@ -30,10 +33,13 @@ export function HomeCmsCanvas({
   lede,
   kickerScale,
   headlineScale,
+  ledeScale,
   kickerColor,
   headlineColor,
+  ledeColor,
   kickerFont,
   headlineFont,
+  ledeFont,
   footerBg,
   activeSlot,
   onSelectSlot,
@@ -46,10 +52,13 @@ export function HomeCmsCanvas({
   lede: string;
   kickerScale: string;
   headlineScale: string;
+  ledeScale: string;
   kickerColor: string;
   headlineColor: string;
+  ledeColor: string;
   kickerFont: string;
   headlineFont: string;
+  ledeFont: string;
   footerBg: string;
   activeSlot: SlotKey | null;
   onSelectSlot: (slot: SlotKey) => void;
@@ -59,10 +68,13 @@ export function HomeCmsCanvas({
 }) {
   const kScale = parseHomeScale(kickerScale);
   const hScale = parseHomeScale(headlineScale);
+  const lScale = parseHomeScale(ledeScale);
   const kickerHex = resolveHomeTextColorHex(kickerColor, HOME_KICKER_COLOR_DEFAULT);
   const headlineHex = resolveHomeTextColorHex(headlineColor, HOME_HEADLINE_COLOR_DEFAULT);
+  const ledeHex = resolveHomeTextColorHex(ledeColor, HOME_LEDE_COLOR_DEFAULT);
   const kickerFamily = resolveHomeFontFamily(kickerFont, HOME_KICKER_FONT_DEFAULT);
   const headlineFamily = resolveHomeFontFamily(headlineFont, HOME_HEADLINE_FONT_DEFAULT);
+  const ledeFamily = resolveHomeFontFamily(ledeFont, HOME_LEDE_FONT_DEFAULT);
   const footerBgCss = resolvePageFooterBackground(footerBg, PAGE_FOOTER_BG_DEFAULT);
   const footerColor = pageFooterTextColor(footerBgCss);
   const ring = (slot: SlotKey) =>
@@ -139,14 +151,14 @@ export function HomeCmsCanvas({
             <button
               type="button"
               onClick={() => onSelectSlot("home.lede")}
-              className={`mt-[1lh] block w-fit max-w-xl border-0 bg-transparent p-0 text-left ${ring("home.lede")}`}
+              className={`mt-7 block w-fit max-w-xl border-0 bg-transparent p-0 text-left sm:mt-8 ${ring("home.lede")}`}
             >
               <span
-                className={`block whitespace-pre-line text-base font-medium leading-7 tracking-[-0.01em] ${lede.trim() ? "" : "opacity-60"}`}
+                className={`block whitespace-pre-line font-normal leading-7 tracking-[-0.01em] ${lede.trim() ? "" : "opacity-60"}`}
                 style={{
-                  color: headlineHex,
-                  fontFamily: headlineFamily,
-                  opacity: lede.trim() ? 0.88 : undefined,
+                  fontSize: homeLedeFontSizeFluid(lScale),
+                  color: ledeHex,
+                  fontFamily: ledeFamily,
                 }}
               >
                 {lede.trim() ? lede : "소개 문구"}
