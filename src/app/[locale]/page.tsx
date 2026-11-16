@@ -27,8 +27,8 @@ export default async function HomePage({
         <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent md:from-white/80" />
 
         <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-7xl flex-col px-6 pb-0 pt-10 md:pt-14">
-          <div className="flex flex-1 flex-col md:max-w-2xl">
-            <div className="mt-auto mb-[min(22vh,9rem)]">
+          <div className="flex flex-1 flex-col justify-center md:max-w-2xl">
+            <div>
               <p className="animate-[fadeUp_0.7s_ease_both] text-[12px] font-semibold tracking-[0.22em] text-brand">
                 {t("home.kicker")}
               </p>

@@ -21,6 +21,8 @@ export const contentSections = [
   { key: "meta", label: "로고·회사명" },
   { key: "nav", label: "메뉴" },
   { key: "about", label: "회사소개" },
+  { key: "aboutGreeting", label: "인사말" },
+  { key: "aboutFeatures", label: "회사특징" },
   { key: "solution", label: "솔루션" },
   { key: "global", label: "글로벌" },
   { key: "business", label: "사업협력" },

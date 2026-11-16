@@ -116,6 +116,13 @@ export async function saveContent(formData: FormData) {
     message = "저장하지 못했습니다.";
   }
 
+  const returnTo = String(formData.get("returnTo") ?? "").trim();
+  if (returnTo.startsWith("/admin/")) {
+    const join = returnTo.includes("?") ? "&" : "?";
+    redirect(
+      `${returnTo}${join}status=${status}&message=${encodeURIComponent(message)}`,
+    );
+  }
   redirect(
     `/admin/content?section=${encodeURIComponent(section)}&status=${status}&message=${encodeURIComponent(message)}`,
   );
