@@ -38,7 +38,7 @@ export default async function HomePage({
             </div>
           </div>
 
-          <div className="border-t border-line bg-white/95 px-5 py-6 backdrop-blur-sm md:px-8 md:py-7">
+          <div className="mb-6 rounded-2xl border border-line bg-white/95 px-5 py-6 shadow-sm backdrop-blur-sm md:mb-8 md:px-8 md:py-7">
             <CompanyContactBlock />
           </div>
         </div>

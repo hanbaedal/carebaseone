@@ -8,7 +8,6 @@ import {
 } from "next-intl/server";
 import { Cormorant_Garamond, Noto_Sans_KR, Noto_Sans_SC } from "next/font/google";
 import { FloatingSnsBar } from "@/components/FloatingSnsBar";
-import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ViewTracker } from "@/components/ViewTracker";
 import { routing } from "@/i18n/routing";
@@ -106,7 +105,6 @@ export default async function LocaleLayout({ children, params }: Props) {
           />
           <main className="flex-1">{children}</main>
           <FloatingSnsBar />
-          <SiteFooter />
         </NextIntlClientProvider>
       </body>
     </html>
