@@ -75,9 +75,6 @@ export function SiteHeader({ memberName = null }: { memberName?: string | null }
               </div>
             );
           })}
-          <a href="/admin" className={navLinkClass(pathname.startsWith("/admin"))}>
-            {t("admin")}
-          </a>
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           {memberName ? (
@@ -168,13 +165,6 @@ export function SiteHeader({ memberName = null }: { memberName?: string | null }
                 </div>
               );
             })}
-            <a
-              href="/admin"
-              onClick={() => setOpen(false)}
-              className="border-b border-line pb-2 text-[15px] font-medium text-brand"
-            >
-              {t("admin")}
-            </a>
           </div>
         </div>
       ) : null}

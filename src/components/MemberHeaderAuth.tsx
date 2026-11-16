@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { logoutMember } from "@/app/[locale]/member/actions";
+import { LOGIN_PATH } from "@/lib/login-path";
 
 const iconClass = "h-[18px] w-[18px]";
 
@@ -50,17 +51,17 @@ export function MemberHeaderAuth({ loggedIn }: { loggedIn: boolean }) {
   if (!loggedIn) {
     return (
       <>
-        <Link href="/login" className={textLinkClass}>
+        <a href={LOGIN_PATH} className={textLinkClass}>
           {t("login")}
-        </Link>
-        <Link
-          href="/login"
+        </a>
+        <a
+          href={LOGIN_PATH}
           className={iconButtonClass}
-          aria-label={t("memberSignIn")}
-          title={t("memberSignIn")}
+          aria-label={t("login")}
+          title={t("login")}
         >
           <IconUser className={iconClass} />
-        </Link>
+        </a>
       </>
     );
   }

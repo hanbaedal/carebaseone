@@ -1,5 +1,5 @@
-import { redirect } from "@/i18n/navigation";
-import { Link } from "@/i18n/navigation";
+import { redirect as nextRedirect } from "next/navigation";
+import { redirect, Link } from "@/i18n/navigation";
 import { UnifiedLoginForm } from "@/components/UnifiedLoginForm";
 import { getApprovedMember } from "@/lib/member-session";
 import { getSession } from "@/lib/session";
@@ -19,7 +19,8 @@ export default async function UnifiedLoginPage({
   const loc = resolveLocale(locale);
 
   const staff = await getSession();
-  if (staff) redirect({ href: "/admin/cms", locale: loc });
+  // 관리 콘솔은 locale 밖(/admin/*) — next-intl redirect 사용 시 /ko/admin/* 404
+  if (staff) nextRedirect("/admin/cms");
 
   const member = await getApprovedMember();
   if (member) redirect({ href: "/member", locale: loc });
