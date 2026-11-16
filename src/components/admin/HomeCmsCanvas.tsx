@@ -15,7 +15,10 @@ import {
   HOME_HEADLINE_FONT_DEFAULT,
   HOME_KICKER_FONT_DEFAULT,
 } from "@/lib/home-hero";
-import { HOME_VIEWPORT_SHELL } from "@/lib/home-layout";
+import { HOME_CONTENT_GUTTER, HOME_VIEWPORT_SHELL } from "@/lib/home-layout";
+import { SnsIconLinkRow } from "@/components/sns/SnsIconLinkRow";
+import { companySnsLinks } from "@/lib/company-sns";
+import { SITE_SNS_DEFAULTS } from "@/lib/company-sns";
 import { pageFooterTextColor, resolvePageFooterBackground, PAGE_FOOTER_BG_DEFAULT } from "@/lib/page-footer";
 import { CMS_FOOTER_INNER, CMS_FOOTER_INNER_DOCKED } from "@/lib/footer-layout";
 type SlotKey = "home.heroImage" | "home.kicker" | "home.headline" | "home.lede";
@@ -72,6 +75,20 @@ export function HomeCmsCanvas({
     : "flex min-h-[calc(100dvh-4.5rem)] flex-col bg-white";
 
   const footerInner = compact ? CMS_FOOTER_INNER_DOCKED : CMS_FOOTER_INNER;
+  const previewSnsLinks = companySnsLinks({
+    companyName: "",
+    representativeName: "",
+    companyPhone: "",
+    companyFax: "",
+    companyEmail: "",
+    representativePhone: "",
+    website: "",
+    businessRegistrationNumber: "",
+    businessType: "",
+    businessItem: "",
+    ...SITE_SNS_DEFAULTS,
+    snsKakao: "",
+  });
 
   return (
     <div className={rootClass}>
@@ -85,7 +102,7 @@ export function HomeCmsCanvas({
           unoptimized={heroImageUnoptimized(heroSrc)}
         />
 
-        <div className="relative z-10 mx-auto flex h-full min-h-0 max-w-7xl flex-col px-4 py-4 sm:px-6 sm:py-5 md:py-6">
+        <div className={`relative z-10 flex h-full min-h-0 flex-col py-4 sm:py-5 md:py-6 ${HOME_CONTENT_GUTTER}`}>
           <div className="flex min-h-0 flex-1 flex-col justify-center md:max-w-2xl">
             <button
               type="button"
@@ -151,7 +168,10 @@ export function HomeCmsCanvas({
         style={{ backgroundColor: footerBgCss, color: footerColor }}
       >
         <div className={footerInner}>
-          <CompanyContactBlock onBrandBg compact />
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+            <CompanyContactBlock onBrandBg compact className="min-w-0 flex-1" />
+            <SnsIconLinkRow links={previewSnsLinks} compact onBrandBg />
+          </div>
         </div>
       </footer>
     </div>

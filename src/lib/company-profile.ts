@@ -1,4 +1,5 @@
 import { companyProfile, ensureIndexes, type CompanyProfileDoc } from "@/lib/db";
+import { SITE_SNS_DEFAULTS } from "@/lib/company-sns";
 import { formatKoreaDateTimeStorage, mongoUpdated } from "@/lib/korea-time";
 import { getCmsMessages } from "@/lib/content";
 import { recordActivity } from "@/lib/users";
@@ -9,17 +10,7 @@ export type CompanyProfileInput = Omit<
   "_id" | "updatedAt" | "updatedAtKst" | "updatedBy"
 >;
 
-/** DB 비어 있을 때 공개 SNS (관리자 정보 수정 값이 우선) */
-export const SITE_SNS_DEFAULTS: Pick<
-  CompanyProfileInput,
-  "snsFacebook" | "snsInstagram" | "snsYoutube" | "snsNaverCafe"
-> = {
-  snsFacebook: "https://www.facebook.com/profile.php?id=61596489113854",
-  snsInstagram: "https://www.instagram.com/carebase.kr/",
-  snsYoutube: "https://www.youtube.com/channel/UCycMxD82rFtJyCT53w8MUZA",
-  snsNaverCafe:
-    "https://section.blog.naver.com/BlogHome.naver?directoryNo=0&currentPage=1&groupId=0",
-};
+export { SITE_SNS_DEFAULTS } from "@/lib/company-sns";
 
 function withSiteSnsDefaults(profile: CompanyProfileInput): CompanyProfileInput {
   const out = { ...profile };

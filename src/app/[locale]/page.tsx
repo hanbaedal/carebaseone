@@ -2,7 +2,7 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { resolveLocale } from "@/lib/locale";
 import { CmsPageFooter } from "@/components/CmsPageFooter";
-import { HOME_VIEWPORT_SHELL } from "@/lib/home-layout";
+import { HOME_CONTENT_GUTTER, HOME_VIEWPORT_SHELL } from "@/lib/home-layout";
 import {
   HOME_HERO_IMAGE_CLASS,
   heroImageUnoptimized,
@@ -50,7 +50,7 @@ export default async function HomePage({
           unoptimized={heroImageUnoptimized(heroSrc)}
         />
 
-        <div className="relative mx-auto flex h-full min-h-0 max-w-7xl flex-col px-4 py-4 sm:px-6 sm:py-5 md:py-6">
+        <div className={`relative flex h-full min-h-0 flex-col py-4 sm:py-5 md:py-6 ${HOME_CONTENT_GUTTER}`}>
           <div className="flex min-h-0 flex-1 flex-col justify-center md:max-w-2xl">
             <p
               className="animate-[fadeUp_0.7s_ease_both] font-semibold tracking-[0.18em] sm:tracking-[0.22em]"

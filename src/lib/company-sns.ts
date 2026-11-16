@@ -1,5 +1,17 @@
 import type { CompanyProfileInput } from "@/lib/company-profile";
 
+/** DB 비어 있을 때 공개 SNS (관리자 정보 수정 값이 우선) */
+export const SITE_SNS_DEFAULTS: Pick<
+  CompanyProfileInput,
+  "snsFacebook" | "snsInstagram" | "snsYoutube" | "snsNaverCafe"
+> = {
+  snsFacebook: "https://www.facebook.com/profile.php?id=61596489113854",
+  snsInstagram: "https://www.instagram.com/carebase.kr/",
+  snsYoutube: "https://www.youtube.com/channel/UCycMxD82rFtJyCT53w8MUZA",
+  snsNaverCafe:
+    "https://section.blog.naver.com/BlogHome.naver?directoryNo=0&currentPage=1&groupId=0",
+};
+
 export type PublicSnsKey = "facebook" | "instagram" | "youtube" | "naverBlog";
 
 export type CompanySnsLink = {

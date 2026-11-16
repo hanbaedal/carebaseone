@@ -1,5 +1,6 @@
 import { getLocale } from "next-intl/server";
 import { CompanyContactBlock } from "@/components/CompanyContactBlock";
+import { FooterSnsRow } from "@/components/FooterSnsRow";
 import { getCmsMessages, type Locale } from "@/lib/content";
 import {
   PAGE_FOOTER_BG_DEFAULT,
@@ -31,7 +32,10 @@ export async function CmsPageFooter({ section, docked }: Props) {
       style={{ backgroundColor: bg, color }}
     >
       <div className={inner}>
-        <CompanyContactBlock onBrandBg compact />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+          <CompanyContactBlock onBrandBg compact className="min-w-0 flex-1" />
+          <FooterSnsRow compact onBrandBg />
+        </div>
       </div>
     </footer>
   );

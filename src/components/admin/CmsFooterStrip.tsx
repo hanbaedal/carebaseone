@@ -1,6 +1,9 @@
 "use client";
 
 import { CompanyContactBlock } from "@/components/CompanyContactBlock";
+import { SnsIconLinkRow } from "@/components/sns/SnsIconLinkRow";
+import { companySnsLinks } from "@/lib/company-sns";
+import { SITE_SNS_DEFAULTS } from "@/lib/company-sns";
 import { PAGE_FOOTER_BG_DEFAULT, pageFooterTextColor, resolvePageFooterBackground } from "@/lib/page-footer";
 import { CMS_FOOTER_INNER } from "@/lib/footer-layout";
 
@@ -15,6 +18,20 @@ export function CmsFooterStrip({
 }) {
   const bg = resolvePageFooterBackground(bgId, PAGE_FOOTER_BG_DEFAULT);
   const color = pageFooterTextColor(bg);
+  const previewSnsLinks = companySnsLinks({
+    companyName: "",
+    representativeName: "",
+    companyPhone: "",
+    companyFax: "",
+    companyEmail: "",
+    representativePhone: "",
+    website: "",
+    businessRegistrationNumber: "",
+    businessType: "",
+    businessItem: "",
+    ...SITE_SNS_DEFAULTS,
+    snsKakao: "",
+  });
   return (
     <button
       type="button"
@@ -25,7 +42,10 @@ export function CmsFooterStrip({
       style={{ backgroundColor: bg, color }}
     >
       <div className={CMS_FOOTER_INNER}>
-        <CompanyContactBlock onBrandBg compact />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+          <CompanyContactBlock onBrandBg compact className="min-w-0 flex-1" />
+          <SnsIconLinkRow links={previewSnsLinks} compact onBrandBg />
+        </div>
       </div>
     </button>
   );

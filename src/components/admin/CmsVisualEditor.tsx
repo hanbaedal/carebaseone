@@ -72,6 +72,16 @@ function resolveHomeTextSlot(path: string) {
   return null;
 }
 
+const HOME_TYPO_SLOTS = new Set(["home.kicker", "home.headline", "home.lede"]);
+
+/** 소개 문구(lede)는 헤드라인 색·폰트와 동일 */
+function homeStylePathFor(textPath: string | null) {
+  if (!textPath) return null;
+  if (textPath === "home.lede") return "home.headline";
+  if (textPath === "home.kicker" || textPath === "home.headline") return textPath;
+  return null;
+}
+
 type HomePreviewSlot = "home.heroImage" | "home.kicker" | "home.headline" | "home.lede";
 
 function resolvePreviewActiveSlot(
@@ -198,13 +208,16 @@ export function CmsVisualEditor({
     () => (homeTextPath ? editorFields.find((f) => f.path === homeTextPath) : active),
     [homeTextPath, editorFields, active],
   );
-  const linkedScalePath = homeTextPath ? scalePathFor(homeTextPath) : null;
-  const linkedColorPath = homeTextPath ? colorPathFor(homeTextPath) : null;
-  const linkedFontPath = homeTextPath ? fontPathFor(homeTextPath) : null;
-  const colorFallback =
-    homeTextPath && (homeTextPath === "home.kicker" || homeTextPath === "home.headline")
-      ? defaultColorForTextPath(homeTextPath)
-      : "blue";
+  const homeStylePath = homeStylePathFor(homeTextPath);
+  const linkedScalePath =
+    homeTextPath === "home.kicker" || homeTextPath === "home.headline"
+      ? scalePathFor(homeTextPath)
+      : null;
+  const linkedColorPath = homeStylePath ? colorPathFor(homeStylePath) : null;
+  const linkedFontPath = homeStylePath ? fontPathFor(homeStylePath) : null;
+  const showHomeTypography =
+    isHome && Boolean(homeTextPath && HOME_TYPO_SLOTS.has(homeTextPath)) && !isHeroField;
+  const colorFallback = homeStylePath ? defaultColorForTextPath(homeStylePath) : "blue";
 
   const footerPaths = pageFooterPaths(page.section);
   const hasPageFooter = useMemo(
@@ -267,8 +280,8 @@ export function CmsVisualEditor({
   };
 
   const pinPreviewForTextTools = () => {
-    if (homeTextPath === "home.kicker" || homeTextPath === "home.headline") {
-      setPreviewPin(homeTextPath);
+    if (homeTextPath && HOME_TYPO_SLOTS.has(homeTextPath)) {
+      setPreviewPin(homeTextPath as HomePreviewSlot);
       setSlot(homeTextPath);
     }
   };
@@ -301,13 +314,13 @@ export function CmsVisualEditor({
     if (!path?.endsWith("Scale")) return;
     const textPath =
       previewPin ??
-      (homeTextPath === "home.kicker" || homeTextPath === "home.headline" ? homeTextPath : null) ??
+      (homeTextPath && HOME_TYPO_SLOTS.has(homeTextPath) ? homeTextPath : null) ??
       textPathForScaleField(path);
     if (isHome) pinPreviewForTextTools();
     setDraft((d) => ({ ...d, [path]: String(next) }));
     setScaleOpen(false);
-    if (isHome && textPath) {
-      setPreviewPin(textPath);
+    if (isHome && textPath && HOME_TYPO_SLOTS.has(textPath)) {
+      setPreviewPin(textPath as HomePreviewSlot);
       setSlot(textPath);
     }
   };
@@ -315,11 +328,10 @@ export function CmsVisualEditor({
   const pickFont = (fontId: HomeFontId) => {
     if (!linkedFontPath) return;
     const textPath =
-      previewPin ??
-      (homeTextPath === "home.kicker" || homeTextPath === "home.headline" ? homeTextPath : null);
+      previewPin ?? (homeTextPath && HOME_TYPO_SLOTS.has(homeTextPath) ? homeTextPath : null);
     setDraft((d) => ({ ...d, [linkedFontPath]: fontId }));
-    if (isHome && textPath) {
-      setPreviewPin(textPath);
+    if (isHome && textPath && HOME_TYPO_SLOTS.has(textPath)) {
+      setPreviewPin(textPath as HomePreviewSlot);
       setSlot(textPath);
     }
   };
@@ -331,11 +343,10 @@ export function CmsVisualEditor({
   const pickColor = (colorId: HomeTextColorId) => {
     if (!linkedColorPath) return;
     const textPath =
-      previewPin ??
-      (homeTextPath === "home.kicker" || homeTextPath === "home.headline" ? homeTextPath : null);
+      previewPin ?? (homeTextPath && HOME_TYPO_SLOTS.has(homeTextPath) ? homeTextPath : null);
     setDraft((d) => ({ ...d, [linkedColorPath]: colorId }));
-    if (isHome && textPath) {
-      setPreviewPin(textPath);
+    if (isHome && textPath && HOME_TYPO_SLOTS.has(textPath)) {
+      setPreviewPin(textPath as HomePreviewSlot);
       setSlot(textPath);
     }
   };
@@ -436,8 +447,8 @@ export function CmsVisualEditor({
         <aside
           className={
             isHome
-              ? "sticky top-14 z-20 flex max-h-[calc(100dvh-3.5rem)] flex-col border-l border-line bg-white"
-              : "sticky top-14 flex max-h-[calc(100dvh-3.5rem)] flex-col rounded-xl border border-ink/10 bg-white shadow-sm"
+              ? "sticky top-14 z-20 flex max-h-[calc(100dvh-3.5rem)] flex-col overflow-hidden border-l border-line bg-white"
+              : "sticky top-14 flex max-h-[calc(100dvh-3.5rem)] flex-col overflow-hidden rounded-xl border border-ink/10 bg-white shadow-sm"
           }
         >
           <div className="border-b border-ink/10 px-3 py-2">
@@ -464,6 +475,7 @@ export function CmsVisualEditor({
             </div>
           ) : null}
 
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
           <div className="border-b border-ink/10 px-2 py-2">
             <label className="grid gap-1 text-[10px] text-ink/50">
               편집 슬롯
@@ -507,20 +519,18 @@ export function CmsVisualEditor({
             </div>
           ) : null}
 
-          {hasPageFooter ? (
-            <div className="shrink-0 border-b border-ink/10 px-3 py-2">
-              <button
-                type="button"
-                onClick={() => setFooterBgOpen(true)}
-                className="w-full rounded-md border border-ink/15 bg-ink/5 px-2 py-2 text-[12px] text-brand hover:bg-brand/5"
-              >
-                풋터 배경색 (
-                {pageFooterBgLabel(draft[footerPaths.bg] ?? "", PAGE_FOOTER_BG_DEFAULT)})
-              </button>
+          {showHomeTypography ? (
+            <div className="shrink-0 border-b border-ink/10 bg-ink/[0.02] px-3 py-2">
+              <p className="mb-2 text-[10px] font-medium text-ink/55">글자 스타일</p>
+              {homeTextPath === "home.lede" ? (
+                <p className="mb-2 text-[10px] leading-4 text-ink/45">
+                  소개 문구는 헤드라인과 같은 색·폰트를 씁니다.
+                </p>
+              ) : null}
             </div>
           ) : null}
 
-          {isHome && linkedFontPath && homeTextPath && !isHeroField ? (
+          {showHomeTypography && linkedFontPath ? (
             <div className="shrink-0 border-b border-ink/10 px-3 py-2">
               <button
                 type="button"
@@ -532,8 +542,8 @@ export function CmsVisualEditor({
               >
                 글자 폰트 (
                 {homeFontLabel(
-                  linkedFontPath ? (draft[linkedFontPath] ?? "") : "",
-                  defaultFontForTextPath(homeTextPath),
+                  draft[linkedFontPath] ?? "",
+                  defaultFontForTextPath(homeStylePath!),
                 )}
                 )
               </button>
@@ -561,7 +571,7 @@ export function CmsVisualEditor({
             </div>
           ) : null}
 
-          {isHome && linkedColorPath && homeTextPath && !isHeroField ? (
+          {showHomeTypography && linkedColorPath ? (
             <div className="shrink-0 border-b border-ink/10 px-3 py-2">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-[12px] text-brand-ink">글자 컬러</span>
@@ -576,7 +586,7 @@ export function CmsVisualEditor({
                   style={{
                     backgroundColor: resolveHomeTextColorHex(
                       draft[linkedColorPath],
-                      defaultColorForTextPath(homeTextPath),
+                      defaultColorForTextPath(homeStylePath!),
                     ),
                   }}
                 />
@@ -647,6 +657,20 @@ export function CmsVisualEditor({
           ) : (
             <p className="p-3 text-[11px] text-ink/45">편집할 문구가 없습니다.</p>
           )}
+          </div>
+
+          {hasPageFooter ? (
+            <div className="shrink-0 border-t border-ink/10 px-3 py-2">
+              <button
+                type="button"
+                onClick={() => setFooterBgOpen(true)}
+                className="w-full rounded-md border border-ink/15 bg-ink/5 px-2 py-2 text-[12px] text-brand hover:bg-brand/5"
+              >
+                풋터 배경색 (
+                {pageFooterBgLabel(draft[footerPaths.bg] ?? "", PAGE_FOOTER_BG_DEFAULT)})
+              </button>
+            </div>
+          ) : null}
 
           {showSaveFooter ? (
             <div className="mt-auto shrink-0 border-t border-ink/10 bg-white p-3">
@@ -683,11 +707,7 @@ export function CmsVisualEditor({
       <FontFamilyModal
         open={fontOpen}
         value={linkedFontPath ? (draft[linkedFontPath] ?? "") : ""}
-        fallback={
-          homeTextPath && (homeTextPath === "home.kicker" || homeTextPath === "home.headline")
-            ? defaultFontForTextPath(homeTextPath)
-            : "gothic"
-        }
+        fallback={homeStylePath ? defaultFontForTextPath(homeStylePath) : "gothic"}
         onClose={() => setFontOpen(false)}
         onSelect={pickFont}
       />
