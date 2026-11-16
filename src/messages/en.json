@@ -7,9 +7,16 @@
   "nav": {
     "home": "HOME",
     "about": "About",
+    "greeting": "Greeting",
+    "features": "Features",
     "technology": "Technology",
     "solution": "Solution",
     "product": "Product",
+    "healthFood": "Health supplements",
+    "generalFood": "General food",
+    "cosmetics": "Cosmetics",
+    "patch": "Patch",
+    "healthPlatform": "Health platform",
     "global": "Global",
     "business": "Partnership",
     "patents": "Patents",
@@ -137,6 +144,39 @@
         "text": "Grow research, production, distribution, and partner networks across Korea, China, and the U.S."
       }
     }
+  },
+  "aboutGreeting": {
+    "kicker": "Greeting",
+    "title": "Connecting a healthier tomorrow",
+    "body": "Welcome to CAREBASE Co., Ltd.\n\nWe help nitric oxide metabolite research meet daily life through products and solutions. We share verifiable materials and grow global opportunities with partners.\n\nThank you for joining us in building a healthier tomorrow.",
+    "sign": "CAREBASE Co., Ltd.",
+    "ctaFeatures": "Company features",
+    "ctaContact": "Contact"
+  },
+  "aboutFeatures": {
+    "kicker": "Features",
+    "title": "What CAREBASE does",
+    "lede": "Technology, products, and global business connect on one platform.",
+    "items": {
+      "tech": {
+        "title": "Technology-first",
+        "text": "We design solutions around nitric oxide metabolite research and evidence."
+      },
+      "product": {
+        "title": "Everyday products",
+        "text": "Health supplements, general food, cosmetics, patches, and a health platform."
+      },
+      "global": {
+        "title": "Global links",
+        "text": "We grow research and distribution networks with partners abroad."
+      },
+      "trust": {
+        "title": "Trust",
+        "text": "We share materials transparently and respond carefully to inquiries."
+      }
+    },
+    "ctaProduct": "Products",
+    "ctaGreeting": "Greeting"
   },
   "technology": {
     "kicker": "01 Technology",

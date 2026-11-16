@@ -1,3 +1,5 @@
+import { productNavChildren } from "@/lib/product-categories";
+
 export const siteUrl = "https://carebaseone.com";
 
 /** 로컬 정적 이미지 — Unsplash 원본 삭제 시 404 방지 */
@@ -32,12 +34,18 @@ export const headerNav: HeaderNavItem[] = [
     href: "/about",
     key: "about",
     children: [
+      { href: "/about/greeting", key: "greeting" },
+      { href: "/about/features", key: "features" },
       { href: "/solution", key: "solution" },
       { href: "/global", key: "global" },
       { href: "/business", key: "business" },
     ],
   },
-  { href: "/product", key: "product" },
+  {
+    href: "/product",
+    key: "product",
+    children: productNavChildren(),
+  },
   {
     href: "/technology",
     key: "technology",

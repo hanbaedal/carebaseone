@@ -7,9 +7,16 @@
   "nav": {
     "home": "首页",
     "about": "公司介绍",
+    "greeting": "致辞",
+    "features": "公司特点",
     "technology": "技术",
     "solution": "方案",
     "product": "产品",
+    "healthFood": "健康食品",
+    "generalFood": "一般食品",
+    "cosmetics": "化妆品",
+    "patch": "贴剂",
+    "healthPlatform": "健康管理平台",
     "global": "全球",
     "business": "事业合作",
     "patents": "知识产权",
@@ -137,6 +144,39 @@
         "text": "在韩国、中国、美国拓展研究、生产、流通与伙伴网络。"
       }
     }
+  },
+  "aboutGreeting": {
+    "kicker": "致辞",
+    "title": "连接更健康的明天",
+    "body": "欢迎访问 CAREBASE。\n\n我们以一氧化氮代谢体技术为基础，让研究与产品、方案走进日常生活，并与伙伴一起拓展全球机会。\n\n感谢您与我们一起创造更健康的明天。",
+    "sign": "株式会社 CAREBASE",
+    "ctaFeatures": "公司特点",
+    "ctaContact": "联系我们"
+  },
+  "aboutFeatures": {
+    "kicker": "公司特点",
+    "title": "CAREBASE 做什么",
+    "lede": "技术、产品与全球事业在同一平台连接，是 CAREBASE 的特点。",
+    "items": {
+      "tech": {
+        "title": "技术为本",
+        "text": "以一氧化氮代谢体研究与可核对资料为核心设计方案。"
+      },
+      "product": {
+        "title": "日常产品",
+        "text": "健康食品、一般食品、化妆品、贴剂与健康管理平台。"
+      },
+      "global": {
+        "title": "全球连接",
+        "text": "以韩国为轴拓展海外研究与流通伙伴网络。"
+      },
+      "trust": {
+        "title": "信任透明",
+        "text": "如实公开资料，认真回应咨询与合作。"
+      }
+    },
+    "ctaProduct": "查看产品",
+    "ctaGreeting": "致辞"
   },
   "technology": {
     "kicker": "01 技术",
