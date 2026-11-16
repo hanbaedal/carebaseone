@@ -191,25 +191,30 @@
     "proofLink": "Research & clinical",
     "certLink": "Certifications",
     "categories": {
-      "patch": {
-        "title": "Patch",
-        "text": "Patches that sit lightly in daily life and sport.",
-        "items": "Muscle & joint · Sport · Vitamin"
-      },
-      "beverage": {
-        "title": "Beverage",
-        "text": "Drinks that sit beside the rhythm of a day.",
-        "items": "Happy N:O · Saengmaeksan · Ssanghwatang"
-      },
-      "food": {
-        "title": "Health Food",
+      "healthFood": {
+        "title": "Health supplements",
         "text": "Foods built from ingredients found in nature.",
         "items": "Ddatdureup · Yukmisonghwa"
+      },
+      "generalFood": {
+        "title": "General food",
+        "text": "Everyday food products.",
+        "items": "Happy N:O · Saengmaeksan · Ssanghwatang"
       },
       "cosmetics": {
         "title": "Cosmetics",
         "text": "Daily care for skin and hair.",
-        "items": "ALL CARE · Shampoo · Essence · Body lotion"
+        "items": "Jaryeon cushion and care line"
+      },
+      "patch": {
+        "title": "Patch",
+        "text": "Patches that sit lightly in daily life and sport.",
+        "items": "Bio Healing patch line"
+      },
+      "healthPlatform": {
+        "title": "Health management platform",
+        "text": "Services and data that connect daily health.",
+        "items": "CAREBASE health platform"
       }
     }
   },
@@ -259,6 +264,26 @@
       "happy-no": {
         "title": "Happy N:O",
         "summary": "Lifestyle beverage line (inquire via store)."
+      },
+      "ddaturip": {
+        "title": "Ddatdureup",
+        "summary": "Health food line — contact or archive for details."
+      },
+      "yukmi-songhwa": {
+        "title": "Yukmisonghwa",
+        "summary": "Health food line — contact or archive for details."
+      },
+      "saengmaeksan": {
+        "title": "Saengmaeksan",
+        "summary": "General food line."
+      },
+      "ssanghwatang": {
+        "title": "Ssanghwatang",
+        "summary": "General food line."
+      },
+      "carebase-health-platform": {
+        "title": "CAREBASE health platform",
+        "summary": "Member and data-driven health management services."
       }
     }
   },

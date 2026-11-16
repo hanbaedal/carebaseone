@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { resolveLocale } from "@/lib/locale";
 import { CtaLink } from "@/components/CtaLink";
 import { Link } from "@/i18n/navigation";
+import { PRODUCT_LINE_CATEGORIES } from "@/lib/product-categories";
 import { images } from "@/lib/site";
 
 const pillars = [
@@ -19,13 +20,6 @@ const solutions = [
   { key: "senior", image: images.senior },
   { key: "beauty", image: images.beauty },
   { key: "wellness", image: images.wellness },
-] as const;
-
-const products = [
-  { key: "patch", image: images.breakfast },
-  { key: "beverage", image: images.drink },
-  { key: "food", image: images.vein },
-  { key: "cosmetics", image: images.beauty },
 ] as const;
 
 export default async function HomePage({
@@ -150,11 +144,11 @@ export default async function HomePage({
             </p>
             <h2 className="font-display mt-3 text-3xl md:text-4xl">{t("home.inLife")}</h2>
             <div className="mt-8 grid gap-4">
-              {products.map((item) => (
-                <p key={item.key} className="border-t border-white/20 pt-4 text-sm">
-                  {t(`product.categories.${item.key}.title`)}
+              {PRODUCT_LINE_CATEGORIES.map((key) => (
+                <p key={key} className="border-t border-white/20 pt-4 text-sm">
+                  {t(`product.categories.${key}.title`)}
                   <span className="mt-1 block font-normal text-white/70">
-                    {t(`product.categories.${item.key}.items`)}
+                    {t(`product.categories.${key}.items`)}
                   </span>
                 </p>
               ))}

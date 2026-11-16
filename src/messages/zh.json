@@ -191,25 +191,30 @@
     "proofLink": "研究·临床",
     "certLink": "认证·法规",
     "categories": {
-      "patch": {
-        "title": "贴剂",
-        "text": "轻轻加入日常与运动现场的贴剂。",
-        "items": "肌肉关节贴 · 运动贴 · 维生素贴"
-      },
-      "beverage": {
-        "title": "饮品",
-        "text": "陪伴一天节奏的饮品。",
-        "items": "Happy N:O · 生脉散 · 双和汤"
-      },
-      "food": {
+      "healthFood": {
         "title": "健康食品",
         "text": "承载自然原料的健康食品。",
         "items": "刺老芽 · 六味松花"
       },
+      "generalFood": {
+        "title": "一般食品",
+        "text": "日常生活中的食品。",
+        "items": "Happy N:O · 生脉散 · 双和汤"
+      },
       "cosmetics": {
         "title": "化妆品",
         "text": "皮肤与头发的日常护理。",
-        "items": "ALL CARE · 洗发水 · 精华 · 身体乳"
+        "items": "慈莲气垫等"
+      },
+      "patch": {
+        "title": "贴剂",
+        "text": "轻轻加入日常与运动现场的贴剂。",
+        "items": "Bio Healing 贴剂系列"
+      },
+      "healthPlatform": {
+        "title": "健康管理平台",
+        "text": "用数据与服务连接健康。",
+        "items": "CAREBASE 健康管理"
       }
     }
   },
@@ -259,6 +264,26 @@
       "happy-no": {
         "title": "Happy N:O",
         "summary": "生活型饮品系列（商城咨询）。"
+      },
+      "ddaturip": {
+        "title": "刺老芽",
+        "summary": "健康食品系列，详情请咨询或见资料室。"
+      },
+      "yukmi-songhwa": {
+        "title": "六味松花",
+        "summary": "健康食品系列，详情请咨询或见资料室。"
+      },
+      "saengmaeksan": {
+        "title": "生脉散",
+        "summary": "一般食品系列。"
+      },
+      "ssanghwatang": {
+        "title": "双和汤",
+        "summary": "一般食品系列。"
+      },
+      "carebase-health-platform": {
+        "title": "CAREBASE 健康管理平台",
+        "summary": "会员与数据驱动的健康管理服务。"
       }
     }
   },

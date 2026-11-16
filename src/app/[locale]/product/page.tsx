@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { PageHero } from "@/components/PageHero";
 import { CtaLink } from "@/components/CtaLink";
 import { ProductBeoneNote, ProductLineGrid } from "@/components/ProductLineGrid";
+import { PRODUCT_LINE_CATEGORIES } from "@/lib/product-categories";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
 import { Link } from "@/i18n/navigation";
@@ -32,9 +33,13 @@ export default async function ProductPage({
           </Link>
         </p>
 
-        <ProductLineGrid category="patch" heading={t("product.categories.patch.text")} />
-        <ProductLineGrid category="cosmetics" heading={t("product.categories.cosmetics.text")} />
-        <ProductLineGrid category="beverage" heading={t("product.categories.beverage.text")} />
+        {PRODUCT_LINE_CATEGORIES.map((key) => (
+          <ProductLineGrid
+            key={key}
+            category={key}
+            heading={t(`product.categories.${key}.title`)}
+          />
+        ))}
 
         <div className="mt-14">
           <CtaLink href="/contact">{t("cta.inquire")}</CtaLink>

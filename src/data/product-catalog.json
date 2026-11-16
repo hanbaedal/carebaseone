@@ -6,6 +6,47 @@
   },
   "lines": [
     {
+      "slug": "ddaturip",
+      "category": "healthFood",
+      "image": "/images/site/vein.jpg",
+      "mediaHrefs": []
+    },
+    {
+      "slug": "yukmi-songhwa",
+      "category": "healthFood",
+      "image": "/images/site/vein.jpg",
+      "mediaHrefs": []
+    },
+    {
+      "slug": "happy-no",
+      "category": "generalFood",
+      "image": "/images/site/drink.jpg",
+      "mediaHrefs": []
+    },
+    {
+      "slug": "saengmaeksan",
+      "category": "generalFood",
+      "image": "/images/site/drink.jpg",
+      "mediaHrefs": []
+    },
+    {
+      "slug": "ssanghwatang",
+      "category": "generalFood",
+      "image": "/images/site/drink.jpg",
+      "mediaHrefs": []
+    },
+    {
+      "slug": "jaryeon-cushion",
+      "category": "cosmetics",
+      "image": "/images/products/jaryeon-cushion.jpg",
+      "gallery": [
+        "/images/products/jaryeon-cushion.jpg",
+        "/images/products/jaryeon-cushion-open.jpg",
+        "/images/products/jaryeon-cushion-box.jpg"
+      ],
+      "mediaHrefs": []
+    },
+    {
       "slug": "muscle-joint-patch",
       "category": "patch",
       "image": "/images/products/patch-line-promo.png",
@@ -61,20 +102,9 @@
       "mediaHrefs": ["/api/media/us-miracle-patch-pdf"]
     },
     {
-      "slug": "jaryeon-cushion",
-      "category": "cosmetics",
-      "image": "/images/products/jaryeon-cushion.jpg",
-      "gallery": [
-        "/images/products/jaryeon-cushion.jpg",
-        "/images/products/jaryeon-cushion-open.jpg",
-        "/images/products/jaryeon-cushion-box.jpg"
-      ],
-      "mediaHrefs": []
-    },
-    {
-      "slug": "happy-no",
-      "category": "beverage",
-      "image": "/images/site/drink.jpg",
+      "slug": "carebase-health-platform",
+      "category": "healthPlatform",
+      "image": "/images/site/wellness.jpg",
       "mediaHrefs": []
     }
   ]

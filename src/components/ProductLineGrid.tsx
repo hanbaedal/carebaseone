@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import catalog from "@/data/product-catalog.json";
+import type { ProductLineCategory } from "@/lib/product-categories";
 import {
   ProductCatalogCards,
   type ProductCatalogCard,
@@ -9,12 +10,13 @@ export async function ProductLineGrid({
   category,
   heading,
 }: {
-  category: "patch" | "cosmetics" | "beverage";
+  category: ProductLineCategory;
   heading: string;
 }) {
   const t = await getTranslations("productCatalog");
   const lineText = t as unknown as (key: string) => string;
   const lines = catalog.lines.filter((l) => l.category === category);
+  if (lines.length === 0) return null;
 
   const items: ProductCatalogCard[] = lines.map((line) => ({
     slug: line.slug,

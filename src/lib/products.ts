@@ -21,9 +21,14 @@ function lineTexts(slug: string) {
   };
 }
 
-const storeLines = catalog.lines.filter((line) =>
-  ["patch", "beverage"].includes(line.category),
-);
+const storeCategories = new Set([
+  "healthFood",
+  "generalFood",
+  "cosmetics",
+  "patch",
+  "healthPlatform",
+]);
+const storeLines = catalog.lines.filter((line) => storeCategories.has(line.category));
 
 export async function ensureProductSeed() {
   await ensureIndexes();

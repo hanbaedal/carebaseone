@@ -191,25 +191,30 @@
     "proofLink": "연구·임상 자료",
     "certLink": "인증·규제",
     "categories": {
-      "patch": {
-        "title": "패치",
-        "text": "일상과 스포츠 현장에 가볍게 더하는 패치.",
-        "items": "바이오힐링 패치 라인"
-      },
-      "beverage": {
-        "title": "음료",
-        "text": "하루의 리듬에 곁들이는 음료.",
-        "items": "Happy N:O · 생맥산 · 쌍화탕"
-      },
-      "food": {
+      "healthFood": {
         "title": "건강식품",
         "text": "자연에서 온 원료를 담은 건강식품.",
         "items": "땃두릅 · 육미송화"
+      },
+      "generalFood": {
+        "title": "일반식품",
+        "text": "일상에 곁들이는 식품.",
+        "items": "Happy N:O · 생맥산 · 쌍화탕"
       },
       "cosmetics": {
         "title": "화장품",
         "text": "피부와 모발을 위한 데일리 케어.",
         "items": "慈蓮(자련) 쿠션 등"
+      },
+      "patch": {
+        "title": "패치",
+        "text": "일상과 스포츠 현장에 가볍게 더하는 패치.",
+        "items": "바이오힐링 패치 라인"
+      },
+      "healthPlatform": {
+        "title": "건강관리플랫",
+        "text": "데이터와 서비스로 건강을 연결하는 플랫폼.",
+        "items": "CAREBASE 건강관리"
       }
     }
   },
@@ -259,6 +264,26 @@
       "happy-no": {
         "title": "Happy N:O",
         "summary": "생활형 음료 라인 (스토어 문의)."
+      },
+      "ddaturip": {
+        "title": "땃두릅",
+        "summary": "건강식품 라인. 상세는 문의·자료실을 이용해 주세요."
+      },
+      "yukmi-songhwa": {
+        "title": "육미송화",
+        "summary": "건강식품 라인. 상세는 문의·자료실을 이용해 주세요."
+      },
+      "saengmaeksan": {
+        "title": "생맥산",
+        "summary": "일반식품 라인."
+      },
+      "ssanghwatang": {
+        "title": "쌍화탕",
+        "summary": "일반식품 라인."
+      },
+      "carebase-health-platform": {
+        "title": "CAREBASE 건강관리플랫",
+        "summary": "회원·데이터 기반 건강관리 서비스 플랫폼."
       }
     }
   },
