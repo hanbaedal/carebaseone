@@ -72,6 +72,18 @@ export default async function HomePage({
             >
               {t("home.headline")}
             </h1>
+            {t("home.lede").trim() ? (
+              <p
+                className="animate-[fadeUp_0.9s_ease_both] mt-[1lh] max-w-xl whitespace-pre-line text-base font-medium leading-7 tracking-[-0.01em]"
+                style={{
+                  color: headlineColor,
+                  fontFamily: headlineFamily,
+                  opacity: 0.88,
+                }}
+              >
+                {t("home.lede")}
+              </p>
+            ) : null}
           </div>
         </div>
       </section>

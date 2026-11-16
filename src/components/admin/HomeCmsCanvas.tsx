@@ -18,13 +18,13 @@ import {
 import { HOME_VIEWPORT_SHELL } from "@/lib/home-layout";
 import { pageFooterTextColor, resolvePageFooterBackground, PAGE_FOOTER_BG_DEFAULT } from "@/lib/page-footer";
 import { CMS_FOOTER_INNER, CMS_FOOTER_INNER_DOCKED } from "@/lib/footer-layout";
-
-type SlotKey = "home.heroImage" | "home.kicker" | "home.headline" | "home.footerText";
+type SlotKey = "home.heroImage" | "home.kicker" | "home.headline" | "home.lede";
 
 export function HomeCmsCanvas({
   heroSrc,
   kicker,
   headline,
+  lede,
   kickerScale,
   headlineScale,
   kickerColor,
@@ -32,7 +32,6 @@ export function HomeCmsCanvas({
   kickerFont,
   headlineFont,
   footerBg,
-  footerText,
   activeSlot,
   onSelectSlot,
   onPickBackground,
@@ -41,6 +40,7 @@ export function HomeCmsCanvas({
   heroSrc: string;
   kicker: string;
   headline: string;
+  lede: string;
   kickerScale: string;
   headlineScale: string;
   kickerColor: string;
@@ -48,7 +48,6 @@ export function HomeCmsCanvas({
   kickerFont: string;
   headlineFont: string;
   footerBg: string;
-  footerText: string;
   activeSlot: SlotKey | null;
   onSelectSlot: (slot: SlotKey) => void;
   onPickBackground: () => void;
@@ -63,7 +62,6 @@ export function HomeCmsCanvas({
   const headlineFamily = resolveHomeFontFamily(headlineFont, HOME_HEADLINE_FONT_DEFAULT);
   const footerBgCss = resolvePageFooterBackground(footerBg, PAGE_FOOTER_BG_DEFAULT);
   const footerColor = pageFooterTextColor(footerBgCss);
-
   const ring = (slot: SlotKey) =>
     activeSlot === slot
       ? "rounded-md ring-2 ring-brand ring-offset-2 ring-offset-transparent"
@@ -121,6 +119,22 @@ export function HomeCmsCanvas({
                 {headline || "헤드라인"}
               </span>
             </button>
+            <button
+              type="button"
+              onClick={() => onSelectSlot("home.lede")}
+              className={`mt-[1lh] block w-fit max-w-xl border-0 bg-transparent p-0 text-left ${ring("home.lede")}`}
+            >
+              <span
+                className={`block whitespace-pre-line text-base font-medium leading-7 tracking-[-0.01em] ${lede.trim() ? "" : "opacity-60"}`}
+                style={{
+                  color: headlineHex,
+                  fontFamily: headlineFamily,
+                  opacity: lede.trim() ? 0.88 : undefined,
+                }}
+              >
+                {lede.trim() ? lede : "소개 문구"}
+              </span>
+            </button>
           </div>
 
           <button
@@ -132,21 +146,14 @@ export function HomeCmsCanvas({
         </div>
       </section>
 
-      <button
-        type="button"
-        onClick={() => onSelectSlot("home.footerText")}
-        className={`shrink-0 border-t border-black/10 text-left ${ring("home.footerText")}`}
+      <footer
+        className="shrink-0 border-t border-black/10"
         style={{ backgroundColor: footerBgCss, color: footerColor }}
       >
         <div className={footerInner}>
           <CompanyContactBlock onBrandBg compact />
-          {footerText.trim() ? (
-            <p className="mt-3 whitespace-pre-line border-t border-current/15 pt-3 text-[12px] leading-5 opacity-90">
-              {footerText}
-            </p>
-          ) : null}
         </div>
-      </button>
+      </footer>
     </div>
   );
 }

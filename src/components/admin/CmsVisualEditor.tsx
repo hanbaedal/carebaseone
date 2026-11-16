@@ -44,7 +44,6 @@ const HOME_CMS_PATHS = [
   "home.headlineColor",
   "home.lede",
   "home.footerBg",
-  "home.footerText",
 ] as const;
 
 type HomeSlot = (typeof HOME_CMS_PATHS)[number];
@@ -58,12 +57,11 @@ function scalePathFor(textPath: string) {
 function textareaRows(path: string, multiline: boolean) {
   if (path === "home.kicker") return 2;
   if (path === "home.headline") return 4;
-  if (path.endsWith("footerText")) return 6;
   if (multiline) return 6;
   return 2;
 }
 
-const HOME_TEXT_PATHS = new Set(["home.kicker", "home.headline", "home.lede", "home.footerText"]);
+const HOME_TEXT_PATHS = new Set(["home.kicker", "home.headline", "home.lede"]);
 
 function resolveHomeTextSlot(path: string) {
   if (path === "home.kickerScale" || path === "home.kickerFont" || path === "home.kickerColor")
@@ -74,7 +72,7 @@ function resolveHomeTextSlot(path: string) {
   return null;
 }
 
-type HomePreviewSlot = "home.heroImage" | "home.kicker" | "home.headline" | "home.footerText";
+type HomePreviewSlot = "home.heroImage" | "home.kicker" | "home.headline" | "home.lede";
 
 function resolvePreviewActiveSlot(
   slot: string,
@@ -86,10 +84,10 @@ function resolvePreviewActiveSlot(
   if (
     homeTextPath === "home.kicker" ||
     homeTextPath === "home.headline" ||
-    homeTextPath === "home.footerText"
+    homeTextPath === "home.lede"
   )
     return homeTextPath;
-  if (slot === "home.footerText") return "home.footerText";
+  if (slot === "home.lede") return "home.lede";
   return null;
 }
 
@@ -118,13 +116,12 @@ export function CmsVisualEditor({
   const router = useRouter();
   const [mediaOptions, setMediaOptions] = useState<CmsMediaOption[]>(mediaOptionsProp);
   const mediaFetchStarted = useRef(false);
-  const editorFields = useMemo(
-    () =>
-      isHome
-        ? fields.filter((f) => (HOME_CMS_PATHS as readonly string[]).includes(f.path))
-        : fields,
-    [fields, isHome],
-  );
+  const editorFields = useMemo(() => {
+    const list = isHome
+      ? fields.filter((f) => (HOME_CMS_PATHS as readonly string[]).includes(f.path))
+      : fields;
+    return list.filter((f) => !f.path.endsWith("footerText"));
+  }, [fields, isHome]);
 
   const defaultPath =
     editorFields.find((f) => f.path.endsWith(".body"))?.path ??
@@ -211,10 +208,8 @@ export function CmsVisualEditor({
 
   const footerPaths = pageFooterPaths(page.section);
   const hasPageFooter = useMemo(
-    () =>
-      editorFields.some((f) => f.path === footerPaths.bg) &&
-      editorFields.some((f) => f.path === footerPaths.text),
-    [editorFields, footerPaths.bg, footerPaths.text],
+    () => editorFields.some((f) => f.path === footerPaths.bg),
+    [editorFields, footerPaths.bg],
   );
   const isFooterBgField = active?.path === footerPaths.bg;
 
@@ -331,7 +326,6 @@ export function CmsVisualEditor({
 
   const pickFooterBg = (bgId: string) => {
     setDraft((d) => ({ ...d, [footerPaths.bg]: bgId }));
-    setSlot(footerPaths.text);
   };
 
   const pickColor = (colorId: HomeTextColorId) => {
@@ -405,6 +399,7 @@ export function CmsVisualEditor({
               heroSrc={heroSrc}
               kicker={draft["home.kicker"] ?? ""}
               headline={draft["home.headline"] ?? ""}
+              lede={draft["home.lede"] ?? ""}
               kickerScale={draft["home.kickerScale"] ?? "100"}
               headlineScale={draft["home.headlineScale"] ?? "100"}
               kickerColor={draft["home.kickerColor"] ?? "blue"}
@@ -412,7 +407,6 @@ export function CmsVisualEditor({
               kickerFont={draft["home.kickerFont"] ?? "gothic"}
               headlineFont={draft["home.headlineFont"] ?? "gothic"}
               footerBg={draft["home.footerBg"] ?? "white"}
-              footerText={draft["home.footerText"] ?? ""}
               activeSlot={previewActiveSlot}
               onSelectSlot={handleHomeSlot}
               onPickBackground={openBackgroundPicker}
@@ -428,11 +422,10 @@ export function CmsVisualEditor({
               {hasPageFooter ? (
                 <CmsFooterStrip
                   bgId={draft[footerPaths.bg] ?? "white"}
-                  text={draft[footerPaths.text] ?? ""}
-                  active={slot === footerPaths.text}
+                  active={footerBgOpen}
                   onClick={() => {
                     setPreviewPin(null);
-                    setSlot(footerPaths.text);
+                    setFooterBgOpen(true);
                   }}
                 />
               ) : null}
@@ -611,12 +604,12 @@ export function CmsVisualEditor({
                   const field = isHome && textField ? textField : active!;
                   const value = draft[editPath] ?? field.ko;
                   const editMultiline =
-                    editPath.endsWith("footerText") ||
-                    (isHome && homeTextPath
+                    isHome && homeTextPath
                       ? homeTextPath === "home.kicker" ||
                         homeTextPath === "home.headline" ||
+                        homeTextPath === "home.lede" ||
                         field.multiline
-                      : multiline);
+                      : multiline;
                   return (
                     <label className="grid gap-1 text-[11px] text-ink/60">
                       내용 (한국어)

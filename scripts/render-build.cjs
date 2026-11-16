@@ -5,3 +5,11 @@ if (process.env.RENDER !== "true") {
 }
 
 execSync("npx next build --webpack", { stdio: "inherit" });
+
+if (process.env.MONGODB_URI) {
+  try {
+    execSync("node scripts/clear-home-footer-text.cjs", { stdio: "inherit" });
+  } catch (err) {
+    console.warn("[render-build] footer text cleanup skipped:", err?.message ?? err);
+  }
+}

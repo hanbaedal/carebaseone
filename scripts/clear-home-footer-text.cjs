@@ -15,6 +15,11 @@ async function main() {
   const contents = client.db("carebaseone").collection("contents");
 
   for (const locale of ["ko", "en", "zh"]) {
+    const doc = await contents.findOne({ locale });
+    if (!doc?.messages?.home) {
+      console.log(`[clear-footer] ${locale} no contents doc`);
+      continue;
+    }
     const res = await contents.updateOne(
       { locale },
       {

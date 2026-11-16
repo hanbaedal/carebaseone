@@ -134,6 +134,5 @@ export function pageFooterTextColor(bgCss: string) {
 export function pageFooterPaths(section: string) {
   return {
     bg: `${section}.footerBg`,
-    text: `${section}.footerText`,
   } as const;
 }

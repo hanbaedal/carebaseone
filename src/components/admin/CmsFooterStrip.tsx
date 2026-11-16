@@ -1,21 +1,15 @@
 "use client";
 
 import { CompanyContactBlock } from "@/components/CompanyContactBlock";
-import {
-  PAGE_FOOTER_BG_DEFAULT,
-  pageFooterTextColor,
-  resolvePageFooterBackground,
-} from "@/lib/page-footer";
+import { PAGE_FOOTER_BG_DEFAULT, pageFooterTextColor, resolvePageFooterBackground } from "@/lib/page-footer";
 import { CMS_FOOTER_INNER } from "@/lib/footer-layout";
 
 export function CmsFooterStrip({
   bgId,
-  text,
   active,
   onClick,
 }: {
   bgId: string;
-  text: string;
   active?: boolean;
   onClick?: () => void;
 }) {
@@ -32,11 +26,6 @@ export function CmsFooterStrip({
     >
       <div className={CMS_FOOTER_INNER}>
         <CompanyContactBlock onBrandBg compact />
-        {text.trim() ? (
-          <p className="mt-4 whitespace-pre-line border-t border-current/15 pt-4 text-[12px] leading-5 opacity-90">
-            {text}
-          </p>
-        ) : null}
       </div>
     </button>
   );
