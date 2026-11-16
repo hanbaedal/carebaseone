@@ -4,15 +4,20 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveContentInline } from "@/app/admin/actions";
 import { HomeCmsCanvas } from "@/components/admin/HomeCmsCanvas";
+import { SubpageCmsCanvas } from "@/components/admin/SubpageCmsCanvas";
 import { FontFamilyModal } from "@/components/admin/FontFamilyModal";
 import { FontScaleModal } from "@/components/admin/FontScaleModal";
 import { FontScaleStepper } from "@/components/admin/FontScaleStepper";
 import { MediaPickerModal, type CmsMediaOption } from "@/components/admin/MediaPickerModal";
 import { TextColorModal } from "@/components/admin/TextColorModal";
 import { FooterBgModal } from "@/components/admin/FooterBgModal";
-import { CmsFooterStrip } from "@/components/admin/CmsFooterStrip";
 import type { KoCmsField } from "@/lib/content";
 import { fieldLabelFor, type CmsPageDef } from "@/lib/cms-pages";
+import {
+  cmsContentFieldPaths,
+  cmsHeroSlots,
+  cmsPageHeroImage,
+} from "@/lib/cms-page-hero";
 import {
   colorPathFor,
   defaultColorForTextPath,
@@ -110,7 +115,6 @@ export function CmsVisualEditor({
   fields,
   notice,
   noticeError,
-  previewFocus,
   mediaOptions: mediaOptionsProp = [],
 }: {
   page: CmsPageDef;
@@ -131,14 +135,23 @@ export function CmsVisualEditor({
     return list.filter((f) => !f.path.endsWith("footerText"));
   }, [fields, isHome]);
 
-  const defaultPath =
-    editorFields.find((f) => f.path.endsWith(".body"))?.path ??
-    editorFields.find((f) => f.path.endsWith(".headline") || f.path.endsWith(".title"))?.path ??
-    editorFields[0]?.path ??
-    "";
+  const heroSlots = useMemo(() => cmsHeroSlots(page), [page]);
+  const heroImage = cmsPageHeroImage(page.key);
+
+  const defaultPath = useMemo(() => {
+    if (page.productCategory) {
+      return `product.categories.${page.productCategory}.title`;
+    }
+    return (
+      editorFields.find((f) => f.path.endsWith(".body"))?.path ??
+      editorFields.find((f) => f.path.endsWith(".headline") || f.path.endsWith(".title"))?.path ??
+      heroSlots.title ??
+      editorFields[0]?.path ??
+      ""
+    );
+  }, [editorFields, heroSlots.title, page.productCategory]);
 
   const [slot, setSlot] = useState(defaultPath);
-  const [iframeKey, setIframeKey] = useState(0);
   const [mediaOpen, setMediaOpen] = useState(false);
   const [scaleOpen, setScaleOpen] = useState(false);
   const [colorOpen, setColorOpen] = useState(false);
@@ -163,6 +176,11 @@ export function CmsVisualEditor({
 
   const [draft, setDraft] = useState(valueByPath);
   useEffect(() => setDraft(valueByPath), [valueByPath]);
+
+  useEffect(() => {
+    setSlot(defaultPath);
+    setPreviewPin(null);
+  }, [defaultPath, page.key]);
 
   useEffect(() => {
     if (!mediaOpen || mediaFetchStarted.current) return;
@@ -348,8 +366,26 @@ export function CmsVisualEditor({
   };
 
   const heroSrc = resolveHeroImageSrc(draft["home.heroImage"]);
-  const previewSrc =
-    page.key === "product" && previewFocus ? `${page.preview}#${previewFocus}` : page.preview;
+  const canvasValues = useMemo(() => {
+    const map: Record<string, string> = { ...valueByPath, ...draft };
+    for (const field of editorFields) {
+      map[field.path] = draft[field.path] ?? valueByPath[field.path] ?? "";
+    }
+    return map;
+  }, [draft, editorFields, valueByPath]);
+
+  const contentPaths = useMemo(() => {
+    const paths = cmsContentFieldPaths(
+      editorFields.map((f) => f.path),
+      heroSlots,
+    );
+    if (page.productCategory) {
+      const prefix = `product.categories.${page.productCategory}.`;
+      return paths.filter((path) => path.startsWith(prefix));
+    }
+    return paths;
+  }, [editorFields, heroSlots, page.productCategory]);
+
   const previewActiveSlot = isHome
     ? resolvePreviewActiveSlot(slot, homeTextPath, previewPin)
     : null;
@@ -363,42 +399,32 @@ export function CmsVisualEditor({
 
   const showSaveFooter = editorFields.length > 0;
 
+  const handleSubpageSlot = (path: string) => {
+    setPreviewPin(null);
+    setSlot(path);
+  };
+
   return (
-    <div className={isHome ? "" : "grid gap-3"}>
+    <div>
       {showNotice ? (
         <p
-          className={`text-xs ${isHome ? "px-3 pt-2 sm:px-4" : ""} ${showNoticeError ? "text-red-800" : "text-forest"}`}
+          className={`px-3 pt-2 text-xs sm:px-4 ${showNoticeError ? "text-red-800" : "text-forest"}`}
         >
           {showNotice}
         </p>
       ) : null}
 
-      <div
-        className={
-          isHome
-            ? "grid items-start xl:grid-cols-[minmax(0,1fr)_17.5rem]"
-            : "mx-auto grid max-w-[96rem] items-start gap-3 px-2 py-2 sm:px-4 xl:grid-cols-[minmax(0,1fr)_17.5rem]"
-        }
-      >
-        <div
-          className={
-            isHome
-              ? "flex h-[calc(100dvh-4.5rem)] max-h-[calc(100dvh-4.5rem)] flex-col overflow-hidden bg-white"
-              : "overflow-hidden rounded-xl border border-ink/10 bg-white shadow-sm"
-          }
-        >
+      <div className="grid items-start xl:grid-cols-[minmax(0,1fr)_17.5rem]">
+        <div className="relative flex h-[calc(100dvh-4.5rem)] max-h-[calc(100dvh-4.5rem)] flex-col overflow-hidden bg-white">
           {!isHome ? (
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-ink/10 px-3 py-2">
-              <p className="text-[11px] font-medium text-brand-ink">{page.label} 수정</p>
-              <a
-                href={page.preview}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[10px] text-brand hover:underline"
-              >
-                공개 보기
-              </a>
-            </div>
+            <a
+              href={page.preview}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute right-3 top-3 z-30 rounded-md bg-white/90 px-2 py-1 text-[10px] text-brand shadow-sm ring-1 ring-ink/10 hover:underline"
+            >
+              공개 보기
+            </a>
           ) : null}
           {isHome ? (
             <HomeCmsCanvas
@@ -422,34 +448,24 @@ export function CmsVisualEditor({
               onPickBackground={openBackgroundPicker}
             />
           ) : (
-            <div className="flex flex-col bg-white">
-              <iframe
-                key={`${page.key}-${iframeKey}`}
-                title={`${page.label} preview`}
-                src={previewSrc}
-                className="h-[min(70vh,44rem)] w-full bg-white"
-              />
-              {hasPageFooter ? (
-                <CmsFooterStrip
-                  bgId={draft[footerPaths.bg] ?? "white"}
-                  active={footerBgOpen}
-                  onClick={() => {
-                    setPreviewPin(null);
-                    setFooterBgOpen(true);
-                  }}
-                />
-              ) : null}
-            </div>
+            <SubpageCmsCanvas
+              page={page}
+              heroImage={heroImage}
+              hero={heroSlots}
+              values={canvasValues}
+              contentPaths={contentPaths}
+              activeSlot={slot}
+              footerBg={draft[footerPaths.bg] ?? PAGE_FOOTER_BG_DEFAULT}
+              onSelectSlot={handleSubpageSlot}
+              onEditFooter={() => {
+                setPreviewPin(null);
+                setFooterBgOpen(true);
+              }}
+            />
           )}
         </div>
 
-        <aside
-          className={
-            isHome
-              ? "sticky top-14 z-20 flex max-h-[calc(100dvh-3.5rem)] flex-col overflow-hidden border-l border-line bg-white"
-              : "sticky top-14 flex max-h-[calc(100dvh-3.5rem)] flex-col overflow-hidden rounded-xl border border-ink/10 bg-white shadow-sm"
-          }
-        >
+        <aside className="sticky top-14 z-20 flex max-h-[calc(100dvh-3.5rem)] flex-col overflow-hidden border-l border-line bg-white">
           <div className="border-b border-ink/10 px-3 py-2">
             <p className="text-[11px] font-semibold text-brand-ink">슬롯 편집</p>
             <p className="mt-0.5 truncate text-[10px] text-ink/45">{slotTitle}</p>

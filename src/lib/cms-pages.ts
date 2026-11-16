@@ -1,5 +1,8 @@
 /** anyangmp /manage/cms 형식 — 미리보기 URL + 편집 섹션 매핑 */
 
+import type { ProductLineCategory } from "@/lib/product-categories";
+import { PRODUCT_CATEGORY_PATHS } from "@/lib/product-categories";
+
 export type CmsPageDef = {
   key: string;
   label: string;
@@ -8,9 +11,34 @@ export type CmsPageDef = {
   /** contents 섹션 키 */
   section: string;
   tab: "main" | "submenu";
+  /** 제품 라인 — `product` 섹션의 카테고리 슬롯만 강조 */
+  productCategory?: ProductLineCategory;
   /** 슬롯 경로 → 한글 라벨 */
   fieldLabels?: Record<string, string>;
 };
+
+const PRODUCT_LINE_CATEGORY_PAGES: CmsPageDef[] = (
+  [
+    ["healthFood", "건강식품"],
+    ["generalFood", "일반식품"],
+    ["cosmetics", "화장품"],
+    ["patch", "패치"],
+    ["healthPlatform", "건강관리플랫폼"],
+  ] as const
+).map(([key, label]) => ({
+  key,
+  label,
+  preview: `/ko/product/${PRODUCT_CATEGORY_PATHS[key]}`,
+  section: "product",
+  tab: "submenu" as const,
+  productCategory: key,
+  fieldLabels: {
+    "product.kicker": "키커",
+    [`product.categories.${key}.title`]: "카테고리 제목",
+    [`product.categories.${key}.text`]: "카테고리 소개",
+    [`product.categories.${key}.items`]: "대표 품목",
+  },
+}));
 
 export const CMS_PAGES: CmsPageDef[] = [
   {
@@ -86,6 +114,7 @@ export const CMS_PAGES: CmsPageDef[] = [
     section: "product",
     tab: "submenu",
   },
+  ...PRODUCT_LINE_CATEGORY_PAGES,
   {
     key: "contact",
     label: "문의",
