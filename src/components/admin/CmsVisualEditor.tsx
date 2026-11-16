@@ -5,9 +5,18 @@ import { saveContent, saveContentInline } from "@/app/admin/actions";
 import { HomeCmsCanvas } from "@/components/admin/HomeCmsCanvas";
 import { FontScaleModal } from "@/components/admin/FontScaleModal";
 import { MediaPickerModal, type CmsMediaOption } from "@/components/admin/MediaPickerModal";
+import { TextColorModal } from "@/components/admin/TextColorModal";
 import type { EditorField } from "@/lib/content";
 import { fieldLabelFor, type CmsPageDef } from "@/lib/cms-pages";
-import { resolveHeroImageSrc, parseHomeScale } from "@/lib/home-hero";
+import {
+  HOME_SCALE_STEPS,
+  colorPathFor,
+  defaultColorForTextPath,
+  resolveHeroImageSrc,
+  resolveHomeTextColorHex,
+  parseHomeScale,
+  type HomeTextColorId,
+} from "@/lib/home-hero";
 
 const langs = [
   { key: "ko" as const, label: "한국어" },
@@ -19,8 +28,10 @@ const HOME_CMS_PATHS = [
   "home.heroImage",
   "home.kicker",
   "home.kickerScale",
+  "home.kickerColor",
   "home.headline",
   "home.headlineScale",
+  "home.headlineColor",
   "home.lede",
 ] as const;
 
@@ -43,6 +54,15 @@ function textareaRows(path: string, multiline: boolean) {
   if (path === "home.headline") return 4;
   if (multiline) return 6;
   return 2;
+}
+
+const HOME_TEXT_PATHS = new Set(["home.kicker", "home.headline", "home.lede"]);
+
+function resolveHomeTextSlot(path: string) {
+  if (path === "home.kickerScale") return "home.kicker";
+  if (path === "home.headlineScale") return "home.headline";
+  if (HOME_TEXT_PATHS.has(path)) return path;
+  return null;
 }
 
 export function CmsVisualEditor({
@@ -82,6 +102,7 @@ export function CmsVisualEditor({
   const [iframeKey, setIframeKey] = useState(0);
   const [mediaOpen, setMediaOpen] = useState(false);
   const [scaleOpen, setScaleOpen] = useState(false);
+  const [colorOpen, setColorOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [inlineNotice, setInlineNotice] = useState<{ text: string; error?: boolean } | null>(
     null,
@@ -101,6 +122,12 @@ export function CmsVisualEditor({
   const [draft, setDraft] = useState(valueByPath);
   useEffect(() => setDraft(valueByPath), [valueByPath]);
 
+  useEffect(() => {
+    if (!isHome) return;
+    if (slot === "home.kickerScale" || slot === "home.kickerColor") setSlot("home.kicker");
+    if (slot === "home.headlineScale" || slot === "home.headlineColor") setSlot("home.headline");
+  }, [isHome, slot]);
+
   const slotTitle = active
     ? `${fieldLabelFor(page, active.path)} \`${active.path.split(".").slice(-2).join(".")}\``
     : "";
@@ -115,6 +142,17 @@ export function CmsVisualEditor({
 
   const isScaleField = active?.path.endsWith("Scale");
   const isHeroField = active?.path === "home.heroImage";
+  const homeTextPath = isHome ? resolveHomeTextSlot(slot) : null;
+  const textField = useMemo(
+    () => (homeTextPath ? editorFields.find((f) => f.path === homeTextPath) : active),
+    [homeTextPath, editorFields, active],
+  );
+  const linkedScalePath = homeTextPath ? scalePathFor(homeTextPath) : null;
+  const linkedColorPath = homeTextPath ? colorPathFor(homeTextPath) : null;
+  const colorFallback =
+    homeTextPath && (homeTextPath === "home.kicker" || homeTextPath === "home.headline")
+      ? defaultColorForTextPath(homeTextPath)
+      : "blue";
 
   const persistKoFields = useCallback(
     async (fields: Record<string, string>) => {
@@ -154,18 +192,34 @@ export function CmsVisualEditor({
     if (key === "home.heroImage") setMediaOpen(true);
   };
 
-  const openScaleModal = () => {
-    if (!active) return;
-    const scalePath = scalePathFor(active.path) ?? active.path;
-    if (!scalePath.endsWith("Scale")) return;
-    setSlot(scalePath);
+  const openScalePicker = () => {
+    if (isHome) {
+      if (!linkedScalePath) return;
+      setScaleOpen((open) => !open);
+      return;
+    }
+    if (!scalePathFor(active?.path ?? "") && !active?.path.endsWith("Scale")) return;
     setScaleOpen(true);
   };
 
   const currentScaleValue = () => {
-    const path = active?.path.endsWith("Scale") ? active.path : scalePathFor(active?.path ?? "");
+    const path = linkedScalePath ?? (active?.path.endsWith("Scale") ? active.path : scalePathFor(active?.path ?? ""));
     if (!path) return 100;
     return parseHomeScale(draft[path] ?? "100");
+  };
+
+  const pickScale = (percent: number) => {
+    const path = linkedScalePath ?? scalePathFor(active?.path ?? "");
+    if (!path?.endsWith("Scale")) return;
+    setDraft((d) => ({ ...d, [path]: String(percent) }));
+    setScaleOpen(false);
+    submitQuick(path, String(percent));
+  };
+
+  const pickColor = (colorId: HomeTextColorId) => {
+    if (!linkedColorPath) return;
+    setDraft((d) => ({ ...d, [linkedColorPath]: colorId }));
+    submitQuick(linkedColorPath, colorId);
   };
 
   const heroSrc = resolveHeroImageSrc(draft["home.heroImage"]);
@@ -212,6 +266,8 @@ export function CmsVisualEditor({
               headline={draft["home.headline"] ?? ""}
               kickerScale={draft["home.kickerScale"] ?? "100"}
               headlineScale={draft["home.headlineScale"] ?? "100"}
+              kickerColor={draft["home.kickerColor"] ?? "blue"}
+              headlineColor={draft["home.headlineColor"] ?? "black"}
               activeSlot={
                 slot === "home.heroImage" || slot === "home.kicker" || slot === "home.headline"
                   ? slot
@@ -269,11 +325,16 @@ export function CmsVisualEditor({
                 onChange={(e) => setSlot(e.target.value)}
                 className="rounded border border-ink/15 bg-white px-2 py-1.5 text-[12px] text-brand-ink"
               >
-                {editorFields.map((field) => (
-                  <option key={field.path} value={field.path}>
-                    {fieldLabelFor(page, field.path)}
-                  </option>
-                ))}
+                {editorFields
+                  .filter(
+                    (field) =>
+                      !(isHome && (field.path.endsWith("Scale") || field.path.endsWith("Color"))),
+                  )
+                  .map((field) => (
+                    <option key={field.path} value={field.path}>
+                      {fieldLabelFor(page, field.path)}
+                    </option>
+                  ))}
               </select>
             </label>
           </div>
@@ -290,19 +351,62 @@ export function CmsVisualEditor({
             </div>
           ) : null}
 
-          {(active && (scalePathFor(active.path) || isScaleField)) && !isHeroField ? (
-            <div className="border-b border-ink/10 px-3 py-2">
+          {((isHome && linkedScalePath) ||
+            (!isHome && (scalePathFor(active?.path ?? "") || isScaleField))) &&
+          !isHeroField ? (
+            <div className="shrink-0 border-b border-ink/10 px-3 py-2">
               <button
                 type="button"
-                onClick={openScaleModal}
+                onClick={openScalePicker}
+                aria-expanded={isHome ? scaleOpen : undefined}
                 className="w-full rounded-md border border-ink/15 bg-ink/5 px-2 py-2 text-[12px] text-brand hover:bg-brand/5"
               >
                 글자 크기 ({currentScaleValue()}%)
+                {isHome ? (scaleOpen ? " ▴" : " ▾") : ""}
               </button>
+              {isHome && scaleOpen ? (
+                <ul className="mt-2 max-h-36 overflow-y-auto rounded-md border border-ink/10 bg-paper/50 py-0.5">
+                  {HOME_SCALE_STEPS.map((step) => (
+                    <li key={step}>
+                      <button
+                        type="button"
+                        onClick={() => pickScale(step)}
+                        className={`w-full px-2 py-1.5 text-left text-[12px] ${
+                          step === currentScaleValue()
+                            ? "bg-forest text-cream"
+                            : "text-brand-ink hover:bg-ink/5"
+                        }`}
+                      >
+                        {step}%
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </div>
           ) : null}
 
-          {!isHeroField && !isScaleField ? (
+          {isHome && linkedColorPath && homeTextPath && !isHeroField ? (
+            <div className="shrink-0 border-b border-ink/10 px-3 py-2">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[12px] text-brand-ink">글자 컬러</span>
+                <button
+                  type="button"
+                  onClick={() => setColorOpen(true)}
+                  aria-label="글자 컬러 선택"
+                  className="h-8 w-8 shrink-0 rounded-md border border-ink/20 shadow-sm ring-brand transition hover:ring-2"
+                  style={{
+                    backgroundColor: resolveHomeTextColorHex(
+                      draft[linkedColorPath],
+                      defaultColorForTextPath(homeTextPath),
+                    ),
+                  }}
+                />
+              </div>
+            </div>
+          ) : null}
+
+          {!isHeroField && (isHome ? homeTextPath : !isScaleField) ? (
             <div className="flex gap-1 border-b border-ink/10 px-2 py-2">
               {langs.map((item) => (
                 <button
@@ -319,7 +423,7 @@ export function CmsVisualEditor({
             </div>
           ) : null}
 
-          {active && !isHeroField && !isScaleField ? (
+          {((isHome && homeTextPath && textField) || (active && !isHeroField && !isScaleField)) ? (
             <form
               action={isHome ? undefined : saveContent}
               className="flex min-h-0 flex-1 flex-col"
@@ -327,9 +431,9 @@ export function CmsVisualEditor({
                 isHome
                   ? (e) => {
                       e.preventDefault();
-                      if (saving || !active) return;
+                      if (saving || !textField || !homeTextPath) return;
                       void persistKoFields({
-                        [active.path]: draft[active.path] ?? active.ko,
+                        [homeTextPath]: draft[homeTextPath] ?? textField.ko,
                       });
                     }
                   : undefined
@@ -345,23 +449,31 @@ export function CmsVisualEditor({
               {!isHome ? <input type="hidden" name="returnTo" value={returnTo} /> : null}
               <div className="min-h-0 flex-1 space-y-2 overflow-y-auto p-3">
                 {langs.map((item) => {
-                  const name = `${item.key}:${encodeURIComponent(active.path)}`;
-                  const value = draft[active.path] ?? fieldValue(active, item.key);
+                  const editPath = isHome && homeTextPath ? homeTextPath : active!.path;
+                  const field = isHome && textField ? textField : active!;
+                  const name = `${item.key}:${encodeURIComponent(editPath)}`;
+                  const value = draft[editPath] ?? fieldValue(field, item.key);
                   const show = lang === item.key;
                   const submitValue =
-                    item.key === "ko" ? value : lang === item.key ? fieldValue(active, item.key) : "";
+                    item.key === "ko" ? value : lang === item.key ? fieldValue(field, item.key) : "";
+                  const editMultiline =
+                    isHome && homeTextPath
+                      ? homeTextPath === "home.kicker" ||
+                        homeTextPath === "home.headline" ||
+                        Boolean(field.multiline)
+                      : multiline;
                   return show ? (
                     <label key={name} className="grid gap-1 text-[11px] text-ink/60">
                       내용 ({item.key})
-                      {multiline ? (
+                      {editMultiline ? (
                         <textarea
                           name={name}
                           defaultValue={submitValue}
                           onChange={(e) => {
                             if (item.key === "ko")
-                              setDraft((d) => ({ ...d, [active.path]: e.target.value }));
+                              setDraft((d) => ({ ...d, [editPath]: e.target.value }));
                           }}
-                          rows={textareaRows(active.path, multiline)}
+                          rows={textareaRows(editPath, editMultiline)}
                           className="max-h-36 w-full resize-y rounded border border-ink/15 bg-white px-2 py-1.5 text-[13px] leading-6 outline-none focus:border-forest"
                         />
                       ) : (
@@ -370,7 +482,7 @@ export function CmsVisualEditor({
                           defaultValue={submitValue}
                           onChange={(e) => {
                             if (item.key === "ko")
-                              setDraft((d) => ({ ...d, [active.path]: e.target.value }));
+                              setDraft((d) => ({ ...d, [editPath]: e.target.value }));
                           }}
                           onKeyDown={(e) => {
                             if (
@@ -393,7 +505,7 @@ export function CmsVisualEditor({
                       key={name}
                       type="hidden"
                       name={`ko:${encodeURIComponent(active.path)}`}
-                      defaultValue={draft[active.path] ?? active.ko}
+                      defaultValue={draft[editPath] ?? field.ko}
                     />
                   ) : (
                     <input key={name} type="hidden" name={name} defaultValue="" />
@@ -403,7 +515,9 @@ export function CmsVisualEditor({
 
               <div className="shrink-0 space-y-2 border-t border-ink/10 bg-white p-3">
                 <p className="text-[10px] leading-4 text-ink/40">
-                  {multiline
+                  {(isHome && homeTextPath
+                    ? homeTextPath === "home.kicker" || homeTextPath === "home.headline"
+                    : multiline)
                     ? "Enter 줄바꿈 · Ctrl+Enter 저장"
                     : isHome
                       ? "Ctrl+Enter 저장"
@@ -419,7 +533,7 @@ export function CmsVisualEditor({
                 </button>
               </div>
             </form>
-          ) : isScaleField ? (
+          ) : isScaleField && !isHome ? (
             <p className="p-3 text-[11px] leading-5 text-ink/50">
               「글자 크기」에서 0~200%를 고르세요. 선택하면 저장됩니다.
             </p>
@@ -444,18 +558,30 @@ export function CmsVisualEditor({
         }}
       />
 
-      <FontScaleModal
-        open={scaleOpen}
-        value={currentScaleValue()}
-        onClose={() => setScaleOpen(false)}
-        onSelect={(percent) => {
-          const path =
-            active?.path.endsWith("Scale") ? active.path : scalePathFor(active?.path ?? "") ?? "home.headlineScale";
-          setDraft((d) => ({ ...d, [path]: String(percent) }));
-          setScaleOpen(false);
-          submitQuick(path, String(percent));
-        }}
+      <TextColorModal
+        open={colorOpen}
+        value={linkedColorPath ? (draft[linkedColorPath] ?? "") : ""}
+        fallback={colorFallback}
+        onClose={() => setColorOpen(false)}
+        onSelect={pickColor}
       />
+
+      {!isHome ? (
+        <FontScaleModal
+          open={scaleOpen}
+          value={currentScaleValue()}
+          onClose={() => setScaleOpen(false)}
+          onSelect={(percent) => {
+            const path =
+              active?.path.endsWith("Scale")
+                ? active.path
+                : scalePathFor(active?.path ?? "") ?? "home.headlineScale";
+            setDraft((d) => ({ ...d, [path]: String(percent) }));
+            setScaleOpen(false);
+            submitQuick(path, String(percent));
+          }}
+        />
+      ) : null}
     </div>
   );
 }

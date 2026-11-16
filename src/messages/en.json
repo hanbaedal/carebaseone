@@ -76,7 +76,9 @@
   "home": {
     "heroImage": "",
     "kickerScale": "100",
+    "kickerColor": "blue",
     "headlineScale": "100",
+    "headlineColor": "black",
     "kicker": "HEALTHCARE BUSINESS PLATFORM",
     "headline": "Technology for daily health, products for global opportunity",
     "lede": "CAREBASE connects products, solutions, and global business on a technology foundation.",
