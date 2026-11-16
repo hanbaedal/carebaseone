@@ -5,7 +5,6 @@ import { CompanyContactBlock } from "@/components/CompanyContactBlock";
 import {
   HOME_HERO_IMAGE_CLASS,
   heroImageUnoptimized,
-  homeHeroOverlayClass,
   parseHomeScale,
   resolveHeroImageSrc,
 } from "@/lib/home-hero";
@@ -30,17 +29,14 @@ export default async function HomePage({
           alt=""
           fill
           priority
-          quality={95}
           className={HOME_HERO_IMAGE_CLASS}
           sizes="100vw"
           unoptimized={heroImageUnoptimized(heroSrc)}
         />
-        <div className={homeHeroOverlayClass.horizontal} />
-        <div className={homeHeroOverlayClass.vertical} />
 
         <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-7xl flex-col px-6 pb-0 pt-10 md:pt-14">
           <div className="flex flex-1 flex-col justify-center md:max-w-2xl">
-            <div>
+            <div className="max-w-xl rounded-2xl bg-white px-4 py-5 shadow-sm md:px-6 md:py-6">
               <p
                 className="animate-[fadeUp_0.7s_ease_both] font-semibold tracking-[0.22em] text-brand"
                 style={{ fontSize: `${(12 * kickerScale) / 100}px` }}
@@ -56,7 +52,7 @@ export default async function HomePage({
             </div>
           </div>
 
-          <div className="mb-6 rounded-2xl border border-line bg-white/95 px-5 py-6 shadow-sm backdrop-blur-sm md:mb-8 md:px-8 md:py-7">
+          <div className="mb-6 rounded-2xl border border-line bg-white px-5 py-6 shadow-sm md:mb-8 md:px-8 md:py-7">
             <CompanyContactBlock />
           </div>
         </div>

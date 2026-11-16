@@ -2,12 +2,7 @@
 
 import Image from "next/image";
 import { CompanyContactBlock } from "@/components/CompanyContactBlock";
-import {
-  HOME_HERO_IMAGE_CLASS,
-  heroImageUnoptimized,
-  homeHeroOverlayClass,
-  parseHomeScale,
-} from "@/lib/home-hero";
+import { HOME_HERO_IMAGE_CLASS, heroImageUnoptimized, parseHomeScale } from "@/lib/home-hero";
 
 type SlotKey = "home.heroImage" | "home.kicker" | "home.headline";
 
@@ -42,13 +37,10 @@ export function HomeCmsCanvas({
         src={heroSrc}
         alt=""
         fill
-        quality={95}
         className={HOME_HERO_IMAGE_CLASS}
         sizes="100vw"
         unoptimized={heroImageUnoptimized(heroSrc)}
       />
-      <div className={`pointer-events-none ${homeHeroOverlayClass.horizontal}`} />
-      <div className={`pointer-events-none ${homeHeroOverlayClass.vertical}`} />
 
       <button
         type="button"
@@ -62,6 +54,7 @@ export function HomeCmsCanvas({
 
       <div className="relative z-10 mx-auto flex min-h-[min(70vh,44rem)] max-w-5xl flex-col px-4 pb-0 pt-12 md:px-6">
         <div className="flex min-h-0 flex-1 flex-col justify-center md:max-w-2xl">
+          <div className="max-w-xl rounded-2xl bg-white px-4 py-5 shadow-sm md:px-6 md:py-6">
           <button
             type="button"
             onClick={() => onSelectSlot("home.kicker")}
@@ -86,6 +79,7 @@ export function HomeCmsCanvas({
               {headline || "헤드라인"}
             </h2>
           </button>
+          </div>
         </div>
 
         <button
@@ -95,7 +89,7 @@ export function HomeCmsCanvas({
           className="absolute bottom-24 right-4 top-24 hidden w-[min(38%,14rem)] rounded-lg border border-dashed border-brand/25 bg-brand/5 hover:border-brand/50 hover:bg-brand/10 md:block"
         />
 
-        <div className="pointer-events-none mb-4 rounded-2xl border border-line bg-white/95 px-5 py-6 shadow-sm backdrop-blur-sm md:mb-6">
+        <div className="pointer-events-none mb-4 rounded-2xl border border-line bg-white px-5 py-6 shadow-sm md:mb-6">
           <CompanyContactBlock />
         </div>
       </div>
