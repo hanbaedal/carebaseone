@@ -15,6 +15,21 @@ function isAdminPath(href: string) {
   return href.startsWith("/admin");
 }
 
+function linkListClass(groupKey: string) {
+  if (groupKey === "homepage") {
+    return "mt-2 grid grid-flow-col grid-rows-2 gap-x-3 gap-y-1 border-t border-ink/10 pt-2 sm:gap-x-4";
+  }
+  return "mt-2 flex flex-col gap-1 border-t border-ink/10 pt-2";
+}
+
+function cardClass(groupKey: string, shell: string) {
+  const base = `flex flex-col rounded-xl border px-3 py-3 shadow-sm sm:px-3.5 sm:py-3 ${shell}`;
+  if (groupKey === "homepage") {
+    return `${base} col-span-2 md:col-span-3 lg:col-span-4 xl:col-span-5`;
+  }
+  return base;
+}
+
 export function AccountHubGrid({ groups, title }: { groups: HubGroup[]; title?: string }) {
   if (groups.length === 0) return null;
 
@@ -29,10 +44,10 @@ export function AccountHubGrid({ groups, title }: { groups: HubGroup[]; title?: 
         {groups.map((group, index) => (
           <article
             key={group.key}
-            className={`flex flex-col rounded-xl border px-3 py-3 shadow-sm sm:px-3.5 sm:py-3 ${shells[index % shells.length]}`}
+            className={cardClass(group.key, shells[index % shells.length])}
           >
             <h3 className="text-[13px] font-semibold text-brand-ink sm:text-sm">{group.title}</h3>
-            <ul className="mt-2 flex flex-col gap-1 border-t border-ink/10 pt-2">
+            <ul className={linkListClass(group.key)}>
               {group.links.map((link) => (
                 <li key={`${group.key}-${link.href}`}>
                   {isAdminPath(link.href) ? (
