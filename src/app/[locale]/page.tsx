@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { resolveLocale } from "@/lib/locale";
-import { CompanyContactBlock } from "@/components/CompanyContactBlock";
 import { CmsPageFooter } from "@/components/CmsPageFooter";
 import {
   HOME_HERO_IMAGE_CLASS,
@@ -50,7 +49,7 @@ export default async function HomePage({
           unoptimized={heroImageUnoptimized(heroSrc)}
         />
 
-        <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-7xl flex-col px-6 pb-0 pt-10 md:pt-14">
+        <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-7xl flex-col px-6 pb-10 pt-10 md:pb-14 md:pt-14">
           <div className="flex flex-1 flex-col justify-center md:max-w-2xl">
             <p
               className="animate-[fadeUp_0.7s_ease_both] font-semibold tracking-[0.22em]"
@@ -72,10 +71,6 @@ export default async function HomePage({
             >
               {t("home.headline")}
             </h1>
-          </div>
-
-          <div className="mb-6 rounded-2xl border border-line bg-white/95 px-5 py-6 shadow-sm backdrop-blur-sm md:mb-8 md:px-8 md:py-7">
-            <CompanyContactBlock />
           </div>
         </div>
       </section>

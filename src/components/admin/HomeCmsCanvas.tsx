@@ -123,12 +123,8 @@ export function HomeCmsCanvas({
           type="button"
           aria-label="배경 이미지 편집"
           onClick={onPickBackground}
-          className="absolute bottom-24 right-4 top-24 hidden w-[min(38%,14rem)] rounded-lg border border-dashed border-brand/25 md:block"
+          className="absolute bottom-8 right-4 top-24 hidden w-[min(38%,14rem)] rounded-lg border border-dashed border-brand/25 md:block"
         />
-
-        <div className="pointer-events-none mb-6 rounded-2xl border border-line bg-white/95 px-5 py-6 shadow-sm backdrop-blur-sm md:mb-8 md:px-8 md:py-7">
-          <CompanyContactBlock />
-        </div>
       </div>
     </div>
       <button
@@ -137,8 +133,16 @@ export function HomeCmsCanvas({
         className={`w-full border-t border-black/10 text-left ${ring("home.footerText")}`}
         style={{ backgroundColor: footerBgHex, color: footerColor }}
       >
-        <div className="mx-auto max-w-7xl whitespace-pre-line px-6 py-8 text-sm leading-7">
-          {footerText.trim() || "풋터 문구"}
+        <div className="mx-auto max-w-7xl px-6 py-8">
+          <CompanyContactBlock onBrandBg />
+          {footerText.trim() ? (
+            <p className="mt-6 whitespace-pre-line border-t border-current/15 pt-6 text-sm leading-7 opacity-90">
+              {footerText}
+            </p>
+          ) : (
+            <p className="mt-6 text-[11px] opacity-60">풋터 추가 문구(CMS)는 여기 표시됩니다.</p>
+          )}
+          <p className="mt-4 text-xs tracking-wide opacity-75">© haesoo</p>
         </div>
       </button>
     </div>

@@ -54,28 +54,40 @@ function IconMail({ className }: { className?: string }) {
 
 const iconClass = "mt-0.5 h-4 w-4 shrink-0 text-brand";
 
-/** 회사명·주소·전화·이메일 (홈 히어로 하단·사이트 푸터 공통) */
-export function CompanyContactBlock({ className = "" }: { className?: string }) {
+/** 회사명·주소·전화·이메일 — 페이지 풋터 */
+export function CompanyContactBlock({
+  className = "",
+  onBrandBg = false,
+}: {
+  className?: string;
+  /** 풋터 배경색 위 — 부모 color 상속 */
+  onBrandBg?: boolean;
+}) {
+  const icon = onBrandBg ? "mt-0.5 h-4 w-4 shrink-0 opacity-90" : iconClass;
+  const body = onBrandBg ? "text-sm opacity-90" : "text-sm text-brand-ink/70";
+  const name = onBrandBg ? "font-medium" : "font-medium text-brand-ink";
+  const link = onBrandBg ? "hover:opacity-100" : "hover:text-brand";
+
   return (
-    <ul className={`grid gap-3 text-sm text-brand-ink/70 ${className}`}>
+    <ul className={`grid gap-3 ${body} ${className}`}>
       <li className="flex items-start gap-2.5">
-        <IconBuilding className={iconClass} />
-        <span className="font-medium text-brand-ink">{FOOTER_COMPANY.name}</span>
+        <IconBuilding className={icon} />
+        <span className={name}>{FOOTER_COMPANY.name}</span>
       </li>
       <li className="flex items-start gap-2.5">
-        <IconPin className={iconClass} />
+        <IconPin className={icon} />
         <span>{FOOTER_COMPANY.address}</span>
       </li>
       <li className="flex flex-wrap items-start gap-x-6 gap-y-2">
         <span className="inline-flex items-start gap-2.5">
-          <IconPhone className={iconClass} />
-          <a href={`tel:${FOOTER_COMPANY.phone}`} className="hover:text-brand">
+          <IconPhone className={icon} />
+          <a href={`tel:${FOOTER_COMPANY.phone}`} className={link}>
             {FOOTER_COMPANY.phone}
           </a>
         </span>
         <span className="inline-flex items-start gap-2.5">
-          <IconMail className={iconClass} />
-          <a href={`mailto:${FOOTER_COMPANY.email}`} className="hover:text-brand">
+          <IconMail className={icon} />
+          <a href={`mailto:${FOOTER_COMPANY.email}`} className={link}>
             {FOOTER_COMPANY.email}
           </a>
         </span>

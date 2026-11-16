@@ -31,7 +31,7 @@ export const CMS_PAGES: CmsPageDef[] = [
       "home.headlineColor": "헤드라인 글자 컬러",
       "home.lede": "소개 문구",
       "home.footerBg": "풋터 배경색",
-      "home.footerText": "풋터 문구",
+      "home.footerText": "풋터 추가 문구(면책 등)",
     },
   },
   {
@@ -99,6 +99,6 @@ export function cmsPageByKey(key: string | undefined | null) {
 
 export function fieldLabelFor(page: CmsPageDef, path: string) {
   if (path.endsWith(".footerBg")) return "풋터 배경색";
-  if (path.endsWith(".footerText")) return "풋터 문구";
+  if (path.endsWith(".footerText")) return "풋터 추가 문구(면책 등)";
   return page.fieldLabels?.[path] ?? path.split(".").slice(1).join(" · ");
 }

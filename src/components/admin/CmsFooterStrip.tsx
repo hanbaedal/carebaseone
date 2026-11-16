@@ -1,5 +1,6 @@
 "use client";
 
+import { CompanyContactBlock } from "@/components/CompanyContactBlock";
 import {
   PAGE_FOOTER_BG_DEFAULT,
   pageFooterTextColor,
@@ -19,8 +20,6 @@ export function CmsFooterStrip({
 }) {
   const bg = resolvePageFooterBackground(bgId, PAGE_FOOTER_BG_DEFAULT);
   const color = pageFooterTextColor(bg);
-  const body = text.trim() || "풋터 문구를 입력하세요.";
-
   return (
     <button
       type="button"
@@ -30,8 +29,14 @@ export function CmsFooterStrip({
       }`}
       style={{ backgroundColor: bg, color }}
     >
-      <div className="mx-auto max-w-7xl whitespace-pre-line px-6 py-8 text-sm leading-7">
-        {body}
+      <div className="mx-auto max-w-7xl px-6 py-8">
+        <CompanyContactBlock onBrandBg />
+        {text.trim() ? (
+          <p className="mt-6 whitespace-pre-line border-t border-current/15 pt-6 text-sm leading-7 opacity-90">
+            {text}
+          </p>
+        ) : null}
+        <p className="mt-4 text-xs tracking-wide opacity-75">© haesoo</p>
       </div>
     </button>
   );
