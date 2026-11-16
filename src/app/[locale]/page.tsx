@@ -5,6 +5,8 @@ import { CompanyContactBlock } from "@/components/CompanyContactBlock";
 import {
   HOME_HERO_IMAGE_CLASS,
   heroImageUnoptimized,
+  homeHeadlineFontSize,
+  homeKickerFontSize,
   parseHomeScale,
   resolveHeroImageSrc,
   resolveHomeTextColorHex,
@@ -45,15 +47,15 @@ export default async function HomePage({
         <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-7xl flex-col px-6 pb-0 pt-10 md:pt-14">
           <div className="flex flex-1 flex-col justify-center md:max-w-2xl">
             <p
-              className="animate-[fadeUp_0.7s_ease_both] text-[12px] font-semibold tracking-[0.22em]"
-              style={{ fontSize: `${(12 * kickerScale) / 100}px`, color: kickerColor }}
+              className="animate-[fadeUp_0.7s_ease_both] font-semibold tracking-[0.22em]"
+              style={{ fontSize: homeKickerFontSize(kickerScale), color: kickerColor }}
             >
               {t("home.kicker")}
             </p>
             <h1
-              className="font-display animate-[fadeUp_0.8s_ease_both] mt-5 whitespace-pre-line text-4xl leading-[1.2] md:text-6xl"
+              className="font-display animate-[fadeUp_0.8s_ease_both] mt-5 whitespace-pre-line leading-[1.2]"
               style={{
-                fontSize: `clamp(${(1.75 * headlineScale) / 100}rem, 5vw, ${(3.75 * headlineScale) / 100}rem)`,
+                fontSize: homeHeadlineFontSize(headlineScale),
                 color: headlineColor,
               }}
             >

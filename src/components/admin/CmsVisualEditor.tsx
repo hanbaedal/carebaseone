@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { saveContent, saveContentInline } from "@/app/admin/actions";
 import { HomeCmsCanvas } from "@/components/admin/HomeCmsCanvas";
 import { FontScaleModal } from "@/components/admin/FontScaleModal";
+import { FontScaleStepper } from "@/components/admin/FontScaleStepper";
 import { MediaPickerModal, type CmsMediaOption } from "@/components/admin/MediaPickerModal";
 import { TextColorModal } from "@/components/admin/TextColorModal";
 import type { EditorField } from "@/lib/content";
@@ -11,6 +12,7 @@ import { fieldLabelFor, type CmsPageDef } from "@/lib/cms-pages";
 import {
   colorPathFor,
   defaultColorForTextPath,
+  clampHomeScale,
   resolveHeroImageSrc,
   resolveHomeTextColorHex,
   parseHomeScale,
@@ -237,6 +239,7 @@ export function CmsVisualEditor({
   };
 
   const pickScale = (percent: number) => {
+    const next = clampHomeScale(percent);
     const path =
       linkedScalePath ??
       (active?.path.endsWith("Scale") ? active.path : scalePathFor(active?.path ?? ""));
@@ -245,13 +248,14 @@ export function CmsVisualEditor({
       previewPin ??
       (homeTextPath === "home.kicker" || homeTextPath === "home.headline" ? homeTextPath : null) ??
       textPathForScaleField(path);
-    setDraft((d) => ({ ...d, [path]: String(percent) }));
+    if (isHome) pinPreviewForTextTools();
+    setDraft((d) => ({ ...d, [path]: String(next) }));
     setScaleOpen(false);
     if (isHome && textPath) {
       setPreviewPin(textPath);
       setSlot(textPath);
     }
-    submitQuick(path, String(percent));
+    submitQuick(path, String(next));
   };
 
   const pickColor = (colorId: HomeTextColorId) => {
@@ -398,8 +402,15 @@ export function CmsVisualEditor({
             </div>
           ) : null}
 
-          {((isHome && linkedScalePath) ||
-            (!isHome && (scalePathFor(active?.path ?? "") || isScaleField))) &&
+          {isHome && linkedScalePath && !isHeroField ? (
+            <div className="shrink-0 border-b border-ink/10 px-3 py-2">
+              <FontScaleStepper value={currentScaleValue()} onChange={pickScale} />
+              <p className="mt-1 text-[10px] text-ink/45">100% = 기준 크기 · 50~300% (10% 단위)</p>
+            </div>
+          ) : null}
+
+          {!isHome &&
+          (scalePathFor(active?.path ?? "") || isScaleField) &&
           !isHeroField ? (
             <div className="shrink-0 border-b border-ink/10 px-3 py-2">
               <button
@@ -564,7 +575,7 @@ export function CmsVisualEditor({
             </form>
           ) : isScaleField && !isHome ? (
             <p className="p-3 text-[11px] leading-5 text-ink/50">
-              「글자 크기」에서 0~200%를 고르세요. 선택하면 저장됩니다.
+              「글자 크기」에서 50~300%를 고르세요. 선택하면 저장됩니다.
             </p>
           ) : isHeroField ? (
             <p className="p-3 text-[11px] leading-5 text-ink/50">
@@ -595,12 +606,14 @@ export function CmsVisualEditor({
         onSelect={pickColor}
       />
 
-      <FontScaleModal
-        open={scaleOpen}
-        value={currentScaleValue()}
-        onClose={() => setScaleOpen(false)}
-        onSelect={pickScale}
-      />
+      {!isHome ? (
+        <FontScaleModal
+          open={scaleOpen}
+          value={currentScaleValue()}
+          onClose={() => setScaleOpen(false)}
+          onSelect={pickScale}
+        />
+      ) : null}
     </div>
   );
 }

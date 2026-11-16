@@ -10,13 +10,39 @@ export function resolveHeroImageSrc(heroImage: string | undefined) {
   return `/api/media/${raw}`;
 }
 
-export function parseHomeScale(value: string | undefined, fallback = 100) {
+/** CMS 100% = 디자인 기준(코드 반응형·clamp 없음) */
+export const HOME_SCALE_MIN = 50;
+export const HOME_SCALE_MAX = 300;
+export const HOME_SCALE_STEP = 10;
+export const HOME_SCALE_DEFAULT = 100;
+
+/** 키커·헤드라인 기준 크기 (100%일 때) */
+export const HOME_KICKER_BASE_PX = 12;
+export const HOME_HEADLINE_BASE_REM = 2.25;
+
+export function parseHomeScale(value: string | undefined, fallback = HOME_SCALE_DEFAULT) {
   const n = Number.parseInt(String(value ?? "").trim(), 10);
   if (!Number.isFinite(n)) return fallback;
-  return Math.min(200, Math.max(0, n));
+  return Math.min(HOME_SCALE_MAX, Math.max(HOME_SCALE_MIN, n));
 }
 
-export const HOME_SCALE_STEPS = Array.from({ length: 21 }, (_, i) => i * 10);
+export function clampHomeScale(percent: number) {
+  const stepped = Math.round(percent / HOME_SCALE_STEP) * HOME_SCALE_STEP;
+  return Math.min(HOME_SCALE_MAX, Math.max(HOME_SCALE_MIN, stepped));
+}
+
+export const HOME_SCALE_STEPS = Array.from(
+  { length: (HOME_SCALE_MAX - HOME_SCALE_MIN) / HOME_SCALE_STEP + 1 },
+  (_, i) => HOME_SCALE_MIN + i * HOME_SCALE_STEP,
+);
+
+export function homeKickerFontSize(scalePercent: number) {
+  return `${(HOME_KICKER_BASE_PX * scalePercent) / 100}px`;
+}
+
+export function homeHeadlineFontSize(scalePercent: number) {
+  return `${(HOME_HEADLINE_BASE_REM * scalePercent) / 100}rem`;
+}
 
 /** 배경은 필터·오버레이 없이 원본 그대로 */
 export const HOME_HERO_IMAGE_CLASS = "object-cover object-center";
