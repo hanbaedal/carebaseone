@@ -20,7 +20,6 @@ export async function CmsPageFooter({ section, docked }: Props) {
   const locale = (await getLocale()) as Locale;
   const messages = await getCmsMessages(locale);
   const text = getPath(messages, `${section}.footerText`);
-  const rights = getPath(messages, "footer.rights");
   const bgRaw = getPath(messages, `${section}.footerBg`);
   const bg = resolvePageFooterBackground(bgRaw, PAGE_FOOTER_BG_DEFAULT);
   const color = pageFooterTextColor(bg);
@@ -38,9 +37,6 @@ export async function CmsPageFooter({ section, docked }: Props) {
           <p className="mt-4 whitespace-pre-line border-t border-current/15 pt-4 text-[12px] leading-5 opacity-90">
             {text}
           </p>
-        ) : null}
-        {rights.trim() ? (
-          <p className="mt-3 text-[11px] tracking-wide opacity-75">{rights}</p>
         ) : null}
       </div>
     </footer>

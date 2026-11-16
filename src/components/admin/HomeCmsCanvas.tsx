@@ -145,7 +145,6 @@ export function HomeCmsCanvas({
               {footerText}
             </p>
           ) : null}
-          <p className="mt-2 text-[11px] tracking-wide opacity-75">© haesoo</p>
         </div>
       </button>
     </div>

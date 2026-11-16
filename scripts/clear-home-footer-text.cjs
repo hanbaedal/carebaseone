@@ -20,7 +20,7 @@ async function main() {
       {
         $set: {
           "messages.home.footerText": "",
-          "messages.footer.rights": "© haesoo",
+          "messages.footer.rights": "",
         },
       },
     );

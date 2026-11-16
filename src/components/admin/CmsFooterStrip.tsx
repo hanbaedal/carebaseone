@@ -37,7 +37,6 @@ export function CmsFooterStrip({
             {text}
           </p>
         ) : null}
-        <p className="mt-3 text-[11px] tracking-wide opacity-75">© haesoo</p>
       </div>
     </button>
   );
