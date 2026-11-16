@@ -29,6 +29,7 @@ function localizedTitle(item: ManifestItem) {
 }
 
 let seedRunning: Promise<void> | null = null;
+let seedCompleted = false;
 let ingestStarted = false;
 
 /** 공개 목록용 — DB 조회만, 매 요청 manifest 동기화 없음 */
@@ -41,10 +42,13 @@ export async function ensureMediaReady() {
   }
 }
 
-/** 관리·최초 적재: manifest 메타 동기화 (관리 화면에서만 호출 권장) */
+/** 관리·최초 적재: manifest 메타 동기화 (/admin/media 등에서만 호출) */
 export async function ensureMediaSeed() {
+  if (seedCompleted) return;
   if (seedRunning) return seedRunning;
-  seedRunning = runMediaSeed();
+  seedRunning = runMediaSeed().then(() => {
+    seedCompleted = true;
+  });
   return seedRunning;
 }
 

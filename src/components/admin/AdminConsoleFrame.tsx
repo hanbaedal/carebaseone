@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import type { Role } from "@/lib/session";
 import { Suspense } from "react";
+import { isHomepageAdminPath } from "@/lib/homepage-admin-paths";
 
 export function AdminConsoleFrame({
   role,
@@ -13,9 +14,7 @@ export function AdminConsoleFrame({
   children: React.ReactNode;
 }) {
   const pathname = usePathname() ?? "";
-  const cmsMode = pathname === "/admin/cms" || pathname.startsWith("/admin/cms?");
-
-  if (cmsMode) {
+  if (isHomepageAdminPath(pathname)) {
     return <>{children}</>;
   }
 

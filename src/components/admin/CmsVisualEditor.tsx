@@ -1,13 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { saveContent, saveContentInline } from "@/app/admin/actions";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { saveContentInline } from "@/app/admin/actions";
 import { HomeCmsCanvas } from "@/components/admin/HomeCmsCanvas";
 import { FontScaleModal } from "@/components/admin/FontScaleModal";
 import { FontScaleStepper } from "@/components/admin/FontScaleStepper";
 import { MediaPickerModal, type CmsMediaOption } from "@/components/admin/MediaPickerModal";
 import { TextColorModal } from "@/components/admin/TextColorModal";
-import type { EditorField } from "@/lib/content";
+import type { KoCmsField } from "@/lib/content";
 import { fieldLabelFor, type CmsPageDef } from "@/lib/cms-pages";
 import {
   colorPathFor,
@@ -18,12 +18,6 @@ import {
   parseHomeScale,
   type HomeTextColorId,
 } from "@/lib/home-hero";
-
-const langs = [
-  { key: "ko" as const, label: "한국어" },
-  { key: "zh" as const, label: "中文" },
-  { key: "en" as const, label: "English" },
-];
 
 const HOME_CMS_PATHS = [
   "home.heroImage",
@@ -37,12 +31,6 @@ const HOME_CMS_PATHS = [
 ] as const;
 
 type HomeSlot = (typeof HOME_CMS_PATHS)[number];
-
-function fieldValue(field: EditorField, lang: "ko" | "zh" | "en") {
-  if (lang === "zh") return field.zh;
-  if (lang === "en") return field.en;
-  return field.ko;
-}
 
 function scalePathFor(textPath: string) {
   if (textPath === "home.kicker") return "home.kickerScale";
@@ -90,21 +78,21 @@ function textPathForScaleField(scalePath: string | null | undefined) {
 export function CmsVisualEditor({
   page,
   fields,
-  returnTo,
   notice,
   noticeError,
-  submenuPages,
-  mediaOptions = [],
+  previewFocus,
+  mediaOptions: mediaOptionsProp = [],
 }: {
   page: CmsPageDef;
-  fields: EditorField[];
-  returnTo: string;
+  fields: KoCmsField[];
+  previewFocus?: string;
   notice?: string;
   noticeError?: boolean;
-  submenuPages: CmsPageDef[];
   mediaOptions?: CmsMediaOption[];
 }) {
   const isHome = page.key === "home";
+  const [mediaOptions, setMediaOptions] = useState<CmsMediaOption[]>(mediaOptionsProp);
+  const mediaFetchStarted = useRef(false);
   const editorFields = useMemo(
     () =>
       isHome
@@ -120,7 +108,6 @@ export function CmsVisualEditor({
     "";
 
   const [slot, setSlot] = useState(defaultPath);
-  const [lang, setLang] = useState<"ko" | "zh" | "en">("ko");
   const [iframeKey, setIframeKey] = useState(0);
   const [mediaOpen, setMediaOpen] = useState(false);
   const [scaleOpen, setScaleOpen] = useState(false);
@@ -144,6 +131,21 @@ export function CmsVisualEditor({
 
   const [draft, setDraft] = useState(valueByPath);
   useEffect(() => setDraft(valueByPath), [valueByPath]);
+
+  useEffect(() => {
+    if (!mediaOpen || mediaFetchStarted.current) return;
+    mediaFetchStarted.current = true;
+    void fetch("/api/admin/cms-media")
+      .then((res) => (res.ok ? res.json() : []))
+      .then((items: CmsMediaOption[]) => {
+        if (Array.isArray(items) && items.length > 0) {
+          setMediaOptions((prev) => [...prev, ...items]);
+        }
+      })
+      .catch(() => {
+        mediaFetchStarted.current = false;
+      });
+  }, [mediaOpen]);
 
   useEffect(() => {
     if (!isHome) return;
@@ -272,6 +274,8 @@ export function CmsVisualEditor({
   };
 
   const heroSrc = resolveHeroImageSrc(draft["home.heroImage"]);
+  const previewSrc =
+    page.key === "product" && previewFocus ? `${page.preview}#${previewFocus}` : page.preview;
   const previewActiveSlot = isHome
     ? resolvePreviewActiveSlot(slot, homeTextPath, previewPin)
     : null;
@@ -328,7 +332,7 @@ export function CmsVisualEditor({
             <iframe
               key={`${page.key}-${iframeKey}`}
               title={`${page.label} preview`}
-              src={page.preview}
+              src={previewSrc}
               className="h-[min(70vh,44rem)] w-full bg-white"
             />
           )}
@@ -446,38 +450,18 @@ export function CmsVisualEditor({
             </div>
           ) : null}
 
-          {!isHeroField && (isHome ? homeTextPath : !isScaleField) ? (
-            <div className="flex gap-1 border-b border-ink/10 px-2 py-2">
-              {langs.map((item) => (
-                <button
-                  key={item.key}
-                  type="button"
-                  onClick={() => setLang(item.key)}
-                  className={`rounded px-2 py-1 text-[11px] ${
-                    lang === item.key ? "bg-forest text-cream" : "text-ink/55 hover:bg-ink/5"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          ) : null}
-
           {((isHome && homeTextPath && textField) || (active && !isHeroField && !isScaleField)) ? (
             <form
-              action={isHome ? undefined : saveContent}
               className="flex min-h-0 flex-1 flex-col"
-              onSubmit={
-                isHome
-                  ? (e) => {
-                      e.preventDefault();
-                      if (saving || !textField || !homeTextPath) return;
-                      void persistKoFields({
-                        [homeTextPath]: draft[homeTextPath] ?? textField.ko,
-                      });
-                    }
-                  : undefined
-              }
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (saving) return;
+                const editPath = isHome && homeTextPath ? homeTextPath : active!.path;
+                const field = isHome && textField ? textField : active!;
+                void persistKoFields({
+                  [editPath]: draft[editPath] ?? field.ko,
+                });
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
                   e.preventDefault();
@@ -485,84 +469,48 @@ export function CmsVisualEditor({
                 }
               }}
             >
-              <input type="hidden" name="section" value={page.section} />
-              {!isHome ? <input type="hidden" name="returnTo" value={returnTo} /> : null}
               <div className="min-h-0 flex-1 space-y-2 overflow-y-auto p-3">
-                {langs.map((item) => {
+                {(() => {
                   const editPath = isHome && homeTextPath ? homeTextPath : active!.path;
                   const field = isHome && textField ? textField : active!;
-                  const name = `${item.key}:${encodeURIComponent(editPath)}`;
-                  const value = draft[editPath] ?? fieldValue(field, item.key);
-                  const show = lang === item.key;
-                  const submitValue =
-                    item.key === "ko" ? value : lang === item.key ? fieldValue(field, item.key) : "";
+                  const value = draft[editPath] ?? field.ko;
                   const editMultiline =
                     isHome && homeTextPath
                       ? homeTextPath === "home.kicker" ||
                         homeTextPath === "home.headline" ||
-                        Boolean(field.multiline)
+                        field.multiline
                       : multiline;
-                  return show ? (
-                    <label key={name} className="grid gap-1 text-[11px] text-ink/60">
-                      내용 ({item.key})
+                  return (
+                    <label className="grid gap-1 text-[11px] text-ink/60">
+                      내용 (한국어)
                       {editMultiline ? (
                         <textarea
-                          name={name}
-                          defaultValue={submitValue}
-                          onChange={(e) => {
-                            if (item.key === "ko")
-                              setDraft((d) => ({ ...d, [editPath]: e.target.value }));
-                          }}
+                          value={value}
+                          onChange={(e) =>
+                            setDraft((d) => ({ ...d, [editPath]: e.target.value }))
+                          }
                           rows={textareaRows(editPath, editMultiline)}
                           className="max-h-36 w-full resize-y rounded border border-ink/15 bg-white px-2 py-1.5 text-[13px] leading-6 outline-none focus:border-forest"
                         />
                       ) : (
                         <input
-                          name={name}
-                          defaultValue={submitValue}
-                          onChange={(e) => {
-                            if (item.key === "ko")
-                              setDraft((d) => ({ ...d, [editPath]: e.target.value }));
-                          }}
-                          onKeyDown={(e) => {
-                            if (
-                              !isHome &&
-                              e.key === "Enter" &&
-                              !e.ctrlKey &&
-                              !e.metaKey &&
-                              !e.shiftKey
-                            ) {
-                              e.preventDefault();
-                              e.currentTarget.form?.requestSubmit();
-                            }
-                          }}
+                          value={value}
+                          onChange={(e) =>
+                            setDraft((d) => ({ ...d, [editPath]: e.target.value }))
+                          }
                           className="w-full rounded border border-ink/15 bg-white px-2 py-1.5 text-[13px] outline-none focus:border-forest"
                         />
                       )}
                     </label>
-                  ) : item.key === "ko" && lang !== "ko" ? (
-                    <input
-                      key={name}
-                      type="hidden"
-                      name={`ko:${encodeURIComponent(active.path)}`}
-                      defaultValue={draft[editPath] ?? field.ko}
-                    />
-                  ) : (
-                    <input key={name} type="hidden" name={name} defaultValue="" />
                   );
-                })}
+                })()}
               </div>
 
               <div className="shrink-0 space-y-2 border-t border-ink/10 bg-white p-3">
                 <p className="text-[10px] leading-4 text-ink/40">
-                  {(isHome && homeTextPath
-                    ? homeTextPath === "home.kicker" || homeTextPath === "home.headline"
-                    : multiline)
-                    ? "Enter 줄바꿈 · Ctrl+Enter 저장"
-                    : isHome
-                      ? "Ctrl+Enter 저장"
-                      : "Enter 저장"}
-                  {isHome ? "" : ". 한국어만 수정해도 영·중문이 맞춰집니다."}
+                  {multiline ? "Enter 줄바꿈 · Ctrl+Enter 저장" : "Ctrl+Enter 저장"}
+                  {" · "}
+                  저장 시 서버에서 영·중 반영 (공개 /en · /zh)
                 </p>
                 <button
                   type="submit"

@@ -7,10 +7,7 @@ import { AdminTopBar } from "@/components/admin/AdminTopBar";
 import { SiteHeader } from "@/components/SiteHeader";
 import type { Role } from "@/lib/session";
 import type { AbstractIntlMessages } from "next-intl";
-
-function isCmsPath(pathname: string) {
-  return pathname === "/admin/cms" || pathname.startsWith("/admin/cms?");
-}
+import { isHomepageAdminPath } from "@/lib/homepage-admin-paths";
 
 export function CmsLayoutGate({
   children,
@@ -33,7 +30,7 @@ export function CmsLayoutGate({
 }) {
   const pathname = usePathname() ?? "";
 
-  if (isCmsPath(pathname)) {
+  if (isHomepageAdminPath(pathname)) {
     return (
       <NextIntlClientProvider locale="ko" messages={messages}>
         <div className="flex min-h-dvh flex-col bg-paper text-brand-ink">

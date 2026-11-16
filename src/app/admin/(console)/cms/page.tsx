@@ -1,8 +1,6 @@
 import { CmsVisualEditor } from "@/components/admin/CmsVisualEditor";
-import { getEditorFields } from "@/lib/content";
-import { CMS_PAGES, cmsPageByKey } from "@/lib/cms-pages";
-import { listAllMedia } from "@/lib/media-lib";
-
+import { getKoCmsEditorFields } from "@/lib/content";
+import { cmsPageByKey } from "@/lib/cms-pages";
 export const dynamic = "force-dynamic";
 
 const notices: Record<string, string> = {
@@ -14,32 +12,19 @@ const notices: Record<string, string> = {
 export default async function AdminCmsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string; status?: string; message?: string }>;
+  searchParams: Promise<{ page?: string; status?: string; message?: string; focus?: string }>;
 }) {
   const query = await searchParams;
   const page = cmsPageByKey(query.page);
-  const fields = await getEditorFields(page.section);
+  const fields = await getKoCmsEditorFields(page.section);
   const notice = query.status ? notices[query.status] : "";
-  const submenuPages = CMS_PAGES.filter((item) => item.tab === "submenu");
-  const returnTo = `/admin/cms?page=${encodeURIComponent(page.key)}`;
-  const mediaDocs = await listAllMedia();
-  const mediaOptions = mediaDocs
-    .filter((m) => m.mime.startsWith("image/"))
-    .map((m) => ({
-      slug: m.slug,
-      src: m.filePath,
-      title: m.title.ko || m.slug,
-    }));
-
   return (
     <CmsVisualEditor
       page={page}
       fields={fields}
-      returnTo={returnTo}
+      previewFocus={query.focus}
       notice={query.message || notice}
       noticeError={query.status === "error"}
-      submenuPages={submenuPages}
-      mediaOptions={mediaOptions}
     />
   );
 }

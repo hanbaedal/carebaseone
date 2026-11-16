@@ -1,4 +1,4 @@
-import { ensureIndexes, media, type MediaCategory } from "@/lib/db";
+import { ensureIndexes, media, type MediaCategory, type MediaDoc } from "@/lib/db";
 import { ensureMediaReady, ensureMediaSeed } from "@/lib/seed-media";
 
 export async function listPublishedMedia(
@@ -28,6 +28,32 @@ export async function listArchiveMedia(memberApproved = false) {
 export async function listAllMedia() {
   await ensureMediaSeed();
   return (await media()).find({}).sort({ createdAt: -1 }).toArray();
+}
+
+/** 홈페이지관리 — 시드 없이 목록 (카테고리 필터) */
+export async function listMediaForAdmin(category?: MediaCategory): Promise<MediaDoc[]> {
+  await ensureMediaReady();
+  const filter = category ? { category } : {};
+  return (await media()).find(filter).sort({ createdAt: -1 }).toArray();
+}
+
+/** CMS 배경 선택 — 시드 없이 이미지만 (가벼운 조회) */
+export async function listCmsImageMediaOptions() {
+  await ensureMediaReady();
+  const docs = await (await media())
+    .find({
+      published: true,
+      mime: { $regex: /^image\//i },
+    })
+    .project({ slug: 1, filePath: 1, title: 1 })
+    .sort({ createdAt: -1 })
+    .limit(120)
+    .toArray();
+  return docs.map((m) => ({
+    slug: m.slug,
+    src: m.filePath,
+    title: m.title?.ko || m.slug,
+  }));
 }
 
 export async function findMediaBySlug(slug: string) {

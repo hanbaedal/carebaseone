@@ -1,3 +1,4 @@
+import { cache as reactCache } from "react";
 import ko from "@/messages/ko.json";
 import en from "@/messages/en.json";
 import zh from "@/messages/zh.json";
@@ -11,7 +12,7 @@ import { deepMerge, flattenStrings, getPath, setPath, type Json } from "@/lib/te
 const files = { ko, en, zh } as const;
 export type Locale = keyof typeof files;
 
-const cache = globalThis as typeof globalThis & {
+const cmsMsgCache = globalThis as typeof globalThis & {
   cmsCache?: { at: number; messages: Partial<Record<Locale, Json>> };
 };
 
@@ -43,8 +44,16 @@ export type EditorField = {
   multiline: boolean;
 };
 
+/** /admin/cms — 한국어 슬롯만 (en/zh 조회 없음) */
+export type KoCmsField = {
+  path: string;
+  label: string;
+  ko: string;
+  multiline: boolean;
+};
+
 export function clearCmsCache() {
-  if (cache.cmsCache) cache.cmsCache.at = 0;
+  if (cmsMsgCache.cmsCache) cmsMsgCache.cmsCache.at = 0;
 }
 
 async function overrides(locale: Locale) {
@@ -52,24 +61,27 @@ async function overrides(locale: Locale) {
   return doc?.messages ?? {};
 }
 
-export async function getCmsMessages(locale: string) {
+async function loadCmsMessages(locale: string) {
   const key: Locale = locale === "en" || locale === "zh" ? locale : "ko";
   const now = Date.now();
-  if (cache.cmsCache && now - cache.cmsCache.at < 15000 && cache.cmsCache.messages[key]) {
-    return cache.cmsCache.messages[key] as Json;
+  if (cmsMsgCache.cmsCache && now - cmsMsgCache.cmsCache.at < 15000 && cmsMsgCache.cmsCache.messages[key]) {
+    return cmsMsgCache.cmsCache.messages[key] as Json;
   }
   const base = files[key] as unknown as Json;
   try {
     const merged = deepMerge(base, await overrides(key));
-    cache.cmsCache = {
+    cmsMsgCache.cmsCache = {
       at: now,
-      messages: { ...(cache.cmsCache?.messages ?? {}), [key]: merged },
+      messages: { ...(cmsMsgCache.cmsCache?.messages ?? {}), [key]: merged },
     };
     return merged;
   } catch {
     return base;
   }
 }
+
+/** 요청당 중복 조회 방지 (layout + cms 페이지) */
+export const getCmsMessages = reactCache(loadCmsMessages);
 
 function allowedPaths() {
   return new Set(flattenStrings(ko).map((field) => field.path));
@@ -81,6 +93,17 @@ function skipAutoTranslate(path: string, koText: string) {
   if (/\.(heroImage|image)$/i.test(path)) return true;
   if (!/[가-힣]/.test(koText)) return true;
   return false;
+}
+
+export async function getKoCmsEditorFields(section: string): Promise<KoCmsField[]> {
+  const korean = await getCmsMessages("ko");
+  const sectionValue = (korean as Record<string, Json>)[section];
+  return flattenStrings(sectionValue, section).map((field) => ({
+    path: field.path,
+    label: field.path.slice(section.length + 1).replaceAll(".", " · "),
+    ko: field.value,
+    multiline: field.value.length > 70,
+  }));
 }
 
 export async function getEditorFields(section: string): Promise<EditorField[]> {

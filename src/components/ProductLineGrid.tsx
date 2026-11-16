@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import catalog from "@/data/product-catalog.json";
 import type { ProductLineCategory } from "@/lib/product-categories";
+import { PRODUCT_CATEGORY_PATHS } from "@/lib/product-categories";
 import {
   ProductCatalogCards,
   type ProductCatalogCard,
@@ -28,7 +29,7 @@ export async function ProductLineGrid({
   }));
 
   return (
-    <section className="mt-14">
+    <section id={PRODUCT_CATEGORY_PATHS[category]} className="mt-14 scroll-mt-28">
       <h2 className="font-display text-2xl text-brand-ink">{heading}</h2>
       <ProductCatalogCards
         items={items}
