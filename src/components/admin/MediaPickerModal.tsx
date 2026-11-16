@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { images } from "@/lib/site";
 
 export type CmsMediaOption = {
   slug: string;
@@ -8,9 +9,11 @@ export type CmsMediaOption = {
   title: string;
 };
 
-const STATIC_HERO_OPTIONS: CmsMediaOption[] = [
-  { slug: "", title: "기본(숲 이미지)", src: "/images/site/hero.jpg" },
-];
+const SITE_IMAGE_OPTIONS: CmsMediaOption[] = Object.entries(images).map(([key, src]) => ({
+  slug: src,
+  src,
+  title: `사이트 · ${key}`,
+}));
 
 export function MediaPickerModal({
   open,
@@ -27,7 +30,7 @@ export function MediaPickerModal({
 }) {
   if (!open) return null;
 
-  const all = [...STATIC_HERO_OPTIONS, ...options];
+  const all = [...SITE_IMAGE_OPTIONS, ...options];
 
   return (
     <div
@@ -38,7 +41,7 @@ export function MediaPickerModal({
       onClick={onClose}
     >
       <div
-        className="max-h-[80vh] w-full max-w-lg overflow-hidden rounded-xl border border-ink/10 bg-white shadow-xl"
+        className="max-h-[80vh] w-full max-w-2xl overflow-hidden rounded-xl border border-ink/10 bg-white shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-ink/10 px-4 py-3">
@@ -46,22 +49,26 @@ export function MediaPickerModal({
             <h2 id="media-picker-title" className="text-sm font-semibold text-brand-ink">
               배경 이미지 선택
             </h2>
-            <p className="text-[10px] text-ink/50">자료실(미디어)에 등록된 이미지</p>
+            <p className="text-[10px] text-ink/50">
+              사이트 기본 이미지 · 자료실에 업로드한 이미지 (갤러리 업로드는 /admin/media)
+            </p>
           </div>
           <button type="button" onClick={onClose} className="text-[11px] text-ink/50 hover:text-ink">
             닫기
           </button>
         </div>
-        <ul className="grid max-h-[60vh] grid-cols-2 gap-2 overflow-y-auto p-3 sm:grid-cols-3">
+        <ul className="grid max-h-[60vh] grid-cols-2 gap-2 overflow-y-auto p-3 sm:grid-cols-3 md:grid-cols-4">
           {all.map((item) => {
             const selected =
-              (item.slug === "" && !currentSlug) || item.slug === currentSlug || item.src === currentSlug;
+              currentSlug === item.slug ||
+              currentSlug === item.src ||
+              (!currentSlug && item.src === images.hero);
             return (
-              <li key={item.slug || "default-hero"}>
+              <li key={`${item.slug}-${item.src}`}>
                 <button
                   type="button"
                   onClick={() => {
-                    onSelect(item.slug || "");
+                    onSelect(item.slug.startsWith("/") ? item.slug : item.slug || "");
                     onClose();
                   }}
                   className={`w-full overflow-hidden rounded-lg border text-left ${
@@ -79,7 +86,11 @@ export function MediaPickerModal({
         </ul>
         {options.length === 0 ? (
           <p className="border-t border-ink/10 px-4 py-3 text-[11px] text-ink/50">
-            등록된 이미지가 없습니다. 「정보 관리」→ 자료 업로드 후 다시 선택해 주세요.
+            업로드 이미지가 없으면 위 사이트 기본 이미지를 쓰거나,{" "}
+            <a href="/admin/media" className="text-brand hover:underline">
+              /admin/media
+            </a>
+            에 등록해 주세요.
           </p>
         ) : null}
       </div>

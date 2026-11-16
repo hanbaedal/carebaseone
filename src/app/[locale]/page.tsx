@@ -2,7 +2,13 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { resolveLocale } from "@/lib/locale";
 import { CompanyContactBlock } from "@/components/CompanyContactBlock";
-import { parseHomeScale, resolveHeroImageSrc } from "@/lib/home-hero";
+import {
+  HOME_HERO_IMAGE_CLASS,
+  heroImageUnoptimized,
+  homeHeroOverlayClass,
+  parseHomeScale,
+  resolveHeroImageSrc,
+} from "@/lib/home-hero";
 
 export default async function HomePage({
   params,
@@ -24,12 +30,13 @@ export default async function HomePage({
           alt=""
           fill
           priority
-          className="object-cover"
+          quality={95}
+          className={HOME_HERO_IMAGE_CLASS}
           sizes="100vw"
-          unoptimized={heroSrc.startsWith("/api/")}
+          unoptimized={heroImageUnoptimized(heroSrc)}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/92 via-white/72 to-white/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent md:from-white/80" />
+        <div className={homeHeroOverlayClass.horizontal} />
+        <div className={homeHeroOverlayClass.vertical} />
 
         <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-7xl flex-col px-6 pb-0 pt-10 md:pt-14">
           <div className="flex flex-1 flex-col justify-center md:max-w-2xl">
@@ -41,7 +48,7 @@ export default async function HomePage({
                 {t("home.kicker")}
               </p>
               <h1
-                className="font-display animate-[fadeUp_0.8s_ease_both] mt-5 leading-[1.2] text-brand-ink md:text-6xl"
+                className="font-display animate-[fadeUp_0.8s_ease_both] mt-5 whitespace-pre-line leading-[1.2] text-brand-ink md:text-6xl"
                 style={{ fontSize: `clamp(${(1.75 * headlineScale) / 100}rem, 5vw, ${(3.75 * headlineScale) / 100}rem)` }}
               >
                 {t("home.headline")}

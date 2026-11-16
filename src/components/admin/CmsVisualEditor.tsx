@@ -96,6 +96,8 @@ export function CmsVisualEditor({
     : "";
 
   const multiline =
+    active?.path === "home.kicker" ||
+    active?.path === "home.headline" ||
     Boolean(active?.multiline) ||
     Boolean(active?.path.endsWith(".body")) ||
     Boolean(active?.path.endsWith(".lede")) ||
@@ -114,6 +116,11 @@ export function CmsVisualEditor({
     input.value = koValue;
     form.appendChild(input);
     form.requestSubmit();
+  };
+
+  const openBackgroundPicker = () => {
+    setSlot("home.heroImage");
+    setMediaOpen(true);
   };
 
   const handleHomeSlot = (key: HomeSlot) => {
@@ -209,16 +216,27 @@ export function CmsVisualEditor({
 
       <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="overflow-hidden rounded-xl border border-ink/10 bg-white shadow-sm">
-          <div className="flex items-center justify-between border-b border-ink/10 px-3 py-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-ink/10 px-3 py-2">
             <p className="text-[11px] font-medium text-brand-ink">{page.label} 미리보기</p>
-            <a
-              href={page.preview}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[10px] text-brand hover:underline"
-            >
-              새 탭
-            </a>
+            <div className="flex items-center gap-2">
+              {isHome ? (
+                <button
+                  type="button"
+                  onClick={openBackgroundPicker}
+                  className="rounded-md bg-forest px-2.5 py-1 text-[11px] font-medium text-cream hover:opacity-95"
+                >
+                  배경 이미지 선택
+                </button>
+              ) : null}
+              <a
+                href={page.preview}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] text-brand hover:underline"
+              >
+                새 탭
+              </a>
+            </div>
           </div>
           {isHome ? (
             <HomeCmsCanvas
@@ -233,6 +251,7 @@ export function CmsVisualEditor({
                   : null
               }
               onSelectSlot={handleHomeSlot}
+              onPickBackground={openBackgroundPicker}
             />
           ) : (
             <iframe
@@ -249,6 +268,26 @@ export function CmsVisualEditor({
             <p className="text-[11px] font-semibold text-brand-ink">슬롯 편집</p>
             <p className="mt-0.5 truncate text-[10px] text-ink/45">{slotTitle}</p>
           </div>
+
+          {isHome ? (
+            <div className="border-b border-ink/10 px-3 py-3">
+              <button
+                type="button"
+                onClick={openBackgroundPicker}
+                className="w-full rounded-md bg-brand px-2 py-2.5 text-[12px] font-medium text-white hover:opacity-95"
+              >
+                배경 이미지 선택
+              </button>
+              <p className="mt-1.5 text-[10px] text-ink/45">
+                현재:{" "}
+                {draft["home.heroImage"]
+                  ? draft["home.heroImage"].startsWith("/")
+                    ? draft["home.heroImage"]
+                    : `미디어 ${draft["home.heroImage"]}`
+                  : "기본 숲 이미지"}
+              </p>
+            </div>
+          ) : null}
 
           <div className="border-b border-ink/10 px-2 py-2">
             <label className="grid gap-1 text-[10px] text-ink/50">
@@ -309,7 +348,16 @@ export function CmsVisualEditor({
           ) : null}
 
           {active && !isHeroField && !isScaleField ? (
-            <form action={saveContent} className="flex flex-1 flex-col gap-2 p-3">
+            <form
+              action={saveContent}
+              className="flex flex-1 flex-col gap-2 p-3"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+                  e.preventDefault();
+                  e.currentTarget.requestSubmit();
+                }
+              }}
+            >
               <input type="hidden" name="section" value={page.section} />
               <input type="hidden" name="returnTo" value={returnTo} />
               {langs.map((item) => {
@@ -337,6 +385,12 @@ export function CmsVisualEditor({
                         onChange={(e) => {
                           if (item.key === "ko") setDraft((d) => ({ ...d, [active.path]: e.target.value }));
                         }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+                            e.preventDefault();
+                            e.currentTarget.form?.requestSubmit();
+                          }
+                        }}
                         className="w-full rounded border border-ink/15 bg-white px-2 py-1.5 text-[13px] outline-none focus:border-forest"
                       />
                     )}
@@ -354,7 +408,9 @@ export function CmsVisualEditor({
               })}
 
               <p className="text-[10px] leading-4 text-ink/40">
-                한국어만 수정해도 저장 시 영·중문이 맞춰집니다.
+                {multiline
+                  ? "Enter 줄바꿈 · Ctrl+Enter 저장. 한국어만 수정해도 영·중문이 맞춰집니다."
+                  : "Enter 저장. 한국어만 수정해도 영·중문이 맞춰집니다."}
               </p>
 
               <button

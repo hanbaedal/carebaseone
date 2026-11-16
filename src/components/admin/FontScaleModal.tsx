@@ -15,14 +15,22 @@ export function FontScaleModal({
   onSelect: (percent: number) => void;
 }) {
   const listRef = useRef<HTMLUListElement>(null);
-  const [focusIndex, setFocusIndex] = useState(
-    () => HOME_SCALE_STEPS.findIndex((s) => s === value) || 0,
-  );
+  const focusIndexRef = useRef(10);
+  const [focusIndex, setFocusIndex] = useState(() => {
+    const idx = HOME_SCALE_STEPS.findIndex((s) => s === value);
+    return idx >= 0 ? idx : 10;
+  });
+
+  const setFocus = (index: number) => {
+    const next = Math.min(HOME_SCALE_STEPS.length - 1, Math.max(0, index));
+    focusIndexRef.current = next;
+    setFocusIndex(next);
+  };
 
   useEffect(() => {
     if (!open) return;
     const idx = HOME_SCALE_STEPS.findIndex((s) => s === value);
-    setFocusIndex(idx >= 0 ? idx : 10);
+    setFocus(idx >= 0 ? idx : 10);
   }, [open, value]);
 
   useEffect(() => {
@@ -37,20 +45,21 @@ export function FontScaleModal({
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowUp") {
         e.preventDefault();
-        setFocusIndex((i) => Math.max(0, i - 1));
+        setFocus(focusIndexRef.current - 1);
       }
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        setFocusIndex((i) => Math.min(HOME_SCALE_STEPS.length - 1, i + 1));
+        setFocus(focusIndexRef.current + 1);
       }
       if (e.key === "Enter") {
         e.preventDefault();
-        onSelect(HOME_SCALE_STEPS[focusIndex]);
+        onSelect(HOME_SCALE_STEPS[focusIndexRef.current]);
+        onClose();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, focusIndex, onClose, onSelect]);
+  }, [open, onClose, onSelect]);
 
   if (!open) return null;
 
@@ -84,8 +93,11 @@ export function FontScaleModal({
                       ? "bg-brand/10 text-brand"
                       : "text-brand-ink hover:bg-ink/5"
                 }`}
-                onMouseEnter={() => setFocusIndex(index)}
-                onClick={() => onSelect(step)}
+                onMouseEnter={() => setFocus(index)}
+                onClick={() => {
+                  onSelect(step);
+                  onClose();
+                }}
               >
                 {step}%
               </button>

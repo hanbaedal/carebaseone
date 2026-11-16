@@ -2,7 +2,12 @@
 
 import Image from "next/image";
 import { CompanyContactBlock } from "@/components/CompanyContactBlock";
-import { parseHomeScale } from "@/lib/home-hero";
+import {
+  HOME_HERO_IMAGE_CLASS,
+  heroImageUnoptimized,
+  homeHeroOverlayClass,
+  parseHomeScale,
+} from "@/lib/home-hero";
 
 type SlotKey = "home.heroImage" | "home.kicker" | "home.headline";
 
@@ -14,6 +19,7 @@ export function HomeCmsCanvas({
   headlineScale,
   activeSlot,
   onSelectSlot,
+  onPickBackground,
 }: {
   heroSrc: string;
   kicker: string;
@@ -22,6 +28,7 @@ export function HomeCmsCanvas({
   headlineScale: string;
   activeSlot: SlotKey | null;
   onSelectSlot: (slot: SlotKey) => void;
+  onPickBackground: () => void;
 }) {
   const kScale = parseHomeScale(kickerScale);
   const hScale = parseHomeScale(headlineScale);
@@ -31,19 +38,30 @@ export function HomeCmsCanvas({
 
   return (
     <div className="relative isolate min-h-[min(70vh,44rem)] overflow-hidden bg-brand-ink text-brand-ink">
+      <Image
+        src={heroSrc}
+        alt=""
+        fill
+        quality={95}
+        className={HOME_HERO_IMAGE_CLASS}
+        sizes="100vw"
+        unoptimized={heroImageUnoptimized(heroSrc)}
+      />
+      <div className={`pointer-events-none ${homeHeroOverlayClass.horizontal}`} />
+      <div className={`pointer-events-none ${homeHeroOverlayClass.vertical}`} />
+
       <button
         type="button"
-        className={`absolute inset-0 z-0 block w-full ${ring("home.heroImage")}`}
-        onClick={() => onSelectSlot("home.heroImage")}
-        aria-label="배경 이미지 편집"
+        onClick={onPickBackground}
+        className={`absolute right-3 top-3 z-20 rounded-full border border-white/80 bg-white/95 px-3 py-1.5 text-[11px] font-medium text-brand shadow-sm hover:bg-white ${
+          activeSlot === "home.heroImage" ? "ring-2 ring-brand" : ""
+        }`}
       >
-        <Image src={heroSrc} alt="" fill className="pointer-events-none object-cover" sizes="100vw" unoptimized />
+        배경 이미지 선택
       </button>
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-white/92 via-white/72 to-white/20" />
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-white via-transparent to-transparent md:from-white/80" />
 
-      <div className="relative z-[2] mx-auto flex min-h-[min(70vh,44rem)] max-w-5xl flex-col px-4 pb-0 pt-8 md:px-6">
-        <div className="flex flex-1 flex-col justify-center md:max-w-2xl">
+      <div className="relative z-10 mx-auto flex min-h-[min(70vh,44rem)] max-w-5xl flex-col px-4 pb-0 pt-12 md:px-6">
+        <div className="flex min-h-0 flex-1 flex-col justify-center md:max-w-2xl">
           <button
             type="button"
             onClick={() => onSelectSlot("home.kicker")}
@@ -62,13 +80,20 @@ export function HomeCmsCanvas({
             className={`mt-5 w-fit rounded-md text-left ${ring("home.headline")}`}
           >
             <h2
-              className="font-display leading-[1.2] text-brand-ink"
+              className="whitespace-pre-line font-display leading-[1.2] text-brand-ink"
               style={{ fontSize: `${(2.25 * hScale) / 100}rem` }}
             >
               {headline || "헤드라인"}
             </h2>
           </button>
         </div>
+
+        <button
+          type="button"
+          aria-label="배경 이미지 편집"
+          onClick={onPickBackground}
+          className="absolute bottom-24 right-4 top-24 hidden w-[min(38%,14rem)] rounded-lg border border-dashed border-brand/25 bg-brand/5 hover:border-brand/50 hover:bg-brand/10 md:block"
+        />
 
         <div className="pointer-events-none mb-4 rounded-2xl border border-line bg-white/95 px-5 py-6 shadow-sm backdrop-blur-sm md:mb-6">
           <CompanyContactBlock />
