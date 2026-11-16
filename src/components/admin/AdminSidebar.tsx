@@ -4,28 +4,15 @@ import { usePathname, useSearchParams } from "next/navigation";
 import type { Role } from "@/lib/session";
 import { menuGroupsForRole } from "@/lib/admin-menu";
 
-const cmsPaths = [
-  "/admin/cms",
-  "/admin/content",
-  "/admin/notices",
-  "/admin/posts",
-  "/admin/media",
-  "/admin/inquiries",
-];
-
 function itemActive(pathname: string, searchParams: URLSearchParams, href: string) {
   const [path, query = ""] = href.split("?");
   const want = new URLSearchParams(query);
 
-  if (path === "/admin/cms") {
-    return cmsPaths.some((p) => pathname === p || pathname.startsWith(`${p}/`) || pathname.startsWith(`${p}?`));
-  }
-
-  if (pathname === path || (path === "/admin/content" && pathname.startsWith("/admin/content"))) {
+  if (pathname === path || pathname.startsWith(`${path}/`)) {
     if (want.size === 0) {
       if (path === "/admin/stats" && pathname.startsWith("/admin/stats/")) return false;
       if (path === "/admin/users" && searchParams.has("focus")) return false;
-      return pathname === path;
+      return pathname === path || (path !== "/admin" && pathname.startsWith(`${path}/`));
     }
     for (const [key, value] of want.entries()) {
       if (searchParams.get(key) !== value) return false;

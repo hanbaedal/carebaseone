@@ -12,12 +12,7 @@ export async function AdminHubPage({ username, role }: { username: string; role:
       <div>
         <h1 className="text-sm font-semibold">운영 메뉴 맵</h1>
         <p className="mt-1 text-[11px] leading-5 text-ink/50">
-          {user?.username ?? username} · {roleLabel} — 카드에서 업무 메뉴로 이동합니다. 공개 사이트
-          구조는{" "}
-          <a href="/ko/sitemap" className="text-brand hover:underline">
-            사이트맵
-          </a>
-          과 동일합니다.
+          {user?.username ?? username} · {roleLabel} — 카드에서 업무 메뉴로 이동합니다.
         </p>
       </div>
       <AccountHubGrid groups={staffHubGroups(role)} title="운영·관리" />

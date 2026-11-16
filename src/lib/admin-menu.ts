@@ -12,13 +12,8 @@ export type AdminMenuGroup = {
   items: AdminMenuItem[];
 };
 
-/** 컴팩트 사이드바 — anyangmp 스타일(메인 CMS + 공지 분리) */
+/** 관리자·슈퍼바이저 메뉴 (홈페이지 관리 제거) */
 export const adminMenuGroups: AdminMenuGroup[] = [
-  {
-    key: "cms",
-    label: "홈페이지 관리",
-    items: [{ href: "/admin/cms", label: "CMS (공개 메뉴와 동일)" }],
-  },
   {
     key: "members",
     label: "회원 관리",
