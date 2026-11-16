@@ -1,10 +1,13 @@
 import { redirect } from "next/navigation";
-import { AdminConsoleFrame } from "@/components/admin/AdminConsoleFrame";
-import { AdminTopBar } from "@/components/admin/AdminTopBar";
+import { setRequestLocale } from "next-intl/server";
+import { CmsLayoutGate } from "@/components/admin/CmsLayoutGate";
 import { LOGIN_PATH } from "@/lib/login-path";
+import { getCmsMessages } from "@/lib/content";
+import { getApprovedMember } from "@/lib/member-session";
 import { getSession, clearSession } from "@/lib/session";
 import { getSiteBrand } from "@/lib/site-brand";
 import { findUser } from "@/lib/users";
+import type { AbstractIntlMessages } from "next-intl";
 
 export const dynamic = "force-dynamic";
 
@@ -32,16 +35,21 @@ export default async function ConsoleLayout({
   }
 
   const brand = await getSiteBrand();
+  setRequestLocale("ko");
+  const messages = (await getCmsMessages("ko")) as AbstractIntlMessages;
+  const member = await getApprovedMember();
 
   return (
-    <div className="min-h-full">
-      <AdminTopBar
-        role={user.role}
-        username={user.username}
-        siteName={brand.siteName}
-        tagline={brand.tagline}
-      />
-      <AdminConsoleFrame role={user.role}>{children}</AdminConsoleFrame>
-    </div>
+    <CmsLayoutGate
+      role={user.role}
+      username={user.username}
+      siteName={brand.siteName}
+      tagline={brand.tagline}
+      memberName={member?.name ?? null}
+      staffRole={user.role}
+      messages={messages}
+    >
+      {children}
+    </CmsLayoutGate>
   );
 }

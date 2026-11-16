@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { saveContent } from "@/app/admin/actions";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { saveContent, saveContentInline } from "@/app/admin/actions";
 import { HomeCmsCanvas } from "@/components/admin/HomeCmsCanvas";
 import { FontScaleModal } from "@/components/admin/FontScaleModal";
 import { MediaPickerModal, type CmsMediaOption } from "@/components/admin/MediaPickerModal";
@@ -36,6 +36,13 @@ function scalePathFor(textPath: string) {
   if (textPath === "home.kicker") return "home.kickerScale";
   if (textPath === "home.headline") return "home.headlineScale";
   return null;
+}
+
+function textareaRows(path: string, multiline: boolean) {
+  if (path === "home.kicker") return 2;
+  if (path === "home.headline") return 4;
+  if (multiline) return 6;
+  return 2;
 }
 
 export function CmsVisualEditor({
@@ -75,7 +82,10 @@ export function CmsVisualEditor({
   const [iframeKey, setIframeKey] = useState(0);
   const [mediaOpen, setMediaOpen] = useState(false);
   const [scaleOpen, setScaleOpen] = useState(false);
-  const quickSaveRef = useRef<HTMLFormElement>(null);
+  const [saving, setSaving] = useState(false);
+  const [inlineNotice, setInlineNotice] = useState<{ text: string; error?: boolean } | null>(
+    null,
+  );
 
   const active = useMemo(
     () => editorFields.find((f) => f.path === slot) ?? editorFields[0],
@@ -106,16 +116,32 @@ export function CmsVisualEditor({
   const isScaleField = active?.path.endsWith("Scale");
   const isHeroField = active?.path === "home.heroImage";
 
+  const persistKoFields = useCallback(
+    async (fields: Record<string, string>) => {
+      setSaving(true);
+      setInlineNotice(null);
+      const fd = new FormData();
+      fd.set("section", page.section);
+      for (const [path, ko] of Object.entries(fields)) {
+        fd.set(`ko:${encodeURIComponent(path)}`, ko);
+      }
+      try {
+        const result = await saveContentInline(fd);
+        setInlineNotice({
+          text: result.message,
+          error: result.status === "error",
+        });
+      } catch {
+        setInlineNotice({ text: "저장하지 못했습니다.", error: true });
+      } finally {
+        setSaving(false);
+      }
+    },
+    [page.section],
+  );
+
   const submitQuick = (path: string, koValue: string) => {
-    const form = quickSaveRef.current;
-    if (!form) return;
-    form.querySelectorAll('input[name^="ko:"]').forEach((el) => el.remove());
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = `ko:${encodeURIComponent(path)}`;
-    input.value = koValue;
-    form.appendChild(input);
-    form.requestSubmit();
+    void persistKoFields({ [path]: koValue });
   };
 
   const openBackgroundPicker = () => {
@@ -144,102 +170,43 @@ export function CmsVisualEditor({
 
   const heroSrc = resolveHeroImageSrc(draft["home.heroImage"]);
 
+  const showNotice = inlineNotice?.text ?? notice;
+  const showNoticeError = inlineNotice ? inlineNotice.error : noticeError;
+
   return (
-    <div className="grid gap-3">
-      <form ref={quickSaveRef} action={saveContent} className="hidden" aria-hidden>
-        <input type="hidden" name="section" value={page.section} />
-        <input type="hidden" name="returnTo" value={returnTo} />
-      </form>
-
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-base font-semibold text-brand-ink">홈페이지 CMS</h1>
-          <p className="mt-1 max-w-2xl text-[11px] leading-5 text-ink/50">
-            {isHome
-              ? "미리보기에서 배경·문구를 클릭해 편집합니다."
-              : "미리보기 URL에서 소메뉴 문구를 편집합니다."}
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={() => setIframeKey((n) => n + 1)}
-          className="text-[11px] text-brand hover:underline"
+    <div className={isHome ? "" : "grid gap-3"}>
+      {showNotice ? (
+        <p
+          className={`text-xs ${isHome ? "px-3 pt-2 sm:px-4" : ""} ${showNoticeError ? "text-red-800" : "text-forest"}`}
         >
-          미리보기 새로고침
-        </button>
-      </div>
-
-      <div className="flex flex-wrap gap-2">
-        <a
-          href="/admin/cms?page=home"
-          className={`rounded-md px-3 py-1.5 text-[12px] font-medium ${
-            page.tab === "main"
-              ? "bg-forest text-cream"
-              : "border border-ink/15 bg-white text-ink/70 hover:bg-ink/5"
-          }`}
-        >
-          메인 홈
-        </a>
-        <a
-          href={`/admin/cms?page=${submenuPages[0]?.key ?? "greeting"}`}
-          className={`rounded-md px-3 py-1.5 text-[12px] font-medium ${
-            page.tab === "submenu"
-              ? "bg-forest text-cream"
-              : "border border-ink/15 bg-white text-ink/70 hover:bg-ink/5"
-          }`}
-        >
-          소메뉴 페이지
-        </a>
-      </div>
-
-      {page.tab === "submenu" ? (
-        <div className="flex flex-wrap gap-1.5">
-          {submenuPages.map((item) => (
-            <a
-              key={item.key}
-              href={`/admin/cms?page=${item.key}`}
-              className={`rounded-full px-2.5 py-1 text-[11px] ${
-                item.key === page.key
-                  ? "bg-brand/10 font-medium text-brand"
-                  : "text-ink/55 hover:bg-ink/5 hover:text-ink"
-              }`}
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
+          {showNotice}
+        </p>
       ) : null}
 
-      {notice ? (
-        <p className={`text-xs ${noticeError ? "text-red-800" : "text-forest"}`}>{notice}</p>
-      ) : null}
-
-      <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_20rem]">
-        <div className="overflow-hidden rounded-xl border border-ink/10 bg-white shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-ink/10 px-3 py-2">
-            <p className="text-[11px] font-medium text-brand-ink">{page.label} 미리보기</p>
-            <div className="flex items-center gap-2">
-              {isHome ? (
-                <button
-                  type="button"
-                  onClick={openBackgroundPicker}
-                  className="rounded-md bg-forest px-2.5 py-1 text-[11px] font-medium text-cream hover:opacity-95"
-                >
-                  배경 이미지 선택
-                </button>
-              ) : null}
+      <div
+        className={
+          isHome
+            ? "grid items-start xl:grid-cols-[minmax(0,1fr)_17.5rem]"
+            : "mx-auto grid max-w-[96rem] items-start gap-3 px-2 py-2 sm:px-4 xl:grid-cols-[minmax(0,1fr)_17.5rem]"
+        }
+      >
+        <div className={isHome ? "overflow-hidden bg-white" : "overflow-hidden rounded-xl border border-ink/10 bg-white shadow-sm"}>
+          {!isHome ? (
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-ink/10 px-3 py-2">
+              <p className="text-[11px] font-medium text-brand-ink">{page.label} 수정</p>
               <a
                 href={page.preview}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[10px] text-brand hover:underline"
               >
-                새 탭
+                공개 보기
               </a>
             </div>
-          </div>
+          ) : null}
           {isHome ? (
             <HomeCmsCanvas
+              compact
               heroSrc={heroSrc}
               kicker={draft["home.kicker"] ?? ""}
               headline={draft["home.headline"] ?? ""}
@@ -263,23 +230,28 @@ export function CmsVisualEditor({
           )}
         </div>
 
-        <aside className="flex min-h-[24rem] flex-col rounded-xl border border-ink/10 bg-white shadow-sm">
+        <aside
+          className={
+            isHome
+              ? "sticky top-14 z-20 flex max-h-[calc(100dvh-3.5rem)] flex-col border-l border-line bg-white"
+              : "sticky top-14 flex max-h-[calc(100dvh-3.5rem)] flex-col rounded-xl border border-ink/10 bg-white shadow-sm"
+          }
+        >
           <div className="border-b border-ink/10 px-3 py-2">
             <p className="text-[11px] font-semibold text-brand-ink">슬롯 편집</p>
             <p className="mt-0.5 truncate text-[10px] text-ink/45">{slotTitle}</p>
           </div>
 
           {isHome ? (
-            <div className="border-b border-ink/10 px-3 py-3">
+            <div className="shrink-0 border-b border-ink/10 px-3 py-2">
               <button
                 type="button"
                 onClick={openBackgroundPicker}
-                className="w-full rounded-md bg-brand px-2 py-2.5 text-[12px] font-medium text-white hover:opacity-95"
+                className="w-full rounded-md bg-brand px-2 py-2 text-[12px] font-medium text-white hover:opacity-95"
               >
                 배경 이미지 선택
               </button>
-              <p className="mt-1.5 text-[10px] text-ink/45">
-                현재:{" "}
+              <p className="mt-1 truncate text-[10px] text-ink/45">
                 {draft["home.heroImage"]
                   ? draft["home.heroImage"].startsWith("/")
                     ? draft["home.heroImage"]
@@ -349,8 +321,19 @@ export function CmsVisualEditor({
 
           {active && !isHeroField && !isScaleField ? (
             <form
-              action={saveContent}
-              className="flex flex-1 flex-col gap-2 p-3"
+              action={isHome ? undefined : saveContent}
+              className="flex min-h-0 flex-1 flex-col"
+              onSubmit={
+                isHome
+                  ? (e) => {
+                      e.preventDefault();
+                      if (saving || !active) return;
+                      void persistKoFields({
+                        [active.path]: draft[active.path] ?? active.ko,
+                      });
+                    }
+                  : undefined
+              }
               onKeyDown={(e) => {
                 if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
                   e.preventDefault();
@@ -359,66 +342,82 @@ export function CmsVisualEditor({
               }}
             >
               <input type="hidden" name="section" value={page.section} />
-              <input type="hidden" name="returnTo" value={returnTo} />
-              {langs.map((item) => {
-                const name = `${item.key}:${encodeURIComponent(active.path)}`;
-                const value = draft[active.path] ?? fieldValue(active, item.key);
-                const show = lang === item.key;
-                const submitValue = item.key === "ko" ? value : lang === item.key ? fieldValue(active, item.key) : "";
-                return show ? (
-                  <label key={name} className="grid gap-1 text-[11px] text-ink/60">
-                    내용 ({item.key})
-                    {multiline ? (
-                      <textarea
-                        name={name}
-                        defaultValue={submitValue}
-                        onChange={(e) => {
-                          if (item.key === "ko") setDraft((d) => ({ ...d, [active.path]: e.target.value }));
-                        }}
-                        rows={12}
-                        className="w-full rounded border border-ink/15 bg-white px-2 py-1.5 text-[13px] leading-6 outline-none focus:border-forest"
-                      />
-                    ) : (
-                      <input
-                        name={name}
-                        defaultValue={submitValue}
-                        onChange={(e) => {
-                          if (item.key === "ko") setDraft((d) => ({ ...d, [active.path]: e.target.value }));
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
-                            e.preventDefault();
-                            e.currentTarget.form?.requestSubmit();
-                          }
-                        }}
-                        className="w-full rounded border border-ink/15 bg-white px-2 py-1.5 text-[13px] outline-none focus:border-forest"
-                      />
-                    )}
-                  </label>
-                ) : item.key === "ko" && lang !== "ko" ? (
-                  <input
-                    key={name}
-                    type="hidden"
-                    name={`ko:${encodeURIComponent(active.path)}`}
-                    defaultValue={draft[active.path] ?? active.ko}
-                  />
-                ) : (
-                  <input key={name} type="hidden" name={name} defaultValue="" />
-                );
-              })}
+              {!isHome ? <input type="hidden" name="returnTo" value={returnTo} /> : null}
+              <div className="min-h-0 flex-1 space-y-2 overflow-y-auto p-3">
+                {langs.map((item) => {
+                  const name = `${item.key}:${encodeURIComponent(active.path)}`;
+                  const value = draft[active.path] ?? fieldValue(active, item.key);
+                  const show = lang === item.key;
+                  const submitValue =
+                    item.key === "ko" ? value : lang === item.key ? fieldValue(active, item.key) : "";
+                  return show ? (
+                    <label key={name} className="grid gap-1 text-[11px] text-ink/60">
+                      내용 ({item.key})
+                      {multiline ? (
+                        <textarea
+                          name={name}
+                          defaultValue={submitValue}
+                          onChange={(e) => {
+                            if (item.key === "ko")
+                              setDraft((d) => ({ ...d, [active.path]: e.target.value }));
+                          }}
+                          rows={textareaRows(active.path, multiline)}
+                          className="max-h-36 w-full resize-y rounded border border-ink/15 bg-white px-2 py-1.5 text-[13px] leading-6 outline-none focus:border-forest"
+                        />
+                      ) : (
+                        <input
+                          name={name}
+                          defaultValue={submitValue}
+                          onChange={(e) => {
+                            if (item.key === "ko")
+                              setDraft((d) => ({ ...d, [active.path]: e.target.value }));
+                          }}
+                          onKeyDown={(e) => {
+                            if (
+                              !isHome &&
+                              e.key === "Enter" &&
+                              !e.ctrlKey &&
+                              !e.metaKey &&
+                              !e.shiftKey
+                            ) {
+                              e.preventDefault();
+                              e.currentTarget.form?.requestSubmit();
+                            }
+                          }}
+                          className="w-full rounded border border-ink/15 bg-white px-2 py-1.5 text-[13px] outline-none focus:border-forest"
+                        />
+                      )}
+                    </label>
+                  ) : item.key === "ko" && lang !== "ko" ? (
+                    <input
+                      key={name}
+                      type="hidden"
+                      name={`ko:${encodeURIComponent(active.path)}`}
+                      defaultValue={draft[active.path] ?? active.ko}
+                    />
+                  ) : (
+                    <input key={name} type="hidden" name={name} defaultValue="" />
+                  );
+                })}
+              </div>
 
-              <p className="text-[10px] leading-4 text-ink/40">
-                {multiline
-                  ? "Enter 줄바꿈 · Ctrl+Enter 저장. 한국어만 수정해도 영·중문이 맞춰집니다."
-                  : "Enter 저장. 한국어만 수정해도 영·중문이 맞춰집니다."}
-              </p>
-
-              <button
-                type="submit"
-                className="mt-auto w-full rounded-md bg-forest px-3 py-2.5 text-[12px] font-medium tracking-wide text-cream hover:opacity-95"
-              >
-                저장
-              </button>
+              <div className="shrink-0 space-y-2 border-t border-ink/10 bg-white p-3">
+                <p className="text-[10px] leading-4 text-ink/40">
+                  {multiline
+                    ? "Enter 줄바꿈 · Ctrl+Enter 저장"
+                    : isHome
+                      ? "Ctrl+Enter 저장"
+                      : "Enter 저장"}
+                  {isHome ? "" : ". 한국어만 수정해도 영·중문이 맞춰집니다."}
+                </p>
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="w-full rounded-md bg-forest px-3 py-2.5 text-[12px] font-medium tracking-wide text-cream hover:opacity-95 disabled:opacity-60"
+                >
+                  {saving ? "저장 중…" : "저장"}
+                </button>
+              </div>
             </form>
           ) : isScaleField ? (
             <p className="p-3 text-[11px] leading-5 text-ink/50">

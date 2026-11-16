@@ -83,11 +83,11 @@ export async function logout() {
   redirect("/ko");
 }
 
-export async function saveContent(formData: FormData) {
-  const session = await requireSession();
+export type SaveContentResult = { status: "saved" | "partial" | "error"; message: string };
+
+function valuesFromFormData(formData: FormData) {
   const section = String(formData.get("section") ?? "");
   const values: Record<string, { ko: string; en: string; zh: string }> = {};
-
   for (const [key, raw] of formData.entries()) {
     if (typeof raw !== "string") continue;
     const match = /^(ko|en|zh):(.*)$/.exec(key);
@@ -96,8 +96,14 @@ export async function saveContent(formData: FormData) {
     values[path] ??= { ko: "", en: "", zh: "" };
     values[path][match[1] as "ko" | "en" | "zh"] = raw;
   }
+  return { section, values };
+}
 
-  let status = "saved";
+async function runSaveContent(formData: FormData): Promise<SaveContentResult> {
+  const session = await requireSession();
+  const { section, values } = valuesFromFormData(formData);
+
+  let status: SaveContentResult["status"] = "saved";
   let message = "";
   try {
     const result = await saveSection({
@@ -106,16 +112,30 @@ export async function saveContent(formData: FormData) {
       role: session.role,
       values,
     });
-    if (result.error === "partial") status = "partial";
-    else if (result.error) {
+    if (result.error === "partial") {
+      status = "partial";
+      message = "저장했습니다. 일부 번역만 실패했습니다.";
+    } else if (result.error) {
       status = "error";
       message = result.error;
+    } else {
+      message = "저장했습니다.";
     }
   } catch {
     status = "error";
     message = "저장하지 못했습니다.";
   }
+  return { status, message };
+}
 
+/** CMS 홈 등 — 전체 새로고침 없이 저장 */
+export async function saveContentInline(formData: FormData): Promise<SaveContentResult> {
+  return runSaveContent(formData);
+}
+
+export async function saveContent(formData: FormData) {
+  const { status, message } = await runSaveContent(formData);
+  const section = String(formData.get("section") ?? "");
   const returnTo = String(formData.get("returnTo") ?? "").trim();
   if (returnTo.startsWith("/admin/")) {
     const join = returnTo.includes("?") ? "&" : "?";

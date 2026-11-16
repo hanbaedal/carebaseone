@@ -36,23 +36,21 @@ export default async function HomePage({
 
         <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-7xl flex-col px-6 pb-0 pt-10 md:pt-14">
           <div className="flex flex-1 flex-col justify-center md:max-w-2xl">
-            <div className="max-w-xl rounded-2xl bg-white px-4 py-5 shadow-sm md:px-6 md:py-6">
-              <p
-                className="animate-[fadeUp_0.7s_ease_both] font-semibold tracking-[0.22em] text-brand"
-                style={{ fontSize: `${(12 * kickerScale) / 100}px` }}
-              >
-                {t("home.kicker")}
-              </p>
-              <h1
-                className="font-display animate-[fadeUp_0.8s_ease_both] mt-5 whitespace-pre-line leading-[1.2] text-brand-ink md:text-6xl"
-                style={{ fontSize: `clamp(${(1.75 * headlineScale) / 100}rem, 5vw, ${(3.75 * headlineScale) / 100}rem)` }}
-              >
-                {t("home.headline")}
-              </h1>
-            </div>
+            <p
+              className="animate-[fadeUp_0.7s_ease_both] text-[12px] font-semibold tracking-[0.22em] text-brand"
+              style={{ fontSize: `${(12 * kickerScale) / 100}px` }}
+            >
+              {t("home.kicker")}
+            </p>
+            <h1
+              className="font-display animate-[fadeUp_0.8s_ease_both] mt-5 whitespace-pre-line text-4xl leading-[1.2] text-brand-ink md:text-6xl"
+              style={{ fontSize: `clamp(${(1.75 * headlineScale) / 100}rem, 5vw, ${(3.75 * headlineScale) / 100}rem)` }}
+            >
+              {t("home.headline")}
+            </h1>
           </div>
 
-          <div className="mb-6 rounded-2xl border border-line bg-white px-5 py-6 shadow-sm md:mb-8 md:px-8 md:py-7">
+          <div className="mb-6 rounded-2xl border border-line bg-white/95 px-5 py-6 shadow-sm backdrop-blur-sm md:mb-8 md:px-8 md:py-7">
             <CompanyContactBlock />
           </div>
         </div>

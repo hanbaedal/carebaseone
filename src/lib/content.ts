@@ -75,6 +75,14 @@ function allowedPaths() {
   return new Set(flattenStrings(ko).map((field) => field.path));
 }
 
+/** URL·숫자·스케일 등 — 번역 API 호출 생략 */
+function skipAutoTranslate(path: string, koText: string) {
+  if (path.endsWith("Scale") || path.endsWith("heroImage")) return true;
+  if (/\.(heroImage|image)$/i.test(path)) return true;
+  if (!/[가-힣]/.test(koText)) return true;
+  return false;
+}
+
 export async function getEditorFields(section: string): Promise<EditorField[]> {
   const [korean, english, chinese] = await Promise.all([
     getCmsMessages("ko"),
@@ -131,19 +139,24 @@ export async function saveSection(input: {
 
     let englishText = enChanged ? nextEn : currentEn;
     let chineseText = zhChanged ? nextZh : currentZh;
-    if (koChanged && (koOnlySubmit || !enChanged)) {
-      try {
-        englishText = await translateFromKorean(nextKo, "en");
-      } catch {
-        failed += 1;
-      }
-    }
-    if (koChanged && (koOnlySubmit || !zhChanged)) {
-      try {
-        chineseText = await translateFromKorean(nextKo, "zh");
-      } catch {
-        failed += 1;
-      }
+    const autoTranslate =
+      koChanged && koOnlySubmit && !skipAutoTranslate(path, nextKo);
+    if (autoTranslate) {
+      const [enResult, zhResult] = await Promise.allSettled([
+        !enChanged || koOnlySubmit
+          ? translateFromKorean(nextKo, "en")
+          : Promise.resolve(englishText),
+        !zhChanged || koOnlySubmit
+          ? translateFromKorean(nextKo, "zh")
+          : Promise.resolve(chineseText),
+      ]);
+      if (enResult.status === "fulfilled") englishText = enResult.value;
+      else failed += 1;
+      if (zhResult.status === "fulfilled") chineseText = zhResult.value;
+      else failed += 1;
+    } else if (koChanged && koOnlySubmit) {
+      englishText = nextKo;
+      chineseText = nextKo;
     }
 
     setPath(koDoc, path, nextKo);

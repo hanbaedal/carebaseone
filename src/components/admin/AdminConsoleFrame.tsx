@@ -16,7 +16,7 @@ export function AdminConsoleFrame({
   const cmsMode = pathname === "/admin/cms" || pathname.startsWith("/admin/cms?");
 
   if (cmsMode) {
-    return <main className="min-w-0 flex-1 px-2 py-3 sm:px-4">{children}</main>;
+    return <>{children}</>;
   }
 
   return (
