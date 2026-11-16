@@ -18,7 +18,7 @@ export default async function AdminNoticesPage({
       <div>
         <p className="text-[10px] text-ink/45">
           <a href="/admin/cms" className="text-brand hover:underline">
-            메인·페이지 구성
+            CMS
           </a>{" "}
           / 공지사항
         </p>
