@@ -379,7 +379,13 @@ export function CmsVisualEditor({
             : "mx-auto grid max-w-[96rem] items-start gap-3 px-2 py-2 sm:px-4 xl:grid-cols-[minmax(0,1fr)_17.5rem]"
         }
       >
-        <div className={isHome ? "overflow-hidden bg-white" : "overflow-hidden rounded-xl border border-ink/10 bg-white shadow-sm"}>
+        <div
+          className={
+            isHome
+              ? "flex h-[calc(100dvh-4.5rem)] max-h-[calc(100dvh-4.5rem)] flex-col overflow-hidden bg-white"
+              : "overflow-hidden rounded-xl border border-ink/10 bg-white shadow-sm"
+          }
+        >
           {!isHome ? (
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-ink/10 px-3 py-2">
               <p className="text-[11px] font-medium text-brand-ink">{page.label} 수정</p>

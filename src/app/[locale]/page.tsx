@@ -2,11 +2,12 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { resolveLocale } from "@/lib/locale";
 import { CmsPageFooter } from "@/components/CmsPageFooter";
+import { HOME_VIEWPORT_SHELL } from "@/lib/home-layout";
 import {
   HOME_HERO_IMAGE_CLASS,
   heroImageUnoptimized,
-  homeHeadlineFontSize,
-  homeKickerFontSize,
+  homeHeadlineFontSizeFluid,
+  homeKickerFontSizeFluid,
   parseHomeScale,
   resolveHeroImageSrc,
   resolveHomeTextColorHex,
@@ -37,8 +38,8 @@ export default async function HomePage({
   const headlineFamily = resolveHomeFontFamily(t("home.headlineFont"), HOME_HEADLINE_FONT_DEFAULT);
 
   return (
-    <div>
-      <section className="relative isolate min-h-[calc(100dvh-4.5rem)] overflow-hidden bg-brand-ink text-brand-ink">
+    <div className={HOME_VIEWPORT_SHELL}>
+      <section className="relative isolate min-h-0 flex-1 overflow-hidden bg-brand-ink text-brand-ink">
         <Image
           src={heroSrc}
           alt=""
@@ -49,12 +50,12 @@ export default async function HomePage({
           unoptimized={heroImageUnoptimized(heroSrc)}
         />
 
-        <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-7xl flex-col px-6 pb-10 pt-10 md:pb-14 md:pt-14">
-          <div className="flex flex-1 flex-col justify-center md:max-w-2xl">
+        <div className="relative mx-auto flex h-full min-h-0 max-w-7xl flex-col px-4 py-4 sm:px-6 sm:py-5 md:py-6">
+          <div className="flex min-h-0 flex-1 flex-col justify-center md:max-w-2xl">
             <p
-              className="animate-[fadeUp_0.7s_ease_both] font-semibold tracking-[0.22em]"
+              className="animate-[fadeUp_0.7s_ease_both] font-semibold tracking-[0.18em] sm:tracking-[0.22em]"
               style={{
-                fontSize: homeKickerFontSize(kickerScale),
+                fontSize: homeKickerFontSizeFluid(kickerScale),
                 color: kickerColor,
                 fontFamily: kickerFamily,
               }}
@@ -62,9 +63,9 @@ export default async function HomePage({
               {t("home.kicker")}
             </p>
             <h1
-              className="animate-[fadeUp_0.8s_ease_both] mt-5 whitespace-pre-line font-bold leading-[1.2] tracking-[-0.03em]"
+              className="animate-[fadeUp_0.8s_ease_both] mt-2 max-w-xl whitespace-pre-line font-bold leading-[1.15] tracking-[-0.03em] sm:mt-3 md:mt-4"
               style={{
-                fontSize: homeHeadlineFontSize(headlineScale),
+                fontSize: homeHeadlineFontSizeFluid(headlineScale),
                 color: headlineColor,
                 fontFamily: headlineFamily,
               }}
@@ -74,7 +75,7 @@ export default async function HomePage({
           </div>
         </div>
       </section>
-      <CmsPageFooter section="home" />
+      <CmsPageFooter section="home" docked />
     </div>
   );
 }

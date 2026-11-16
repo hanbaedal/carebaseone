@@ -44,6 +44,17 @@ export function homeHeadlineFontSize(scalePercent: number) {
   return `${(HOME_HEADLINE_BASE_REM * scalePercent) / 100}rem`;
 }
 
+/** 공개 홈 한 화면 — 뷰포트에 맞춘 글자 크기 (CMS % 반영) */
+export function homeKickerFontSizeFluid(scalePercent: number) {
+  const f = scalePercent / 100;
+  return `clamp(${9 * f}px, ${1.2 * f}vh + ${7 * f}px, ${14 * f}px)`;
+}
+
+export function homeHeadlineFontSizeFluid(scalePercent: number) {
+  const f = scalePercent / 100;
+  return `clamp(${1.1 * f}rem, ${3.5 * f}vh + ${0.35 * f}rem, ${2.65 * f}rem)`;
+}
+
 /** 배경은 필터·오버레이 없이 원본 그대로 */
 export const HOME_HERO_IMAGE_CLASS = "object-cover object-center";
 
