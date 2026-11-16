@@ -19,9 +19,9 @@ export function AccountHubGrid({ groups, title }: { groups: HubGroup[]; title: s
   if (groups.length === 0) return null;
 
   return (
-    <section className="mt-14">
-      <h2 className="font-display text-2xl text-brand-ink">{title}</h2>
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <section className="mt-0">
+      <h2 className="text-sm font-semibold tracking-wide text-brand-ink/70">{title}</h2>
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {groups.map((group, index) => (
           <article
             key={group.key}

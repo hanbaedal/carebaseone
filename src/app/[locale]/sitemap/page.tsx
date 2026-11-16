@@ -20,17 +20,15 @@ export default async function SiteMapPage({
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
-      <h1 className="font-display text-4xl text-brand-ink">{t("title")}</h1>
-      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-brand-ink/60">
-        {staff || member ? t("ledeLoggedIn") : t("lede")}
-      </p>
       {staff ? (
         <AccountHubGrid groups={staffHubGroups(staff.role)} title={t("hubStaff")} />
       ) : null}
       {member ? (
         <AccountHubGrid groups={memberHubGroups} title={t("hubMember")} />
       ) : null}
-      <h2 className="mt-12 text-sm font-semibold tracking-wide text-brand-ink/70">{t("publicSection")}</h2>
+      {(staff || member) ? (
+        <h2 className="mt-12 text-sm font-semibold tracking-wide text-brand-ink/70">{t("publicSection")}</h2>
+      ) : null}
       <SitemapCardGrid items={headerNav} tNav={tNav} />
       <p className="mt-10 text-sm text-brand-ink/45">
         <a
