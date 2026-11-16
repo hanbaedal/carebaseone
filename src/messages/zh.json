@@ -74,6 +74,9 @@
     "rights": "CAREBASE. 连接更健康的明天。"
   },
   "home": {
+    "heroImage": "",
+    "kickerScale": "100",
+    "headlineScale": "100",
     "kicker": "HEALTHCARE BUSINESS PLATFORM",
     "headline": "把技术变成健康日常，把产品变成全球机会",
     "lede": "CAREBASE 以技术为基础，连接产品、方案与全球事业。",

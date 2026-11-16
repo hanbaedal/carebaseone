@@ -20,8 +20,11 @@ export const CMS_PAGES: CmsPageDef[] = [
     section: "home",
     tab: "main",
     fieldLabels: {
+      "home.heroImage": "배경 이미지",
       "home.kicker": "키커",
+      "home.kickerScale": "키커 글자 크기(%)",
       "home.headline": "메인 헤드라인",
+      "home.headlineScale": "헤드라인 글자 크기(%)",
       "home.lede": "소개 문구",
     },
   },

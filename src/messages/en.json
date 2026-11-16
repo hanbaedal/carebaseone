@@ -74,6 +74,9 @@
     "rights": "CAREBASE. Connecting a healthier tomorrow."
   },
   "home": {
+    "heroImage": "",
+    "kickerScale": "100",
+    "headlineScale": "100",
     "kicker": "HEALTHCARE BUSINESS PLATFORM",
     "headline": "Technology for daily health, products for global opportunity",
     "lede": "CAREBASE connects products, solutions, and global business on a technology foundation.",

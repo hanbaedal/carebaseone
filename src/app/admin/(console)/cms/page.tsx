@@ -1,6 +1,7 @@
 import { CmsVisualEditor } from "@/components/admin/CmsVisualEditor";
 import { getEditorFields } from "@/lib/content";
 import { CMS_PAGES, cmsPageByKey } from "@/lib/cms-pages";
+import { listAllMedia } from "@/lib/media-lib";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +22,14 @@ export default async function AdminCmsPage({
   const notice = query.status ? notices[query.status] : "";
   const submenuPages = CMS_PAGES.filter((item) => item.tab === "submenu");
   const returnTo = `/admin/cms?page=${encodeURIComponent(page.key)}`;
+  const mediaDocs = await listAllMedia();
+  const mediaOptions = mediaDocs
+    .filter((m) => m.mime.startsWith("image/"))
+    .map((m) => ({
+      slug: m.slug,
+      src: m.filePath,
+      title: m.title.ko || m.slug,
+    }));
 
   return (
     <CmsVisualEditor
@@ -30,6 +39,7 @@ export default async function AdminCmsPage({
       notice={query.message || notice}
       noticeError={query.status === "error"}
       submenuPages={submenuPages}
+      mediaOptions={mediaOptions}
     />
   );
 }

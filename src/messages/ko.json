@@ -74,6 +74,9 @@
     "rights": "CAREBASE. 더 건강한 내일을 연결합니다."
   },
   "home": {
+    "heroImage": "",
+    "kickerScale": "100",
+    "headlineScale": "100",
     "kicker": "HEALTHCARE BUSINESS PLATFORM",
     "headline": "기술을 건강한 일상으로, 제품을 글로벌 기회로",
     "lede": "케어베이스는 기술을 기반으로 제품·솔루션·글로벌 사업을 연결합니다.",

@@ -1,6 +1,5 @@
-import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminConsoleFrame } from "@/components/admin/AdminConsoleFrame";
 import { AdminTopBar } from "@/components/admin/AdminTopBar";
 import { LOGIN_PATH } from "@/lib/login-path";
 import { getSession, clearSession } from "@/lib/session";
@@ -42,12 +41,7 @@ export default async function ConsoleLayout({
         siteName={brand.siteName}
         tagline={brand.tagline}
       />
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-3 py-4 lg:flex-row">
-        <Suspense fallback={<aside className="hidden lg:block lg:w-44" />}>
-          <AdminSidebar role={user.role} />
-        </Suspense>
-        <main className="min-w-0 flex-1">{children}</main>
-      </div>
+      <AdminConsoleFrame role={user.role}>{children}</AdminConsoleFrame>
     </div>
   );
 }
