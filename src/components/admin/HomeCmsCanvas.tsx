@@ -15,8 +15,9 @@ import {
   HOME_HEADLINE_FONT_DEFAULT,
   HOME_KICKER_FONT_DEFAULT,
 } from "@/lib/home-hero";
+import { pageFooterTextColor, resolvePageFooterBackground, PAGE_FOOTER_BG_DEFAULT } from "@/lib/page-footer";
 
-type SlotKey = "home.heroImage" | "home.kicker" | "home.headline";
+type SlotKey = "home.heroImage" | "home.kicker" | "home.headline" | "home.footerText";
 
 export function HomeCmsCanvas({
   heroSrc,
@@ -28,6 +29,8 @@ export function HomeCmsCanvas({
   headlineColor,
   kickerFont,
   headlineFont,
+  footerBg,
+  footerText,
   activeSlot,
   onSelectSlot,
   onPickBackground,
@@ -42,6 +45,8 @@ export function HomeCmsCanvas({
   headlineColor: string;
   kickerFont: string;
   headlineFont: string;
+  footerBg: string;
+  footerText: string;
   activeSlot: SlotKey | null;
   onSelectSlot: (slot: SlotKey) => void;
   onPickBackground: () => void;
@@ -54,6 +59,8 @@ export function HomeCmsCanvas({
   const headlineHex = resolveHomeTextColorHex(headlineColor, HOME_HEADLINE_COLOR_DEFAULT);
   const kickerFamily = resolveHomeFontFamily(kickerFont, HOME_KICKER_FONT_DEFAULT);
   const headlineFamily = resolveHomeFontFamily(headlineFont, HOME_HEADLINE_FONT_DEFAULT);
+  const footerBgHex = resolvePageFooterBackground(footerBg, PAGE_FOOTER_BG_DEFAULT);
+  const footerColor = pageFooterTextColor(footerBgHex);
 
   const ring = (slot: SlotKey) =>
     activeSlot === slot
@@ -65,6 +72,7 @@ export function HomeCmsCanvas({
     : "min-h-[calc(100dvh-4.5rem)]";
 
   return (
+    <div className="flex flex-col bg-white">
     <div className={`relative isolate ${shellMinH} overflow-hidden bg-brand-ink text-brand-ink`}>
       <Image
         src={heroSrc}
@@ -122,6 +130,17 @@ export function HomeCmsCanvas({
           <CompanyContactBlock />
         </div>
       </div>
+    </div>
+      <button
+        type="button"
+        onClick={() => onSelectSlot("home.footerText")}
+        className={`w-full border-t border-black/10 text-left ${ring("home.footerText")}`}
+        style={{ backgroundColor: footerBgHex, color: footerColor }}
+      >
+        <div className="mx-auto max-w-7xl whitespace-pre-line px-6 py-8 text-sm leading-7">
+          {footerText.trim() || "풋터 문구"}
+        </div>
+      </button>
     </div>
   );
 }

@@ -127,7 +127,9 @@
         "ko": "Business together",
         "text": "Connecting technology, people, companies, and markets."
       }
-    }
+    },
+    "footerBg": "white",
+    "footerText": ""
   },
   "about": {
     "kicker": "COMPANY",
@@ -158,7 +160,9 @@
     "body": "Welcome to CAREBASE Co., Ltd.\n\nWe help nitric oxide metabolite research meet daily life through products and solutions. We share verifiable materials and grow global opportunities with partners.\n\nThank you for joining us in building a healthier tomorrow.",
     "sign": "CAREBASE Co., Ltd.",
     "ctaFeatures": "Company features",
-    "ctaContact": "Contact"
+    "ctaContact": "Contact",
+    "footerBg": "white",
+    "footerText": ""
   },
   "aboutFeatures": {
     "kicker": "Features",
@@ -183,7 +187,9 @@
       }
     },
     "ctaProduct": "Products",
-    "ctaGreeting": "Greeting"
+    "ctaGreeting": "Greeting",
+    "footerBg": "white",
+    "footerText": ""
   },
   "technology": {
     "kicker": "01 Technology",
@@ -233,7 +239,9 @@
         "title": "Wellness",
         "text": "Care that links meditation, nature, and balance."
       }
-    }
+    },
+    "footerBg": "white",
+    "footerText": ""
   },
   "product": {
     "kicker": "03 Product",
@@ -268,7 +276,9 @@
         "text": "Services and data that connect daily health.",
         "items": "CAREBASE health platform"
       }
-    }
+    },
+    "footerBg": "white",
+    "footerText": ""
   },
   "productCatalog": {
     "doc": "File",
@@ -360,7 +370,9 @@
         "title": "Future",
         "text": "Global expansion."
       }
-    }
+    },
+    "footerBg": "white",
+    "footerText": ""
   },
   "business": {
     "kicker": "05 Partnership",
@@ -377,7 +389,9 @@
       "distribution": "Global Distribution",
       "partner": "Partner Network"
     },
-    "invite": "We look for partners in research, manufacturing, distribution, education, and health centers."
+    "invite": "We look for partners in research, manufacturing, distribution, education, and health centers.",
+    "footerBg": "white",
+    "footerText": ""
   },
   "news": {
     "kicker": "News",
@@ -504,6 +518,8 @@
     "sending": "Sending…",
     "success": "We received your message and will be in touch.",
     "error": "Please try again in a moment.",
-    "required": "This field is required."
+    "required": "This field is required.",
+    "footerBg": "white",
+    "footerText": ""
   }
 }

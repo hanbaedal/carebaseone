@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { resolveLocale } from "@/lib/locale";
 import { CompanyContactBlock } from "@/components/CompanyContactBlock";
+import { CmsPageFooter } from "@/components/CmsPageFooter";
 import {
   HOME_HERO_IMAGE_CLASS,
   heroImageUnoptimized,
@@ -78,6 +79,7 @@ export default async function HomePage({
           </div>
         </div>
       </section>
+      <CmsPageFooter section="home" />
     </div>
   );
 }

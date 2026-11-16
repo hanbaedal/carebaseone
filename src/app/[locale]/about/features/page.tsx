@@ -3,6 +3,7 @@ import { PageHero } from "@/components/PageHero";
 import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
+import { CmsPageFooter } from "@/components/CmsPageFooter";
 
 const featureKeys = ["tech", "product", "global", "trust"] as const;
 
@@ -34,6 +35,7 @@ export default async function AboutFeaturesPage({
           </CtaLink>
         </div>
       </section>
+      <CmsPageFooter section="aboutFeatures" />
     </div>
   );
 }

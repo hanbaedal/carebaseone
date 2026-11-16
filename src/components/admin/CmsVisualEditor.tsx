@@ -9,6 +9,8 @@ import { FontScaleModal } from "@/components/admin/FontScaleModal";
 import { FontScaleStepper } from "@/components/admin/FontScaleStepper";
 import { MediaPickerModal, type CmsMediaOption } from "@/components/admin/MediaPickerModal";
 import { TextColorModal } from "@/components/admin/TextColorModal";
+import { FooterBgModal } from "@/components/admin/FooterBgModal";
+import { CmsFooterStrip } from "@/components/admin/CmsFooterStrip";
 import type { KoCmsField } from "@/lib/content";
 import { fieldLabelFor, type CmsPageDef } from "@/lib/cms-pages";
 import {
@@ -24,6 +26,11 @@ import {
   type HomeFontId,
   type HomeTextColorId,
 } from "@/lib/home-hero";
+import {
+  PAGE_FOOTER_BG_DEFAULT,
+  pageFooterBgLabel,
+  pageFooterPaths,
+} from "@/lib/page-footer";
 
 const HOME_CMS_PATHS = [
   "home.heroImage",
@@ -36,6 +43,8 @@ const HOME_CMS_PATHS = [
   "home.headlineScale",
   "home.headlineColor",
   "home.lede",
+  "home.footerBg",
+  "home.footerText",
 ] as const;
 
 type HomeSlot = (typeof HOME_CMS_PATHS)[number];
@@ -49,11 +58,12 @@ function scalePathFor(textPath: string) {
 function textareaRows(path: string, multiline: boolean) {
   if (path === "home.kicker") return 2;
   if (path === "home.headline") return 4;
+  if (path.endsWith("footerText")) return 6;
   if (multiline) return 6;
   return 2;
 }
 
-const HOME_TEXT_PATHS = new Set(["home.kicker", "home.headline", "home.lede"]);
+const HOME_TEXT_PATHS = new Set(["home.kicker", "home.headline", "home.lede", "home.footerText"]);
 
 function resolveHomeTextSlot(path: string) {
   if (path === "home.kickerScale" || path === "home.kickerFont" || path === "home.kickerColor")
@@ -64,7 +74,7 @@ function resolveHomeTextSlot(path: string) {
   return null;
 }
 
-type HomePreviewSlot = "home.heroImage" | "home.kicker" | "home.headline";
+type HomePreviewSlot = "home.heroImage" | "home.kicker" | "home.headline" | "home.footerText";
 
 function resolvePreviewActiveSlot(
   slot: string,
@@ -73,7 +83,13 @@ function resolvePreviewActiveSlot(
 ): HomePreviewSlot | null {
   if (pin === "home.kicker" || pin === "home.headline") return pin;
   if (slot === "home.heroImage") return "home.heroImage";
-  if (homeTextPath === "home.kicker" || homeTextPath === "home.headline") return homeTextPath;
+  if (
+    homeTextPath === "home.kicker" ||
+    homeTextPath === "home.headline" ||
+    homeTextPath === "home.footerText"
+  )
+    return homeTextPath;
+  if (slot === "home.footerText") return "home.footerText";
   return null;
 }
 
@@ -122,6 +138,7 @@ export function CmsVisualEditor({
   const [scaleOpen, setScaleOpen] = useState(false);
   const [colorOpen, setColorOpen] = useState(false);
   const [fontOpen, setFontOpen] = useState(false);
+  const [footerBgOpen, setFooterBgOpen] = useState(false);
   const [previewPin, setPreviewPin] = useState<HomePreviewSlot | null>(null);
   const [saving, setSaving] = useState(false);
   const [inlineNotice, setInlineNotice] = useState<{ text: string; error?: boolean } | null>(
@@ -192,6 +209,15 @@ export function CmsVisualEditor({
       ? defaultColorForTextPath(homeTextPath)
       : "blue";
 
+  const footerPaths = pageFooterPaths(page.section);
+  const hasPageFooter = useMemo(
+    () =>
+      editorFields.some((f) => f.path === footerPaths.bg) &&
+      editorFields.some((f) => f.path === footerPaths.text),
+    [editorFields, footerPaths.bg, footerPaths.text],
+  );
+  const isFooterBgField = active?.path === footerPaths.bg;
+
   const persistKoFields = useCallback(
     async (fields: Record<string, string>) => {
       setSaving(true);
@@ -225,20 +251,12 @@ export function CmsVisualEditor({
       }
       return payload;
     }
-    const path = active?.path;
-    if (!path) return {};
     const payload: Record<string, string> = {};
-    if (path.endsWith("Scale")) {
-      payload[path] = draft[path] ?? valueByPath[path] ?? "100";
-      return payload;
-    }
-    payload[path] = draft[path] ?? valueByPath[path] ?? "";
-    const linkedScale = scalePathFor(path);
-    if (linkedScale) {
-      payload[linkedScale] = draft[linkedScale] ?? valueByPath[linkedScale] ?? "100";
+    for (const field of editorFields) {
+      payload[field.path] = draft[field.path] ?? valueByPath[field.path] ?? "";
     }
     return payload;
-  }, [active?.path, draft, isHome, valueByPath]);
+  }, [draft, editorFields, isHome, valueByPath]);
 
   const handleSave = () => {
     if (saving) return;
@@ -311,6 +329,11 @@ export function CmsVisualEditor({
     }
   };
 
+  const pickFooterBg = (bgId: string) => {
+    setDraft((d) => ({ ...d, [footerPaths.bg]: bgId }));
+    setSlot(footerPaths.text);
+  };
+
   const pickColor = (colorId: HomeTextColorId) => {
     if (!linkedColorPath) return;
     const textPath =
@@ -334,8 +357,10 @@ export function CmsVisualEditor({
   const showNoticeError = inlineNotice ? inlineNotice.error : noticeError;
 
   const showTextEditor =
-    (isHome && homeTextPath && textField) || Boolean(active && !isHeroField && !isScaleField);
-  const showSaveFooter = isHome || showTextEditor || (isScaleField && !isHome) || isHeroField;
+    (isHome && homeTextPath && textField) ||
+    Boolean(active && !isHeroField && !isScaleField && !isFooterBgField);
+
+  const showSaveFooter = editorFields.length > 0;
 
   return (
     <div className={isHome ? "" : "grid gap-3"}>
@@ -380,17 +405,32 @@ export function CmsVisualEditor({
               headlineColor={draft["home.headlineColor"] ?? "black"}
               kickerFont={draft["home.kickerFont"] ?? "gothic"}
               headlineFont={draft["home.headlineFont"] ?? "gothic"}
+              footerBg={draft["home.footerBg"] ?? "white"}
+              footerText={draft["home.footerText"] ?? ""}
               activeSlot={previewActiveSlot}
               onSelectSlot={handleHomeSlot}
               onPickBackground={openBackgroundPicker}
             />
           ) : (
-            <iframe
-              key={`${page.key}-${iframeKey}`}
-              title={`${page.label} preview`}
-              src={previewSrc}
-              className="h-[min(70vh,44rem)] w-full bg-white"
-            />
+            <div className="flex flex-col bg-white">
+              <iframe
+                key={`${page.key}-${iframeKey}`}
+                title={`${page.label} preview`}
+                src={previewSrc}
+                className="h-[min(70vh,44rem)] w-full bg-white"
+              />
+              {hasPageFooter ? (
+                <CmsFooterStrip
+                  bgId={draft[footerPaths.bg] ?? "white"}
+                  text={draft[footerPaths.text] ?? ""}
+                  active={slot === footerPaths.text}
+                  onClick={() => {
+                    setPreviewPin(null);
+                    setSlot(footerPaths.text);
+                  }}
+                />
+              ) : null}
+            </div>
           )}
         </div>
 
@@ -443,7 +483,8 @@ export function CmsVisualEditor({
                         isHome &&
                         (field.path.endsWith("Scale") ||
                           field.path.endsWith("Color") ||
-                          field.path.endsWith("Font"))
+                          field.path.endsWith("Font") ||
+                          field.path.endsWith("footerBg"))
                       ),
                   )
                   .map((field) => (
@@ -463,6 +504,19 @@ export function CmsVisualEditor({
                 className="w-full rounded-md border border-ink/15 bg-ink/5 px-2 py-2 text-[12px] text-brand hover:bg-brand/5"
               >
                 갤러리에서 이미지 선택
+              </button>
+            </div>
+          ) : null}
+
+          {hasPageFooter ? (
+            <div className="shrink-0 border-b border-ink/10 px-3 py-2">
+              <button
+                type="button"
+                onClick={() => setFooterBgOpen(true)}
+                className="w-full rounded-md border border-ink/15 bg-ink/5 px-2 py-2 text-[12px] text-brand hover:bg-brand/5"
+              >
+                풋터 배경색 (
+                {pageFooterBgLabel(draft[footerPaths.bg] ?? "", PAGE_FOOTER_BG_DEFAULT)})
               </button>
             </div>
           ) : null}
@@ -551,11 +605,12 @@ export function CmsVisualEditor({
                   const field = isHome && textField ? textField : active!;
                   const value = draft[editPath] ?? field.ko;
                   const editMultiline =
-                    isHome && homeTextPath
+                    editPath.endsWith("footerText") ||
+                    (isHome && homeTextPath
                       ? homeTextPath === "home.kicker" ||
                         homeTextPath === "home.headline" ||
                         field.multiline
-                      : multiline;
+                      : multiline);
                   return (
                     <label className="grid gap-1 text-[11px] text-ink/60">
                       내용 (한국어)
@@ -617,6 +672,13 @@ export function CmsVisualEditor({
         onSelect={(slug) => {
           setDraft((d) => ({ ...d, "home.heroImage": slug }));
         }}
+      />
+
+      <FooterBgModal
+        open={footerBgOpen}
+        value={draft[footerPaths.bg] ?? ""}
+        onClose={() => setFooterBgOpen(false)}
+        onSelect={pickFooterBg}
       />
 
       <FontFamilyModal

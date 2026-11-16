@@ -5,6 +5,7 @@ import { ProductBeoneNote, ProductLineGrid } from "@/components/ProductLineGrid"
 import { PRODUCT_LINE_CATEGORIES } from "@/lib/product-categories";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
+import { CmsPageFooter } from "@/components/CmsPageFooter";
 import { Link } from "@/i18n/navigation";
 
 export default async function ProductPage({
@@ -45,6 +46,7 @@ export default async function ProductPage({
           <CtaLink href="/contact">{t("cta.inquire")}</CtaLink>
         </div>
       </section>
+      <CmsPageFooter section="product" />
     </div>
   );
 }

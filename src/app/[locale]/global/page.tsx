@@ -4,6 +4,7 @@ import { PageHero } from "@/components/PageHero";
 import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
+import { CmsPageFooter } from "@/components/CmsPageFooter";
 
 const nodes = [
   { key: "korea", image: images.korea },
@@ -51,6 +52,7 @@ export default async function GlobalPage({
           <CtaLink href="/business">{t("cta.partner")}</CtaLink>
         </div>
       </section>
+      <CmsPageFooter section="global" />
     </div>
   );
 }

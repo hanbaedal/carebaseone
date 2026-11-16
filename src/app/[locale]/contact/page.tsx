@@ -3,6 +3,7 @@ import { PageHero } from "@/components/PageHero";
 import { ContactForm } from "@/components/ContactForm";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
+import { CmsPageFooter } from "@/components/CmsPageFooter";
 
 export default async function ContactPage({
   params,
@@ -21,6 +22,7 @@ export default async function ContactPage({
       <section className="mx-auto max-w-xl px-6 py-20">
         <ContactForm preset={as === "partner" ? "partner" : "consumer"} />
       </section>
+      <CmsPageFooter section="contact" />
     </div>
   );
 }

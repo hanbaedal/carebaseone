@@ -4,6 +4,7 @@ import { PageHero } from "@/components/PageHero";
 import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
+import { CmsPageFooter } from "@/components/CmsPageFooter";
 
 const items = [
   { key: "vascular", image: images.vascular },
@@ -68,6 +69,7 @@ export default async function SolutionPage({
           </CtaLink>
         </div>
       </section>
+      <CmsPageFooter section="solution" />
     </div>
   );
 }
