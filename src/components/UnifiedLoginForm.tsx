@@ -10,11 +10,7 @@ export function UnifiedLoginForm() {
 
   useEffect(() => {
     if (!state.ok) return;
-    if (state.kind === "staff") {
-      window.location.assign("/admin/cms");
-      return;
-    }
-    router.replace("/member");
+    router.replace("/sitemap");
     router.refresh();
   }, [state.ok, state.kind, router]);
 

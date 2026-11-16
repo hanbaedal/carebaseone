@@ -17,7 +17,7 @@ export default async function StaffSelfEditPage({
   const user = await findUser(session.username);
   if (!user || user.disabled) redirect(LOGIN_PATH);
   if (user.role !== "admin" && user.role !== "supervisor") {
-    redirect("/admin/cms");
+    redirect("/admin");
   }
 
   const query = await searchParams;

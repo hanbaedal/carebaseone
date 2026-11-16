@@ -1,6 +1,9 @@
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
+import { AccountHubGrid } from "@/components/AccountHubGrid";
 import { SitemapCardGrid } from "@/components/SitemapCardGrid";
-import { SitemapLocaleLinks } from "@/components/SitemapLocaleLinks";
+import { memberHubGroups, staffHubGroups } from "@/lib/account-hub";
+import { getApprovedMember } from "@/lib/member-session";
+import { getSession } from "@/lib/session";
 import { headerNav } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
 
@@ -10,14 +13,24 @@ export default async function SiteMapPage({
   params: Promise<{ locale: string }>;
 }) {
   resolveLocale((await params).locale);
-  const active = await getLocale();
   const tNav = (await getTranslations("nav")) as (key: string) => string;
   const t = await getTranslations("sitemapPage");
+  const staff = await getSession();
+  const member = await getApprovedMember();
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
       <h1 className="font-display text-4xl text-brand-ink">{t("title")}</h1>
-      <SitemapLocaleLinks activeLocale={active} caption={t("localeSwitch")} />
+      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-brand-ink/60">
+        {staff || member ? t("ledeLoggedIn") : t("lede")}
+      </p>
+      {staff ? (
+        <AccountHubGrid groups={staffHubGroups(staff.role)} title={t("hubStaff")} />
+      ) : null}
+      {member ? (
+        <AccountHubGrid groups={memberHubGroups} title={t("hubMember")} />
+      ) : null}
+      <h2 className="mt-12 text-sm font-semibold tracking-wide text-brand-ink/70">{t("publicSection")}</h2>
       <SitemapCardGrid items={headerNav} tNav={tNav} />
       <p className="mt-10 text-sm text-brand-ink/45">
         <a

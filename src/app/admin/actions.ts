@@ -143,7 +143,7 @@ function profileFromForm(formData: FormData): CompanyProfileInput {
 export async function saveStaffSelfEdit(formData: FormData) {
   const session = await requireSession();
   if (session.role !== "admin" && session.role !== "supervisor") {
-    redirect("/admin/cms");
+    redirect("/admin");
   }
 
   const password = String(formData.get("password") ?? "").trim();
@@ -175,7 +175,7 @@ export async function saveStaffSelfEdit(formData: FormData) {
 
 export async function manageUser(formData: FormData) {
   const session = await requireSession();
-  if (session.role !== "supervisor") redirect("/admin/cms");
+  if (session.role !== "supervisor") redirect("/admin");
 
   const intent = String(formData.get("intent") ?? "");
   let message = "";

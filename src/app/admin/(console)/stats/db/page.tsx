@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export default async function DbStatsPage() {
   const session = await getSession();
-  if (session?.role !== "supervisor") redirect("/admin/cms");
+  if (session?.role !== "supervisor") redirect("/admin");
 
   const rows = await getDbCollectionCounts();
 

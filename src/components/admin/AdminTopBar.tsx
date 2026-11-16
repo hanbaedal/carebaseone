@@ -22,6 +22,9 @@ export function AdminTopBar({
         <p className="ml-auto hidden text-[11px] text-ink/50 sm:block">
           {username} · {role === "supervisor" ? "슈퍼바이저" : "관리자"}
         </p>
+        <a href="/ko/sitemap" className="text-[11px] text-brand hover:underline">
+          사이트맵
+        </a>
         <form action={logout}>
           <button type="submit" className="text-[11px] text-ink/60">
             로그아웃

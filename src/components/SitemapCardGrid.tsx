@@ -53,11 +53,9 @@ function theme(key: string) {
 export function SitemapCardGrid({
   items,
   tNav,
-  adminHref = "/admin",
 }: {
   items: HeaderNavItem[];
   tNav: (key: string) => string;
-  adminHref?: string;
 }) {
   return (
     <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -95,13 +93,6 @@ export function SitemapCardGrid({
           </article>
         );
       })}
-      <article className="flex flex-col rounded-2xl border border-line bg-white px-5 py-6 shadow-sm">
-        <h2 className="text-sm font-semibold tracking-wide text-brand-ink">
-          <a href={adminHref} className="hover:text-brand">
-            {tNav("admin")}
-          </a>
-        </h2>
-      </article>
     </div>
   );
 }

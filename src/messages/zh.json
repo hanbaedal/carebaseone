@@ -39,7 +39,11 @@
   },
   "sitemapPage": {
     "title": "网站地图",
-    "lede": "与网站页眉菜单相同的顺序与结构。",
+    "lede": "公开网站菜单。登录后上方显示会员或运营菜单卡片。",
+    "ledeLoggedIn": "从卡片选择要进入的菜单。下方公开结构与页眉相同。",
+    "hubStaff": "运营·管理",
+    "hubMember": "会员",
+    "publicSection": "公开网站",
     "cardHint": "公司介绍、01~05 支柱及社区子菜单与页眉一致。",
     "localeSwitch": "按语言的网站地图",
     "extra": "其他",

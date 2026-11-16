@@ -68,8 +68,8 @@ export function MemberHeaderAuth({ loggedIn }: { loggedIn: boolean }) {
 
   return (
     <>
-      <Link href="/member" className={`${textLinkClass} md:inline`}>
-        회원 홈
+      <Link href="/sitemap" className={`${textLinkClass} md:inline`}>
+        사이트맵
       </Link>
       <form action={logoutMember} className="hidden md:inline">
         <button type="submit" className={`${textLinkClass} cursor-pointer`}>

@@ -39,7 +39,11 @@
   },
   "sitemapPage": {
     "title": "Sitemap",
-    "lede": "Same order and structure as the site header.",
+    "lede": "Public site menus. After login, member or staff hub cards appear above.",
+    "ledeLoggedIn": "Pick a card to continue. Public structure below matches the header.",
+    "hubStaff": "Operations & admin",
+    "hubMember": "Member",
+    "publicSection": "Public website",
     "cardHint": "About, pillars 01–05, and community submenus match the header.",
     "localeSwitch": "Sitemap by language",
     "extra": "Other",
