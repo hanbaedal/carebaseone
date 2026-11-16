@@ -15,28 +15,38 @@ function isAdminPath(href: string) {
   return href.startsWith("/admin");
 }
 
-export function AccountHubGrid({ groups, title }: { groups: HubGroup[]; title: string }) {
+export function AccountHubGrid({ groups, title }: { groups: HubGroup[]; title?: string }) {
   if (groups.length === 0) return null;
 
   return (
     <section className="mt-0">
-      <h2 className="text-sm font-semibold tracking-wide text-brand-ink/70">{title}</h2>
-      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {title ? (
+        <h2 className="mb-2 text-xs font-semibold tracking-wide text-brand-ink/70 sm:mb-3 sm:text-sm">
+          {title}
+        </h2>
+      ) : null}
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {groups.map((group, index) => (
           <article
             key={group.key}
-            className={`flex flex-col rounded-2xl border px-5 py-5 shadow-sm ${shells[index % shells.length]}`}
+            className={`flex flex-col rounded-xl border px-3 py-3 shadow-sm sm:px-3.5 sm:py-3 ${shells[index % shells.length]}`}
           >
-            <h3 className="text-sm font-semibold text-brand-ink">{group.title}</h3>
-            <ul className="mt-3 flex flex-col gap-2 border-t border-ink/10 pt-3">
+            <h3 className="text-[13px] font-semibold text-brand-ink sm:text-sm">{group.title}</h3>
+            <ul className="mt-2 flex flex-col gap-1 border-t border-ink/10 pt-2">
               {group.links.map((link) => (
                 <li key={`${group.key}-${link.href}`}>
                   {isAdminPath(link.href) ? (
-                    <a href={link.href} className="text-[13px] text-brand-ink/80 hover:text-brand">
+                    <a
+                      href={link.href}
+                      className="text-[12px] leading-snug text-brand-ink/80 hover:text-brand sm:text-[13px]"
+                    >
                       {link.label}
                     </a>
                   ) : (
-                    <Link href={link.href} className="text-[13px] text-brand-ink/80 hover:text-brand">
+                    <Link
+                      href={link.href}
+                      className="text-[12px] leading-snug text-brand-ink/80 hover:text-brand sm:text-[13px]"
+                    >
                       {link.label}
                     </Link>
                   )}

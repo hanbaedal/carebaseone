@@ -49,7 +49,7 @@ function theme(key: string) {
   );
 }
 
-/** 헤더 `headerNav` + 관리 메뉴와 동일한 구조·라벨(nav) */
+/** 헤더 `headerNav`와 동일 — 노트북에서 한 줄·한 화면에 가깝게 */
 export function SitemapCardGrid({
   items,
   tNav,
@@ -58,7 +58,7 @@ export function SitemapCardGrid({
   tNav: (key: string) => string;
 }) {
   return (
-    <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4 lg:gap-3">
       {items.map((item) => {
         const pastel = theme(item.key);
         const links =
@@ -69,20 +69,20 @@ export function SitemapCardGrid({
         return (
           <article
             key={item.key}
-            className={`flex flex-col rounded-2xl border px-5 py-6 shadow-sm transition-all hover:shadow-md ${pastel.shell}`}
+            className={`flex flex-col rounded-xl border px-3 py-3 shadow-sm transition-all hover:shadow-md sm:px-4 sm:py-3.5 ${pastel.shell}`}
           >
-            <h2 className={`text-sm font-semibold tracking-wide text-brand-ink ${pastel.label}`}>
+            <h2 className={`text-[13px] font-semibold tracking-wide text-brand-ink sm:text-sm ${pastel.label}`}>
               <Link href={item.href} className="hover:text-brand">
                 {tNav(item.key)}
               </Link>
             </h2>
             {item.children?.length ? (
-              <ul className={`mt-4 flex flex-1 flex-col gap-2 border-t pt-4 ${pastel.divider}`}>
+              <ul className={`mt-2 flex flex-1 flex-col gap-1 border-t pt-2 sm:gap-1.5 ${pastel.divider}`}>
                 {links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-[13px] text-brand-ink/80 hover:text-brand"
+                      className="text-[12px] leading-snug text-brand-ink/80 hover:text-brand sm:text-[13px]"
                     >
                       {tNav(link.key)}
                     </Link>
