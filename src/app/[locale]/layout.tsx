@@ -13,6 +13,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { ViewTracker } from "@/components/ViewTracker";
 import { routing } from "@/i18n/routing";
 import { getApprovedMember } from "@/lib/member-session";
+import { getSession } from "@/lib/session";
 import { siteUrl } from "@/lib/site";
 
 const display = Cormorant_Garamond({
@@ -83,7 +84,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   setRequestLocale(locale);
   const messages = await getMessages();
-  const member = await getApprovedMember();
+  const [member, staff] = await Promise.all([getApprovedMember(), getSession()]);
 
   return (
     <html
@@ -99,7 +100,10 @@ export default async function LocaleLayout({ children, params }: Props) {
       >
         <NextIntlClientProvider messages={messages}>
           <ViewTracker />
-          <SiteHeader memberName={member?.name ?? null} />
+          <SiteHeader
+            memberName={member?.name ?? null}
+            staffRole={staff?.role ?? null}
+          />
           <main className="flex-1">{children}</main>
           <FloatingSnsBar />
           <SiteFooter />

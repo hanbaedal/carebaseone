@@ -17,20 +17,34 @@ export default async function SiteMapPage({
   const t = await getTranslations("sitemapPage");
   const staff = await getSession();
   const member = await getApprovedMember();
+  const loggedIn = Boolean(staff || member);
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
+      <h2 className="text-sm font-semibold tracking-wide text-brand-ink/70">{t("publicSection")}</h2>
+      <SitemapCardGrid items={headerNav} tNav={tNav} />
+
       {staff ? (
-        <AccountHubGrid groups={staffHubGroups(staff.role)} title={t("hubStaff")} />
+        <div className="mt-12">
+          <AccountHubGrid groups={staffHubGroups(staff.role)} title={t("hubStaff")} />
+        </div>
       ) : null}
       {member ? (
-        <AccountHubGrid groups={memberHubGroups} title={t("hubMember")} />
+        <div className="mt-12">
+          <AccountHubGrid groups={memberHubGroups} title={t("hubMember")} />
+        </div>
       ) : null}
-      {(staff || member) ? (
-        <h2 className="mt-12 text-sm font-semibold tracking-wide text-brand-ink/70">{t("publicSection")}</h2>
+
+      {!loggedIn ? (
+        <p className="mt-10 text-sm text-brand-ink/55">
+          {t("loginHint")}{" "}
+          <a href="/ko/login" className="text-brand hover:underline">
+            {t("loginLink")}
+          </a>
+        </p>
       ) : null}
-      <SitemapCardGrid items={headerNav} tNav={tNav} />
-      <p className="mt-10 text-sm text-brand-ink/45">
+
+      <p className="mt-8 text-sm text-brand-ink/45">
         <a
           href="/sitemap.xml"
           className="text-brand-ink/55 underline-offset-2 hover:text-brand hover:underline"

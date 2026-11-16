@@ -6,7 +6,6 @@ import { users } from "@/lib/db";
 import { authenticate, findUser, recordActivity } from "@/lib/users";
 import { clearMemberSession, setMemberSession } from "@/lib/member-session";
 import { clearSession, setSession } from "@/lib/session";
-import { LOGIN_PATH } from "@/lib/login-path";
 
 export type UnifiedLoginResult = { error?: string; ok?: boolean; kind?: "staff" | "member" };
 
@@ -91,10 +90,12 @@ export async function unifiedLogin(
 
 export async function unifiedLogoutStaff() {
   await clearSession();
-  redirect(LOGIN_PATH);
+  await clearMemberSession();
+  redirect("/ko");
 }
 
 export async function unifiedLogoutMember() {
   await clearMemberSession();
-  redirect(LOGIN_PATH);
+  await clearSession();
+  redirect("/ko");
 }

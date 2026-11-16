@@ -18,7 +18,13 @@ function itemActive(pathname: string, item: (typeof headerNav)[number]) {
   return item.children?.some((c) => linkActive(pathname, c.href)) ?? false;
 }
 
-export function SiteHeader({ memberName = null }: { memberName?: string | null }) {
+export function SiteHeader({
+  memberName = null,
+  staffRole = null,
+}: {
+  memberName?: string | null;
+  staffRole?: "admin" | "supervisor" | null;
+}) {
   const t = useTranslations("nav") as (key: string) => string;
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -77,15 +83,6 @@ export function SiteHeader({ memberName = null }: { memberName?: string | null }
           })}
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          {memberName ? (
-            <Link
-              href="/member/profile"
-              className={`${utilityLinkClass(pathname.startsWith("/member/profile"))} max-w-[10rem] truncate`}
-              title={memberName}
-            >
-              {memberName}
-            </Link>
-          ) : null}
           <Link href="/sitemap" className={utilityLinkClass(pathname === "/sitemap")}>
             {t("sitemap")}
           </Link>
@@ -99,7 +96,7 @@ export function SiteHeader({ memberName = null }: { memberName?: string | null }
           >
             {open ? t("close") : t("menu")}
           </button>
-          <MemberHeaderAuth loggedIn={Boolean(memberName)} />
+          <MemberHeaderAuth memberName={memberName} staffRole={staffRole} />
         </div>
       </div>
       {open ? (
@@ -108,15 +105,6 @@ export function SiteHeader({ memberName = null }: { memberName?: string | null }
             <div className="sm:hidden pb-2">
               <LanguageSwitcher />
             </div>
-            {memberName ? (
-              <Link
-                href="/member/profile"
-                onClick={() => setOpen(false)}
-                className="mb-2 text-[14px] font-medium text-brand"
-              >
-                {memberName}
-              </Link>
-            ) : null}
             <Link
               href="/sitemap"
               onClick={() => setOpen(false)}

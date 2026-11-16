@@ -44,6 +44,8 @@
     "hubStaff": "运营·管理",
     "hubMember": "会员",
     "publicSection": "公开网站",
+    "loginHint": "会员与管理功能需登录后使用。",
+    "loginLink": "登录",
     "cardHint": "公司介绍、01~05 支柱及社区子菜单与页眉一致。",
     "extra": "其他",
     "xml": "供搜索引擎使用的 XML 网站地图"

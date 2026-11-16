@@ -44,6 +44,8 @@
     "hubStaff": "Operations & admin",
     "hubMember": "Member",
     "publicSection": "Public website",
+    "loginHint": "Sign in to use member and staff features.",
+    "loginLink": "Sign in",
     "cardHint": "About, pillars 01–05, and community submenus match the header.",
     "extra": "Other",
     "xml": "XML sitemap for search engines"

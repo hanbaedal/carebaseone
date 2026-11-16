@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { LOGIN_PATH } from "@/lib/login-path";
 import { requireStaffSession } from "@/lib/admin-access";
 import { saveSection } from "@/lib/content";
+import { clearMemberSession } from "@/lib/member-session";
 import { clearSession, getSession, setSession } from "@/lib/session";
 import { users } from "@/lib/db";
 import { getCompanyProfile, saveCompanyProfile, type CompanyProfileInput } from "@/lib/company-profile";
@@ -78,7 +79,8 @@ export async function login(
 
 export async function logout() {
   await clearSession();
-  redirect(LOGIN_PATH);
+  await clearMemberSession();
+  redirect("/ko");
 }
 
 export async function saveContent(formData: FormData) {

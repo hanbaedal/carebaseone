@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { logoutMember } from "@/app/[locale]/member/actions";
+import { unifiedLogoutStaff } from "@/app/[locale]/login/actions";
 import { LOGIN_PATH } from "@/lib/login-path";
 
 const iconClass = "h-[18px] w-[18px]";
@@ -45,8 +46,15 @@ const textLinkClass =
 const iconButtonClass =
   "inline-flex h-9 w-9 items-center justify-center rounded-full border border-line text-brand-ink/70 hover:border-brand/30 hover:text-brand md:hidden";
 
-export function MemberHeaderAuth({ loggedIn }: { loggedIn: boolean }) {
+export function MemberHeaderAuth({
+  memberName = null,
+  staffRole = null,
+}: {
+  memberName?: string | null;
+  staffRole?: "admin" | "supervisor" | null;
+}) {
   const t = useTranslations("nav");
+  const loggedIn = Boolean(memberName || staffRole);
 
   if (!loggedIn) {
     return (
@@ -66,17 +74,34 @@ export function MemberHeaderAuth({ loggedIn }: { loggedIn: boolean }) {
     );
   }
 
+  const logoutAction = staffRole ? unifiedLogoutStaff : logoutMember;
+  const roleHint = staffRole
+    ? staffRole === "supervisor"
+      ? "슈퍼바이저"
+      : "관리자"
+    : memberName;
+
   return (
     <>
-      <Link href="/sitemap" className={`${textLinkClass} md:inline`}>
-        사이트맵
-      </Link>
-      <form action={logoutMember} className="hidden md:inline">
+      {staffRole ? (
+        <a href="/admin" className={`${textLinkClass} md:inline`}>
+          운영
+        </a>
+      ) : null}
+      {memberName && !staffRole ? (
+        <Link href="/member/profile" className={`${textLinkClass} md:inline max-w-[8rem] truncate`}>
+          {memberName}
+        </Link>
+      ) : null}
+      <span className="hidden text-[11px] text-brand-ink/40 md:inline" title={String(roleHint)}>
+        {staffRole ? roleHint : null}
+      </span>
+      <form action={logoutAction} className="hidden md:inline">
         <button type="submit" className={`${textLinkClass} cursor-pointer`}>
           {t("logout")}
         </button>
       </form>
-      <form action={logoutMember} className="md:hidden">
+      <form action={logoutAction} className="md:hidden">
         <button
           type="submit"
           className={iconButtonClass}
