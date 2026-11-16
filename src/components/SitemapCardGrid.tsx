@@ -61,10 +61,7 @@ export function SitemapCardGrid({
     <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4 lg:gap-3">
       {items.map((item) => {
         const pastel = theme(item.key);
-        const links =
-          item.children && item.children.length > 0
-            ? [{ href: item.href, key: item.key }, ...item.children]
-            : [{ href: item.href, key: item.key }];
+        const children = item.children ?? [];
 
         return (
           <article
@@ -76,9 +73,9 @@ export function SitemapCardGrid({
                 {tNav(item.key)}
               </Link>
             </h2>
-            {item.children?.length ? (
+            {children.length > 0 ? (
               <ul className={`mt-2 flex flex-1 flex-col gap-1 border-t pt-2 sm:gap-1.5 ${pastel.divider}`}>
-                {links.map((link) => (
+                {children.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}

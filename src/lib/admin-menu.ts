@@ -27,26 +27,22 @@ export const adminMenuGroups: AdminMenuGroup[] = [
   },
   {
     key: "members",
-    label: "회원",
+    label: "회원 관리",
     items: [{ href: "/admin/members", label: "목록·승인" }],
   },
   {
     key: "orders",
-    label: "주문",
+    label: "주문 관리",
     items: [{ href: "/admin/orders", label: "주문 목록" }],
   },
   {
-    key: "solapi",
-    label: "솔라피",
+    key: "account",
+    label: "정보 관리",
     items: [
-      { href: "/admin/solapi", label: "SOLAPI 관리" },
+      { href: "/admin/staff-self-edit", label: "관리자 정보 수정" },
+      { href: "/admin/solapi", label: "솔라피" },
       { href: "/admin/downloads", label: "문서 다운로드" },
     ],
-  },
-  {
-    key: "account",
-    label: "내 정보",
-    items: [{ href: "/admin/staff-self-edit", label: "관리자 정보 수정" }],
   },
   {
     key: "supervisor",

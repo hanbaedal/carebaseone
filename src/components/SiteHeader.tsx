@@ -6,6 +6,10 @@ import { usePathname } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import {
+  HeaderRoleMenusDesktop,
+  HeaderRoleMenusMobile,
+} from "@/components/HeaderRoleMenus";
 import { MemberHeaderAuth } from "@/components/MemberHeaderAuth";
 import { headerNav } from "@/lib/site";
 
@@ -81,6 +85,11 @@ export function SiteHeader({
               </div>
             );
           })}
+          <HeaderRoleMenusDesktop
+            memberName={memberName}
+            staffRole={staffRole}
+            navLinkClass={navLinkClass}
+          />
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <Link href="/sitemap" className={utilityLinkClass(pathname === "/sitemap")}>
@@ -153,6 +162,13 @@ export function SiteHeader({
                 </div>
               );
             })}
+            <HeaderRoleMenusMobile
+              memberName={memberName}
+              staffRole={staffRole}
+              expanded={expanded}
+              setExpanded={setExpanded}
+              onClose={() => setOpen(false)}
+            />
           </div>
         </div>
       ) : null}

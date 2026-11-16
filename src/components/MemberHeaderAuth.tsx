@@ -83,19 +83,14 @@ export function MemberHeaderAuth({
 
   return (
     <>
-      {staffRole ? (
-        <a href="/admin" className={`${textLinkClass} md:inline`}>
-          운영
-        </a>
-      ) : null}
       {memberName && !staffRole ? (
         <Link href="/member/profile" className={`${textLinkClass} md:inline max-w-[8rem] truncate`}>
           {memberName}
         </Link>
       ) : null}
-      <span className="hidden text-[11px] text-brand-ink/40 md:inline" title={String(roleHint)}>
-        {staffRole ? roleHint : null}
-      </span>
+      {staffRole ? (
+        <span className="hidden text-[11px] text-brand-ink/45 md:inline">{roleHint}</span>
+      ) : null}
       <form action={logoutAction} className="hidden md:inline">
         <button type="submit" className={`${textLinkClass} cursor-pointer`}>
           {t("logout")}
