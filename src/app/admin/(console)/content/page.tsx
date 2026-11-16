@@ -45,11 +45,11 @@ export default async function AdminContentPage({
       <div>
         <p className="text-[10px] text-ink/45">
           <a href="/admin/cms" className="text-brand hover:underline">
-            홈페이지 관리
+            CMS
           </a>{" "}
           / {sectionLabel}
         </p>
-        <h1 className="text-sm font-semibold">{sectionLabel} 편집</h1>
+        <h1 className="text-sm font-semibold">{sectionLabel} 수정</h1>
         <p className="mt-1 text-[11px] leading-5 text-ink/50">
           {section === "meta"
             ? "회사 이름·한줄 소개를 수정합니다. 로고 이미지는 public/logo.png 입니다."

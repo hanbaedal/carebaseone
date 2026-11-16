@@ -17,13 +17,7 @@ export const adminMenuGroups: AdminMenuGroup[] = [
   {
     key: "cms",
     label: "홈페이지 관리",
-    items: [
-      { href: "/admin/cms", label: "사이트 구성 (공개와 동일)" },
-      { href: "/admin/notices", label: "공지사항" },
-      { href: "/admin/inquiries", label: "문의" },
-      { href: "/admin/media", label: "자료 파일" },
-      { href: "/admin/posts", label: "갤러리·자료" },
-    ],
+    items: [{ href: "/admin/cms", label: "CMS (공개 메뉴와 동일)" }],
   },
   {
     key: "members",

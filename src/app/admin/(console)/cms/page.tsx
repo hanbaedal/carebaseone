@@ -1,116 +1,101 @@
-import { publicSiteCmsHub } from "@/lib/cms-site-map";
+import { publicSiteCmsHub, type CmsHubCard } from "@/lib/cms-site-map";
 
 export const dynamic = "force-dynamic";
 
 const cardShell: Record<string, string> = {
-  home: "border-line bg-white",
+  common: "border-slate-200 bg-white",
   about: "border-slate-200/90 bg-slate-50",
   product: "border-emerald-200/80 bg-emerald-50",
   technology: "border-sky-200/80 bg-sky-50",
   community: "border-teal-200/80 bg-teal-50",
 };
 
-const labels: Record<string, string> = {
-  home: "홈",
-  meta: "로고·회사명",
-  nav: "메뉴 라벨",
-  footer: "하단",
-  cta: "버튼 문구",
-  about: "회사소개",
-  greeting: "인사말",
-  features: "회사특징",
-  solution: "솔루션",
-  global: "글로벌",
-  business: "사업협력",
-  product: "제품",
-  healthFood: "건강식품",
-  generalFood: "일반식품",
-  cosmetics: "화장품",
-  patch: "패치",
-  healthPlatform: "건강관리플랫폼",
-  technology: "기술",
-  patents: "지식재산권",
-  certifications: "인증·규제",
-  research: "연구·임상",
-  community: "커뮤니티",
-  notice: "공지사항",
-  archive: "자료실",
-  gallery: "갤러리",
-  contact: "문의",
-};
-
-export default function AdminCmsPage() {
-  const cards = publicSiteCmsHub();
-
+function CmsCard({ card }: { card: CmsHubCard }) {
   return (
-    <div className="grid gap-4">
-      <div>
-        <h1 className="text-sm font-semibold text-brand-ink">홈페이지 관리</h1>
-        <p className="mt-1 text-[11px] leading-5 text-ink/50">
-          공개 홈·헤더·사이트맵과 <strong>같은 카드·순서</strong>입니다. 각 항목에서 「편집」으로
-          문구를 고치고, 「보기」로 공개 페이지를 확인합니다.
-        </p>
+    <article
+      className={`flex flex-col rounded-xl border px-4 py-4 shadow-sm ${
+        cardShell[card.key] ?? "border-ink/10 bg-white"
+      }`}
+    >
+      <div className="flex items-center justify-between gap-2 border-b border-ink/10 pb-2">
+        <h2 className="text-sm font-semibold text-brand-ink">{card.label}</h2>
+        <a
+          href={card.publicHref}
+          className="shrink-0 text-[10px] text-brand hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          공개 보기
+        </a>
       </div>
-
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        {cards.map((card) => (
-          <article
-            key={card.key}
-            className={`flex flex-col rounded-xl border px-4 py-4 shadow-sm ${
-              cardShell[card.key] ?? "border-ink/10 bg-white"
-            }`}
+      <ul className="mt-3 flex flex-col gap-1.5">
+        {card.links.map((link) => (
+          <li
+            key={`${card.key}-${link.key}-${link.editHref}`}
+            className="flex items-center justify-between gap-2 rounded-md px-1 py-1 text-[12px] hover:bg-white/70"
           >
-            <div className="flex items-start justify-between gap-2 border-b border-ink/10 pb-2">
-              <h2 className="text-sm font-semibold text-brand-ink">
-                {labels[card.labelKey] ?? card.labelKey}
-              </h2>
+            <span className="min-w-0 truncate text-brand-ink/80">{link.label}</span>
+            <span className="flex shrink-0 items-center gap-2">
               <a
-                href={`/ko${card.publicHref === "/" ? "" : card.publicHref}`}
-                className="shrink-0 text-[10px] text-brand hover:underline"
+                href={link.publicHref}
+                className="text-ink/40 hover:text-brand hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 보기
               </a>
-            </div>
-            <ul className="mt-3 flex flex-col gap-2">
-              {card.links.map((link) => (
-                <li
-                  key={`${card.key}-${link.labelKey}-${link.editHref}`}
-                  className="flex items-center justify-between gap-2 text-[12px]"
-                >
-                  <span className="text-brand-ink/80">{labels[link.labelKey] ?? link.labelKey}</span>
-                  <span className="flex shrink-0 gap-2">
-                    <a
-                      href={`/ko${link.publicHref === "/" ? "" : link.publicHref}`}
-                      className="text-ink/45 hover:text-brand hover:underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      보기
-                    </a>
-                    <a href={link.editHref} className="font-medium text-brand hover:underline">
-                      편집
-                    </a>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </article>
+              <a
+                href={link.editHref}
+                className="rounded bg-forest px-2 py-0.5 text-[11px] font-medium text-cream hover:opacity-90"
+              >
+                수정
+              </a>
+            </span>
+          </li>
         ))}
-      </div>
+      </ul>
+    </article>
+  );
+}
 
-      <p className="text-[10px] text-ink/45">
-        공개 사이트맵과 비교:{" "}
+export default function AdminCmsPage() {
+  const { common, pages } = publicSiteCmsHub();
+
+  return (
+    <div className="grid gap-5">
+      <div className="flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <h1 className="text-base font-semibold text-brand-ink">홈페이지 관리</h1>
+          <p className="mt-1 text-[11px] leading-5 text-ink/50">
+            공개 헤더·사이트맵과 같은 메뉴입니다. 「수정」으로 편집하고 「보기」로 공개 페이지를
+            확인합니다.
+          </p>
+        </div>
         <a
-          href="/ko/sitemap"
-          className="text-brand hover:underline"
+          href="/ko"
+          className="text-[11px] text-brand hover:underline"
           target="_blank"
           rel="noopener noreferrer"
         >
-          /ko/sitemap
+          공개 홈 열기 →
         </a>
-      </p>
+      </div>
+
+      <section className="grid gap-2">
+        <h2 className="text-[11px] font-semibold tracking-wide text-ink/45">공통</h2>
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <CmsCard card={common} />
+        </div>
+      </section>
+
+      <section className="grid gap-2">
+        <h2 className="text-[11px] font-semibold tracking-wide text-ink/45">페이지 메뉴 (공개와 동일)</h2>
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {pages.map((card) => (
+            <CmsCard key={card.key} card={card} />
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
