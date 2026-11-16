@@ -15,20 +15,21 @@ const cache = globalThis as typeof globalThis & {
   cmsCache?: { at: number; messages: Partial<Record<Locale, Json>> };
 };
 
+/** 공개 사이트 메뉴 순서에 맞춤 (홈·공통 → 헤더 순) */
 export const contentSections = [
-  { key: "nav", label: "메뉴" },
   { key: "home", label: "홈" },
+  { key: "meta", label: "로고·회사명" },
+  { key: "nav", label: "메뉴" },
   { key: "about", label: "회사소개" },
-  { key: "technology", label: "기술" },
   { key: "solution", label: "솔루션" },
-  { key: "product", label: "제품" },
   { key: "global", label: "글로벌" },
   { key: "business", label: "사업협력" },
-  { key: "news", label: "소식" },
+  { key: "product", label: "제품" },
+  { key: "technology", label: "기술" },
+  { key: "news", label: "커뮤니티 소개" },
   { key: "contact", label: "문의" },
   { key: "cta", label: "버튼" },
   { key: "footer", label: "하단" },
-  { key: "meta", label: "로고·회사명" },
 ] as const;
 
 export type EditorField = {

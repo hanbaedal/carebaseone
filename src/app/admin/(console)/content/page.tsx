@@ -10,6 +10,22 @@ const notices: Record<string, string> = {
   error: "저장하지 못했습니다.",
 };
 
+const previewBySection: Record<string, string> = {
+  home: "/ko",
+  meta: "/ko",
+  nav: "/ko",
+  footer: "/ko",
+  cta: "/ko",
+  about: "/ko/about",
+  solution: "/ko/solution",
+  global: "/ko/global",
+  business: "/ko/business",
+  product: "/ko/product",
+  technology: "/ko/technology",
+  news: "/ko/community",
+  contact: "/ko/contact",
+};
+
 export default async function AdminContentPage({
   searchParams,
 }: {
@@ -18,25 +34,34 @@ export default async function AdminContentPage({
   const query = await searchParams;
   const section = contentSections.some((item) => item.key === query.section)
     ? query.section!
-    : "nav";
+    : "home";
   const fields = await getEditorFields(section);
   const notice = query.status ? notices[query.status] : "";
   const sectionLabel = contentSections.find((item) => item.key === section)?.label ?? section;
+  const previewHref = previewBySection[section] ?? "/ko";
 
   return (
     <div className="grid gap-3">
       <div>
         <p className="text-[10px] text-ink/45">
           <a href="/admin/cms" className="text-brand hover:underline">
-            메인·페이지 구성
+            홈페이지 관리
           </a>{" "}
           / {sectionLabel}
         </p>
-        <h1 className="text-sm font-semibold">{sectionLabel}</h1>
+        <h1 className="text-sm font-semibold">{sectionLabel} 편집</h1>
         <p className="mt-1 text-[11px] leading-5 text-ink/50">
           {section === "meta"
             ? "회사 이름·한줄 소개를 수정합니다. 로고 이미지는 public/logo.png 입니다."
-            : "한글만 입력하면 저장 시 영·중국어가 자동으로 맞춰집니다."}
+            : "공개 페이지와 1:1입니다. 한글만 입력하면 저장 시 영·중국어가 자동으로 맞춰집니다."}{" "}
+          <a
+            href={previewHref}
+            className="text-brand hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            공개 페이지 보기
+          </a>
         </p>
         {notice ? (
           <p
