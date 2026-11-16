@@ -50,11 +50,11 @@ export function MemberHeaderAuth({ loggedIn }: { loggedIn: boolean }) {
   if (!loggedIn) {
     return (
       <>
-        <Link href="/member/login" className={textLinkClass}>
-          {t("memberSignIn")}
+        <Link href="/login" className={textLinkClass}>
+          {t("login")}
         </Link>
         <Link
-          href="/member/login"
+          href="/login"
           className={iconButtonClass}
           aria-label={t("memberSignIn")}
           title={t("memberSignIn")}
@@ -67,6 +67,9 @@ export function MemberHeaderAuth({ loggedIn }: { loggedIn: boolean }) {
 
   return (
     <>
+      <Link href="/member" className={`${textLinkClass} md:inline`}>
+        회원 홈
+      </Link>
       <form action={logoutMember} className="hidden md:inline">
         <button type="submit" className={`${textLinkClass} cursor-pointer`}>
           {t("logout")}

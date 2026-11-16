@@ -3,6 +3,7 @@ import { getCompanyProfile } from "@/lib/company-profile";
 import { getSession } from "@/lib/session";
 import { findUser } from "@/lib/users";
 import { redirect } from "next/navigation";
+import { LOGIN_PATH } from "@/lib/login-path";
 
 export const dynamic = "force-dynamic";
 
@@ -12,11 +13,11 @@ export default async function StaffSelfEditPage({
   searchParams: Promise<{ status?: string; message?: string }>;
 }) {
   const session = await getSession();
-  if (!session) redirect("/admin/login");
+  if (!session) redirect(LOGIN_PATH);
   const user = await findUser(session.username);
-  if (!user || user.disabled) redirect("/admin/login");
+  if (!user || user.disabled) redirect(LOGIN_PATH);
   if (user.role !== "admin" && user.role !== "supervisor") {
-    redirect("/admin/site");
+    redirect("/admin/cms");
   }
 
   const query = await searchParams;

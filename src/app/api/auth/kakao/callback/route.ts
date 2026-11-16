@@ -15,12 +15,12 @@ export async function GET(request: Request) {
   }
   const code = new URL(request.url).searchParams.get("code");
   if (!code) {
-    return redirect("/ko/member/login?oauth=error");
+    return redirect("/ko/login?oauth=error");
   }
 
   const profile = await profileFromKakaoCode(code);
   if (profile === "error") {
-    return redirect("/ko/member/login?oauth=error");
+    return redirect("/ko/login?oauth=error");
   }
 
   const existing = await findMemberByOAuth("kakao", profile.oauthId);
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
       await setMemberSession(existing.username);
       return redirect("/ko/store");
     }
-    return redirect("/ko/member/login?oauth=pending");
+    return redirect("/ko/login?oauth=pending");
   }
 
   let username = `kakao_${profile.oauthId.replace(/\D/g, "").slice(-10) || randomBytes(4).toString("hex")}`;
@@ -53,5 +53,5 @@ export async function GET(request: Request) {
   if (error) {
     return redirect("/ko/member/signup?oauth=register-error");
   }
-  return redirect("/ko/member/login?oauth=pending");
+  return redirect("/ko/login?oauth=pending");
 }

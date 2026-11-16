@@ -27,8 +27,8 @@ export default async function AdminContentPage({
     <div className="grid gap-3">
       <div>
         <p className="text-[10px] text-ink/45">
-          <a href="/admin/site" className="text-brand hover:underline">
-            홈페이지 관리
+          <a href="/admin/cms" className="text-brand hover:underline">
+            메인·페이지 구성
           </a>{" "}
           / {sectionLabel}
         </p>

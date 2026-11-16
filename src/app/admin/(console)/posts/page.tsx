@@ -11,12 +11,18 @@ export default async function AdminPostsPage({
 }) {
   await ensurePostSeed();
   const query = await searchParams;
-  const posts = await listAllPosts();
+  const posts = (await listAllPosts()).filter((p) => p.type !== "notice");
 
   return (
     <div className="grid gap-6">
       <div>
-        <h1 className="text-sm">게시물</h1>
+        <p className="text-[10px] text-ink/45">
+          <a href="/admin/cms" className="text-brand hover:underline">
+            메인·페이지 구성
+          </a>{" "}
+          / 갤러리·자료
+        </p>
+        <h1 className="text-sm font-semibold">갤러리·자료 게시</h1>
         {query.status === "saved" ? (
           <p className="mt-1 text-xs text-forest">저장했습니다.</p>
         ) : null}
@@ -24,8 +30,7 @@ export default async function AdminPostsPage({
       <form action={savePost} className="grid gap-2 border border-ink/10 bg-white p-3 text-xs">
         <p className="font-semibold">새 글 / 수정</p>
         <input name="slug" placeholder="slug" required className="border border-ink/15 px-2 py-1" />
-        <select name="type" className="border border-ink/15 px-2 py-1">
-          <option value="notice">공지</option>
+        <select name="type" defaultValue="gallery" className="border border-ink/15 px-2 py-1">
           <option value="gallery">갤러리</option>
           <option value="archive">자료</option>
         </select>

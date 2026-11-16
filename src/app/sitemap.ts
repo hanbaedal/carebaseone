@@ -17,7 +17,7 @@ const paths = [
     .filter((item) => !communityNavItems.some((c) => c.href === item.href))
     .filter((item) => !evidenceNavItems.some((e) => e.href === item.href))
     .map((item) => ({ href: item.href, priority: 0.65 })),
-  { href: "/member/login", priority: 0.5 },
+  { href: "/login", priority: 0.5 },
   { href: "/member/signup", priority: 0.5 },
   { href: "/sitemap", priority: 0.4 },
 ] as const;

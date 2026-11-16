@@ -37,6 +37,7 @@ export const headerNav: HeaderNavItem[] = [
       { href: "/business", key: "business" },
     ],
   },
+  { href: "/product", key: "product" },
   {
     href: "/technology",
     key: "technology",
@@ -46,7 +47,6 @@ export const headerNav: HeaderNavItem[] = [
       { href: "/research", key: "research" },
     ],
   },
-  { href: "/product", key: "product" },
   {
     href: "/community",
     key: "community",

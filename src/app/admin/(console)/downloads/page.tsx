@@ -1,11 +1,9 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@/lib/session";
+import { requireStaffSession } from "@/lib/admin-access";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDownloadsPage() {
-  const session = await getSession();
-  if (session?.role !== "supervisor") redirect("/admin/site");
+  await requireStaffSession();
 
   return (
     <div className="grid gap-3">

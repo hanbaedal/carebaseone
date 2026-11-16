@@ -10,7 +10,7 @@ export default async function MemberProfilePage({
 }) {
   resolveLocale((await params).locale);
   const member = await getApprovedMember();
-  if (!member) redirect("/member/login");
+  if (!member) redirect("/login");
 
   return (
     <div className="mx-auto max-w-lg px-6 py-16">

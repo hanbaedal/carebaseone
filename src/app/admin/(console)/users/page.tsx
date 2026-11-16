@@ -11,7 +11,7 @@ export default async function UsersPage({
   searchParams: Promise<{ status?: string; message?: string; focus?: string }>;
 }) {
   const session = await getSession();
-  if (session?.role !== "supervisor") redirect("/admin/site");
+  if (session?.role !== "supervisor") redirect("/admin/cms");
 
   const query = await searchParams;
   const accounts = await listUsers();

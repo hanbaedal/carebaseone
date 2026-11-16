@@ -20,7 +20,7 @@ export default async function MemberSignupPage({
       </div>
       <p className="mt-6 text-sm text-brand-ink/60">
         이미 계정이 있으신가요?{" "}
-        <Link href="/member/login" className="text-brand">
+        <Link href="/login" className="text-brand">
           로그인
         </Link>
       </p>

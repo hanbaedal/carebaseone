@@ -20,7 +20,7 @@ export default async function MemberOrdersPage({
   const { locale } = await params;
   resolveLocale(locale);
   const member = await getApprovedMember();
-  if (!member) redirect("/member/login");
+  if (!member) redirect("/login");
   const orders = await listOrdersForMember(member.username);
 
   return (

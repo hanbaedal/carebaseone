@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminTopBar } from "@/components/admin/AdminTopBar";
+import { LOGIN_PATH } from "@/lib/login-path";
 import { getSession, clearSession } from "@/lib/session";
 import { getSiteBrand } from "@/lib/site-brand";
 import { findUser } from "@/lib/users";
@@ -14,7 +15,7 @@ export default async function ConsoleLayout({
   children: React.ReactNode;
 }) {
   const session = await getSession();
-  if (!session) redirect("/admin/login");
+  if (!session) redirect(LOGIN_PATH);
 
   let user;
   try {
@@ -28,7 +29,7 @@ export default async function ConsoleLayout({
   }
   if (!user || user.disabled) {
     await clearSession();
-    redirect("/admin/login");
+    redirect(LOGIN_PATH);
   }
 
   const brand = await getSiteBrand();

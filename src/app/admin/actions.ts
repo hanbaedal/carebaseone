@@ -1,6 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { LOGIN_PATH } from "@/lib/login-path";
+import { requireStaffSession } from "@/lib/admin-access";
 import { saveSection } from "@/lib/content";
 import { clearSession, getSession, setSession } from "@/lib/session";
 import { users } from "@/lib/db";
@@ -15,14 +17,7 @@ import {
 } from "@/lib/users";
 
 async function requireSession() {
-  const session = await getSession();
-  if (!session) redirect("/admin/login");
-  const user = await findUser(session.username);
-  if (!user || user.disabled) {
-    await clearSession();
-    redirect("/admin/login");
-  }
-  return { username: user.username, role: user.role };
+  return requireStaffSession();
 }
 
 export async function login(
@@ -83,7 +78,7 @@ export async function login(
 
 export async function logout() {
   await clearSession();
-  redirect("/admin/login");
+  redirect(LOGIN_PATH);
 }
 
 export async function saveContent(formData: FormData) {
@@ -148,7 +143,7 @@ function profileFromForm(formData: FormData): CompanyProfileInput {
 export async function saveStaffSelfEdit(formData: FormData) {
   const session = await requireSession();
   if (session.role !== "admin" && session.role !== "supervisor") {
-    redirect("/admin/site");
+    redirect("/admin/cms");
   }
 
   const password = String(formData.get("password") ?? "").trim();
@@ -180,7 +175,7 @@ export async function saveStaffSelfEdit(formData: FormData) {
 
 export async function manageUser(formData: FormData) {
   const session = await requireSession();
-  if (session.role !== "supervisor") redirect("/admin/site");
+  if (session.role !== "supervisor") redirect("/admin/cms");
 
   const intent = String(formData.get("intent") ?? "");
   let message = "";

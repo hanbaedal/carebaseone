@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { LOGIN_PATH } from "@/lib/login-path";
 import { getSession } from "@/lib/session";
 import { findUser } from "@/lib/users";
 import { deletePost, upsertPost } from "@/lib/posts";
@@ -14,9 +15,9 @@ import type { MemberTier, PostType } from "@/lib/db";
 
 async function requireStaff() {
   const session = await getSession();
-  if (!session) redirect("/admin/login");
+  if (!session) redirect(LOGIN_PATH);
   const user = await findUser(session.username);
-  if (!user || user.disabled) redirect("/admin/login");
+  if (!user || user.disabled) redirect(LOGIN_PATH);
   return session;
 }
 

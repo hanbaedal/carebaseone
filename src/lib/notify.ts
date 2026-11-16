@@ -11,7 +11,7 @@ export async function sendMemberApprovedEmail(input: {
   username: string;
   tier: string;
 }) {
-  const body = `안녕하세요 ${input.name}님. CAREBASE 회원 승인이 완료되었습니다.\n아이디: ${input.username}\n등급: ${input.tier}\n\n로그인: https://carebaseone.com/ko/member/login`;
+  const body = `안녕하세요 ${input.name}님. CAREBASE 회원 승인이 완료되었습니다.\n아이디: ${input.username}\n등급: ${input.tier}\n\n로그인: https://carebaseone.com/ko/login`;
   console.info("[CAREBASE email]", input.email, body.slice(0, 120));
   if (process.env.SMTP_URL) {
     // SMTP 연동 자리 — Render 환경변수 설정 후 구현 확장

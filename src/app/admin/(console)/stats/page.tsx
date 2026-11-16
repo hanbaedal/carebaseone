@@ -19,7 +19,7 @@ function countOf(rows: { _id: string; count: number }[], id: string) {
 
 export default async function StatsPage() {
   const session = await getSession();
-  if (session?.role !== "supervisor") redirect("/admin/site");
+  if (session?.role !== "supervisor") redirect("/admin/cms");
 
   const stats = await getDashboard();
   const peak = Math.max(...stats.daily.map((row) => row.count), 1);

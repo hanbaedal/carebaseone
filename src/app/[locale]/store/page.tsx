@@ -21,7 +21,7 @@ export default async function StorePage({
         <h1 className="font-display text-3xl text-brand-ink">{t("title")}</h1>
         <p className="mt-4 text-brand-ink/70">{t("loginRequired")}</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link href="/member/login" className="rounded-full bg-brand px-5 py-2 text-white">
+          <Link href="/login" className="rounded-full bg-brand px-5 py-2 text-white">
             {tNav("memberSignIn")}
           </Link>
           <Link href="/member/signup" className="rounded-full border border-brand px-5 py-2 text-brand">

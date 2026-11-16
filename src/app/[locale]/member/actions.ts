@@ -4,10 +4,10 @@ import { redirect } from "next/navigation";
 import { authenticateMember, findMemberByUsername, registerMember, updateMemberProfile } from "@/lib/members";
 import { findUser } from "@/lib/users";
 import {
-  clearMemberSession,
   getApprovedMember,
   setMemberSession,
 } from "@/lib/member-session";
+import { unifiedLogoutMember } from "@/app/[locale]/login/actions";
 import { createOrder } from "@/lib/orders";
 
 export async function signupMember(
@@ -82,8 +82,7 @@ export async function loginMember(
 }
 
 export async function logoutMember() {
-  await clearMemberSession();
-  redirect("/member/login");
+  await unifiedLogoutMember();
 }
 
 export async function updateProfile(
