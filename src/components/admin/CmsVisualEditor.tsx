@@ -9,7 +9,6 @@ import { TextColorModal } from "@/components/admin/TextColorModal";
 import type { EditorField } from "@/lib/content";
 import { fieldLabelFor, type CmsPageDef } from "@/lib/cms-pages";
 import {
-  HOME_SCALE_STEPS,
   colorPathFor,
   defaultColorForTextPath,
   resolveHeroImageSrc,
@@ -61,7 +60,28 @@ const HOME_TEXT_PATHS = new Set(["home.kicker", "home.headline", "home.lede"]);
 function resolveHomeTextSlot(path: string) {
   if (path === "home.kickerScale") return "home.kicker";
   if (path === "home.headlineScale") return "home.headline";
+  if (path === "home.kickerColor") return "home.kicker";
+  if (path === "home.headlineColor") return "home.headline";
   if (HOME_TEXT_PATHS.has(path)) return path;
+  return null;
+}
+
+type HomePreviewSlot = "home.heroImage" | "home.kicker" | "home.headline";
+
+function resolvePreviewActiveSlot(
+  slot: string,
+  homeTextPath: string | null,
+  pin: HomePreviewSlot | null,
+): HomePreviewSlot | null {
+  if (pin === "home.kicker" || pin === "home.headline") return pin;
+  if (slot === "home.heroImage") return "home.heroImage";
+  if (homeTextPath === "home.kicker" || homeTextPath === "home.headline") return homeTextPath;
+  return null;
+}
+
+function textPathForScaleField(scalePath: string | null | undefined) {
+  if (scalePath === "home.kickerScale") return "home.kicker";
+  if (scalePath === "home.headlineScale") return "home.headline";
   return null;
 }
 
@@ -103,6 +123,7 @@ export function CmsVisualEditor({
   const [mediaOpen, setMediaOpen] = useState(false);
   const [scaleOpen, setScaleOpen] = useState(false);
   const [colorOpen, setColorOpen] = useState(false);
+  const [previewPin, setPreviewPin] = useState<HomePreviewSlot | null>(null);
   const [saving, setSaving] = useState(false);
   const [inlineNotice, setInlineNotice] = useState<{ text: string; error?: boolean } | null>(
     null,
@@ -183,22 +204,29 @@ export function CmsVisualEditor({
   };
 
   const openBackgroundPicker = () => {
+    setPreviewPin(null);
     setSlot("home.heroImage");
     setMediaOpen(true);
   };
 
+  const pinPreviewForTextTools = () => {
+    if (homeTextPath === "home.kicker" || homeTextPath === "home.headline") {
+      setPreviewPin(homeTextPath);
+      setSlot(homeTextPath);
+    }
+  };
+
   const handleHomeSlot = (key: HomeSlot) => {
+    setPreviewPin(null);
     setSlot(key);
     if (key === "home.heroImage") setMediaOpen(true);
   };
 
   const openScalePicker = () => {
-    if (isHome) {
-      if (!linkedScalePath) return;
-      setScaleOpen((open) => !open);
+    if (!linkedScalePath && !scalePathFor(active?.path ?? "") && !active?.path.endsWith("Scale")) {
       return;
     }
-    if (!scalePathFor(active?.path ?? "") && !active?.path.endsWith("Scale")) return;
+    if (isHome) pinPreviewForTextTools();
     setScaleOpen(true);
   };
 
@@ -209,20 +237,40 @@ export function CmsVisualEditor({
   };
 
   const pickScale = (percent: number) => {
-    const path = linkedScalePath ?? scalePathFor(active?.path ?? "");
+    const path =
+      linkedScalePath ??
+      (active?.path.endsWith("Scale") ? active.path : scalePathFor(active?.path ?? ""));
     if (!path?.endsWith("Scale")) return;
+    const textPath =
+      previewPin ??
+      (homeTextPath === "home.kicker" || homeTextPath === "home.headline" ? homeTextPath : null) ??
+      textPathForScaleField(path);
     setDraft((d) => ({ ...d, [path]: String(percent) }));
     setScaleOpen(false);
+    if (isHome && textPath) {
+      setPreviewPin(textPath);
+      setSlot(textPath);
+    }
     submitQuick(path, String(percent));
   };
 
   const pickColor = (colorId: HomeTextColorId) => {
     if (!linkedColorPath) return;
+    const textPath =
+      previewPin ??
+      (homeTextPath === "home.kicker" || homeTextPath === "home.headline" ? homeTextPath : null);
     setDraft((d) => ({ ...d, [linkedColorPath]: colorId }));
+    if (isHome && textPath) {
+      setPreviewPin(textPath);
+      setSlot(textPath);
+    }
     submitQuick(linkedColorPath, colorId);
   };
 
   const heroSrc = resolveHeroImageSrc(draft["home.heroImage"]);
+  const previewActiveSlot = isHome
+    ? resolvePreviewActiveSlot(slot, homeTextPath, previewPin)
+    : null;
 
   const showNotice = inlineNotice?.text ?? notice;
   const showNoticeError = inlineNotice ? inlineNotice.error : noticeError;
@@ -268,11 +316,7 @@ export function CmsVisualEditor({
               headlineScale={draft["home.headlineScale"] ?? "100"}
               kickerColor={draft["home.kickerColor"] ?? "blue"}
               headlineColor={draft["home.headlineColor"] ?? "black"}
-              activeSlot={
-                slot === "home.heroImage" || slot === "home.kicker" || slot === "home.headline"
-                  ? slot
-                  : null
-              }
+              activeSlot={previewActiveSlot}
               onSelectSlot={handleHomeSlot}
               onPickBackground={openBackgroundPicker}
             />
@@ -322,7 +366,10 @@ export function CmsVisualEditor({
               편집 슬롯
               <select
                 value={active?.path ?? ""}
-                onChange={(e) => setSlot(e.target.value)}
+                onChange={(e) => {
+                  setPreviewPin(null);
+                  setSlot(e.target.value);
+                }}
                 className="rounded border border-ink/15 bg-white px-2 py-1.5 text-[12px] text-brand-ink"
               >
                 {editorFields
@@ -358,31 +405,10 @@ export function CmsVisualEditor({
               <button
                 type="button"
                 onClick={openScalePicker}
-                aria-expanded={isHome ? scaleOpen : undefined}
                 className="w-full rounded-md border border-ink/15 bg-ink/5 px-2 py-2 text-[12px] text-brand hover:bg-brand/5"
               >
                 글자 크기 ({currentScaleValue()}%)
-                {isHome ? (scaleOpen ? " ▴" : " ▾") : ""}
               </button>
-              {isHome && scaleOpen ? (
-                <ul className="mt-2 max-h-36 overflow-y-auto rounded-md border border-ink/10 bg-paper/50 py-0.5">
-                  {HOME_SCALE_STEPS.map((step) => (
-                    <li key={step}>
-                      <button
-                        type="button"
-                        onClick={() => pickScale(step)}
-                        className={`w-full px-2 py-1.5 text-left text-[12px] ${
-                          step === currentScaleValue()
-                            ? "bg-forest text-cream"
-                            : "text-brand-ink hover:bg-ink/5"
-                        }`}
-                      >
-                        {step}%
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
             </div>
           ) : null}
 
@@ -392,7 +418,10 @@ export function CmsVisualEditor({
                 <span className="text-[12px] text-brand-ink">글자 컬러</span>
                 <button
                   type="button"
-                  onClick={() => setColorOpen(true)}
+                  onClick={() => {
+                    pinPreviewForTextTools();
+                    setColorOpen(true);
+                  }}
                   aria-label="글자 컬러 선택"
                   className="h-8 w-8 shrink-0 rounded-md border border-ink/20 shadow-sm ring-brand transition hover:ring-2"
                   style={{
@@ -566,22 +595,12 @@ export function CmsVisualEditor({
         onSelect={pickColor}
       />
 
-      {!isHome ? (
-        <FontScaleModal
-          open={scaleOpen}
-          value={currentScaleValue()}
-          onClose={() => setScaleOpen(false)}
-          onSelect={(percent) => {
-            const path =
-              active?.path.endsWith("Scale")
-                ? active.path
-                : scalePathFor(active?.path ?? "") ?? "home.headlineScale";
-            setDraft((d) => ({ ...d, [path]: String(percent) }));
-            setScaleOpen(false);
-            submitQuick(path, String(percent));
-          }}
-        />
-      ) : null}
+      <FontScaleModal
+        open={scaleOpen}
+        value={currentScaleValue()}
+        onClose={() => setScaleOpen(false)}
+        onSelect={pickScale}
+      />
     </div>
   );
 }
