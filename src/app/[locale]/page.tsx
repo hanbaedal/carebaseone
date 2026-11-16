@@ -42,7 +42,6 @@ export default async function HomePage({
   const kickerFamily = resolveHomeFontFamily(t("home.kickerFont"), HOME_KICKER_FONT_DEFAULT);
   const headlineFamily = resolveHomeFontFamily(t("home.headlineFont"), HOME_HEADLINE_FONT_DEFAULT);
   const ledeFamily = resolveHomeFontFamily(t("home.ledeFont"), HOME_LEDE_FONT_DEFAULT);
-
   return (
     <div className={HOME_VIEWPORT_SHELL}>
       <section className="relative isolate min-h-0 flex-1 overflow-hidden bg-brand-ink text-brand-ink">
@@ -57,7 +56,7 @@ export default async function HomePage({
         />
 
         <div className={`relative flex h-full min-h-0 flex-col py-4 sm:py-5 md:py-6 ${HOME_CONTENT_GUTTER}`}>
-          <div className="flex min-h-0 flex-1 flex-col justify-center gap-0 md:max-w-2xl">
+          <div className="flex min-h-0 w-full flex-1 flex-col justify-center gap-0 md:max-w-3xl">
             <p
               className="animate-[fadeUp_0.7s_ease_both] font-semibold tracking-[0.18em] sm:tracking-[0.22em]"
               style={{
@@ -69,7 +68,7 @@ export default async function HomePage({
               {t("home.kicker")}
             </p>
             <h1
-              className="animate-[fadeUp_0.8s_ease_both] mt-2 max-w-xl whitespace-pre-line font-bold leading-[1.15] tracking-[-0.03em] sm:mt-3 md:mt-4"
+              className="animate-[fadeUp_0.8s_ease_both] mt-2 w-full max-w-none whitespace-pre-line font-bold leading-[1.15] tracking-[-0.03em] sm:mt-3 md:mt-4"
               style={{
                 fontSize: homeHeadlineFontSizeFluid(headlineScale),
                 color: headlineColor,
@@ -80,7 +79,7 @@ export default async function HomePage({
             </h1>
             {t("home.lede").trim() ? (
               <p
-                className="animate-[fadeUp_0.9s_ease_both] mt-7 max-w-xl whitespace-pre-line font-normal leading-7 tracking-[-0.01em] sm:mt-8"
+                className="animate-[fadeUp_0.9s_ease_both] mt-7 w-full max-w-none whitespace-pre-line font-normal leading-7 tracking-[-0.01em] sm:mt-8"
                 style={{
                   fontSize: homeLedeFontSizeFluid(ledeScale),
                   color: ledeColor,

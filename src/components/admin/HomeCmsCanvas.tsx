@@ -115,7 +115,7 @@ export function HomeCmsCanvas({
         />
 
         <div className={`relative z-10 flex h-full min-h-0 flex-col py-4 sm:py-5 md:py-6 ${HOME_CONTENT_GUTTER}`}>
-          <div className="flex min-h-0 flex-1 flex-col justify-center md:max-w-2xl">
+          <div className="flex min-h-0 w-full flex-1 flex-col justify-center md:max-w-3xl">
             <button
               type="button"
               onClick={() => onSelectSlot("home.kicker")}
@@ -135,17 +135,17 @@ export function HomeCmsCanvas({
             <button
               type="button"
               onClick={() => onSelectSlot("home.headline")}
-              className={`mt-2 block w-fit max-w-xl border-0 bg-transparent p-0 text-left sm:mt-3 md:mt-4 ${ring("home.headline")}`}
+              className={`mt-2 block w-full max-w-none border-0 bg-transparent p-0 text-left sm:mt-3 md:mt-4 ${ring("home.headline")}`}
             >
               <span
-                className="block whitespace-pre-line font-bold leading-[1.15] tracking-[-0.03em]"
+                className="block w-full whitespace-pre-line font-bold leading-[1.15] tracking-[-0.03em]"
                 style={{
                   fontSize: homeHeadlineFontSizeFluid(hScale),
                   color: headlineHex,
                   fontFamily: headlineFamily,
                 }}
               >
-                {headline || "헤드라인"}
+                {headline.length > 0 ? headline : "헤드라인"}
               </span>
             </button>
             <button
