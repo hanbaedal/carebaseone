@@ -16,7 +16,7 @@ export default async function TechnologyPage({
     <div>
       <CmsSectionHero section="technology" imageFallback={images.leaves} />
       <SectionHubList blocks={TECHNOLOGY_HUB_BLOCKS} />
-      <SectionTail />
+      <SectionTail section="technology" />
     </div>
   );
 }

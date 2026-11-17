@@ -10,12 +10,15 @@ export function filterHubCanvasContentPaths(pageKey: string, paths: string[]): s
     return paths.filter((path) => !path.startsWith("technology.blocks."));
   }
   if (pageKey === "community") {
-    const cardLedes = new Set([
+    const hubCardFields = new Set([
+      "community.sections.notice",
+      "community.sections.archive",
+      "community.sections.gallery",
       "community.noticeLede",
       "community.archiveLede",
       "community.galleryLede",
     ]);
-    return paths.filter((path) => cardLedes.has(path));
+    return paths.filter((path) => hubCardFields.has(path));
   }
   if (pageKey === "about") {
     return paths.filter(

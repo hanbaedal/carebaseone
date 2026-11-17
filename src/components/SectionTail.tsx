@@ -3,12 +3,15 @@ import { CmsPageFooter } from "@/components/CmsPageFooter";
 
 type CmsFooterSection =
   | "home"
+  | "about"
   | "aboutGreeting"
   | "aboutFeatures"
   | "solution"
   | "global"
   | "business"
   | "product"
+  | "technology"
+  | "community"
   | "contact";
 
 export async function SectionTail({
