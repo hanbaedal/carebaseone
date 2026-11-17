@@ -11,6 +11,7 @@ import {
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
 import { Link } from "@/i18n/navigation";
+import { SectionTail } from "@/components/SectionTail";
 
 export function generateStaticParams() {
   return PRODUCT_LINE_CATEGORIES.map((key) => ({
@@ -53,6 +54,7 @@ export default async function ProductCategoryPage({
           <CtaLink href="/contact">{t("cta.inquire")}</CtaLink>
         </div>
       </section>
+      <SectionTail section="product" />
     </div>
   );
 }

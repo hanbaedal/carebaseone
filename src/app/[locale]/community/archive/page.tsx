@@ -10,6 +10,7 @@ import { listArchiveMedia } from "@/lib/media-lib";
 import { listPosts } from "@/lib/posts";
 import { getApprovedMember } from "@/lib/member-session";
 import { resolveLocale } from "@/lib/locale";
+import { SectionTail } from "@/components/SectionTail";
 
 export default async function ArchivePage({
   params,
@@ -45,6 +46,7 @@ export default async function ArchivePage({
         <ArchivePagination page={page} totalPages={totalPages} basePath="/community/archive" />
       </div>
       <ArchivePostsTable items={posts} locale={locale} />
+      <SectionTail />
     </div>
   );
 }

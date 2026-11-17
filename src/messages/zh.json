@@ -57,6 +57,9 @@
     "extra": "其他",
     "xml": "供搜索引擎使用的 XML 网站地图"
   },
+  "sectionNav": {
+    "subNavLabel": "子菜单"
+  },
   "cta": {
     "solutions": "了解方案",
     "products": "了解产品",
@@ -135,6 +138,16 @@
     "footerText": ""
   },
   "about": {
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white",
     "kicker": "COMPANY",
     "title": "面向人的健康事业平台",
     "lede": "CAREBASE 把技术与产品、方案、全球事业连接在一起。",

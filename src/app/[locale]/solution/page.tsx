@@ -4,7 +4,7 @@ import { CmsSectionHero } from "@/components/CmsSectionHero";
 import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
-import { CmsPageFooter } from "@/components/CmsPageFooter";
+import { SectionTail } from "@/components/SectionTail";
 
 const items = [
   { key: "vascular", image: images.vascular },
@@ -65,7 +65,7 @@ export default async function SolutionPage({
           </CtaLink>
         </div>
       </section>
-      <CmsPageFooter section="solution" />
+      <SectionTail section="solution" />
     </div>
   );
 }

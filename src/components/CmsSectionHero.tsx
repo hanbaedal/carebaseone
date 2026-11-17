@@ -17,6 +17,7 @@ import {
 type HeroTextKey = "kicker" | "title" | "lede";
 
 type CmsHeroSection =
+  | "about"
   | "aboutGreeting"
   | "aboutFeatures"
   | "solution"

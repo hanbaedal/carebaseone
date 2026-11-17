@@ -4,6 +4,7 @@ import { MediaList } from "@/components/MediaList";
 import { images } from "@/lib/site";
 import { listPublishedMedia } from "@/lib/media-lib";
 import { resolveLocale } from "@/lib/locale";
+import { SectionTail } from "@/components/SectionTail";
 
 export default async function CertificationsPage({
   params,
@@ -21,6 +22,7 @@ export default async function CertificationsPage({
       <section className="mx-auto max-w-5xl px-6 py-14">
         <MediaList items={items} locale={locale} />
       </section>
+      <SectionTail />
     </div>
   );
 }

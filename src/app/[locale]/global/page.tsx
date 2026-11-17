@@ -4,7 +4,7 @@ import { CmsSectionHero } from "@/components/CmsSectionHero";
 import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
-import { CmsPageFooter } from "@/components/CmsPageFooter";
+import { SectionTail } from "@/components/SectionTail";
 
 const nodes = [
   { key: "korea", image: images.korea },
@@ -48,7 +48,7 @@ export default async function GlobalPage({
           <CtaLink href="/business">{t("cta.partner")}</CtaLink>
         </div>
       </section>
-      <CmsPageFooter section="global" />
+      <SectionTail section="global" />
     </div>
   );
 }

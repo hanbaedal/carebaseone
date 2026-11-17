@@ -8,6 +8,7 @@ import {
 } from "next-intl/server";
 import { Cormorant_Garamond, Noto_Sans_KR, Noto_Sans_SC } from "next/font/google";
 import { SiteHeader } from "@/components/SiteHeader";
+import { SectionSubNav } from "@/components/SectionSubNav";
 import { ViewTracker } from "@/components/ViewTracker";
 import { routing } from "@/i18n/routing";
 import { getApprovedMember } from "@/lib/member-session";
@@ -102,6 +103,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             memberName={member?.name ?? null}
             staffRole={staff?.role ?? null}
           />
+          <SectionSubNav />
           <main className="flex-1">{children}</main>
         </NextIntlClientProvider>
       </body>

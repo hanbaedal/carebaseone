@@ -57,6 +57,9 @@
     "extra": "기타",
     "xml": "XML 사이트맵 (검색엔진용)"
   },
+  "sectionNav": {
+    "subNavLabel": "하위 메뉴"
+  },
   "cta": {
     "solutions": "솔루션 보기",
     "products": "제품 살펴보기",
@@ -135,6 +138,16 @@
     "footerText": ""
   },
   "about": {
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white",
     "kicker": "COMPANY",
     "title": "사람을 위한 헬스케어 비즈니스 플랫폼",
     "lede": "CAREBASE는 기술을 제품과 솔루션, 글로벌 사업으로 연결하는 회사입니다.",

@@ -5,6 +5,7 @@ import { listPosts } from "@/lib/posts";
 import { ensurePostSeed } from "@/lib/seed-posts";
 import { getApprovedMember } from "@/lib/member-session";
 import { resolveLocale } from "@/lib/locale";
+import { SectionTail } from "@/components/SectionTail";
 
 export default async function GalleryPage({
   params,
@@ -25,6 +26,7 @@ export default async function GalleryPage({
       <div className="mt-14">
         <PostList items={items} locale={locale} basePath="/community/gallery" />
       </div>
+      <SectionTail />
     </div>
   );
 }

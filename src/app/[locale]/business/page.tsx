@@ -4,7 +4,7 @@ import { EcosystemDiagram } from "@/components/EcosystemDiagram";
 import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
-import { CmsPageFooter } from "@/components/CmsPageFooter";
+import { SectionTail } from "@/components/SectionTail";
 
 const nodeKeys = [
   "technology",
@@ -44,7 +44,7 @@ export default async function BusinessPage({
         </div>
         <EcosystemDiagram center={t("business.center")} nodes={nodes} />
       </section>
-      <CmsPageFooter section="business" />
+      <SectionTail section="business" />
     </div>
   );
 }

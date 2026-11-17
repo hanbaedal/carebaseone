@@ -4,6 +4,7 @@ import { listPosts } from "@/lib/posts";
 import { ensurePostSeed } from "@/lib/seed-posts";
 import { getApprovedMember } from "@/lib/member-session";
 import { resolveLocale } from "@/lib/locale";
+import { SectionTail } from "@/components/SectionTail";
 
 export default async function NoticePage({
   params,
@@ -23,6 +24,7 @@ export default async function NoticePage({
       <div className="mt-10">
         <PostList items={items} locale={locale} basePath="/community/notice" />
       </div>
+      <SectionTail />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { MediaList } from "@/components/MediaList";
 import { images } from "@/lib/site";
 import { listPublishedMedia } from "@/lib/media-lib";
 import { resolveLocale } from "@/lib/locale";
+import { SectionTail } from "@/components/SectionTail";
 
 export default async function ResearchPage({
   params,
@@ -33,6 +34,7 @@ export default async function ResearchPage({
           </div>
         </div>
       </section>
+      <SectionTail />
     </div>
   );
 }

@@ -11,7 +11,7 @@ import {
   defaultFontForTextPath,
 } from "@/lib/home-hero";
 import { resolveLocale } from "@/lib/locale";
-import { CmsPageFooter } from "@/components/CmsPageFooter";
+import { SectionTail } from "@/components/SectionTail";
 
 export default async function AboutGreetingPage({
   params,
@@ -43,7 +43,7 @@ export default async function AboutGreetingPage({
           </CtaLink>
         </div>
       </section>
-      <CmsPageFooter section="aboutGreeting" />
+      <SectionTail section="aboutGreeting" />
     </div>
   );
 }

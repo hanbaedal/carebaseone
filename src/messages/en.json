@@ -57,6 +57,9 @@
     "extra": "Other",
     "xml": "XML sitemap for search engines"
   },
+  "sectionNav": {
+    "subNavLabel": "Submenu"
+  },
   "cta": {
     "solutions": "Explore Solutions",
     "products": "Explore Products",
@@ -135,6 +138,16 @@
     "footerText": ""
   },
   "about": {
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white",
     "kicker": "COMPANY",
     "title": "A healthcare business platform for people",
     "lede": "CAREBASE connects technology with products, solutions, and global business.",
