@@ -22,3 +22,14 @@ export const GUEST_PAGE_GUTTER_X = "px-guest-gutter";
 /** 헤더 hover 서브메뉴 — 한글 6자 + 좌우 px-4(2rem), 긴 라벨은 w-max로 확장 */
 export const HEADER_SUBMENU_PANEL =
   "w-max min-w-[calc(6ch+2rem)] text-[13px]";
+
+/** 헤더·사이트맵 링크 — 긴 관리 메뉴명 한 줄 */
+export const HEADER_SUBMENU_LINK = "block whitespace-nowrap px-4 py-2";
+
+/** 사이트맵 카드 그리드 — 셀 최소 폭 6자 + 패딩 */
+export const SITEMAP_CARD_GRID =
+  "grid gap-2 sm:gap-3 [grid-template-columns:repeat(auto-fill,minmax(min(100%,calc(6ch+2.5rem)),1fr))]";
+
+/** 사이트맵·계정 허브 카드 공통 */
+export const SITEMAP_CARD_SHELL =
+  "flex w-full min-w-0 flex-col rounded-xl border px-3 py-3 shadow-sm transition-all hover:shadow-md sm:px-4 sm:py-3.5";

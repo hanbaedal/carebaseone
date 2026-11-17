@@ -7,6 +7,7 @@ import {
   type HeaderRoleGroup,
 } from "@/lib/header-role-nav";
 import type { Role } from "@/lib/session";
+import { HEADER_SUBMENU_LINK, HEADER_SUBMENU_PANEL } from "@/lib/guest-layout";
 
 function isAdminHref(href: string) {
   return href.startsWith("/admin");
@@ -40,7 +41,9 @@ function RoleDropdown({
           </span>
         </Link>
       )}
-      <div className="invisible absolute left-0 top-full z-50 max-h-[min(70vh,28rem)] min-w-[12rem] overflow-y-auto rounded-xl border border-line bg-white py-2 pt-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+      <div
+        className={`invisible absolute left-0 top-full z-50 max-h-[min(70vh,28rem)] overflow-y-auto rounded-xl border border-line bg-white py-2 pt-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 ${HEADER_SUBMENU_PANEL}`}
+      >
         {group.links.map((link) => {
           if ("heading" in link && link.heading) {
             return (
@@ -56,7 +59,7 @@ function RoleDropdown({
             <a
               key={`${link.label}-${link.href}`}
               href={link.href}
-              className="block px-4 py-2 text-[13px] text-brand-ink/80 hover:bg-brand/5 hover:text-brand"
+              className={`${HEADER_SUBMENU_LINK} text-brand-ink/80 hover:bg-brand/5 hover:text-brand`}
               onClick={onNavigate}
             >
               {link.label}
@@ -65,7 +68,7 @@ function RoleDropdown({
             <Link
               key={`${link.label}-${link.href}`}
               href={link.href}
-              className="block px-4 py-2 text-[13px] text-brand-ink/80 hover:bg-brand/5 hover:text-brand"
+              className={`${HEADER_SUBMENU_LINK} text-brand-ink/80 hover:bg-brand/5 hover:text-brand`}
               onClick={onNavigate}
             >
               {link.label}

@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import type { HeaderNavItem } from "@/lib/site";
+import { SITEMAP_CARD_GRID, SITEMAP_CARD_SHELL } from "@/lib/guest-layout";
 
 const cardPastels: Record<string, { shell: string; divider: string; label: string }> = {
   about: {
@@ -58,7 +59,7 @@ export function SitemapCardGrid({
   tNav: (key: string) => string;
 }) {
   return (
-    <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4 lg:gap-3">
+    <div className={SITEMAP_CARD_GRID}>
       {items.map((item) => {
         const pastel = theme(item.key);
         const children = item.children ?? [];
@@ -66,20 +67,24 @@ export function SitemapCardGrid({
         return (
           <article
             key={item.key}
-            className={`flex flex-col rounded-xl border px-3 py-3 shadow-sm transition-all hover:shadow-md sm:px-4 sm:py-3.5 ${pastel.shell}`}
+            className={`${SITEMAP_CARD_SHELL} ${pastel.shell}`}
           >
-            <h2 className={`text-[13px] font-semibold tracking-wide text-brand-ink sm:text-sm ${pastel.label}`}>
-              <Link href={item.href} className="hover:text-brand">
+            <h2
+              className={`whitespace-nowrap text-[13px] font-semibold tracking-wide sm:text-sm ${pastel.label}`}
+            >
+              <Link href={item.href} className="text-brand-ink hover:text-brand">
                 {tNav(item.key)}
               </Link>
             </h2>
             {children.length > 0 ? (
-              <ul className={`mt-2 flex flex-1 flex-col gap-1 border-t pt-2 sm:gap-1.5 ${pastel.divider}`}>
+              <ul
+                className={`mt-2 flex flex-1 flex-col gap-0.5 border-t pt-2 ${pastel.divider}`}
+              >
                 {children.map((link) => (
-                  <li key={link.href}>
+                  <li key={link.href} className="min-w-0">
                     <Link
                       href={link.href}
-                      className="text-[12px] leading-snug text-brand-ink/80 hover:text-brand sm:text-[13px]"
+                      className="whitespace-nowrap text-[12px] leading-snug text-brand-ink/80 hover:text-brand sm:text-[13px]"
                     >
                       {tNav(link.key)}
                     </Link>

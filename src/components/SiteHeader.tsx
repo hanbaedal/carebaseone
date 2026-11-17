@@ -12,7 +12,11 @@ import {
 } from "@/components/HeaderRoleMenus";
 import { MemberHeaderAuth } from "@/components/MemberHeaderAuth";
 import { headerNav } from "@/lib/site";
-import { GUEST_HEADER_SHELL, HEADER_SUBMENU_PANEL } from "@/lib/guest-layout";
+import {
+  GUEST_HEADER_SHELL,
+  HEADER_SUBMENU_LINK,
+  HEADER_SUBMENU_PANEL,
+} from "@/lib/guest-layout";
 
 function linkActive(pathname: string, href: string) {
   return pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
@@ -77,7 +81,7 @@ export function SiteHeader({
                     <Link
                       key={child.key}
                       href={child.href}
-                      className={`block whitespace-nowrap px-4 py-2 hover:bg-brand/5 ${
+                      className={`${HEADER_SUBMENU_LINK} hover:bg-brand/5 ${
                         linkActive(pathname, child.href) ? "text-brand" : "text-brand-ink/80"
                       }`}
                     >

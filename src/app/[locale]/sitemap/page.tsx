@@ -18,7 +18,7 @@ export default async function SiteMapPage({
   const member = await getApprovedMember();
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-guest-gutter sm:py-8 lg:py-10">
+    <div className="mx-auto max-w-7xl px-guest-gutter py-6 sm:py-8 lg:py-10">
       <SitemapCardGrid items={headerNav} tNav={tNav} />
       {staff ? (
         <div className="mt-5 sm:mt-6">

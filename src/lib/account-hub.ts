@@ -1,10 +1,16 @@
 import { menuGroupsForRole } from "@/lib/admin-menu";
 import type { Role } from "@/lib/session";
 
+export type HubLink = {
+  href: string;
+  label: string;
+  heading?: boolean;
+};
+
 export type HubGroup = {
   key: string;
   title: string;
-  links: { href: string; label: string }[];
+  links: HubLink[];
 };
 
 export const memberHubGroups: HubGroup[] = [
@@ -25,6 +31,10 @@ export function staffHubGroups(role: Role): HubGroup[] {
   return menuGroupsForRole(role).map((group) => ({
     key: group.key,
     title: group.label,
-    links: group.items.map((item) => ({ href: item.href, label: item.label })),
+    links: group.items.map((item) => ({
+      href: item.href,
+      label: item.label,
+      heading: item.heading,
+    })),
   }));
 }
