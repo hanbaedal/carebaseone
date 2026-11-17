@@ -11,7 +11,7 @@ export function HomepageAdminHubSitemap() {
   return (
     <article className={`${SITEMAP_CARD_SHELL} ${SITEMAP_CARD_ARTICLE} border-sky-200/50 bg-sky-50/50`}>
       {mainHome ? (
-        <p className="mb-1.5 border-b border-ink/10 pb-1 sm:mb-2 sm:pb-1.5 2xl:mb-3 2xl:pb-2">
+        <p className="mb-1.5 border-b border-ink/10 pb-1 sm:mb-2 sm:pb-1.5 lg:mb-1 lg:pb-0.5 2xl:mb-3 2xl:pb-2">
           <a href={mainHome.href} className={linkClass}>
             {mainHome.label}
           </a>

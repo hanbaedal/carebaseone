@@ -34,18 +34,18 @@ export function guestHeaderMaxWidth(staffRole: boolean) {
 /** 헤더·사이트맵 링크 — 긴 관리 메뉴명 한 줄 */
 export const HEADER_SUBMENU_LINK = "block whitespace-nowrap px-4 py-2";
 
-/** 사이트맵 — 모바일 2열·촘촘, 노트북 4열, PC 간격 확대 */
+/** 사이트맵 — 모바일 2열·촘촘, 노트북(lg) 4열·줄간 촘촘, PC(xl+) 간격 확대 */
 export const SITEMAP_NAV_GRID =
-  "grid grid-cols-2 gap-1.5 sm:gap-3 lg:grid-cols-4 lg:gap-2 xl:gap-3 2xl:gap-4";
+  "grid grid-cols-2 gap-1.5 sm:gap-3 lg:grid-cols-4 lg:gap-1.5 lg:gap-y-1 xl:gap-3 2xl:gap-4";
 
-/** 사이트맵 페이지 — 모바일 컴팩트 · lg 노트북 · xl·2xl PC */
+/** 사이트맵 페이지 — lg만 세로 밀도 최대(노트북 한 화면), xl·2xl은 여유 */
 export const SITEMAP_PAGE =
-  "mx-auto w-full max-w-7xl space-y-2 px-guest-gutter py-3 sm:space-y-3 sm:py-4 lg:max-w-[96rem] lg:space-y-3.5 lg:py-5 xl:space-y-4 xl:py-6 2xl:space-y-6 2xl:py-8";
+  "mx-auto w-full max-w-7xl space-y-2 px-guest-gutter py-3 sm:space-y-3 sm:py-4 lg:max-w-[96rem] lg:space-y-1.5 lg:py-2.5 xl:space-y-4 xl:py-6 2xl:space-y-6 2xl:py-8";
 
 export const SITEMAP_SECTION_TITLE =
-  "text-[11px] font-semibold tracking-wide text-brand-ink sm:text-[13px] xl:text-sm 2xl:text-base";
+  "text-[11px] font-semibold leading-none tracking-wide text-brand-ink sm:text-[13px] lg:text-[12px] xl:text-sm xl:leading-normal 2xl:text-base";
 
-export const SITEMAP_SECTION_BODY = "mt-1 sm:mt-1.5 xl:mt-2 2xl:mt-3";
+export const SITEMAP_SECTION_BODY = "mt-1 sm:mt-1.5 lg:mt-0.5 xl:mt-2 2xl:mt-3";
 
 export const SITEMAP_PAGE_TITLE =
   "text-xs font-semibold text-brand-ink sm:text-sm sm:font-semibold md:text-base xl:text-lg 2xl:text-xl";
@@ -54,11 +54,11 @@ export const SITEMAP_PAGE_LEDE =
   "mt-0.5 text-[10px] leading-snug text-brand-ink/55 sm:text-[11px] md:text-xs xl:text-sm 2xl:text-[15px]";
 
 /** 섹션 카드 안쪽 세로 패딩 */
-export const SITEMAP_CARD_ARTICLE = "py-2 sm:py-2.5 md:py-3 xl:py-3.5 2xl:py-5";
+export const SITEMAP_CARD_ARTICLE = "py-2 sm:py-2.5 md:py-3 lg:py-1.5 xl:py-3.5 2xl:py-5";
 
 /** 홈페이지관리 단독 1단 */
 export const SITEMAP_ADMIN_HOME_GRID = "grid grid-cols-1 gap-2 sm:gap-3";
 
 /** 사이트맵·계정 허브 카드 공통 */
 export const SITEMAP_CARD_SHELL =
-  "flex w-full min-w-0 flex-col rounded-lg border px-2 py-2 shadow-sm transition-all hover:shadow-md sm:rounded-xl sm:px-3 sm:py-3 md:px-4 md:py-3.5 xl:px-5 xl:py-4 2xl:rounded-2xl 2xl:px-6 2xl:py-5";
+  "flex w-full min-w-0 flex-col rounded-lg border px-2 py-2 shadow-sm transition-all hover:shadow-md sm:rounded-xl sm:px-3 sm:py-3 md:px-4 md:py-3.5 lg:px-3 lg:py-2 xl:px-5 xl:py-4 2xl:rounded-2xl 2xl:px-6 2xl:py-5";
