@@ -87,3 +87,56 @@ export const adminMenuGroups: AdminMenuGroup[] = [
 export function menuGroupsForRole(role: Role) {
   return adminMenuGroups.filter((group) => !group.supervisorOnly || role === "supervisor");
 }
+
+export type HomepageAdminHubSection = {
+  key: string;
+  title: string;
+  /** 허브 편집 — 분류 타이틀 클릭 대상 */
+  hubHref: string;
+  links: { href: string; label: string }[];
+};
+
+/** 허브 구분 제목 → CMS 허브 URL (타이틀=허브, 하위에 (허브) 항목 중복 없음) */
+const HOMEPAGE_HUB_HREF: Record<string, string> = {
+  회사소개: "/admin/cms?page=about",
+  제품: "/admin/cms?page=product",
+  기술: "/admin/cms?page=technology",
+  커뮤니티: "/admin/cms?page=community",
+};
+
+function isHubDuplicateLink(hubHref: string, item: AdminMenuItem) {
+  if (item.label.includes("(허브)")) return true;
+  if (hubHref && item.href === hubHref) return true;
+  return false;
+}
+
+/** 사이트맵 홈페이지관리 — 메인 홈 + 허브 4구역(회사소개·제품·기술·커뮤니티) */
+export function homepageAdminHubSections(): {
+  mainHome: { href: string; label: string } | null;
+  hubs: HomepageAdminHubSection[];
+} {
+  const group = adminMenuGroups.find((g) => g.key === "homepage");
+  if (!group) return { mainHome: null, hubs: [] };
+
+  let mainHome: { href: string; label: string } | null = null;
+  const hubs: HomepageAdminHubSection[] = [];
+  let current: HomepageAdminHubSection | null = null;
+
+  for (const item of group.items) {
+    if (item.heading) {
+      const hubHref = HOMEPAGE_HUB_HREF[item.label] ?? "";
+      current = { key: item.label, title: item.label, hubHref, links: [] };
+      hubs.push(current);
+      continue;
+    }
+    if (!item.href) continue;
+    if (current) {
+      if (isHubDuplicateLink(current.hubHref, item)) continue;
+      current.links.push({ href: item.href, label: item.label });
+    } else if (!mainHome) {
+      mainHome = { href: item.href, label: item.label };
+    }
+  }
+
+  return { mainHome, hubs };
+}
