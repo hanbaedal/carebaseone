@@ -17,7 +17,7 @@ export default async function StorePage({
 
   if (!member) {
     return (
-      <div className="mx-auto max-w-lg px-6 py-20 text-center">
+      <div className="mx-auto max-w-lg px-guest-gutter py-20 text-center">
         <h1 className="font-display text-3xl text-brand-ink">{t("title")}</h1>
         <p className="mt-4 text-brand-ink/70">{t("loginRequired")}</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -33,7 +33,7 @@ export default async function StorePage({
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
+    <div className="mx-auto max-w-3xl px-guest-gutter py-16">
       <h1 className="font-display text-3xl text-brand-ink">{t("title")}</h1>
       <p className="mt-3 text-sm text-brand-ink/65">
         {member.name} · {t(`tier.${member.tier}`)}

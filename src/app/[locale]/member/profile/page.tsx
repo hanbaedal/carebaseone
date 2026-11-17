@@ -13,7 +13,7 @@ export default async function MemberProfilePage({
   if (!member) redirect("/login");
 
   return (
-    <div className="mx-auto max-w-lg px-6 py-16">
+    <div className="mx-auto max-w-lg px-guest-gutter py-16">
       <h1 className="font-display text-3xl text-brand-ink">회원 정보</h1>
       <p className="mt-2 text-sm text-brand-ink/60">
         이름·아이디는 변경할 수 없습니다.

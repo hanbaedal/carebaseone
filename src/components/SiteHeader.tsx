@@ -12,6 +12,7 @@ import {
 } from "@/components/HeaderRoleMenus";
 import { MemberHeaderAuth } from "@/components/MemberHeaderAuth";
 import { headerNav } from "@/lib/site";
+import { GUEST_HEADER_SHELL } from "@/lib/guest-layout";
 
 function linkActive(pathname: string, href: string) {
   return pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
@@ -45,8 +46,8 @@ export function SiteHeader({
     }`;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-white/95 text-brand-ink backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:py-4">
+    <header className={GUEST_HEADER_SHELL}>
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-guest-gutter py-3 lg:py-4">
         <BrandLogo />
         <nav className="hidden items-center gap-4 lg:flex xl:gap-6">
           {headerNav.map((item) => {
@@ -109,7 +110,7 @@ export function SiteHeader({
         </div>
       </div>
       {open ? (
-        <div className="border-t border-line bg-white px-4 py-5 lg:hidden sm:px-6">
+        <div className="border-t border-line bg-white px-guest-gutter py-5 pb-safe lg:hidden">
           <div className="flex flex-col gap-2">
             <div className="sm:hidden pb-2">
               <LanguageSwitcher />

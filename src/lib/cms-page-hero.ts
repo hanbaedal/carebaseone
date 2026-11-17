@@ -5,6 +5,9 @@ import { resolveHeroImageSrc } from "@/lib/home-hero";
 import { sectionHeroImagePath } from "@/lib/cms-typography";
 
 const HERO_IMAGE_BY_KEY: Record<string, string> = {
+  about: images.close,
+  technology: images.leaves,
+  community: images.close,
   greeting: images.close,
   features: images.lab,
   solution: images.wellness,

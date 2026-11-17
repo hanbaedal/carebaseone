@@ -32,7 +32,7 @@ export default async function UnifiedLoginPage({
         : null;
 
   return (
-    <div className="mx-auto max-w-md px-6 py-16">
+    <div className="mx-auto max-w-md px-guest-gutter py-16">
       <h1 className="font-display text-3xl text-brand-ink">로그인</h1>
       <p className="mt-2 text-sm leading-relaxed text-brand-ink/60">
         회원·관리자·슈퍼바이저 모두 이 화면에서 로그인합니다. 운영자 계정을 먼저 확인한 뒤 회원

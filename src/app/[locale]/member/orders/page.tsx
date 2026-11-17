@@ -24,7 +24,7 @@ export default async function MemberOrdersPage({
   const orders = await listOrdersForMember(member.username);
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
+    <div className="mx-auto max-w-3xl px-guest-gutter py-16">
       <h1 className="font-display text-3xl text-brand-ink">내 주문</h1>
       <ul className="mt-8 divide-y divide-line border-y border-line">
         {orders.map((order) => (

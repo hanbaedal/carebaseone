@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { normalizePublicPath, sectionNavForPath } from "@/lib/section-nav";
+import { GUEST_STICKY_SUBNAV_TOP } from "@/lib/guest-layout";
 
 function chipClass(active: boolean) {
   return `shrink-0 rounded-full border px-3 py-1.5 text-[12px] font-medium transition-colors ${
@@ -26,9 +27,9 @@ export function SectionSubNav() {
   return (
     <nav
       aria-label={tSection("subNavLabel")}
-      className="sticky top-[3.25rem] z-40 border-b border-line bg-white/95 backdrop-blur-md"
+      className={`sticky z-40 border-b border-line bg-white/95 backdrop-blur-md ${GUEST_STICKY_SUBNAV_TOP}`}
     >
-      <div className="mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto px-4 py-2 sm:px-6 [&::-webkit-scrollbar]:h-0">
+      <div className="mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto px-guest-gutter py-2 [&::-webkit-scrollbar]:h-0">
         <Link href={parent.href} className={chipClass(onHub)}>
           {tNav(parent.key)}
         </Link>

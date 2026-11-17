@@ -19,7 +19,7 @@ export default async function ContactPage({
   return (
     <div>
       <CmsSectionHero section="contact" imageFallback={images.close} />
-      <section className="mx-auto max-w-xl px-6 py-20">
+      <section className="mx-auto max-w-xl px-guest-gutter py-20">
         <ContactForm preset={as === "partner" ? "partner" : "consumer"} />
       </section>
       <SectionTail section="contact" />

@@ -24,7 +24,7 @@ export default async function GlobalPage({
   return (
     <div>
       <CmsSectionHero section="global" imageFallback={images.close} />
-      <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2">
+      <section className="mx-auto grid max-w-6xl gap-10 px-guest-gutter py-20 md:grid-cols-2">
         {nodes.map((node) => (
           <article key={node.key}>
             <div className="relative aspect-[16/10] overflow-hidden">
@@ -43,7 +43,7 @@ export default async function GlobalPage({
           </article>
         ))}
       </section>
-      <section className="px-6 pb-20">
+      <section className="px-guest-gutter pb-20">
         <div className="mx-auto max-w-6xl">
           <CtaLink href="/business">{t("cta.partner")}</CtaLink>
         </div>

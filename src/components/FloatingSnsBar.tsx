@@ -30,7 +30,7 @@ export async function FloatingSnsBar() {
 
   return (
     <nav
-      className="pointer-events-none fixed bottom-5 right-4 z-40 flex flex-col items-end gap-2 sm:bottom-6 sm:right-6"
+      className="pointer-events-none fixed bottom-guest-safe right-guest-safe z-40 flex flex-col items-end gap-2"
       aria-label="SNS 바로가기"
     >
       {links.map((item) => {

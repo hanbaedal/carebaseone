@@ -112,7 +112,7 @@ export function ProductCatalogCards({
 
       {active ? (
         <div
-          className="fixed inset-0 z-[100] flex items-end justify-center p-4 sm:items-center sm:p-6"
+          className="fixed inset-0 z-[100] flex items-end justify-center p-4 pb-safe pl-safe pr-safe sm:items-center sm:p-6 sm:pb-safe"
           role="presentation"
         >
           <button

@@ -10,7 +10,7 @@ export default async function MemberSignupPage({
   resolveLocale((await params).locale);
 
   return (
-    <div className="mx-auto max-w-lg px-6 py-16">
+    <div className="mx-auto max-w-lg px-guest-gutter py-16">
       <h1 className="font-display text-3xl text-brand-ink">회원가입</h1>
       <p className="mt-2 text-sm text-brand-ink/65">
         신청 후 관리자 승인이 필요합니다.

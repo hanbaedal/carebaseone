@@ -44,14 +44,14 @@ const LABELS: Record<string, string> = {
   common: "공통",
 };
 
-/** 공개 메뉴 key → 편집 경로 (헤더 홈페이지관리 소메뉴와 동일) */
+/** 공개 메뉴 key → 편집 경로 (헤더 홈페이지관리 · CMS 하위 메뉴와 동일) */
 const editByKey: Record<string, string> = {
-  home: "/admin/content?section=home",
+  home: "/admin/cms",
   meta: "/admin/content?section=meta",
   nav: "/admin/content?section=nav",
   footer: "/admin/content?section=footer",
   cta: "/admin/content?section=cta",
-  about: "/admin/cms?page=home",
+  about: "/admin/cms?page=about",
   greeting: "/admin/cms?page=greeting",
   features: "/admin/cms?page=features",
   solution: "/admin/cms?page=solution",
@@ -63,11 +63,11 @@ const editByKey: Record<string, string> = {
   cosmetics: "/admin/cms?page=cosmetics",
   patch: "/admin/cms?page=patch",
   healthPlatform: "/admin/cms?page=healthPlatform",
-  technology: "/admin/content?section=technology",
+  technology: "/admin/cms?page=technology",
   patents: "/admin/media?focus=patents",
   certifications: "/admin/media?focus=certifications",
   research: "/admin/media?focus=research",
-  community: "/admin/content?section=news",
+  community: "/admin/cms?page=community",
   notice: "/admin/notices",
   archive: "/admin/posts?type=archive",
   gallery: "/admin/posts?type=gallery",
@@ -76,6 +76,14 @@ const editByKey: Record<string, string> = {
 
 function labelOf(key: string) {
   return LABELS[key] ?? key;
+}
+
+export function labelForNavKey(key: string) {
+  return labelOf(key);
+}
+
+export function editHrefForNavKey(key: string) {
+  return editByKey[key] ?? `/admin/content?section=${key}`;
 }
 
 function publicPath(href: string) {

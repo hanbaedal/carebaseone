@@ -17,7 +17,7 @@ export async function SectionHubList({ blocks }: { blocks: HubBlockDef[] }) {
   const detailsLabel = tCta("details");
 
   return (
-    <Card className="mx-auto max-w-4xl px-4 pb-16 pt-4 sm:px-6 md:pt-8">
+    <Card className="mx-auto max-w-4xl px-guest-gutter pb-16 pt-4 md:pt-8">
       {await Promise.all(
         blocks.map(async (block) => {
           const t = await getTranslations(block.messageNs);

@@ -18,7 +18,7 @@ export default async function AboutFeaturesPage({
   return (
     <div>
       <CmsSectionHero section="aboutFeatures" imageFallback={images.lab} />
-      <section className="mx-auto max-w-7xl px-6 py-16">
+      <section className="mx-auto max-w-7xl px-guest-gutter py-16">
         <p className="max-w-2xl text-base leading-8 text-brand-ink/70">{t("lede")}</p>
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           {featureKeys.map((key) => (

@@ -19,7 +19,7 @@ export default async function NoticePage({
   const items = await listPosts("notice", Boolean(member));
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-16">
+    <div className="mx-auto max-w-5xl px-guest-gutter py-16">
       <h1 className="font-display text-4xl text-brand-ink">{t("sections.notice")}</h1>
       <div className="mt-10">
         <PostList items={items} locale={locale} basePath="/community/notice" />

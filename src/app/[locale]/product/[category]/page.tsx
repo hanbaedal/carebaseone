@@ -35,7 +35,7 @@ export default async function ProductCategoryPage({
   return (
     <div>
       <PageHero kicker={t("product.kicker")} title={title} image={images.breakfast} />
-      <section className="mx-auto max-w-6xl px-6 py-16">
+      <section className="mx-auto max-w-6xl px-guest-gutter py-16">
         <p className="text-sm text-brand-ink/60">
           <Link href="/product" className="text-brand hover:underline">
             {t("nav.product")}

@@ -20,7 +20,7 @@ export default async function ResearchPage({
   return (
     <div>
       <PageHero kicker={t("kicker")} title={t("title")} image={images.leaves} />
-      <section className="mx-auto max-w-5xl space-y-12 px-6 py-14">
+      <section className="mx-auto max-w-5xl space-y-12 px-guest-gutter py-14">
         <div>
           <h2 className="text-lg font-bold text-brand-ink">{t("researchHeading")}</h2>
           <div className="mt-4">

@@ -31,7 +31,7 @@ export default async function AboutGreetingPage({
   return (
     <div>
       <CmsSectionHero section="aboutGreeting" imageFallback={images.close} showLede={false} />
-      <section className="mx-auto max-w-3xl px-6 py-16">
+      <section className="mx-auto max-w-3xl px-guest-gutter py-16">
         <p className="whitespace-pre-line leading-8" style={bodyStyle}>
           {t("body")}
         </p>

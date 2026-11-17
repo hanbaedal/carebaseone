@@ -20,7 +20,7 @@ export default async function NewsPage({
         title={t("title")}
         image={images.lab}
       />
-      <section className="mx-auto max-w-6xl px-6 py-20">
+      <section className="mx-auto max-w-6xl px-guest-gutter py-20">
         <div className="grid gap-10 md:grid-cols-3">
           {items.map((key) => (
             <article key={key} className="border-t border-ink/15 pt-6">

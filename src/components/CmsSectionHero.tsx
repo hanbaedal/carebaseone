@@ -70,7 +70,7 @@ export async function CmsSectionHero({
         unoptimized={heroImageUnoptimized(heroSrc)}
       />
       <div className="absolute inset-0 bg-gradient-to-r from-brand-ink/80 via-brand-ink/45 to-transparent" />
-      <div className="relative mx-auto flex min-h-[56vh] max-w-7xl flex-col justify-end px-6 pb-16 pt-28">
+      <div className="relative mx-auto flex min-h-[56vh] max-w-7xl flex-col justify-end px-guest-gutter pb-16 pt-28">
         <p className="font-semibold tracking-[0.22em]" style={styleFor("kicker")}>
           {kicker}
         </p>

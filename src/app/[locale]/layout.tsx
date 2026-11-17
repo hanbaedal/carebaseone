@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import {
@@ -14,6 +14,7 @@ import { routing } from "@/i18n/routing";
 import { getApprovedMember } from "@/lib/member-session";
 import { getSession } from "@/lib/session";
 import { siteUrl } from "@/lib/site";
+import { GUEST_MAIN_SHELL } from "@/lib/guest-layout";
 
 const display = Cormorant_Garamond({
   subsets: ["latin"],
@@ -34,6 +35,12 @@ const sansSc = Noto_Sans_SC({
 });
 
 export const dynamic = "force-dynamic";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 type Props = {
   children: React.ReactNode;
@@ -104,7 +111,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             staffRole={staff?.role ?? null}
           />
           <SectionSubNav />
-          <main className="flex-1">{children}</main>
+          <main className={GUEST_MAIN_SHELL}>{children}</main>
         </NextIntlClientProvider>
       </body>
     </html>

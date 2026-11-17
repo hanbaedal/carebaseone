@@ -25,7 +25,7 @@ export default async function SolutionPage({
   return (
     <div>
       <CmsSectionHero section="solution" imageFallback={images.wellness} />
-      <section className="mx-auto max-w-6xl px-6 py-20">
+      <section className="mx-auto max-w-6xl px-guest-gutter py-20">
         <div className="grid gap-16">
           {items.map((item, index) => (
             <article

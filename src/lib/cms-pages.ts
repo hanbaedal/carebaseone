@@ -65,6 +65,19 @@ export const CMS_PAGES: CmsPageDef[] = [
     },
   },
   {
+    key: "about",
+    label: "회사소개",
+    preview: "/ko/about",
+    section: "about",
+    tab: "submenu",
+    fieldLabels: {
+      "about.heroImage": "배경 이미지",
+      "about.kicker": "키커",
+      "about.title": "허브 제목",
+      "about.lede": "허브 소개",
+    },
+  },
+  {
     key: "greeting",
     label: "인사말",
     preview: "/ko/about/greeting",
@@ -114,6 +127,38 @@ export const CMS_PAGES: CmsPageDef[] = [
     preview: "/ko/product",
     section: "product",
     tab: "submenu",
+    fieldLabels: {
+      "product.heroImage": "배경 이미지",
+      "product.kicker": "키커",
+      "product.title": "허브 제목",
+      "product.lede": "허브 소개",
+    },
+  },
+  {
+    key: "technology",
+    label: "기술",
+    preview: "/ko/technology",
+    section: "technology",
+    tab: "submenu",
+    fieldLabels: {
+      "technology.kicker": "키커",
+      "technology.title": "허브 제목",
+      "technology.lede": "허브 소개",
+    },
+  },
+  {
+    key: "community",
+    label: "커뮤니티",
+    preview: "/ko/community",
+    section: "community",
+    tab: "submenu",
+    fieldLabels: {
+      "community.title": "허브 제목",
+      "community.lede": "허브 소개",
+      "community.noticeLede": "공지 요약",
+      "community.archiveLede": "자료실 요약",
+      "community.galleryLede": "갤러리 요약",
+    },
   },
   ...PRODUCT_LINE_CATEGORY_PAGES,
   {

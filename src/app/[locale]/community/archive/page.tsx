@@ -39,7 +39,7 @@ export default async function ArchivePage({
   const pageItems = items.slice(start, start + archivePageSize());
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16">
+    <div className="mx-auto max-w-6xl px-guest-gutter py-16">
       <h1 className="font-display text-4xl text-brand-ink">{t("sections.archive")}</h1>
       <div className="mt-10">
         <MediaArchiveTable items={pageItems} locale={locale} rowOffset={start} />

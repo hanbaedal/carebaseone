@@ -41,8 +41,18 @@ function RoleDropdown({
         </Link>
       )}
       <div className="invisible absolute left-0 top-full z-50 max-h-[min(70vh,28rem)] min-w-[12rem] overflow-y-auto rounded-xl border border-line bg-white py-2 pt-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-        {group.links.map((link) =>
-          isAdminHref(link.href) ? (
+        {group.links.map((link) => {
+          if ("heading" in link && link.heading) {
+            return (
+              <p
+                key={`heading-${link.label}`}
+                className="mt-2 px-4 pb-1 pt-1 text-[10px] font-semibold tracking-wide text-ink/45 first:mt-0"
+              >
+                {link.label}
+              </p>
+            );
+          }
+          return isAdminHref(link.href) ? (
             <a
               key={`${link.label}-${link.href}`}
               href={link.href}
@@ -60,8 +70,8 @@ function RoleDropdown({
             >
               {link.label}
             </Link>
-          ),
-        )}
+          );
+        })}
       </div>
     </div>
   );
@@ -151,7 +161,14 @@ export function HeaderRoleMenusMobile({
             {open ? (
               <div className="mt-2 flex flex-col gap-2 border-l border-line pl-3">
                 {group.links.map((link) =>
-                  isAdminHref(link.href) ? (
+                  link.heading ? (
+                    <p
+                      key={`heading-${link.label}`}
+                      className="mt-2 text-[11px] font-semibold text-ink/45 first:mt-0"
+                    >
+                      {link.label}
+                    </p>
+                  ) : isAdminHref(link.href) ? (
                     <a
                       key={`${link.label}-${link.href}`}
                       href={link.href}

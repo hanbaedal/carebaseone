@@ -22,7 +22,7 @@ export function SectionSiblingNav() {
       aria-label="메뉴 이전·다음"
       className="border-t border-line bg-cream/60"
     >
-      <div className="mx-auto flex max-w-7xl flex-wrap items-stretch justify-between gap-4 px-6 py-5 text-sm font-medium">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-stretch justify-between gap-4 px-guest-gutter py-5 text-sm font-medium">
         <div className="min-w-0 flex-1">
           {onHub ? (
             <span className="text-brand-ink/40">{tNav(parent.key)}</span>
@@ -43,7 +43,7 @@ export function SectionSiblingNav() {
         </div>
       </div>
       {prev && !onHub ? (
-        <div className="mx-auto flex max-w-7xl border-t border-line/80 px-6 py-3 text-xs text-brand-ink/55 sm:hidden">
+        <div className="mx-auto flex max-w-7xl border-t border-line/80 px-guest-gutter py-3 text-xs text-brand-ink/55 sm:hidden">
           <Link href={prev.href} className="text-brand hover:underline">
             ← {tNav(prev.key)}
           </Link>

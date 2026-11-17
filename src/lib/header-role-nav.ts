@@ -5,6 +5,7 @@ export type HeaderRoleLink = {
   href: string;
   label: string;
   external?: boolean;
+  heading?: boolean;
 };
 
 export type HeaderRoleGroup = {
@@ -38,6 +39,7 @@ export function staffHeaderGroups(role: Role): HeaderRoleGroup[] {
       href: item.href,
       label: item.label,
       external: item.href.startsWith("/admin"),
+      heading: item.heading,
     })),
   }));
 }
