@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import type { HeaderNavItem } from "@/lib/site";
-import { SITEMAP_CARD_GRID, SITEMAP_CARD_SHELL } from "@/lib/guest-layout";
+import { SITEMAP_CARD_SHELL, SITEMAP_NAV_GRID } from "@/lib/guest-layout";
 
 const cardPastels: Record<string, { shell: string; divider: string; label: string }> = {
   about: {
@@ -59,7 +59,7 @@ export function SitemapCardGrid({
   tNav: (key: string) => string;
 }) {
   return (
-    <div className={SITEMAP_CARD_GRID}>
+    <div className={SITEMAP_NAV_GRID}>
       {items.map((item) => {
         const pastel = theme(item.key);
         const children = item.children ?? [];

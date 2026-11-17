@@ -26,9 +26,12 @@ export const HEADER_SUBMENU_PANEL =
 /** 헤더·사이트맵 링크 — 긴 관리 메뉴명 한 줄 */
 export const HEADER_SUBMENU_LINK = "block whitespace-nowrap px-4 py-2";
 
-/** 사이트맵 카드 그리드 — 셀 최소 폭 6자 + 패딩 */
-export const SITEMAP_CARD_GRID =
-  "grid gap-2 sm:gap-3 [grid-template-columns:repeat(auto-fill,minmax(min(100%,calc(6ch+2.5rem)),1fr))]";
+/** 사이트맵 — 공개 메뉴 4칸 · 관리 소그룹 4칸 (노트북 한 줄) */
+export const SITEMAP_NAV_GRID =
+  "grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4 lg:gap-3";
+
+/** 홈페이지관리 단독 1단 */
+export const SITEMAP_ADMIN_HOME_GRID = "grid grid-cols-1 gap-2 sm:gap-3";
 
 /** 사이트맵·계정 허브 카드 공통 */
 export const SITEMAP_CARD_SHELL =
