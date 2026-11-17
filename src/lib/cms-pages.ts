@@ -141,6 +141,7 @@ export const CMS_PAGES: CmsPageDef[] = [
     section: "technology",
     tab: "submenu",
     fieldLabels: {
+      "technology.heroImage": "배경 이미지",
       "technology.kicker": "키커",
       "technology.title": "허브 제목",
       "technology.lede": "허브 소개",
@@ -153,6 +154,8 @@ export const CMS_PAGES: CmsPageDef[] = [
     section: "community",
     tab: "submenu",
     fieldLabels: {
+      "community.heroImage": "배경 이미지",
+      "community.kicker": "키커",
       "community.title": "허브 제목",
       "community.lede": "허브 소개",
       "community.noticeLede": "공지 요약",

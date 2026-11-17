@@ -10,6 +10,7 @@ import { fieldLabelFor, type CmsPageDef } from "@/lib/cms-pages";
 import { cmsTypoInlineStyle } from "@/lib/cms-typography-styles";
 import { heroImageUnoptimized } from "@/lib/home-hero";
 import { pageFooterTextColor, resolvePageFooterBackground, PAGE_FOOTER_BG_DEFAULT } from "@/lib/page-footer";
+import { isCmsHubPage } from "@/lib/cms-hub-pages";
 
 function ring(active: boolean) {
   return active
@@ -128,8 +129,11 @@ export function SubpageCmsCanvas({
           </div>
         </section>
 
+        {contentPaths.length > 0 ? (
         <section className="mx-auto max-w-3xl space-y-3 px-6 py-10">
-          <p className="text-[11px] font-medium text-ink/45">{page.label} 본문 · 버튼</p>
+          <p className="text-[11px] font-medium text-ink/45">
+            {isCmsHubPage(page.key) ? "허브 하위 카드 요약" : `${page.label} 본문 · 버튼`}
+          </p>
           {contentPaths.map((path) => {
             const raw = values[path] ?? "";
             const label = fieldLabelFor(page, path);
@@ -153,6 +157,7 @@ export function SubpageCmsCanvas({
             );
           })}
         </section>
+        ) : null}
       </div>
 
       <footer

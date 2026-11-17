@@ -41,6 +41,7 @@ import {
   pageFooterBgLabel,
   pageFooterPaths,
 } from "@/lib/page-footer";
+import { filterHubCanvasContentPaths } from "@/lib/cms-hub-pages";
 
 const HOME_CMS_PATHS = [
   "home.heroImage",
@@ -359,8 +360,8 @@ export function CmsVisualEditor({
       const prefix = `product.categories.${page.productCategory}.`;
       return paths.filter((path) => path.startsWith(prefix));
     }
-    return paths;
-  }, [editorFields, heroSlots, page.productCategory]);
+    return filterHubCanvasContentPaths(page.key, paths);
+  }, [editorFields, heroSlots, page.productCategory, page.key]);
 
   const previewActiveSlot = isHome
     ? resolvePreviewActiveSlot(slot, typoTextPath, previewPin)

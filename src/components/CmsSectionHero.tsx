@@ -24,6 +24,8 @@ type CmsHeroSection =
   | "global"
   | "business"
   | "product"
+  | "technology"
+  | "community"
   | "contact";
 
 export async function CmsSectionHero({
