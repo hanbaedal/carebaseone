@@ -18,3 +18,7 @@ export const GUEST_MAIN_SHELL = "flex-1";
 
 /** 가로 — 기존 px-4/sm:px-6 + safe (max로 큰 쪽) */
 export const GUEST_PAGE_GUTTER_X = "px-guest-gutter";
+
+/** 헤더 hover 서브메뉴 — 한글 6자 + 좌우 px-4(2rem), 긴 라벨은 w-max로 확장 */
+export const HEADER_SUBMENU_PANEL =
+  "w-max min-w-[calc(6ch+2rem)] text-[13px]";

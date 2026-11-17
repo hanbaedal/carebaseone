@@ -360,6 +360,11 @@ export function CmsVisualEditor({
       const prefix = `product.categories.${page.productCategory}.`;
       return paths.filter((path) => path.startsWith(prefix));
     }
+    if (page.key === "greeting") {
+      paths = paths.filter(
+        (path) => path !== "aboutGreeting.ctaFeatures" && path !== "aboutGreeting.ctaContact",
+      );
+    }
     return filterHubCanvasContentPaths(page.key, paths);
   }, [editorFields, heroSlots, page.productCategory, page.key]);
 

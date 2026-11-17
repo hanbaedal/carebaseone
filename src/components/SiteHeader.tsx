@@ -12,7 +12,7 @@ import {
 } from "@/components/HeaderRoleMenus";
 import { MemberHeaderAuth } from "@/components/MemberHeaderAuth";
 import { headerNav } from "@/lib/site";
-import { GUEST_HEADER_SHELL } from "@/lib/guest-layout";
+import { GUEST_HEADER_SHELL, HEADER_SUBMENU_PANEL } from "@/lib/guest-layout";
 
 function linkActive(pathname: string, href: string) {
   return pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
@@ -70,12 +70,14 @@ export function SiteHeader({
                     ▾
                   </span>
                 </Link>
-                <div className="invisible absolute left-0 top-full z-50 min-w-[10.5rem] rounded-xl border border-line bg-white py-2 pt-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                <div
+                  className={`invisible absolute left-0 top-full z-50 rounded-xl border border-line bg-white py-2 pt-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 ${HEADER_SUBMENU_PANEL}`}
+                >
                   {item.children.map((child) => (
                     <Link
                       key={child.key}
                       href={child.href}
-                      className={`block px-4 py-2 text-[13px] hover:bg-brand/5 ${
+                      className={`block whitespace-nowrap px-4 py-2 hover:bg-brand/5 ${
                         linkActive(pathname, child.href) ? "text-brand" : "text-brand-ink/80"
                       }`}
                     >

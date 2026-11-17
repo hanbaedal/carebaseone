@@ -89,8 +89,6 @@ export const CMS_PAGES: CmsPageDef[] = [
       "aboutGreeting.title": "제목",
       "aboutGreeting.body": "인사말 본문",
       "aboutGreeting.sign": "서명",
-      "aboutGreeting.ctaFeatures": "회사특징 버튼",
-      "aboutGreeting.ctaContact": "문의 버튼",
     },
   },
   {

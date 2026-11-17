@@ -1,6 +1,5 @@
 import { getTranslations } from "next-intl/server";
 import { CmsSectionHero } from "@/components/CmsSectionHero";
-import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
 import {
   homeLedeFontSizeFluid,
@@ -36,12 +35,6 @@ export default async function AboutGreetingPage({
           {t("body")}
         </p>
         <p className="mt-10 text-sm font-medium text-brand-ink">{t("sign")}</p>
-        <div className="mt-10 flex flex-wrap gap-3">
-          <CtaLink href="/about/features">{t("ctaFeatures")}</CtaLink>
-          <CtaLink href="/contact" variant="light">
-            {t("ctaContact")}
-          </CtaLink>
-        </div>
       </section>
       <SectionTail section="aboutGreeting" />
     </div>
