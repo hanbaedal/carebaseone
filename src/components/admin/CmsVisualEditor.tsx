@@ -360,12 +360,14 @@ export function CmsVisualEditor({
       const prefix = `product.categories.${page.productCategory}.`;
       return paths.filter((path) => path.startsWith(prefix));
     }
-    if (page.key === "greeting") {
-      paths = paths.filter(
-        (path) => path !== "aboutGreeting.ctaFeatures" && path !== "aboutGreeting.ctaContact",
-      );
-    }
-    return filterHubCanvasContentPaths(page.key, paths);
+    const withoutGreetingCtas =
+      page.key === "greeting"
+        ? paths.filter(
+            (path) =>
+              path !== "aboutGreeting.ctaFeatures" && path !== "aboutGreeting.ctaContact",
+          )
+        : paths;
+    return filterHubCanvasContentPaths(page.key, withoutGreetingCtas);
   }, [editorFields, heroSlots, page.productCategory, page.key]);
 
   const previewActiveSlot = isHome
