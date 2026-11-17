@@ -165,7 +165,17 @@
     "ctaFeatures": "Company features",
     "ctaContact": "Contact",
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "bodyFont": "gothic",
+    "bodyScale": "100",
+    "bodyColor": "black"
   },
   "aboutFeatures": {
     "kicker": "Features",
@@ -192,7 +202,17 @@
     "ctaProduct": "Products",
     "ctaGreeting": "Greeting",
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "technology": {
     "kicker": "01 Technology",
@@ -244,7 +264,17 @@
       }
     },
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "product": {
     "kicker": "03 Product",
@@ -257,31 +287,56 @@
       "healthFood": {
         "title": "Health supplements",
         "text": "Foods built from ingredients found in nature.",
-        "items": "Ddatdureup · Yukmisonghwa"
+        "items": "Ddatdureup · Yukmisonghwa",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       },
       "generalFood": {
         "title": "General food",
         "text": "Everyday food products.",
-        "items": "Happy N:O · Saengmaeksan · Ssanghwatang"
+        "items": "Happy N:O · Saengmaeksan · Ssanghwatang",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       },
       "cosmetics": {
         "title": "Cosmetics",
         "text": "Daily care for skin and hair.",
-        "items": "Jaryeon cushion and care line"
+        "items": "Jaryeon cushion and care line",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       },
       "patch": {
         "title": "Patch",
         "text": "Patches that sit lightly in daily life and sport.",
-        "items": "Bio Healing patch line"
+        "items": "Bio Healing patch line",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       },
       "healthPlatform": {
         "title": "Health management platform",
         "text": "Services and data that connect daily health.",
-        "items": "CAREBASE health platform"
+        "items": "CAREBASE health platform",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       }
     },
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "productCatalog": {
     "doc": "File",
@@ -375,7 +430,17 @@
       }
     },
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "business": {
     "kicker": "05 Partnership",
@@ -394,7 +459,17 @@
     },
     "invite": "We look for partners in research, manufacturing, distribution, education, and health centers.",
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "news": {
     "kicker": "News",
@@ -523,6 +598,16 @@
     "error": "Please try again in a moment.",
     "required": "This field is required.",
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   }
 }

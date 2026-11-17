@@ -6,7 +6,6 @@ import { saveContentInline } from "@/app/admin/actions";
 import { HomeCmsCanvas } from "@/components/admin/HomeCmsCanvas";
 import { SubpageCmsCanvas } from "@/components/admin/SubpageCmsCanvas";
 import { FontFamilyModal } from "@/components/admin/FontFamilyModal";
-import { FontScaleModal } from "@/components/admin/FontScaleModal";
 import { FontScaleStepper } from "@/components/admin/FontScaleStepper";
 import { MediaPickerModal, type CmsMediaOption } from "@/components/admin/MediaPickerModal";
 import { TextColorModal } from "@/components/admin/TextColorModal";
@@ -16,13 +15,19 @@ import { fieldLabelFor, type CmsPageDef } from "@/lib/cms-pages";
 import {
   cmsContentFieldPaths,
   cmsHeroSlots,
-  cmsPageHeroImage,
+  resolveCmsPageHeroSrc,
 } from "@/lib/cms-page-hero";
+import {
+  isCmsTypoTextPath,
+  resolveCmsTypoTextSlot,
+  sectionHeroImagePath,
+} from "@/lib/cms-typography";
 import {
   colorPathFor,
   defaultColorForTextPath,
   defaultFontForTextPath,
   fontPathFor,
+  scalePathFor,
   clampHomeScale,
   homeFontLabel,
   resolveHeroImageSrc,
@@ -56,57 +61,39 @@ const HOME_CMS_PATHS = [
 
 type HomeSlot = (typeof HOME_CMS_PATHS)[number];
 
-function scalePathFor(textPath: string) {
-  if (textPath === "home.kicker") return "home.kickerScale";
-  if (textPath === "home.headline") return "home.headlineScale";
-  if (textPath === "home.lede") return "home.ledeScale";
-  return null;
-}
-
 function textareaRows(path: string, multiline: boolean) {
   if (path === "home.kicker") return 2;
-  if (path === "home.headline") return 4;
+  if (path === "home.headline" || path.endsWith(".title")) return 4;
   if (multiline) return 6;
   return 2;
 }
 
-const HOME_TEXT_PATHS = new Set(["home.kicker", "home.headline", "home.lede"]);
-
-function resolveHomeTextSlot(path: string) {
-  if (path === "home.kickerScale" || path === "home.kickerFont" || path === "home.kickerColor")
-    return "home.kicker";
-  if (path === "home.headlineScale" || path === "home.headlineFont" || path === "home.headlineColor")
-    return "home.headline";
-  if (path === "home.ledeScale" || path === "home.ledeFont" || path === "home.ledeColor")
-    return "home.lede";
-  if (HOME_TEXT_PATHS.has(path)) return path;
-  return null;
+function isMetaEditorPath(path: string) {
+  return (
+    path.endsWith("Scale") ||
+    path.endsWith("Color") ||
+    path.endsWith("Font") ||
+    path.endsWith("footerBg") ||
+    path.endsWith("heroImage")
+  );
 }
-
-const HOME_TYPO_SLOTS = new Set(["home.kicker", "home.headline", "home.lede"]);
 
 type HomePreviewSlot = "home.heroImage" | "home.kicker" | "home.headline" | "home.lede";
 
 function resolvePreviewActiveSlot(
   slot: string,
-  homeTextPath: string | null,
+  typoTextPath: string | null,
   pin: HomePreviewSlot | null,
 ): HomePreviewSlot | null {
   if (pin === "home.kicker" || pin === "home.headline") return pin;
   if (slot === "home.heroImage") return "home.heroImage";
   if (
-    homeTextPath === "home.kicker" ||
-    homeTextPath === "home.headline" ||
-    homeTextPath === "home.lede"
+    typoTextPath === "home.kicker" ||
+    typoTextPath === "home.headline" ||
+    typoTextPath === "home.lede"
   )
-    return homeTextPath;
+    return typoTextPath as HomePreviewSlot;
   if (slot === "home.lede") return "home.lede";
-  return null;
-}
-
-function textPathForScaleField(scalePath: string | null | undefined) {
-  if (scalePath === "home.kickerScale") return "home.kicker";
-  if (scalePath === "home.headlineScale") return "home.headline";
   return null;
 }
 
@@ -136,7 +123,7 @@ export function CmsVisualEditor({
   }, [fields, isHome]);
 
   const heroSlots = useMemo(() => cmsHeroSlots(page), [page]);
-  const heroImage = cmsPageHeroImage(page.key);
+  const heroImagePath = isHome ? "home.heroImage" : sectionHeroImagePath(page.section);
 
   const defaultPath = useMemo(() => {
     if (page.productCategory) {
@@ -153,7 +140,6 @@ export function CmsVisualEditor({
 
   const [slot, setSlot] = useState(defaultPath);
   const [mediaOpen, setMediaOpen] = useState(false);
-  const [scaleOpen, setScaleOpen] = useState(false);
   const [colorOpen, setColorOpen] = useState(false);
   const [fontOpen, setFontOpen] = useState(false);
   const [footerBgOpen, setFooterBgOpen] = useState(false);
@@ -198,14 +184,9 @@ export function CmsVisualEditor({
   }, [mediaOpen]);
 
   useEffect(() => {
-    if (!isHome) return;
-    if (slot === "home.kickerScale" || slot === "home.kickerColor" || slot === "home.kickerFont")
-      setSlot("home.kicker");
-    if (slot === "home.headlineScale" || slot === "home.headlineColor" || slot === "home.headlineFont")
-      setSlot("home.headline");
-    if (slot === "home.ledeScale" || slot === "home.ledeColor" || slot === "home.ledeFont")
-      setSlot("home.lede");
-  }, [isHome, slot]);
+    const textPath = resolveCmsTypoTextSlot(slot);
+    if (textPath && textPath !== slot) setSlot(textPath);
+  }, [slot]);
 
   const slotTitle = active
     ? `${fieldLabelFor(page, active.path)} \`${active.path.split(".").slice(-2).join(".")}\``
@@ -220,18 +201,23 @@ export function CmsVisualEditor({
     Boolean(active?.path.endsWith(".text"));
 
   const isScaleField = active?.path.endsWith("Scale");
-  const isHeroField = active?.path === "home.heroImage";
-  const homeTextPath = isHome ? resolveHomeTextSlot(slot) : null;
-  const textField = useMemo(
-    () => (homeTextPath ? editorFields.find((f) => f.path === homeTextPath) : active),
-    [homeTextPath, editorFields, active],
+  const isHeroField = active?.path === heroImagePath;
+  const hasHeroImage = useMemo(
+    () => editorFields.some((f) => f.path === heroImagePath),
+    [editorFields, heroImagePath],
   );
-  const linkedScalePath = homeTextPath ? scalePathFor(homeTextPath) : null;
-  const linkedColorPath = homeTextPath ? colorPathFor(homeTextPath) : null;
-  const linkedFontPath = homeTextPath ? fontPathFor(homeTextPath) : null;
-  const showHomeTypography =
-    isHome && Boolean(homeTextPath && HOME_TYPO_SLOTS.has(homeTextPath)) && !isHeroField;
-  const colorFallback = homeTextPath ? defaultColorForTextPath(homeTextPath) : "blue";
+  const typoTextPath = resolveCmsTypoTextSlot(slot);
+  const textField = useMemo(
+    () => (typoTextPath ? editorFields.find((f) => f.path === typoTextPath) : active),
+    [typoTextPath, editorFields, active],
+  );
+  const linkedScalePath = typoTextPath ? scalePathFor(typoTextPath) : null;
+  const linkedColorPath = typoTextPath ? colorPathFor(typoTextPath) : null;
+  const linkedFontPath = typoTextPath ? fontPathFor(typoTextPath) : null;
+  const showHeroTypography = Boolean(
+    typoTextPath && isCmsTypoTextPath(typoTextPath) && !isHeroField,
+  );
+  const colorFallback = typoTextPath ? defaultColorForTextPath(typoTextPath) : "blue";
 
   const footerPaths = pageFooterPaths(page.section);
   const hasPageFooter = useMemo(
@@ -289,14 +275,14 @@ export function CmsVisualEditor({
 
   const openBackgroundPicker = () => {
     setPreviewPin(null);
-    setSlot("home.heroImage");
+    setSlot(heroImagePath);
     setMediaOpen(true);
   };
 
   const pinPreviewForTextTools = () => {
-    if (homeTextPath && HOME_TYPO_SLOTS.has(homeTextPath)) {
-      setPreviewPin(homeTextPath as HomePreviewSlot);
-      setSlot(homeTextPath);
+    if (typoTextPath && isCmsTypoTextPath(typoTextPath)) {
+      if (isHome) setPreviewPin(typoTextPath as HomePreviewSlot);
+      setSlot(typoTextPath);
     }
   };
 
@@ -304,14 +290,6 @@ export function CmsVisualEditor({
     setPreviewPin(null);
     setSlot(key);
     if (key === "home.heroImage") setMediaOpen(true);
-  };
-
-  const openScalePicker = () => {
-    if (!linkedScalePath && !scalePathFor(active?.path ?? "") && !active?.path.endsWith("Scale")) {
-      return;
-    }
-    if (isHome) pinPreviewForTextTools();
-    setScaleOpen(true);
   };
 
   const currentScaleValue = () => {
@@ -327,25 +305,23 @@ export function CmsVisualEditor({
       (active?.path.endsWith("Scale") ? active.path : scalePathFor(active?.path ?? ""));
     if (!path?.endsWith("Scale")) return;
     const textPath =
-      previewPin ??
-      (homeTextPath && HOME_TYPO_SLOTS.has(homeTextPath) ? homeTextPath : null) ??
-      textPathForScaleField(path);
-    if (isHome) pinPreviewForTextTools();
+      previewPin ?? (typoTextPath && isCmsTypoTextPath(typoTextPath) ? typoTextPath : null) ??
+      resolveCmsTypoTextSlot(path);
+    pinPreviewForTextTools();
     setDraft((d) => ({ ...d, [path]: String(next) }));
-    setScaleOpen(false);
-    if (isHome && textPath && HOME_TYPO_SLOTS.has(textPath)) {
-      setPreviewPin(textPath as HomePreviewSlot);
+    if (textPath && isCmsTypoTextPath(textPath)) {
+      if (isHome) setPreviewPin(textPath as HomePreviewSlot);
       setSlot(textPath);
     }
   };
 
   const pickFont = (fontId: HomeFontId) => {
     if (!linkedFontPath) return;
-    const textPath =
-      previewPin ?? (homeTextPath && HOME_TYPO_SLOTS.has(homeTextPath) ? homeTextPath : null);
+  const textPath =
+      previewPin ?? (typoTextPath && isCmsTypoTextPath(typoTextPath) ? typoTextPath : null);
     setDraft((d) => ({ ...d, [linkedFontPath]: fontId }));
-    if (isHome && textPath && HOME_TYPO_SLOTS.has(textPath)) {
-      setPreviewPin(textPath as HomePreviewSlot);
+    if (textPath && isCmsTypoTextPath(textPath)) {
+      if (isHome) setPreviewPin(textPath as HomePreviewSlot);
       setSlot(textPath);
     }
   };
@@ -357,10 +333,10 @@ export function CmsVisualEditor({
   const pickColor = (colorId: HomeTextColorId) => {
     if (!linkedColorPath) return;
     const textPath =
-      previewPin ?? (homeTextPath && HOME_TYPO_SLOTS.has(homeTextPath) ? homeTextPath : null);
+      previewPin ?? (typoTextPath && isCmsTypoTextPath(typoTextPath) ? typoTextPath : null);
     setDraft((d) => ({ ...d, [linkedColorPath]: colorId }));
-    if (isHome && textPath && HOME_TYPO_SLOTS.has(textPath)) {
-      setPreviewPin(textPath as HomePreviewSlot);
+    if (textPath && isCmsTypoTextPath(textPath)) {
+      if (isHome) setPreviewPin(textPath as HomePreviewSlot);
       setSlot(textPath);
     }
   };
@@ -387,14 +363,16 @@ export function CmsVisualEditor({
   }, [editorFields, heroSlots, page.productCategory]);
 
   const previewActiveSlot = isHome
-    ? resolvePreviewActiveSlot(slot, homeTextPath, previewPin)
+    ? resolvePreviewActiveSlot(slot, typoTextPath, previewPin)
     : null;
+
+  const subpageHeroSrc = resolveCmsPageHeroSrc(page.section, canvasValues, page.key);
 
   const showNotice = inlineNotice?.text ?? notice;
   const showNoticeError = inlineNotice ? inlineNotice.error : noticeError;
 
   const showTextEditor =
-    (isHome && homeTextPath && textField) ||
+    (typoTextPath && textField) ||
     Boolean(active && !isHeroField && !isScaleField && !isFooterBgField);
 
   const showSaveFooter = editorFields.length > 0;
@@ -450,7 +428,7 @@ export function CmsVisualEditor({
           ) : (
             <SubpageCmsCanvas
               page={page}
-              heroImage={heroImage}
+              heroSrc={subpageHeroSrc}
               hero={heroSlots}
               values={canvasValues}
               contentPaths={contentPaths}
@@ -461,6 +439,7 @@ export function CmsVisualEditor({
                 setPreviewPin(null);
                 setFooterBgOpen(true);
               }}
+              onPickBackground={openBackgroundPicker}
             />
           )}
         </div>
@@ -471,7 +450,7 @@ export function CmsVisualEditor({
             <p className="mt-0.5 truncate text-[10px] text-ink/45">{slotTitle}</p>
           </div>
 
-          {isHome ? (
+          {hasHeroImage ? (
             <div className="shrink-0 border-b border-ink/10 px-3 py-2">
               <button
                 type="button"
@@ -481,11 +460,11 @@ export function CmsVisualEditor({
                 배경 이미지 선택
               </button>
               <p className="mt-1 truncate text-[10px] text-ink/45">
-                {draft["home.heroImage"]
-                  ? draft["home.heroImage"].startsWith("/")
-                    ? draft["home.heroImage"]
-                    : `미디어 ${draft["home.heroImage"]}`
-                  : "기본 숲 이미지"}
+                {draft[heroImagePath]
+                  ? draft[heroImagePath].startsWith("/")
+                    ? draft[heroImagePath]
+                    : `미디어 ${draft[heroImagePath]}`
+                  : "기본 이미지"}
               </p>
             </div>
           ) : null}
@@ -503,16 +482,7 @@ export function CmsVisualEditor({
                 className="rounded border border-ink/15 bg-white px-2 py-1.5 text-[12px] text-brand-ink"
               >
                 {editorFields
-                  .filter(
-                    (field) =>
-                      !(
-                        isHome &&
-                        (field.path.endsWith("Scale") ||
-                          field.path.endsWith("Color") ||
-                          field.path.endsWith("Font") ||
-                          field.path.endsWith("footerBg"))
-                      ),
-                  )
+                  .filter((field) => !isMetaEditorPath(field.path))
                   .map((field) => (
                     <option key={field.path} value={field.path}>
                       {fieldLabelFor(page, field.path)}
@@ -534,13 +504,13 @@ export function CmsVisualEditor({
             </div>
           ) : null}
 
-          {showHomeTypography ? (
+          {showHeroTypography ? (
             <div className="shrink-0 border-b border-ink/10 bg-ink/[0.02] px-3 py-2">
               <p className="text-[10px] font-medium text-ink/55">글자 스타일</p>
             </div>
           ) : null}
 
-          {showHomeTypography && linkedFontPath ? (
+          {showHeroTypography && linkedFontPath ? (
             <div className="shrink-0 border-b border-ink/10 px-3 py-2">
               <button
                 type="button"
@@ -553,35 +523,21 @@ export function CmsVisualEditor({
                 글자 폰트 (
                 {homeFontLabel(
                   draft[linkedFontPath] ?? "",
-                  defaultFontForTextPath(homeTextPath!),
+                  defaultFontForTextPath(typoTextPath!),
                 )}
                 )
               </button>
             </div>
           ) : null}
 
-          {showHomeTypography && linkedScalePath ? (
+          {showHeroTypography && linkedScalePath ? (
             <div className="shrink-0 border-b border-ink/10 px-3 py-2">
               <FontScaleStepper value={currentScaleValue()} onChange={pickScale} />
               <p className="mt-1 text-[10px] text-ink/45">100% = 기준 크기 · 50~300% (10% 단위)</p>
             </div>
           ) : null}
 
-          {!isHome &&
-          (scalePathFor(active?.path ?? "") || isScaleField) &&
-          !isHeroField ? (
-            <div className="shrink-0 border-b border-ink/10 px-3 py-2">
-              <button
-                type="button"
-                onClick={openScalePicker}
-                className="w-full rounded-md border border-ink/15 bg-ink/5 px-2 py-2 text-[12px] text-brand hover:bg-brand/5"
-              >
-                글자 크기 ({currentScaleValue()}%)
-              </button>
-            </div>
-          ) : null}
-
-          {showHomeTypography && linkedColorPath ? (
+          {showHeroTypography && linkedColorPath ? (
             <div className="shrink-0 border-b border-ink/10 px-3 py-2">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-[12px] text-brand-ink">글자 컬러</span>
@@ -596,7 +552,7 @@ export function CmsVisualEditor({
                   style={{
                     backgroundColor: resolveHomeTextColorHex(
                       draft[linkedColorPath],
-                      defaultColorForTextPath(homeTextPath!),
+                      defaultColorForTextPath(typoTextPath!),
                     ),
                   }}
                 />
@@ -620,16 +576,17 @@ export function CmsVisualEditor({
             >
               <div className="min-h-0 flex-1 space-y-2 overflow-y-auto p-3">
                 {(() => {
-                  const editPath = isHome && homeTextPath ? homeTextPath : active!.path;
-                  const field = isHome && textField ? textField : active!;
+                  const editPath = typoTextPath ?? active!.path;
+                  const field = typoTextPath && textField ? textField : active!;
                   const value = draft[editPath] ?? field.ko;
                   const editMultiline =
-                    isHome && homeTextPath
-                      ? homeTextPath === "home.kicker" ||
-                        homeTextPath === "home.headline" ||
-                        homeTextPath === "home.lede" ||
-                        field.multiline
-                      : multiline;
+                    typoTextPath === "home.kicker" ||
+                    typoTextPath === "home.headline" ||
+                    typoTextPath === "home.lede" ||
+                    typoTextPath?.endsWith(".title") ||
+                    typoTextPath?.endsWith(".body") ||
+                    field.multiline ||
+                    multiline;
                   return (
                     <label className="grid gap-1 text-[11px] text-ink/60">
                       내용 (한국어)
@@ -656,10 +613,6 @@ export function CmsVisualEditor({
                 })()}
               </div>
             </form>
-          ) : isScaleField && !isHome ? (
-            <p className="p-3 text-[11px] leading-5 text-ink/50">
-              「글자 크기」에서 50~300%를 고른 뒤 저장 버튼을 누르세요.
-            </p>
           ) : isHeroField ? (
             <p className="p-3 text-[11px] leading-5 text-ink/50">
               미리보기 배경을 클릭하거나 위 버튼으로 이미지를 선택한 뒤 저장하세요.
@@ -700,10 +653,10 @@ export function CmsVisualEditor({
       <MediaPickerModal
         open={mediaOpen}
         options={mediaOptions}
-        currentSlug={draft["home.heroImage"] ?? ""}
+        currentSlug={draft[heroImagePath] ?? ""}
         onClose={() => setMediaOpen(false)}
         onSelect={(slug) => {
-          setDraft((d) => ({ ...d, "home.heroImage": slug }));
+          setDraft((d) => ({ ...d, [heroImagePath]: slug }));
         }}
       />
 
@@ -717,7 +670,7 @@ export function CmsVisualEditor({
       <FontFamilyModal
         open={fontOpen}
         value={linkedFontPath ? (draft[linkedFontPath] ?? "") : ""}
-        fallback={homeTextPath ? defaultFontForTextPath(homeTextPath) : "gothic"}
+        fallback={typoTextPath ? defaultFontForTextPath(typoTextPath) : "gothic"}
         onClose={() => setFontOpen(false)}
         onSelect={pickFont}
       />
@@ -730,14 +683,6 @@ export function CmsVisualEditor({
         onSelect={pickColor}
       />
 
-      {!isHome ? (
-        <FontScaleModal
-          open={scaleOpen}
-          value={currentScaleValue()}
-          onClose={() => setScaleOpen(false)}
-          onSelect={pickScale}
-        />
-      ) : null}
     </div>
   );
 }

@@ -1,4 +1,9 @@
 import { images } from "@/lib/site";
+import {
+  cmsTypoMetaPath,
+  defaultColorForCmsTextPath,
+  defaultFontForCmsTextPath,
+} from "@/lib/cms-typography";
 
 /** CMS `home.heroImage` — slug, `/api/media/…`, `/images/…` */
 export function resolveHeroImageSrc(heroImage: string | undefined) {
@@ -104,16 +109,11 @@ export function resolveHomeTextColorHex(
 }
 
 export function colorPathFor(textPath: string) {
-  if (textPath === "home.kicker") return "home.kickerColor";
-  if (textPath === "home.headline") return "home.headlineColor";
-  if (textPath === "home.lede") return "home.ledeColor";
-  return null;
+  return cmsTypoMetaPath(textPath, "Color");
 }
 
 export function defaultColorForTextPath(textPath: string): HomeTextColorId {
-  if (textPath === "home.kicker") return HOME_KICKER_COLOR_DEFAULT;
-  if (textPath === "home.lede") return HOME_LEDE_COLOR_DEFAULT;
-  return HOME_HEADLINE_COLOR_DEFAULT;
+  return defaultColorForCmsTextPath(textPath);
 }
 
 export const HOME_FONTS = [
@@ -174,16 +174,15 @@ export function resolveHomeFontFamily(value: string | undefined, fallback: HomeF
 }
 
 export function fontPathFor(textPath: string) {
-  if (textPath === "home.kicker") return "home.kickerFont";
-  if (textPath === "home.headline") return "home.headlineFont";
-  if (textPath === "home.lede") return "home.ledeFont";
-  return null;
+  return cmsTypoMetaPath(textPath, "Font");
 }
 
 export function defaultFontForTextPath(textPath: string): HomeFontId {
-  if (textPath === "home.kicker") return HOME_KICKER_FONT_DEFAULT;
-  if (textPath === "home.lede") return HOME_LEDE_FONT_DEFAULT;
-  return HOME_HEADLINE_FONT_DEFAULT;
+  return defaultFontForCmsTextPath(textPath);
+}
+
+export function scalePathFor(textPath: string) {
+  return cmsTypoMetaPath(textPath, "Scale");
 }
 
 export function homeFontLabel(value: string | undefined, fallback: HomeFontId): string {

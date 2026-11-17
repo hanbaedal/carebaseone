@@ -71,6 +71,7 @@ export const CMS_PAGES: CmsPageDef[] = [
     section: "aboutGreeting",
     tab: "submenu",
     fieldLabels: {
+      "aboutGreeting.heroImage": "배경 이미지",
       "aboutGreeting.kicker": "키커",
       "aboutGreeting.title": "제목",
       "aboutGreeting.body": "인사말 본문",

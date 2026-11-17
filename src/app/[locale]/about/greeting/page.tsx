@@ -1,7 +1,15 @@
 import { getTranslations } from "next-intl/server";
-import { PageHero } from "@/components/PageHero";
+import { CmsSectionHero } from "@/components/CmsSectionHero";
 import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
+import {
+  homeLedeFontSizeFluid,
+  parseHomeScale,
+  resolveHomeFontFamily,
+  resolveHomeTextColorHex,
+  defaultColorForTextPath,
+  defaultFontForTextPath,
+} from "@/lib/home-hero";
 import { resolveLocale } from "@/lib/locale";
 import { CmsPageFooter } from "@/components/CmsPageFooter";
 
@@ -13,11 +21,20 @@ export default async function AboutGreetingPage({
   resolveLocale((await params).locale);
   const t = await getTranslations("aboutGreeting");
 
+  const bodyPath = "aboutGreeting.body";
+  const bodyStyle = {
+    fontSize: homeLedeFontSizeFluid(parseHomeScale(t("bodyScale"))),
+    color: resolveHomeTextColorHex(t("bodyColor"), defaultColorForTextPath(bodyPath)),
+    fontFamily: resolveHomeFontFamily(t("bodyFont"), defaultFontForTextPath(bodyPath)),
+  };
+
   return (
     <div>
-      <PageHero kicker={t("kicker")} title={t("title")} image={images.close} />
+      <CmsSectionHero section="aboutGreeting" imageFallback={images.close} showLede={false} />
       <section className="mx-auto max-w-3xl px-6 py-16">
-        <p className="whitespace-pre-line text-base leading-8 text-brand-ink/75">{t("body")}</p>
+        <p className="whitespace-pre-line leading-8" style={bodyStyle}>
+          {t("body")}
+        </p>
         <p className="mt-10 text-sm font-medium text-brand-ink">{t("sign")}</p>
         <div className="mt-10 flex flex-wrap gap-3">
           <CtaLink href="/about/features">{t("ctaFeatures")}</CtaLink>

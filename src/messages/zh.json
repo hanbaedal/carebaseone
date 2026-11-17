@@ -165,7 +165,17 @@
     "ctaFeatures": "公司特点",
     "ctaContact": "联系我们",
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "bodyFont": "gothic",
+    "bodyScale": "100",
+    "bodyColor": "black"
   },
   "aboutFeatures": {
     "kicker": "公司特点",
@@ -192,7 +202,17 @@
     "ctaProduct": "查看产品",
     "ctaGreeting": "致辞",
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "technology": {
     "kicker": "01 技术",
@@ -244,7 +264,17 @@
       }
     },
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "product": {
     "kicker": "03 产品",
@@ -257,31 +287,56 @@
       "healthFood": {
         "title": "健康食品",
         "text": "承载自然原料的健康食品。",
-        "items": "刺老芽 · 六味松花"
+        "items": "刺老芽 · 六味松花",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       },
       "generalFood": {
         "title": "一般食品",
         "text": "日常生活中的食品。",
-        "items": "Happy N:O · 生脉散 · 双和汤"
+        "items": "Happy N:O · 生脉散 · 双和汤",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       },
       "cosmetics": {
         "title": "化妆品",
         "text": "皮肤与头发的日常护理。",
-        "items": "慈莲气垫等"
+        "items": "慈莲气垫等",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       },
       "patch": {
         "title": "贴剂",
         "text": "轻轻加入日常与运动现场的贴剂。",
-        "items": "Bio Healing 贴剂系列"
+        "items": "Bio Healing 贴剂系列",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       },
       "healthPlatform": {
         "title": "健康管理平台",
         "text": "用数据与服务连接健康。",
-        "items": "CAREBASE 健康管理"
+        "items": "CAREBASE 健康管理",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       }
     },
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "productCatalog": {
     "doc": "资料",
@@ -375,7 +430,17 @@
       }
     },
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "business": {
     "kicker": "05 事业合作",
@@ -394,7 +459,17 @@
     },
     "invite": "我们寻找研究、生产、流通、教育与健康中心的合作伙伴。",
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "news": {
     "kicker": "动态",
@@ -522,6 +597,16 @@
     "error": "请稍后再试。",
     "required": "此项为必填。",
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   }
 }

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
-import { PageHero } from "@/components/PageHero";
+import { CmsSectionHero } from "@/components/CmsSectionHero";
 import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
@@ -24,11 +24,7 @@ export default async function SolutionPage({
 
   return (
     <div>
-      <PageHero
-        kicker={t("solution.kicker")}
-        title={t("solution.title")}
-        image={images.wellness}
-      />
+      <CmsSectionHero section="solution" imageFallback={images.wellness} />
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="grid gap-16">
           {items.map((item, index) => (

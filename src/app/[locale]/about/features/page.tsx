@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { PageHero } from "@/components/PageHero";
+import { CmsSectionHero } from "@/components/CmsSectionHero";
 import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
@@ -17,7 +17,7 @@ export default async function AboutFeaturesPage({
 
   return (
     <div>
-      <PageHero kicker={t("kicker")} title={t("title")} image={images.lab} />
+      <CmsSectionHero section="aboutFeatures" imageFallback={images.lab} />
       <section className="mx-auto max-w-7xl px-6 py-16">
         <p className="max-w-2xl text-base leading-8 text-brand-ink/70">{t("lede")}</p>
         <div className="mt-12 grid gap-6 md:grid-cols-2">

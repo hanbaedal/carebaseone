@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
-import { PageHero } from "@/components/PageHero";
+import { CmsSectionHero } from "@/components/CmsSectionHero";
 import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
@@ -23,11 +23,7 @@ export default async function GlobalPage({
 
   return (
     <div>
-      <PageHero
-        kicker={t("global.kicker")}
-        title={t("global.title")}
-        image={images.close}
-      />
+      <CmsSectionHero section="global" imageFallback={images.close} />
       <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2">
         {nodes.map((node) => (
           <article key={node.key}>

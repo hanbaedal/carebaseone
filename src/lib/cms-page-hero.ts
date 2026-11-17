@@ -1,6 +1,8 @@
 import { images } from "@/lib/site";
 import type { CmsPageDef } from "@/lib/cms-pages";
 import type { ProductLineCategory } from "@/lib/product-categories";
+import { resolveHeroImageSrc } from "@/lib/home-hero";
+import { sectionHeroImagePath } from "@/lib/cms-typography";
 
 const HERO_IMAGE_BY_KEY: Record<string, string> = {
   greeting: images.close,
@@ -19,6 +21,13 @@ const HERO_IMAGE_BY_KEY: Record<string, string> = {
 
 export function cmsPageHeroImage(pageKey: string) {
   return HERO_IMAGE_BY_KEY[pageKey] ?? images.hero;
+}
+
+export function resolveCmsPageHeroSrc(section: string, values: Record<string, string>, pageKey: string) {
+  const path = sectionHeroImagePath(section);
+  const raw = (values[path] ?? "").trim();
+  if (raw) return resolveHeroImageSrc(raw);
+  return cmsPageHeroImage(pageKey);
 }
 
 /** 히어로에 노출할 슬롯 경로 (없으면 null) */

@@ -165,7 +165,17 @@
     "ctaFeatures": "회사특징 보기",
     "ctaContact": "문의하기",
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "bodyFont": "gothic",
+    "bodyScale": "100",
+    "bodyColor": "black"
   },
   "aboutFeatures": {
     "kicker": "회사특징",
@@ -192,7 +202,17 @@
     "ctaProduct": "제품 보기",
     "ctaGreeting": "인사말",
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "technology": {
     "kicker": "01 기술",
@@ -244,7 +264,17 @@
       }
     },
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "product": {
     "kicker": "03 제품",
@@ -257,31 +287,56 @@
       "healthFood": {
         "title": "건강식품",
         "text": "자연에서 온 원료를 담은 건강식품.",
-        "items": "땃두릅 · 육미송화"
+        "items": "땃두릅 · 육미송화",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       },
       "generalFood": {
         "title": "일반식품",
         "text": "일상에 곁들이는 식품.",
-        "items": "Happy N:O · 생맥산 · 쌍화탕"
+        "items": "Happy N:O · 생맥산 · 쌍화탕",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       },
       "cosmetics": {
         "title": "화장품",
         "text": "피부와 모발을 위한 데일리 케어.",
-        "items": "慈蓮(자련) 쿠션 등"
+        "items": "慈蓮(자련) 쿠션 등",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       },
       "patch": {
         "title": "패치",
         "text": "일상과 스포츠 현장에 가볍게 더하는 패치.",
-        "items": "바이오힐링 패치 라인"
+        "items": "바이오힐링 패치 라인",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       },
       "healthPlatform": {
         "title": "건강관리플랫폼",
         "text": "데이터와 서비스로 건강을 연결하는 플랫폼.",
-        "items": "CAREBASE 건강관리"
+        "items": "CAREBASE 건강관리",
+        "titleFont": "gothic",
+        "titleScale": "100",
+        "titleColor": "black"
       }
     },
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "productCatalog": {
     "doc": "자료",
@@ -375,7 +430,17 @@
       }
     },
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "business": {
     "kicker": "05 사업협력",
@@ -394,7 +459,17 @@
     },
     "invite": "연구, 생산, 유통, 교육, 센터 운영에 함께할 파트너를 찾습니다.",
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   },
   "news": {
     "kicker": "소식",
@@ -522,6 +597,16 @@
     "error": "잠시 후 다시 시도해 주세요.",
     "required": "필수 항목입니다.",
     "footerBg": "white",
-    "footerText": ""
+    "footerText": "",
+    "heroImage": "",
+    "kickerFont": "gothic",
+    "kickerScale": "100",
+    "kickerColor": "blue",
+    "titleFont": "gothic",
+    "titleScale": "100",
+    "titleColor": "black",
+    "ledeFont": "myeongjo",
+    "ledeScale": "100",
+    "ledeColor": "white"
   }
 }

@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { PageHero } from "@/components/PageHero";
+import { CmsSectionHero } from "@/components/CmsSectionHero";
 import { CtaLink } from "@/components/CtaLink";
 import { ProductBeoneNote, ProductLineGrid } from "@/components/ProductLineGrid";
 import { PRODUCT_LINE_CATEGORIES } from "@/lib/product-categories";
@@ -17,11 +17,7 @@ export default async function ProductPage({
   const t = await getTranslations();
   return (
     <div>
-      <PageHero
-        kicker={t("product.kicker")}
-        title={t("product.title")}
-        image={images.breakfast}
-      />
+      <CmsSectionHero section="product" imageFallback={images.breakfast} />
       <section className="mx-auto max-w-6xl px-6 py-16">
         <ProductBeoneNote />
         <p className="mt-6 text-sm text-brand-ink/60">

@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { PageHero } from "@/components/PageHero";
+import { CmsSectionHero } from "@/components/CmsSectionHero";
 import { EcosystemDiagram } from "@/components/EcosystemDiagram";
 import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
@@ -28,11 +28,7 @@ export default async function BusinessPage({
 
   return (
     <div>
-      <PageHero
-        kicker={t("business.kicker")}
-        title={t("business.title")}
-        image={images.lab}
-      />
+      <CmsSectionHero section="business" imageFallback={images.lab} />
       <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-[1.1fr_0.9fr]">
         <div>
           <ul className="grid gap-2 text-sm tracking-[0.04em] text-ink/70">
