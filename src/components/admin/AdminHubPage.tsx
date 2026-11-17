@@ -1,5 +1,4 @@
-import { AccountHubGrid } from "@/components/AccountHubGrid";
-import { staffHubGroups } from "@/lib/account-hub";
+import { OpsAdminHubSitemap } from "@/components/OpsAdminHubSitemap";
 import type { Role } from "@/lib/session";
 import { findUser } from "@/lib/users";
 
@@ -15,7 +14,7 @@ export async function AdminHubPage({ username, role }: { username: string; role:
           {user?.username ?? username} · {roleLabel} — 카드에서 업무 메뉴로 이동합니다.
         </p>
       </div>
-      <AccountHubGrid groups={staffHubGroups(role)} title="운영·관리" />
+      <OpsAdminHubSitemap role={role} />
     </div>
   );
 }

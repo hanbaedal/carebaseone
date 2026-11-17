@@ -25,16 +25,22 @@ function RoleDropdown({
   const topHref = group.href;
 
   return (
-    <div className="group relative">
+    <div className="group relative shrink-0">
       {isAdminHref(topHref) ? (
-        <a href={topHref} className={`inline-flex items-center gap-0.5 ${navLinkClass(false)}`}>
+        <a
+          href={topHref}
+          className={`inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap ${navLinkClass(false)}`}
+        >
           {group.label}
           <span className="text-[10px] text-brand-ink/35" aria-hidden>
             ▾
           </span>
         </a>
       ) : (
-        <Link href={topHref} className={`inline-flex items-center gap-0.5 ${navLinkClass(false)}`}>
+        <Link
+          href={topHref}
+          className={`inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap ${navLinkClass(false)}`}
+        >
           {group.label}
           <span className="text-[10px] text-brand-ink/35" aria-hidden>
             ▾

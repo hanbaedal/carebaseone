@@ -13,7 +13,9 @@ import {
 import { MemberHeaderAuth } from "@/components/MemberHeaderAuth";
 import { headerNav } from "@/lib/site";
 import {
+  GUEST_HEADER_INNER,
   GUEST_HEADER_SHELL,
+  guestHeaderMaxWidth,
   HEADER_SUBMENU_LINK,
   HEADER_SUBMENU_PANEL,
 } from "@/lib/guest-layout";
@@ -39,8 +41,9 @@ export function SiteHeader({
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
 
+  const navSize = staffRole ? "text-[13px]" : "text-[14px]";
   const navLinkClass = (active: boolean) =>
-    `text-[14px] font-medium transition-colors ${
+    `whitespace-nowrap ${navSize} font-medium transition-colors ${
       active ? "text-brand" : "text-brand-ink/70 hover:text-brand"
     }`;
 
@@ -51,23 +54,27 @@ export function SiteHeader({
 
   return (
     <header className={GUEST_HEADER_SHELL}>
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-guest-gutter py-3 lg:py-4">
-        <BrandLogo />
-        <nav className="hidden items-center gap-4 lg:flex xl:gap-6">
+      <div className={`${GUEST_HEADER_INNER} ${guestHeaderMaxWidth(Boolean(staffRole))}`}>
+        <BrandLogo className="shrink-0" />
+        <nav className="hidden min-w-0 shrink flex-nowrap items-center gap-2.5 lg:flex xl:gap-4">
           {headerNav.map((item) => {
             const active = itemActive(pathname, item);
             if (!item.children?.length) {
               return (
-                <Link key={item.key} href={item.href} className={navLinkClass(active)}>
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  className={`shrink-0 ${navLinkClass(active)}`}
+                >
                   {t(item.key)}
                 </Link>
               );
             }
             return (
-              <div key={item.key} className="group relative">
+              <div key={item.key} className="group relative shrink-0">
                 <Link
                   href={item.href}
-                  className={`inline-flex items-center gap-0.5 ${navLinkClass(active)}`}
+                  className={`inline-flex shrink-0 items-center gap-0.5 ${navLinkClass(active)}`}
                 >
                   {t(item.key)}
                   <span className="text-[10px] text-brand-ink/35" aria-hidden>

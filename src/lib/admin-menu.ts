@@ -140,3 +140,23 @@ export function homepageAdminHubSections(): {
 
   return { mainHome, hubs };
 }
+
+export type OpsAdminHubSection = {
+  key: string;
+  title: string;
+  hubHref: string;
+  links: { href: string; label: string }[];
+};
+
+/** 사이트맵 업무관리 — 회원·주문·정보·슈퍼바이저 (홈페이지관리 제외) */
+export function opsAdminHubSections(role: Role): OpsAdminHubSection[] {
+  return menuGroupsForRole(role)
+    .filter((group) => group.key !== "homepage")
+    .map((group) => {
+      const links = group.items
+        .filter((item) => !item.heading && item.href)
+        .map((item) => ({ href: item.href, label: item.label }));
+      const hubHref = group.href ?? links[0]?.href ?? "";
+      return { key: group.key, title: group.label, hubHref, links };
+    });
+}
