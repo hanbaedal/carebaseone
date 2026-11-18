@@ -7,31 +7,29 @@ type FeatureItem = {
 };
 
 /**
- * 목표 형태(핀휠):
- * - 안쪽(가운데) 세로변이 기울어짐
- * - 위·아래가 맞닿는 가로변은 수평에 가깝게
- * - 바깥이 잘록한 보타이(좌우 V)가 되지 않게
+ * 핀휠 형태를 각 카드 가로축 기준 180°(상하 반전)한 도형.
+ * y → 100%−y 로 뒤집어, 위·아래 칸의 기울기가 서로 바뀐 상태입니다.
  */
 const PANEL_STYLES = [
   {
-    // top-left — 윗변은 가운데로 올라가며, 안쪽(오른쪽) 변이 기울고, 아랫변은 수평
+    // top-left (구 bottom-left를 상하 반전)
     bg: "bg-[#d9ebf7]",
-    clip: "polygon(0% 12%, 100% 0%, 86% 100%, 0% 100%)",
-  },
-  {
-    // top-right — top-left의 좌우 대칭
-    bg: "bg-[#d8ebda]",
-    clip: "polygon(0% 0%, 100% 12%, 100% 100%, 14% 100%)",
-  },
-  {
-    // bottom-left — 윗변 수평, 안쪽(오른쪽) 변이 기울고, 아랫변은 가운데로 내려감
-    bg: "bg-[#f4ecc4]",
     clip: "polygon(0% 0%, 86% 0%, 100% 100%, 0% 88%)",
   },
   {
-    // bottom-right — bottom-left의 좌우 대칭
-    bg: "bg-[#e4d8ef]",
+    // top-right (구 bottom-right를 상하 반전)
+    bg: "bg-[#d8ebda]",
     clip: "polygon(14% 0%, 100% 0%, 100% 88%, 0% 100%)",
+  },
+  {
+    // bottom-left (구 top-left를 상하 반전)
+    bg: "bg-[#f4ecc4]",
+    clip: "polygon(0% 12%, 100% 0%, 86% 100%, 0% 100%)",
+  },
+  {
+    // bottom-right (구 top-right를 상하 반전)
+    bg: "bg-[#e4d8ef]",
+    clip: "polygon(0% 0%, 100% 12%, 100% 100%, 14% 100%)",
   },
 ] as const;
 
