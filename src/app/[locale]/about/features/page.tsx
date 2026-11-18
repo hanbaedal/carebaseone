@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { CmsSectionHero } from "@/components/CmsSectionHero";
 import { CtaLink } from "@/components/CtaLink";
+import { FeatureQuadGrid } from "@/components/FeatureQuadGrid";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
 import { SectionTail } from "@/components/SectionTail";
@@ -14,19 +15,19 @@ export default async function AboutFeaturesPage({
 }) {
   resolveLocale((await params).locale);
   const t = await getTranslations("aboutFeatures");
+  const items = featureKeys.map((key) => ({
+    key,
+    title: t(`items.${key}.title`),
+    text: t(`items.${key}.text`),
+  }));
 
   return (
     <div>
       <CmsSectionHero section="aboutFeatures" imageFallback={images.lab} />
       <section className="mx-auto max-w-7xl px-guest-gutter py-16">
         <p className="max-w-2xl text-base leading-8 text-brand-ink/70">{t("lede")}</p>
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {featureKeys.map((key) => (
-            <article key={key} className="rounded-3xl border border-line bg-white p-7">
-              <h2 className="text-lg font-bold text-brand-ink">{t(`items.${key}.title`)}</h2>
-              <p className="mt-3 text-sm leading-7 text-brand-ink/70">{t(`items.${key}.text`)}</p>
-            </article>
-          ))}
+        <div className="mt-12">
+          <FeatureQuadGrid items={items} />
         </div>
         <div className="mt-12 flex flex-wrap gap-3">
           <CtaLink href="/product">{t("ctaProduct")}</CtaLink>

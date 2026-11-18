@@ -127,3 +127,10 @@ body main:has(.h-guest-dvh) {
 @utility max-h-guest-dvh {
   max-height: var(--guest-dvh-below-header);
 }
+
+/* 회사특징 — 첨부 보드형 마름모(대각선) 2×2 패널 */
+@media (min-width: 768px) {
+  .feature-quad-cell {
+    clip-path: var(--quad-clip);
+  }
+}
