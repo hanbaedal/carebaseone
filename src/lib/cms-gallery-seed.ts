@@ -84,12 +84,20 @@ async function backfillMediaChannels(col: Awaited<ReturnType<typeof media>>) {
   }
 }
 
-/** tags에 보관된 publicPath 또는 fileName으로 디스크 경로 힌트 */
+/**
+ * tags에 보관된 publicPath 또는 알려진 제품 파일명 힌트.
+ * 업로드(GridFS) 파일에는 `/images/site/{fileName}` 을 만들지 않음 — 404로 깨짐.
+ */
 export function galleryPublicPathFromDoc(tags: string[] | undefined, fileName: string) {
   const tagged = tags?.find((t) => t.startsWith("/images/"));
   if (tagged) return tagged;
-  if (fileName.includes("jaryeon") || fileName.includes("patch") || fileName.includes("recoverx") || fileName.includes("garlic")) {
+  if (
+    fileName.includes("jaryeon") ||
+    fileName.includes("patch") ||
+    fileName.includes("recoverx") ||
+    fileName.includes("garlic")
+  ) {
     return `/images/products/${fileName}`;
   }
-  return `/images/site/${fileName}`;
+  return "";
 }

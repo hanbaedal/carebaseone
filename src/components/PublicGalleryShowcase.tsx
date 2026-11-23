@@ -127,17 +127,24 @@ export function PublicGalleryShowcase({
             </>
           ) : null}
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-ink/70 via-brand-ink/25 to-transparent px-4 pb-4 pt-16 sm:px-5">
-            <p className="text-base font-semibold text-white sm:text-lg">
-              {current?.title}
-              {current?.kind === "video" ? (
+          {current?.kind === "video" ? (
+            <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-brand-ink/65 to-transparent px-4 pb-8 pt-3 sm:px-5">
+              <p className="text-sm font-semibold text-white sm:text-base">
+                {current.title}
                 <span className="ml-2 rounded bg-white/20 px-1.5 py-0.5 text-[10px] font-medium tracking-wide">VIDEO</span>
+              </p>
+              {current.caption ? (
+                <p className="mt-1 line-clamp-1 text-xs text-white/80">{current.caption}</p>
               ) : null}
-            </p>
-            {current?.caption ? (
-              <p className="mt-1 line-clamp-2 text-sm text-white/80">{current.caption}</p>
-            ) : null}
-          </div>
+            </div>
+          ) : (
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-ink/70 via-brand-ink/25 to-transparent px-4 pb-4 pt-16 sm:px-5">
+              <p className="text-base font-semibold text-white sm:text-lg">{current?.title}</p>
+              {current?.caption ? (
+                <p className="mt-1 line-clamp-2 text-sm text-white/80">{current.caption}</p>
+              ) : null}
+            </div>
+          )}
         </div>
       </section>
 
