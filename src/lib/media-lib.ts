@@ -45,7 +45,9 @@ export async function listMediaForAdmin(category?: MediaCategory): Promise<Media
 }
 
 function mediaOptionFromDoc(
-  m: Pick<MediaDoc, "slug" | "filePath" | "title" | "fileName" | "tags" | "mime" | "storage">,
+  m: Pick<MediaDoc, "slug" | "filePath" | "title" | "fileName" | "tags" | "mime"> & {
+    storage?: MediaDoc["storage"];
+  },
 ) {
   return {
     slug: m.slug,
