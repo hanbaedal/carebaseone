@@ -1,6 +1,7 @@
 /** 홈페이지관리 — 공개 헤더 + 풀폭 쉘 (CMS · CRUD) */
 const PREFIXES = [
   "/admin/cms",
+  "/admin/gallery",
   "/admin/media",
   "/admin/notices",
   "/admin/posts",

@@ -24,7 +24,7 @@ export const adminMenuGroups: AdminMenuGroup[] = [
     href: "/admin/cms",
     items: [
       { href: "/admin/cms", label: "메인 홈" },
-      { href: "/admin/media?focus=gallery", label: "이미지 갤러리" },
+      { href: "/admin/gallery", label: "이미지 갤러리" },
       { href: "", label: "회사소개", heading: true },
       { href: "/admin/cms?page=about", label: "회사소개(허브)" },
       { href: "/admin/cms?page=greeting", label: "인사말" },

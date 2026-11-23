@@ -70,7 +70,7 @@ const editByKey: Record<string, string> = {
   community: "/admin/cms?page=community",
   notice: "/admin/notices",
   archive: "/admin/posts?type=archive",
-  gallery: "/admin/media?focus=gallery",
+  gallery: "/admin/gallery",
   contact: "/admin/cms?page=contact",
 };
 
