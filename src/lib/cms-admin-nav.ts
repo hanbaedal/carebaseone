@@ -1,3 +1,4 @@
+import { adminMenuGroups } from "@/lib/admin-menu";
 import { headerNav, type HeaderNavItem } from "@/lib/site";
 import { editHrefForNavKey, labelForNavKey } from "@/lib/cms-site-map";
 
@@ -5,6 +6,7 @@ export type CmsAdminNavChip = {
   key: string;
   label: string;
   href: string;
+  heading?: boolean;
 };
 
 export type CmsAdminNavContext = {
@@ -12,6 +14,8 @@ export type CmsAdminNavContext = {
   siblings: CmsAdminNavChip[];
   activeKey: string;
   onHub: boolean;
+  /** 홈페이지관리 전체 서브메뉴 (칩 바) */
+  allLinks: CmsAdminNavChip[];
 };
 
 function parseAdminLocation(pathname: string, search: URLSearchParams): string | null {
@@ -90,26 +94,79 @@ function chip(key: string): CmsAdminNavChip {
   };
 }
 
-/** 홈페이지관리 화면 — 공개 헤더 하위와 동일한 편집 칩 */
+/** 홈페이지관리 메뉴 전체 — 헤딩 포함 */
+export function homepageAdminAllChips(): CmsAdminNavChip[] {
+  const group = adminMenuGroups.find((g) => g.key === "homepage");
+  if (!group) return [];
+  return group.items
+    .filter((item) => item.heading || Boolean(item.href))
+    .map((item, index) => ({
+      key: item.heading ? `heading-${item.label}-${index}` : item.href || `item-${index}`,
+      label: item.label,
+      href: item.href || "#",
+      heading: item.heading,
+    }));
+}
+
+function activeChipKey(pathname: string, search: URLSearchParams): string {
+  const path = pathname.split("?")[0] ?? pathname;
+  if (path === "/admin/cms") {
+    const page = search.get("page") ?? "home";
+    return page === "home" ? "/admin/cms" : `/admin/cms?page=${page}`;
+  }
+  if (path === "/admin/media") {
+    const focus = search.get("focus");
+    return focus ? `/admin/media?focus=${focus}` : "/admin/media";
+  }
+  if (path === "/admin/posts") {
+    const type = search.get("type");
+    return type ? `/admin/posts?type=${type}` : "/admin/posts";
+  }
+  if (path === "/admin/notices") return "/admin/notices";
+  if (path === "/admin/inquiries") return "/admin/inquiries";
+  return path;
+}
+
+/** 홈페이지관리 화면 — 공개 헤더 하위와 동일한 편집 칩 + 전체 서브메뉴 */
 export function cmsAdminNavContext(
   pathname: string,
   search: URLSearchParams,
 ): CmsAdminNavContext | null {
-  const activeKey = navKeyFromAdmin(pathname, search);
-  if (!activeKey || activeKey === "home") return null;
+  const path = pathname.split("?")[0] ?? pathname;
+  const onHomepageAdmin =
+    path === "/admin/cms" ||
+    path === "/admin/media" ||
+    path === "/admin/notices" ||
+    path === "/admin/posts" ||
+    path === "/admin/inquiries";
 
+  if (!onHomepageAdmin) return null;
+
+  const activeKey = navKeyFromAdmin(pathname, search) ?? "home";
+  const allLinks = homepageAdminAllChips();
   const parent = parentForNavKey(activeKey);
-  if (!parent) return null;
-
-  const siblings = parent.children?.map((c) => chip(c.key)) ?? [];
-  const onHub = parent.key === activeKey;
+  const siblings = parent?.children?.map((c) => chip(c.key)) ?? [];
+  const onHub = Boolean(parent && parent.key === activeKey);
 
   return {
-    parent: chip(parent.key),
+    parent: parent ? chip(parent.key) : { key: "home", label: "메인 홈", href: "/admin/cms" },
     siblings,
     activeKey,
     onHub,
+    allLinks: allLinks.map((link) =>
+      link.heading
+        ? link
+        : {
+            ...link,
+            // 활성 비교용 — href 기준
+            key: link.href,
+          },
+    ),
   };
+}
+
+export function cmsAdminActiveHref(pathname: string, search: URLSearchParams) {
+  return activeChipKey(pathname, search);
 }
 
 export function cmsAdminNavMatchesHref(
@@ -119,7 +176,14 @@ export function cmsAdminNavMatchesHref(
 ): boolean {
   const [path, qs] = href.split("?");
   if ((pathname.split("?")[0] ?? pathname) !== path) return false;
-  if (!qs) return true;
+  if (!qs) {
+    // /admin/cms without query matches only when no page or page=home
+    if (path === "/admin/cms") {
+      const page = search.get("page");
+      return !page || page === "home";
+    }
+    return !search.toString();
+  }
   const expected = new URLSearchParams(qs);
   for (const [key, value] of expected) {
     if (search.get(key) !== value) return false;

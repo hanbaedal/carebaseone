@@ -23,6 +23,10 @@ function RoleDropdown({
   onNavigate?: () => void;
 }) {
   const topHref = group.href;
+  const isHomepage = group.key === "homepage";
+  const panelClass = isHomepage
+    ? "invisible absolute left-0 top-full z-50 grid w-[min(92vw,52rem)] grid-cols-2 gap-x-2 gap-y-0.5 rounded-xl border border-line bg-white p-3 pt-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 sm:grid-cols-3 lg:grid-cols-4"
+    : `invisible absolute left-0 top-full z-50 max-h-[min(80vh,36rem)] overflow-y-auto rounded-xl border border-line bg-white py-2 pt-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 ${HEADER_SUBMENU_PANEL}`;
 
   return (
     <div className="group relative shrink-0">
@@ -47,15 +51,15 @@ function RoleDropdown({
           </span>
         </Link>
       )}
-      <div
-        className={`invisible absolute left-0 top-full z-50 max-h-[min(70vh,28rem)] overflow-y-auto rounded-xl border border-line bg-white py-2 pt-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 ${HEADER_SUBMENU_PANEL}`}
-      >
+      <div className={panelClass}>
         {group.links.map((link) => {
           if ("heading" in link && link.heading) {
             return (
               <p
                 key={`heading-${link.label}`}
-                className="mt-2 px-4 pb-1 pt-1 text-[10px] font-semibold tracking-wide text-ink/45 first:mt-0"
+                className={`col-span-full mt-2 px-2 pb-0.5 pt-1 text-[10px] font-semibold tracking-wide text-ink/45 first:mt-0 ${
+                  isHomepage ? "border-t border-line/70 pt-2 first:border-t-0 first:pt-1" : ""
+                }`}
               >
                 {link.label}
               </p>
@@ -65,7 +69,9 @@ function RoleDropdown({
             <a
               key={`${link.label}-${link.href}`}
               href={link.href}
-              className={`${HEADER_SUBMENU_LINK} text-brand-ink/80 hover:bg-brand/5 hover:text-brand`}
+              className={`${HEADER_SUBMENU_LINK} text-brand-ink/80 hover:bg-brand/5 hover:text-brand ${
+                isHomepage ? "rounded-md px-2 py-1.5" : ""
+              }`}
               onClick={onNavigate}
             >
               {link.label}
@@ -74,7 +80,9 @@ function RoleDropdown({
             <Link
               key={`${link.label}-${link.href}`}
               href={link.href}
-              className={`${HEADER_SUBMENU_LINK} text-brand-ink/80 hover:bg-brand/5 hover:text-brand`}
+              className={`${HEADER_SUBMENU_LINK} text-brand-ink/80 hover:bg-brand/5 hover:text-brand ${
+                isHomepage ? "rounded-md px-2 py-1.5" : ""
+              }`}
               onClick={onNavigate}
             >
               {link.label}
@@ -138,6 +146,7 @@ export function HeaderRoleMenusMobile({
       </p>
       {groups.map((group) => {
         const open = expanded === `role-${group.key}`;
+        const isHomepage = group.key === "homepage";
         return (
           <div key={group.key} className="border-b border-line pb-2">
             <div className="flex items-center justify-between gap-2">
@@ -168,12 +177,18 @@ export function HeaderRoleMenusMobile({
               </button>
             </div>
             {open ? (
-              <div className="mt-2 flex flex-col gap-2 border-l border-line pl-3">
+              <div
+                className={`mt-2 border-l border-line pl-3 ${
+                  isHomepage ? "grid grid-cols-2 gap-x-3 gap-y-1.5" : "flex flex-col gap-2"
+                }`}
+              >
                 {group.links.map((link) =>
                   link.heading ? (
                     <p
                       key={`heading-${link.label}`}
-                      className="mt-2 text-[11px] font-semibold text-ink/45 first:mt-0"
+                      className={`mt-2 text-[11px] font-semibold text-ink/45 first:mt-0 ${
+                        isHomepage ? "col-span-2" : ""
+                      }`}
                     >
                       {link.label}
                     </p>
