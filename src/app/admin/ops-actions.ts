@@ -104,13 +104,34 @@ export async function removeInquiry(formData: FormData) {
   redirect("/admin/inquiries?status=saved");
 }
 
+function redirectMedia(formData: FormData) {
+  const returnQuery = String(formData.get("returnQuery") ?? "").trim();
+  const base = `/admin/media${returnQuery}`;
+  const sep = returnQuery.includes("?") ? "&" : "?";
+  redirect(`${base}${sep}status=saved`);
+}
+
 export async function toggleMedia(formData: FormData) {
   await requireStaff();
   await ensureIndexes();
   const slug = String(formData.get("slug") ?? "");
   const published = formData.get("published") === "true";
   await (await media()).updateOne({ slug }, { $set: { published, ...mongoUpdated() } });
-  redirect("/admin/media?status=saved");
+  redirectMedia(formData);
+}
+
+export async function updateMediaChannels(formData: FormData) {
+  await requireStaff();
+  await ensureIndexes();
+  const slug = String(formData.get("slug") ?? "");
+  if (!slug) redirect("/admin/media?status=error&message=slug");
+  const publicGallery = formData.get("publicGallery") === "on";
+  const cmsBackground = formData.get("cmsBackground") === "on";
+  await (await media()).updateOne(
+    { slug },
+    { $set: { channels: { publicGallery, cmsBackground }, ...mongoUpdated() } },
+  );
+  redirectMedia(formData);
 }
 
 export async function saveMedia(formData: FormData) {
@@ -126,9 +147,17 @@ export async function saveMedia(formData: FormData) {
       buffer: Buffer.from(await file.arrayBuffer()),
     };
   }
+  const category = String(formData.get("category") ?? "other") as MediaCategory;
+  const channels =
+    formData.get("publicGallery") === "on" || formData.get("cmsBackground") === "on"
+      ? {
+          publicGallery: formData.get("publicGallery") === "on",
+          cmsBackground: formData.get("cmsBackground") === "on",
+        }
+      : undefined;
   const err = await upsertMedia({
     slug,
-    category: String(formData.get("category") ?? "other") as MediaCategory,
+    category,
     audience: formData.get("audience") === "member" ? "member" : "public",
     titleKo: String(formData.get("titleKo") ?? ""),
     titleEn: String(formData.get("titleEn") ?? ""),
@@ -138,14 +167,18 @@ export async function saveMedia(formData: FormData) {
     summaryZh: String(formData.get("summaryZh") ?? ""),
     published: formData.get("published") === "on",
     createdBy: session.username,
+    channels,
     file: fileMeta,
   });
-  if (err) redirect(`/admin/media?status=error&message=${encodeURIComponent(err)}`);
-  redirect("/admin/media?status=saved");
+  const returnQuery = String(formData.get("returnQuery") ?? "").trim();
+  const errBase = `/admin/media${returnQuery}`;
+  const errSep = returnQuery.includes("?") ? "&" : "?";
+  if (err) redirect(`${errBase}${errSep}status=error&message=${encodeURIComponent(err)}`);
+  redirectMedia(formData);
 }
 
 export async function removeMedia(formData: FormData) {
   await requireStaff();
   await deleteMedia(String(formData.get("slug") ?? ""));
-  redirect("/admin/media?status=saved");
+  redirectMedia(formData);
 }

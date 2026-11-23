@@ -1,9 +1,5 @@
-import { getLocale, getTranslations } from "next-intl/server";
-import { PostList } from "@/components/PostList";
-import { ProductGalleryGrid } from "@/components/ProductGalleryGrid";
-import { listPosts } from "@/lib/posts";
-import { ensurePostSeed } from "@/lib/seed-posts";
-import { getApprovedMember } from "@/lib/member-session";
+import { getTranslations } from "next-intl/server";
+import { PublicMediaGalleryGrid } from "@/components/PublicMediaGalleryGrid";
 import { resolveLocale } from "@/lib/locale";
 import { SectionTail } from "@/components/SectionTail";
 
@@ -13,19 +9,12 @@ export default async function GalleryPage({
   params: Promise<{ locale: string }>;
 }) {
   resolveLocale((await params).locale);
-  await ensurePostSeed();
   const t = await getTranslations("community");
-  const locale = await getLocale();
-  const member = await getApprovedMember();
-  const items = await listPosts("gallery", Boolean(member));
 
   return (
     <div className="mx-auto max-w-5xl px-guest-gutter py-16">
       <h1 className="font-display text-4xl text-brand-ink">{t("sections.gallery")}</h1>
-      <ProductGalleryGrid />
-      <div className="mt-14">
-        <PostList items={items} locale={locale} basePath="/community/gallery" />
-      </div>
+      <PublicMediaGalleryGrid />
       <SectionTail />
     </div>
   );

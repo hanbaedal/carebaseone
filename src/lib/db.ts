@@ -80,6 +80,11 @@ export type MediaAudience = "public" | "member";
 
 export type MediaStorage = "gridfs" | "missing";
 
+export type MediaChannels = {
+  publicGallery: boolean;
+  cmsBackground: boolean;
+};
+
 export type MediaDoc = {
   slug: string;
   category: MediaCategory;
@@ -92,6 +97,8 @@ export type MediaDoc = {
   mime: string;
   size: number;
   tags: string[];
+  /** 공개 갤러리·CMS 배경 노출 구분 */
+  channels?: MediaChannels;
   published: boolean;
   storage: MediaStorage;
   gridFsId?: string;

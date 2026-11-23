@@ -1,6 +1,7 @@
 import { ensureIndexes, media } from "@/lib/db";
 import { mongoCreatedUpdated } from "@/lib/korea-time";
 import { cmsGalleryImageDefs } from "@/lib/cms-gallery-images";
+import { defaultChannelsForGallerySeed } from "@/lib/media-channels";
 import { mediaApiPath } from "@/lib/media-storage";
 
 let seedPromise: Promise<void> | null = null;
@@ -8,7 +9,12 @@ let seedCompleted = false;
 
 /** 사용 중인 사이트·제품 이미지를 media(gallery)에 등록 */
 export async function ensureCmsGallerySeed() {
-  if (seedCompleted) return;
+  if (!process.env.MONGODB_URI) return;
+  if (seedCompleted) {
+    await ensureIndexes();
+    await backfillMediaChannels(await media());
+    return;
+  }
   if (seedPromise) return seedPromise;
   seedPromise = runSeed()
     .then(() => {
@@ -21,27 +27,23 @@ export async function ensureCmsGallerySeed() {
 }
 
 async function runSeed() {
-  if (!process.env.MONGODB_URI) return;
   await ensureIndexes();
   const col = await media();
   for (const item of cmsGalleryImageDefs()) {
+    const channels = defaultChannelsForGallerySeed(item.publicPath);
     const hit = await col.findOne({ slug: item.slug });
     if (hit) {
-      // 기존 레코드의 공개 경로·분류만 보정
-      if (hit.category !== "gallery" || hit.filePath !== mediaApiPath(item.slug)) {
-        await col.updateOne(
-          { slug: item.slug },
-          {
-            $set: {
-              category: "gallery",
-              filePath: mediaApiPath(item.slug),
-              mime: item.mime,
-              fileName: item.fileName,
-              published: true,
-              tags: Array.from(new Set([...(hit.tags ?? []), "cms", "background", item.publicPath])),
-            },
-          },
-        );
+      const patch: Record<string, unknown> = {};
+      if (hit.category !== "gallery") patch.category = "gallery";
+      if (hit.filePath !== mediaApiPath(item.slug)) {
+        patch.filePath = mediaApiPath(item.slug);
+        patch.mime = item.mime;
+        patch.fileName = item.fileName;
+      }
+      if (!hit.channels) patch.channels = channels;
+      patch.tags = Array.from(new Set([...(hit.tags ?? []), "cms", "background", item.publicPath]));
+      if (Object.keys(patch).length > 0) {
+        await col.updateOne({ slug: item.slug }, { $set: { ...patch, published: hit.published ?? true } });
       }
       continue;
     }
@@ -56,11 +58,29 @@ async function runSeed() {
       mime: item.mime,
       size: 0,
       tags: ["cms", "background", item.publicPath],
+      channels,
       published: true,
       storage: "missing",
       createdBy: "CAREBASE",
       ...mongoCreatedUpdated(),
     });
+  }
+
+  await backfillMediaChannels(col);
+}
+
+async function backfillMediaChannels(col: Awaited<ReturnType<typeof media>>) {
+  const missing = await col
+    .find({ mime: { $regex: /^image\//i }, channels: { $exists: false } })
+    .project({ slug: 1, category: 1, tags: 1, fileName: 1 })
+    .toArray();
+  for (const hit of missing) {
+    const publicPath = galleryPublicPathFromDoc(hit.tags, hit.fileName);
+    const channels =
+      hit.category === "gallery"
+        ? defaultChannelsForGallerySeed(publicPath.startsWith("/images/") ? publicPath : "")
+        : { publicGallery: false, cmsBackground: false };
+    await col.updateOne({ slug: hit.slug }, { $set: { channels } });
   }
 }
 

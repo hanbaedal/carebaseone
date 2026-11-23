@@ -7,9 +7,12 @@ import {
 } from "@/lib/homepage-admin-paths";
 import { galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import { listMediaForAdmin } from "@/lib/media-lib";
-import { removeMedia, saveMedia, toggleMedia } from "@/app/admin/ops-actions";
+import { removeMedia, saveMedia, toggleMedia, updateMediaChannels } from "@/app/admin/ops-actions";
 import { HomepageOpsShell, OpsSection } from "@/components/admin/HomepageOpsShell";
 import type { MediaCategory, MediaDoc } from "@/lib/db";
+import { resolveMediaChannels } from "@/lib/media-channels";
+
+const GALLERY_RETURN_QUERY = "?focus=gallery";
 
 export const dynamic = "force-dynamic";
 
@@ -53,14 +56,15 @@ export default async function AdminMediaPage({
       title={title}
       description={
         isGalleryFocus
-          ? "CMS·홈페이지 배경용 미디어입니다. 공개 커뮤니티 갤러리(/ko/community/gallery)와는 별개입니다."
-          : "홈페이지 배경 이미지는 「배경 이미지 갤러리」 메뉴(분류 gallery)에서 관리합니다."
+          ? "이미지를 한곳에서 관리합니다. 「공개 갤러리」는 /ko/community/gallery, 「CMS 배경」은 홈페이지 편집 배경 선택에 노출됩니다."
+          : "이미지는 「이미지 갤러리」(/admin/media?focus=gallery)에서 등록·구분합니다."
       }
       status={statusMsg}
       statusError={query.status === "error"}
     >
       <OpsSection title="등록 / 메타 수정">
         <form action={saveMedia} className="grid gap-2 text-xs">
+          {isGalleryFocus ? <input type="hidden" name="returnQuery" value={GALLERY_RETURN_QUERY} /> : null}
           <input name="slug" placeholder="slug (영문·숫자·하이픈)" required className="border border-ink/15 px-2 py-1.5" />
           <select name="category" defaultValue={category ?? "gallery"} className="border border-ink/15 px-2 py-1.5">
             {categories.map((c) => (
@@ -83,6 +87,17 @@ export default async function AdminMediaPage({
               accept={isGalleryFocus ? "image/*" : ".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.mp4,image/*"}
             />
           </label>
+          {isGalleryFocus ? (
+            <div className="grid gap-1.5 rounded border border-ink/10 bg-cream/20 p-2">
+              <p className="text-[10px] font-medium text-ink/55">노출 구분 (기본: CMS 배경)</p>
+              <label className="flex items-center gap-2">
+                <input name="cmsBackground" type="checkbox" value="on" defaultChecked /> CMS 배경
+              </label>
+              <label className="flex items-center gap-2">
+                <input name="publicGallery" type="checkbox" value="on" /> 공개 갤러리
+              </label>
+            </div>
+          ) : null}
           <label className="flex items-center gap-2">
             <input name="published" type="checkbox" value="on" defaultChecked /> 공개
           </label>
@@ -97,6 +112,7 @@ export default async function AdminMediaPage({
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
             {items.map((item) => {
               const src = mediaPreviewSrc(item);
+              const channels = resolveMediaChannels(item);
               return (
                 <li key={item.slug} className="overflow-hidden rounded-lg border border-ink/10 bg-cream/30">
                   <div className="relative aspect-[4/3] bg-ink/5">
@@ -128,6 +144,31 @@ export default async function AdminMediaPage({
                       {item.slug}
                     </p>
                     <p className="text-[10px] text-ink/40">{formatKoreaDate(item.createdAt)}</p>
+                    <form action={updateMediaChannels} className="space-y-1.5 border-t border-ink/10 pt-2">
+                      <input type="hidden" name="returnQuery" value={GALLERY_RETURN_QUERY} />
+                      <input type="hidden" name="slug" value={item.slug} />
+                      <label className="flex items-center gap-1.5 text-[10px]">
+                        <input
+                          name="publicGallery"
+                          type="checkbox"
+                          value="on"
+                          defaultChecked={channels.publicGallery}
+                        />
+                        공개 갤러리
+                      </label>
+                      <label className="flex items-center gap-1.5 text-[10px]">
+                        <input
+                          name="cmsBackground"
+                          type="checkbox"
+                          value="on"
+                          defaultChecked={channels.cmsBackground}
+                        />
+                        CMS 배경
+                      </label>
+                      <button type="submit" className="w-full rounded border border-ink/15 py-1 text-[10px] hover:bg-ink/5">
+                        구분 저장
+                      </button>
+                    </form>
                     <div className="flex flex-wrap items-center gap-2 pt-0.5 text-[10px]">
                       {src ? (
                         <a href={src} className="text-forest hover:underline" target="_blank" rel="noreferrer">
@@ -135,6 +176,7 @@ export default async function AdminMediaPage({
                         </a>
                       ) : null}
                       <form action={toggleMedia} className="inline">
+                        <input type="hidden" name="returnQuery" value={GALLERY_RETURN_QUERY} />
                         <input type="hidden" name="slug" value={item.slug} />
                         <input type="hidden" name="published" value={item.published ? "false" : "true"} />
                         <button type="submit" className="text-ink/60 hover:text-ink">
@@ -142,6 +184,7 @@ export default async function AdminMediaPage({
                         </button>
                       </form>
                       <form action={removeMedia} className="inline">
+                        <input type="hidden" name="returnQuery" value={GALLERY_RETURN_QUERY} />
                         <input type="hidden" name="slug" value={item.slug} />
                         <button type="submit" className="text-red-800 hover:underline">
                           삭제

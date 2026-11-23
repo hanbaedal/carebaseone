@@ -1,5 +1,6 @@
 import { ensureIndexes, media, type MediaAudience, type MediaCategory } from "@/lib/db";
 import { mongoCreatedUpdated, mongoUpdated } from "@/lib/korea-time";
+import { defaultChannelsForNewUpload } from "@/lib/media-channels";
 import { removeGridFsBySlug, uploadMediaBuffer, mediaApiPath } from "@/lib/media-storage";
 
 const slugRe = /^[a-z0-9][a-z0-9-]{2,48}$/;
@@ -16,6 +17,7 @@ export async function upsertMedia(input: {
   summaryZh: string;
   published: boolean;
   createdBy: string;
+  channels?: { publicGallery: boolean; cmsBackground: boolean };
   file?: { name: string; type: string; buffer: Buffer };
 }) {
   await ensureIndexes();
@@ -64,6 +66,10 @@ export async function upsertMedia(input: {
     storage,
     gridFsId,
     createdBy: existing?.createdBy ?? input.createdBy,
+    channels:
+      input.channels ??
+      existing?.channels ??
+      defaultChannelsForNewUpload(input.category, mime),
   };
 
   if (!existing) {

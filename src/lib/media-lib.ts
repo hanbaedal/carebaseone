@@ -1,6 +1,7 @@
 import { ensureIndexes, media, type MediaCategory, type MediaDoc } from "@/lib/db";
 import { ensureCmsGallerySeed, galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import { cmsGalleryFallbackOptions } from "@/lib/cms-gallery-images";
+import { isImageMime, resolveMediaChannels } from "@/lib/media-channels";
 import { ensureMediaReady, ensureMediaSeed } from "@/lib/seed-media";
 import { mediaApiPath } from "@/lib/media-storage";
 
@@ -41,7 +42,28 @@ export async function listMediaForAdmin(category?: MediaCategory): Promise<Media
   return (await media()).find(filter).sort({ createdAt: -1 }).toArray();
 }
 
-/** CMS 배경 선택 — gallery 분류(+이미지) + 정적 폴백 병합 */
+function mediaOptionFromDoc(m: {
+  slug: string;
+  filePath?: string;
+  title?: { ko?: string };
+  fileName: string;
+  tags?: string[];
+}) {
+  const publicHint = galleryPublicPathFromDoc(m.tags, m.fileName);
+  const src =
+    m.filePath?.startsWith("/images/")
+      ? m.filePath
+      : publicHint.startsWith("/images/")
+        ? publicHint
+        : m.filePath || mediaApiPath(m.slug);
+  return {
+    slug: m.slug,
+    src,
+    title: m.title?.ko || m.slug,
+  };
+}
+
+/** CMS 배경 선택 — cmsBackground 채널 이미지 + 정적 폴백 */
 export async function listCmsImageMediaOptions() {
   const fallback = cmsGalleryFallbackOptions();
   try {
@@ -50,27 +72,31 @@ export async function listCmsImageMediaOptions() {
     const docs = await (await media())
       .find({
         published: true,
-        $or: [{ category: "gallery" }, { mime: { $regex: /^image\//i } }],
+        mime: { $regex: /^image\//i },
       })
-      .project({ slug: 1, filePath: 1, title: 1, fileName: 1, tags: 1, category: 1, createdAt: 1 })
+      .project({
+        slug: 1,
+        filePath: 1,
+        title: 1,
+        fileName: 1,
+        tags: 1,
+        category: 1,
+        channels: 1,
+        mime: 1,
+        createdAt: 1,
+      })
       .sort({ category: 1, createdAt: -1 })
       .limit(200)
-      .toArray();
+      .toArray() as Pick<
+      MediaDoc,
+      "slug" | "filePath" | "title" | "fileName" | "tags" | "category" | "channels" | "mime" | "createdAt"
+    >[];
+
+    const cmsDocs = docs.filter((m) => resolveMediaChannels(m).cmsBackground);
 
     const map = new Map(fallback.map((item) => [item.slug, item]));
-    for (const m of docs) {
-      const publicHint = galleryPublicPathFromDoc(m.tags, m.fileName);
-      const src =
-        m.filePath?.startsWith("/images/")
-          ? m.filePath
-          : publicHint.startsWith("/images/")
-            ? publicHint
-            : m.filePath || mediaApiPath(m.slug);
-      map.set(m.slug, {
-        slug: m.slug,
-        src,
-        title: m.title?.ko || m.slug,
-      });
+    for (const m of cmsDocs) {
+      map.set(m.slug, mediaOptionFromDoc(m));
     }
 
     const galleryFirst = Array.from(map.values()).sort((a, b) => {
@@ -89,4 +115,24 @@ export async function listCmsImageMediaOptions() {
 export async function findMediaBySlug(slug: string) {
   await ensureMediaReady();
   return (await media()).findOne({ slug, published: true });
+}
+
+/** 공개 커뮤니티 갤러리 — publicGallery 채널 */
+export async function listPublicGalleryMedia(memberApproved = false): Promise<MediaDoc[]> {
+  await ensureMediaReady();
+  await ensureCmsGallerySeed();
+  const audience = memberApproved ? { $in: ["public", "member"] as const } : "public";
+  const docs = await (await media())
+    .find({
+      published: true,
+      mime: { $regex: /^image\//i },
+      audience,
+    })
+    .sort({ createdAt: -1 })
+    .toArray();
+  return docs.filter((d) => isImageMime(d.mime) && resolveMediaChannels(d).publicGallery);
+}
+
+export function publicGalleryImageSrc(item: MediaDoc) {
+  return mediaOptionFromDoc(item).src;
 }
