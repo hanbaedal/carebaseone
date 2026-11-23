@@ -1,26 +1,14 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { PageHero } from "@/components/PageHero";
-import { PatentMediaPreviewGrid, type PatentPreviewItem } from "@/components/PatentMediaPreviewGrid";
+import { PatentMediaPreviewGrid } from "@/components/PatentMediaPreviewGrid";
 import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
 import { images } from "@/lib/site";
 import { listPublishedMedia } from "@/lib/media-lib";
-import type { MediaDoc } from "@/lib/db";
-import { isMediaImageMime, mediaPreviewThumbSrc, mediaPublicHref } from "@/lib/media-public";
+import { mediaToPreviewItem } from "@/lib/media-public";
 import { resolveLocale } from "@/lib/locale";
 import { SectionTail } from "@/components/SectionTail";
 
 export const dynamic = "force-dynamic";
-
-function toPreviewItems(docs: MediaDoc[], loc: "ko" | "en" | "zh"): PatentPreviewItem[] {
-  return docs.map((doc) => ({
-    slug: doc.slug,
-    title: doc.title[loc] ?? doc.title.ko,
-    summary: doc.summary[loc] ?? doc.summary.ko,
-    href: mediaPublicHref(doc),
-    isImage: isMediaImageMime(doc),
-    thumbSrc: mediaPreviewThumbSrc(doc),
-  }));
-}
 
 export default async function ResearchPage({
   params,
@@ -37,6 +25,8 @@ export default async function ResearchPage({
     view: t("gridView"),
     close: t("gridClose"),
     openFile: t("gridOpenFile"),
+    downloadFile: t("gridDownloadFile"),
+    noPreview: t("gridNoPreview"),
     zoomPageFit: t("gridZoomPageFit"),
     zoomPageWidth: t("gridZoomPageWidth"),
     zoomActual: t("gridZoomActual"),
@@ -58,7 +48,7 @@ export default async function ResearchPage({
           <h2 className="text-lg font-bold text-brand-ink">{t("researchHeading")}</h2>
           <div className="mt-4">
             <PatentMediaPreviewGrid
-              items={toPreviewItems(research, loc)}
+              items={research.map((doc) => mediaToPreviewItem(doc, loc))}
               labels={{ ...gridLabels, empty: t("gridResearchEmpty") }}
             />
           </div>
@@ -67,7 +57,7 @@ export default async function ResearchPage({
           <h2 className="text-lg font-bold text-brand-ink">{t("productHeading")}</h2>
           <div className="mt-4">
             <PatentMediaPreviewGrid
-              items={toPreviewItems(product, loc)}
+              items={product.map((doc) => mediaToPreviewItem(doc, loc))}
               labels={{ ...gridLabels, empty: t("gridProductEmpty") }}
             />
           </div>

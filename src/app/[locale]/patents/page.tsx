@@ -4,7 +4,7 @@ import { PatentMediaPreviewGrid } from "@/components/PatentMediaPreviewGrid";
 import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
 import { images } from "@/lib/site";
 import { listPublishedMedia } from "@/lib/media-lib";
-import { isMediaImageMime, mediaPreviewThumbSrc, mediaPublicHref } from "@/lib/media-public";
+import { mediaToPreviewItem } from "@/lib/media-public";
 import { resolveLocale } from "@/lib/locale";
 import { SectionTail } from "@/components/SectionTail";
 
@@ -20,14 +20,7 @@ export default async function PatentsPage({
   const locale = await getLocale();
   const loc = locale === "en" || locale === "zh" ? locale : "ko";
   const items = await listPublishedMedia("patent");
-  const gridItems = items.map((doc) => ({
-    slug: doc.slug,
-    title: doc.title[loc] ?? doc.title.ko,
-    summary: doc.summary[loc] ?? doc.summary.ko,
-    href: mediaPublicHref(doc),
-    isImage: isMediaImageMime(doc),
-    thumbSrc: mediaPreviewThumbSrc(doc),
-  }));
+  const gridItems = items.map((doc) => mediaToPreviewItem(doc, loc));
 
   return (
     <div>
@@ -43,6 +36,8 @@ export default async function PatentsPage({
             view: t("gridView"),
             close: t("gridClose"),
             openFile: t("gridOpenFile"),
+            downloadFile: t("gridDownloadFile"),
+            noPreview: t("gridNoPreview"),
             zoomPageFit: t("gridZoomPageFit"),
             zoomPageWidth: t("gridZoomPageWidth"),
             zoomActual: t("gridZoomActual"),

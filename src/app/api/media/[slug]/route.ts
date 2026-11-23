@@ -11,23 +11,29 @@ import { Readable } from "node:stream";
 
 export const dynamic = "force-dynamic";
 
-function streamToWeb(stream: NodeJS.ReadableStream, mime: string, fileName: string) {
+function streamToWeb(
+  stream: NodeJS.ReadableStream,
+  mime: string,
+  fileName: string,
+  disposition: "inline" | "attachment",
+) {
   const web = Readable.toWeb(stream as Readable);
   const encoded = encodeURIComponent(fileName);
   return new NextResponse(web as unknown as BodyInit, {
     headers: {
       "Content-Type": mime,
-      "Content-Disposition": `inline; filename*=UTF-8''${encoded}`,
+      "Content-Disposition": `${disposition}; filename*=UTF-8''${encoded}`,
       "Cache-Control": "private, max-age=3600",
     },
   });
 }
 
 export async function GET(
-  _request: Request,
+  request: Request,
   context: { params: Promise<{ slug: string }> },
 ) {
   const { slug } = await context.params;
+  const disposition = new URL(request.url).searchParams.get("download") === "1" ? "attachment" : "inline";
   if (!process.env.MONGODB_URI) {
     return NextResponse.json({ error: "storage unavailable" }, { status: 503 });
   }
@@ -53,7 +59,7 @@ export async function GET(
   if (doc.storage === "gridfs" && doc.gridFsId) {
     try {
       const stream = await openMediaDownloadStream(doc.gridFsId);
-      return streamToWeb(stream, doc.mime, doc.fileName);
+      return streamToWeb(stream, doc.mime, doc.fileName, disposition);
     } catch {
       return NextResponse.json({ error: "file missing" }, { status: 404 });
     }
@@ -61,7 +67,7 @@ export async function GET(
 
   const disk = resolveMediaDiskPath(slug, doc.fileName);
   if (disk) {
-    return streamToWeb(createReadStream(disk), doc.mime, doc.fileName);
+    return streamToWeb(createReadStream(disk), doc.mime, doc.fileName, disposition);
   }
 
   // CMS 갤러리 시드 — public/images 정적 파일
@@ -69,7 +75,7 @@ export async function GET(
   if (publicHint.startsWith("/images/")) {
     const publicDisk = path.join(process.cwd(), "public", publicHint.replace(/^\//, ""));
     if (fs.existsSync(publicDisk)) {
-      return streamToWeb(createReadStream(publicDisk), doc.mime, doc.fileName);
+      return streamToWeb(createReadStream(publicDisk), doc.mime, doc.fileName, disposition);
     }
   }
 
