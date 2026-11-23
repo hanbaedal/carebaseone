@@ -2,7 +2,7 @@ import { ensureIndexes, media, type MediaCategory, type MediaDoc } from "@/lib/d
 import { galleryFileMissing, galleryThumbSrc } from "@/lib/gallery-thumb-src";
 import { ensureCmsGallerySeed, galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import { cmsGalleryFallbackOptions } from "@/lib/cms-gallery-images";
-import { isGalleryImageFile, repairGalleryImageMime } from "@/lib/media-crud";
+import { isGalleryImageFile, isGalleryMediaFile, repairGalleryImageMime } from "@/lib/media-crud";
 import { isImageMime, resolveMediaChannels, showOnPublicGallery } from "@/lib/media-channels";
 import { resolveProductLines } from "@/lib/media-product-lines";
 import { ensureProductLineGalleryFromCatalog } from "@/lib/product-line-gallery-migrate";
@@ -136,7 +136,7 @@ export async function listPublicGalleryMedia(memberApproved = false): Promise<Me
   const docs = await listMediaForAdmin("gallery");
   return docs.filter((d) => {
     if (!d.published) return false;
-    if (!isGalleryImageFile(d.fileName, d.mime)) return false;
+    if (!isGalleryMediaFile(d.fileName, d.mime)) return false;
     if (galleryFileMissing(d)) return false;
     if (!showOnPublicGallery(d)) return false;
     if (d.audience === "member" && !memberApproved) return false;

@@ -1,6 +1,7 @@
 import type { MediaDoc } from "@/lib/db";
 import {
-  isGalleryImageFile,
+  isGalleryMediaFile,
+  isGalleryVideoFile,
   repairGalleryDiskMirrors,
   repairGalleryImageMime,
 } from "@/lib/media-crud";
@@ -19,6 +20,7 @@ export type AdminGalleryItem = {
   publicGallery: boolean;
   cmsBackground: boolean;
   productLines: MediaProductLines;
+  kind: "image" | "video";
   /** 파일 미반영(저장 실패) — 삭제 후 재업로드 권장 */
   fileMissing?: boolean;
 };
@@ -36,6 +38,7 @@ export function toAdminGalleryItem(doc: MediaDoc): AdminGalleryItem {
     publicGallery: ch.publicGallery,
     cmsBackground: ch.cmsBackground,
     productLines: resolveProductLines(ch),
+    kind: isGalleryVideoFile(doc.fileName, doc.mime) ? "video" : "image",
     fileMissing: galleryFileMissing(doc),
   };
 }
@@ -49,7 +52,7 @@ export async function listAdminGalleryItems(): Promise<AdminGalleryItem[]> {
   const { repairProductLineChannelsShape } = await import("@/lib/gallery-product-line-limit");
   await repairProductLineChannelsShape();
   const docs = await listMediaForAdmin("gallery");
-  return docs.filter((d) => isGalleryImageFile(d.fileName, d.mime)).map(toAdminGalleryItem);
+  return docs.filter((d) => isGalleryMediaFile(d.fileName, d.mime)).map(toAdminGalleryItem);
 }
 
 export function newGalleryUploadSlug() {

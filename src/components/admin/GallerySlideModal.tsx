@@ -11,7 +11,7 @@ export function GallerySlideModal({
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  items: { src: string; alt: string }[];
+  items: { src: string; alt: string; kind?: "image" | "video" }[];
   index: number;
   onIndexChange: (index: number) => void;
 }) {
@@ -46,8 +46,19 @@ export function GallerySlideModal({
           닫기
         </button>
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-black/40">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={current.src} alt={current.alt} className="h-full w-full object-contain" />
+          {current.kind === "video" ? (
+            <video
+              key={current.src}
+              src={current.src}
+              className="h-full w-full object-contain"
+              controls
+              playsInline
+              autoPlay
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={current.src} alt={current.alt} className="h-full w-full object-contain" />
+          )}
         </div>
         <p className="mt-2 text-center text-sm text-white/90">
           {index + 1} / {items.length}

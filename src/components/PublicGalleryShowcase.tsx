@@ -8,6 +8,7 @@ export type PublicGalleryItem = {
   src: string;
   title: string;
   caption: string;
+  kind: "image" | "video";
 };
 
 /** 아래 썸네일 줄에 한 번에 보이는 장수 */
@@ -83,30 +84,27 @@ export function PublicGalleryShowcase({
         className="relative overflow-hidden rounded-2xl border border-line bg-white p-2 shadow-sm sm:p-3"
       >
         <div className="relative aspect-[16/10] min-h-[16rem] w-full overflow-hidden rounded-xl bg-brand-ink/[0.06] sm:min-h-[20rem]">
-          <div
-            className="flex h-full transition-transform duration-700 ease-out motion-reduce:transition-none"
-            style={{
-              width: `${total * 100}%`,
-              transform: `translateX(-${(100 / total) * active}%)`,
-            }}
-          >
-            {items.map((item, index) => (
-              <div
-                key={item.slug}
-                className="relative h-full shrink-0"
-                style={{ width: `${100 / total}%` }}
-              >
-                <MediaAwareImage
-                  src={item.src}
-                  mediaSlug={item.slug}
-                  alt={item.title}
-                  fill
-                  priority={index === 0}
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
+          {current?.kind === "video" ? (
+            <video
+              key={current.slug}
+              src={current.src}
+              className="absolute inset-0 h-full w-full object-contain bg-black"
+              controls
+              playsInline
+              autoPlay
+              preload="metadata"
+            />
+          ) : current ? (
+            <MediaAwareImage
+              key={current.slug}
+              src={current.src}
+              mediaSlug={current.slug}
+              alt={current.title}
+              fill
+              priority
+              className="object-cover"
+            />
+          ) : null}
 
           {total > 1 ? (
             <>
@@ -130,7 +128,12 @@ export function PublicGalleryShowcase({
           ) : null}
 
           <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-ink/70 via-brand-ink/25 to-transparent px-4 pb-4 pt-16 sm:px-5">
-            <p className="text-base font-semibold text-white sm:text-lg">{current?.title}</p>
+            <p className="text-base font-semibold text-white sm:text-lg">
+              {current?.title}
+              {current?.kind === "video" ? (
+                <span className="ml-2 rounded bg-white/20 px-1.5 py-0.5 text-[10px] font-medium tracking-wide">VIDEO</span>
+              ) : null}
+            </p>
             {current?.caption ? (
               <p className="mt-1 line-clamp-2 text-sm text-white/80">{current.caption}</p>
             ) : null}
@@ -153,13 +156,22 @@ export function PublicGalleryShowcase({
                 }`}
               >
                 <span className="relative block aspect-[4/3] w-[42%] shrink-0 overflow-hidden rounded-lg bg-brand-ink/[0.06]">
-                  <MediaAwareImage
-                    src={item.src}
-                    mediaSlug={item.slug}
-                    alt=""
-                    fill
-                    className="object-cover"
-                  />
+                  {item.kind === "video" ? (
+                    <>
+                      <video src={item.src} className="absolute inset-0 h-full w-full object-cover" muted playsInline preload="metadata" />
+                      <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/20">
+                        <span className="rounded bg-black/55 px-1.5 py-0.5 text-[9px] font-semibold text-white">VIDEO</span>
+                      </span>
+                    </>
+                  ) : (
+                    <MediaAwareImage
+                      src={item.src}
+                      mediaSlug={item.slug}
+                      alt=""
+                      fill
+                      className="object-cover"
+                    />
+                  )}
                 </span>
                 <span className="flex min-w-0 flex-1 flex-col justify-center gap-1 py-0.5">
                   <span className="line-clamp-2 text-sm font-semibold leading-snug text-brand-ink">

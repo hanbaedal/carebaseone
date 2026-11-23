@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { listAdminGalleryItems, newGalleryUploadSlug } from "@/lib/admin-gallery";
 import { requireStaffRole } from "@/lib/admin-access";
 import { ensureIndexes, media } from "@/lib/db";
-import { isAcceptedImageUpload } from "@/lib/image-upload";
+import { isAcceptedGalleryUpload, isAcceptedVideoUpload } from "@/lib/image-upload";
 import { mongoUpdated } from "@/lib/korea-time";
 import { deleteMedia, upsertMedia } from "@/lib/media-crud";
 import { resolveMediaChannels } from "@/lib/media-channels";
@@ -59,20 +59,29 @@ export async function POST(request: Request) {
     const form = await request.formData();
     const file = form.get("file");
     if (!(file instanceof File) || file.size === 0) {
-      return NextResponse.json({ error: "사진 파일을 선택해 주세요." }, { status: 400 });
+      return NextResponse.json({ error: "사진 또는 동영상 파일을 선택해 주세요." }, { status: 400 });
     }
-    if (!isAcceptedImageUpload(file)) {
+    if (!isAcceptedGalleryUpload(file)) {
       return NextResponse.json(
-        { error: "JPG·PNG·WebP·GIF 이미지만 올릴 수 있습니다. (파일 확장자를 확인해 주세요.)" },
+        {
+          error:
+            "JPG·PNG·WebP·GIF 이미지 또는 MP4·WebM·MOV 동영상만 올릴 수 있습니다. (파일 확장자를 확인해 주세요.)",
+        },
         { status: 400 },
       );
+    }
+    const isVideo = isAcceptedVideoUpload(file);
+    /** 약 200MB — 호스팅·업로드 시간 제한 고려 */
+    if (file.size > 200 * 1024 * 1024) {
+      return NextResponse.json({ error: "파일은 200MB 이하만 올릴 수 있습니다." }, { status: 400 });
     }
 
     const title = String(form.get("title") ?? form.get("alt") ?? "갤러리").trim() || "갤러리";
     const description = String(form.get("description") ?? form.get("summaryKo") ?? "").trim();
     const publicGallery = form.get("publicGallery") === "true" || form.get("publicGallery") === "on";
-    const cmsBackground =
-      form.get("cmsBackground") === "false"
+    const cmsBackground = isVideo
+      ? false
+      : form.get("cmsBackground") === "false"
         ? false
         : form.get("cmsBackground") === "true" || form.get("cmsBackground") === "on" || !form.has("cmsBackground")
           ? true

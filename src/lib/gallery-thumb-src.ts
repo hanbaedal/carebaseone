@@ -1,6 +1,6 @@
 import { galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import type { MediaDoc } from "@/lib/db";
-import { isGalleryImageFile } from "@/lib/media-crud";
+import { isGalleryMediaFile } from "@/lib/media-crud";
 import { mediaApiPath, publicMediaUrl, resolveMediaDiskPath } from "@/lib/media-storage";
 
 export function galleryFileMissing(doc: MediaDoc) {
@@ -17,7 +17,7 @@ export function galleryThumbSrc(
   const publicHint = galleryPublicPathFromDoc(item.tags, item.fileName);
   if (item.filePath?.startsWith("/images/")) return item.filePath;
   if (publicHint.startsWith("/images/")) return publicHint;
-  if (isGalleryImageFile(item.fileName, item.mime)) {
+  if (isGalleryMediaFile(item.fileName, item.mime)) {
     if (resolveMediaDiskPath(item.slug, item.fileName)) {
       return publicMediaUrl(item.slug, item.fileName);
     }

@@ -22,11 +22,24 @@ export function mimeFromFileName(fileName: string, fallback = "application/octet
   if (ext === ".png") return "image/png";
   if (ext === ".webp") return "image/webp";
   if (ext === ".gif") return "image/gif";
+  if (ext === ".mp4") return "video/mp4";
+  if (ext === ".webm") return "video/webm";
+  if (ext === ".mov") return "video/quicktime";
+  if (ext === ".m4v") return "video/x-m4v";
   return fallback;
 }
 
 export function isGalleryImageFile(fileName: string, mime: string) {
   return isImageMime(mime) || /\.(jpe?g|png|webp|gif)$/i.test(fileName);
+}
+
+export function isGalleryVideoFile(fileName: string, mime: string) {
+  return Boolean(mime?.startsWith("video/")) || /\.(mp4|webm|mov|m4v)$/i.test(fileName);
+}
+
+/** 이미지 갤러리 목록·공개 갤러리 — 사진 + 동영상 */
+export function isGalleryMediaFile(fileName: string, mime: string) {
+  return isGalleryImageFile(fileName, mime) || isGalleryVideoFile(fileName, mime);
 }
 
 /** 업로드 시 MIME이 비어 있으면 목록·공개 갤러리에서 빠지는 문제 보정 */
@@ -44,7 +57,7 @@ export async function repairGalleryDiskMirrors() {
     .project({ slug: 1, fileName: 1, mime: 1, gridFsId: 1 })
     .toArray();
   for (const doc of docs) {
-    if (!isGalleryImageFile(doc.fileName, doc.mime)) continue;
+    if (!isGalleryMediaFile(doc.fileName, doc.mime)) continue;
     if (resolveMediaDiskPath(doc.slug, doc.fileName)) continue;
     if (!doc.gridFsId) continue;
     try {
@@ -145,7 +158,7 @@ export async function upsertMedia(input: {
     storage = "gridfs";
     mime = fileMime;
     fileName = safeName;
-    if (isImageMime(fileMime)) {
+    if (isImageMime(fileMime) || isGalleryVideoFile(safeName, fileMime)) {
       try {
         writePublicMediaMirror(slug, safeName, input.file.buffer);
       } catch {

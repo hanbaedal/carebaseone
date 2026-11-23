@@ -58,8 +58,14 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
     };
   }, [preview]);
 
+  const fileIsVideo = Boolean(file?.type.startsWith("video/") || (file && /\.(mp4|webm|mov|m4v)$/i.test(file.name)));
+
   function pickFile(next: File | null) {
     setFile(next);
+    const nextIsVideo = Boolean(
+      next?.type.startsWith("video/") || (next && /\.(mp4|webm|mov|m4v)$/i.test(next.name)),
+    );
+    if (nextIsVideo) setUploadCms(false);
     setPreview((prev) => {
       if (prev) URL.revokeObjectURL(prev);
       return next ? URL.createObjectURL(next) : null;
@@ -69,7 +75,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
   async function onUpload(event: React.FormEvent) {
     event.preventDefault();
     if (!file) {
-      setMessage("사진 파일을 선택해 주세요.");
+      setMessage("사진 또는 동영상 파일을 선택해 주세요.");
       return;
     }
     setBusy(true);
@@ -79,8 +85,13 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
     form.set("title", title);
     form.set("description", description);
     if (uploadPublic) form.set("publicGallery", "true");
-    if (uploadCms) form.set("cmsBackground", "true");
-    if (!uploadCms) form.set("cmsBackground", "false");
+    if (fileIsVideo) {
+      form.set("cmsBackground", "false");
+    } else if (uploadCms) {
+      form.set("cmsBackground", "true");
+    } else {
+      form.set("cmsBackground", "false");
+    }
     form.set("published", "true");
     for (const key of PRODUCT_LINE_CATEGORIES) {
       if (uploadProductLines[key]) form.set(`productLine_${key}`, "true");
@@ -106,7 +117,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
       setUploadProductLines(emptyProductLines());
       pickFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
-      setMessage("올렸습니다. 공개 사이트에는 「공개 갤러리」가 체크된 사진만 나타납니다.");
+      setMessage("올렸습니다. 공개 사이트에는 「공개 갤러리」가 체크된 항목만 나타납니다.");
     } catch {
       setMessage("네트워크 오류입니다. 잠시 후 다시 시도해 주세요.");
     } finally {
@@ -146,7 +157,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
   }
 
   async function onDelete(id: string) {
-    if (!confirm("이 사진을 지울까요?")) return;
+    if (!confirm("이 항목을 지울까요?")) return;
     setBusy(true);
     setMessage("");
     try {
@@ -251,7 +262,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
       const objectUrl = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = objectUrl;
-      a.download = `${item.id}.jpg`;
+      a.download = item.kind === "video" ? `${item.id}.mp4` : `${item.id}.jpg`;
       a.rel = "noopener";
       document.body.appendChild(a);
       a.click();
@@ -291,13 +302,14 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
             />
             공개 갤러리
           </label>
-          <label className="flex items-center gap-1.5">
+          <label className={`flex items-center gap-1.5 ${item.kind === "video" ? "opacity-50" : ""}`}>
             <input
               type="checkbox"
-              checked={item.cmsBackground}
+              checked={item.kind === "video" ? false : item.cmsBackground}
+              disabled={item.kind === "video"}
               onChange={(e) => patchItem(item.id, { cmsBackground: e.target.checked })}
             />
-            CMS 배경
+            CMS 배경{item.kind === "video" ? " (동영상 불가)" : ""}
           </label>
           <label className="flex items-center gap-1.5">
             <input
@@ -320,7 +332,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
 
   const filterBar = (
     <div className="flex flex-wrap items-center justify-between gap-2">
-      <h2 className="text-[13px] font-semibold text-brand-ink">등록된 사진 ({items.length})</h2>
+      <h2 className="text-[13px] font-semibold text-brand-ink">등록된 미디어 ({items.length})</h2>
       <div className="flex max-w-full flex-wrap gap-1.5">
         {FILTER_OPTIONS.map((tag) => (
           <button
@@ -348,13 +360,17 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
       </div>
 
       <form onSubmit={onUpload} className="rounded-lg border border-line bg-white p-4 sm:p-5 md:grid md:grid-cols-2 md:items-start md:gap-x-8 md:gap-y-3">
-        <h2 className="text-[13px] font-semibold text-brand-ink md:col-span-2">사진 올리기</h2>
+        <h2 className="text-[13px] font-semibold text-brand-ink md:col-span-2">사진·동영상 올리기</h2>
 
         <div className="mt-3 min-w-0 space-y-2 md:mt-0">
           <div className="relative mx-auto aspect-[4/3] w-full max-w-[16rem] overflow-hidden rounded-md border border-ink/10 bg-ink/5 sm:max-w-xs md:mx-0 md:max-w-none">
             {preview ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={preview} alt="" className="h-full w-full object-contain object-center" />
+              fileIsVideo ? (
+                <video src={preview} className="h-full w-full object-contain object-center" muted playsInline controls />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={preview} alt="" className="h-full w-full object-contain object-center" />
+              )
             ) : (
               <span className="flex h-full items-center justify-center px-2 text-center text-[11px] leading-tight text-ink/45">
                 선택한 파일
@@ -363,7 +379,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
               </span>
             )}
           </div>
-          <p className="text-center text-[11px] text-ink/45 md:text-left">JPG · PNG · WebP · GIF</p>
+          <p className="text-center text-[11px] text-ink/45 md:text-left">JPG · PNG · WebP · GIF · MP4 · WebM · MOV (최대 200MB)</p>
         </div>
 
         <div className="mt-3 min-w-0 space-y-2 md:mt-0">
@@ -384,9 +400,14 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
                 <input type="checkbox" checked={uploadPublic} onChange={(e) => setUploadPublic(e.target.checked)} />
                 공개 갤러리 (사이트 /community/gallery)
               </label>
-            <label className="flex items-center gap-1.5">
-              <input type="checkbox" checked={uploadCms} onChange={(e) => setUploadCms(e.target.checked)} />
-              CMS 배경
+            <label className={`flex items-center gap-1.5 ${fileIsVideo ? "opacity-50" : ""}`}>
+              <input
+                type="checkbox"
+                checked={fileIsVideo ? false : uploadCms}
+                disabled={fileIsVideo}
+                onChange={(e) => setUploadCms(e.target.checked)}
+              />
+              CMS 배경{fileIsVideo ? " (동영상 불가)" : ""}
             </label>
           </div>
           <div className="flex flex-wrap items-center gap-2 pt-1">
@@ -395,7 +416,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/jpeg,image/png,image/webp,image/gif"
+                accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov,.m4v"
                 className="sr-only"
                 disabled={busy}
                 onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
@@ -423,14 +444,15 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
         {filterBar}
 
         {visible.length === 0 ? (
-          <p className="text-sm text-ink/50">이 구분에 사진이 없습니다.</p>
+          <p className="text-sm text-ink/50">이 구분에 항목이 없습니다.</p>
         ) : (
           <>
-            <section className="hidden min-w-0 space-y-3 md:block" aria-label="등록된 사진 미리보기">
+            <section className="hidden min-w-0 space-y-3 md:block" aria-label="등록된 미디어 미리보기">
               <p className="text-center text-sm text-ink/55">
                 {safeIndex + 1} / {total}
                 {current?.title ? ` · ${current.title}` : ""}
-                <span className="hidden lg:inline"> · 사진을 클릭하면 크게 볼 수 있습니다</span>
+                {current?.kind === "video" ? " · 동영상" : ""}
+                <span className="hidden lg:inline"> · 클릭하면 크게 볼 수 있습니다</span>
               </p>
               <div className="relative w-full max-w-full overflow-hidden rounded-xl border border-line bg-cream/40 p-2">
                 <div className="relative grid grid-cols-5 gap-2">
@@ -444,13 +466,14 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
                         className={`relative aspect-[4/3] w-full min-w-0 overflow-hidden rounded-lg bg-ink/5 ring-offset-2 transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 ${
                           selected ? "ring-2 ring-brand" : "ring-1 ring-ink/15"
                         }`}
-                        aria-label={`${itemIndex + 1}번 사진 크게 보기`}
+                        aria-label={`${itemIndex + 1}번 ${item.kind === "video" ? "동영상" : "사진"} 크게 보기`}
                         onClick={() => openModalAt(itemIndex)}
                       >
                         <GalleryThumbImage
                           src={item.src}
                           slug={item.id}
                           alt={item.title}
+                          kind={item.kind}
                           className="h-full w-full object-cover object-center"
                         />
                         <span className="absolute bottom-1 right-1 rounded bg-black/55 px-1.5 py-0.5 text-[10px] font-medium text-white">
@@ -488,8 +511,8 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
                 total={total}
                 index={safeIndex}
                 onGo={setViewIndex}
-                itemLabel={(n) => `${n}번 사진`}
-                label="등록된 사진"
+                itemLabel={(n) => `${n}번`}
+                label="등록된 미디어"
               />
 
               {current ? (
@@ -499,7 +522,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
               <GallerySlideModal
                 open={modalOpen}
                 onOpenChange={setModalOpen}
-                items={visible.map((item) => ({ src: item.src, alt: item.title }))}
+                items={visible.map((item) => ({ src: item.src, alt: item.title, kind: item.kind }))}
                 index={safeIndex}
                 onIndexChange={setViewIndex}
               />
@@ -512,6 +535,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
                     src={item.src}
                     slug={item.id}
                     alt={item.title}
+                    kind={item.kind}
                     className="aspect-[4/3] w-full rounded-md object-cover"
                   />
                   {itemEditor(item)}

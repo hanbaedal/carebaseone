@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { PublicGalleryShowcase } from "@/components/PublicGalleryShowcase";
+import { isGalleryVideoFile } from "@/lib/media-crud";
 import { listPublicGalleryMedia, publicGalleryImageSrc } from "@/lib/media-lib";
 import { getApprovedMember } from "@/lib/member-session";
 
@@ -15,6 +16,7 @@ export async function PublicMediaGalleryGrid() {
     src: publicGalleryImageSrc(item),
     title: item.title[loc] || item.title.ko,
     caption: item.summary[loc] || item.summary.ko,
+    kind: (isGalleryVideoFile(item.fileName, item.mime) ? "video" : "image") as "image" | "video",
   }));
 
   return (

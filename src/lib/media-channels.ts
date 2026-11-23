@@ -27,6 +27,9 @@ export function defaultChannelsForNewUpload(category: MediaDoc["category"], mime
   if (category === "gallery" && mime.startsWith("image/")) {
     return { cmsBackground: true, publicGallery: true, productLines: emptyProductLines() };
   }
+  if (category === "gallery" && mime.startsWith("video/")) {
+    return { cmsBackground: false, publicGallery: true, productLines: emptyProductLines() };
+  }
   if (mime.startsWith("image/")) {
     return { cmsBackground: false, publicGallery: false, productLines: emptyProductLines() };
   }
@@ -43,10 +46,13 @@ export function resolveMediaChannels(
   if (doc.category === "gallery" && doc.mime?.startsWith("image/")) {
     return { cmsBackground: true, publicGallery: true, productLines };
   }
+  if (doc.category === "gallery" && doc.mime?.startsWith("video/")) {
+    return { cmsBackground: false, publicGallery: true, productLines };
+  }
   return { publicGallery: false, cmsBackground: false, productLines };
 }
 
-/** 공개 /community/gallery — 갤러리 분류 이미지 기본 노출, publicGallery:false 만 숨김 */
+/** 공개 /community/gallery — 갤러리 분류 미디어 기본 노출, publicGallery:false 만 숨김 */
 export function showOnPublicGallery(doc: Pick<MediaDoc, "channels" | "category">) {
   if (doc.channels) return doc.channels.publicGallery;
   return doc.category === "gallery";
