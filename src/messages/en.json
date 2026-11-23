@@ -663,7 +663,19 @@
   "certifications": {
     "kicker": "CERTIFICATION",
     "title": "Certification & regulation",
-    "lede": "FDA establishment, OTC, and GDP documentation."
+    "lede": "FDA establishment, OTC, and GDP documentation.",
+    "gridEmpty": "No certification or regulation documents are published yet.",
+    "gridView": "Preview",
+    "gridClose": "Close",
+    "gridOpenFile": "Open original file",
+    "gridZoomPageFit": "Fit page",
+    "gridZoomPageWidth": "Fit width",
+    "gridZoomActual": "100%",
+    "gridZoomIn": "Zoom in",
+    "gridZoomOut": "Zoom out",
+    "gridPrevPage": "Previous page",
+    "gridNextPage": "Next page",
+    "gridPageLabel": "Page {n}"
   },
   "researchPage": {
     "kicker": "RESEARCH",

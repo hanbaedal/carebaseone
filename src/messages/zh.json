@@ -663,7 +663,19 @@
   "certifications": {
     "kicker": "CERTIFICATION",
     "title": "认证与法规",
-    "lede": "FDA、OTC、GDP 等认证资料。"
+    "lede": "FDA、OTC、GDP 等认证资料。",
+    "gridEmpty": "暂无已发布的认证与法规资料。",
+    "gridView": "预览",
+    "gridClose": "关闭",
+    "gridOpenFile": "在新窗口打开原文件",
+    "gridZoomPageFit": "整页适应",
+    "gridZoomPageWidth": "宽度适应",
+    "gridZoomActual": "100%",
+    "gridZoomIn": "放大",
+    "gridZoomOut": "缩小",
+    "gridPrevPage": "上一页",
+    "gridNextPage": "下一页",
+    "gridPageLabel": "第 {n} 页"
   },
   "researchPage": {
     "kicker": "RESEARCH",
