@@ -9,6 +9,7 @@ import { CMS_FOOTER_INNER_DOCKED } from "@/lib/footer-layout";
 import type { CmsHeroSlots } from "@/lib/cms-page-hero";
 import { fieldLabelFor, type CmsPageDef } from "@/lib/cms-pages";
 import { cmsTypoInlineStyle } from "@/lib/cms-typography-styles";
+import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
 import { heroImageUnoptimized } from "@/lib/home-hero";
 import { pageFooterTextColor, resolvePageFooterBackground, PAGE_FOOTER_BG_DEFAULT } from "@/lib/page-footer";
 import { isCmsHubPage } from "@/lib/cms-hub-pages";
@@ -96,7 +97,7 @@ export function SubpageCmsCanvas({
             className="absolute inset-0 z-[1] cursor-pointer border-0 bg-transparent"
           />
           <div
-            className={`relative z-[2] mx-auto flex max-w-7xl flex-col justify-end ${
+            className={`relative z-[2] mx-auto flex w-full ${GUEST_CONTENT_MAX} flex-col justify-end ${
               publicHero
                 ? "min-h-[56vh] px-guest-gutter pb-16 pt-28"
                 : "min-h-[42vh] px-6 pb-12 pt-20"

@@ -1,6 +1,7 @@
 "use client";
 
 import { FeatureQuadGrid } from "@/components/FeatureQuadGrid";
+import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
 
 const FEATURE_KEYS = ["tech", "product", "global", "trust"] as const;
 
@@ -38,7 +39,7 @@ export function FeaturesCmsBody({
   });
 
   return (
-    <section className="mx-auto max-w-7xl px-guest-gutter py-16">
+    <section className={`mx-auto w-full ${GUEST_CONTENT_MAX} px-guest-gutter py-16`}>
       <button
         type="button"
         onClick={() => onSelectSlot(ledePath)}

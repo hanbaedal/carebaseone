@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
+import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
 import { normalizePublicPath, sectionNavForPath } from "@/lib/section-nav";
 
 export function SectionSiblingNav() {
@@ -22,7 +23,9 @@ export function SectionSiblingNav() {
       aria-label="메뉴 이전·다음"
       className="border-t border-line bg-cream/60"
     >
-      <div className="mx-auto flex max-w-7xl flex-wrap items-stretch justify-between gap-4 px-guest-gutter py-5 text-sm font-medium">
+      <div
+        className={`mx-auto flex w-full ${GUEST_CONTENT_MAX} flex-wrap items-stretch justify-between gap-4 px-guest-gutter py-5 text-sm font-medium`}
+      >
         <div className="min-w-0 flex-1">
           {onHub ? (
             <span className="text-brand-ink/40">{tNav(parent.key)}</span>

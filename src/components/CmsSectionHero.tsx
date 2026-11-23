@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { images } from "@/lib/site";
+import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
 import {
   heroImageUnoptimized,
   homeHeadlineFontSizeFluid,
@@ -74,7 +75,9 @@ export async function CmsSectionHero({
         unoptimized={heroImageUnoptimized(heroSrc)}
       />
       <div className="absolute inset-0 bg-gradient-to-r from-brand-ink/80 via-brand-ink/45 to-transparent" />
-      <div className="relative mx-auto flex min-h-[56vh] max-w-7xl flex-col justify-end px-guest-gutter pb-16 pt-28">
+      <div
+        className={`relative mx-auto flex min-h-[56vh] w-full ${GUEST_CONTENT_MAX} flex-col justify-end px-guest-gutter pb-16 pt-28`}
+      >
         <p className="font-semibold tracking-[0.22em]" style={styleFor("kicker")}>
           {kicker}
         </p>

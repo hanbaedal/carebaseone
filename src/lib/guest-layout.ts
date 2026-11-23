@@ -19,6 +19,10 @@ export const GUEST_MAIN_SHELL = "flex-1";
 /** 가로 — 기존 px-4/sm:px-6 + safe (max로 큰 쪽) */
 export const GUEST_PAGE_GUTTER_X = "px-guest-gutter";
 
+/** 공개 홈페이지·게스트 본문 기준 가로폭 */
+export const GUEST_CONTENT_WIDTH_PX = 1136;
+export const GUEST_CONTENT_MAX = "max-w-[1136px]";
+
 /** 헤더 hover 서브메뉴 — 한글 6자 + 좌우 px-4(2rem), 긴 라벨은 w-max로 확장 */
 export const HEADER_SUBMENU_PANEL =
   "w-max min-w-[calc(6ch+2rem)] text-[13px]";
@@ -28,7 +32,7 @@ export const GUEST_HEADER_INNER =
   "mx-auto flex w-full items-center justify-between gap-2 px-guest-gutter py-3 lg:gap-3 lg:py-4";
 
 export function guestHeaderMaxWidth(staffRole: boolean) {
-  return staffRole ? "max-w-[96rem]" : "max-w-7xl";
+  return staffRole ? "max-w-[96rem]" : GUEST_CONTENT_MAX;
 }
 
 /** 헤더·사이트맵 링크 — 긴 관리 메뉴명 한 줄 */
