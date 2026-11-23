@@ -1,4 +1,5 @@
 import { getLocale, getTranslations } from "next-intl/server";
+import { CmsSectionHero } from "@/components/CmsSectionHero";
 import { MediaArchiveTable } from "@/components/MediaArchiveTable";
 import { ArchivePostsTable } from "@/components/ArchivePostsTable";
 import {
@@ -10,7 +11,11 @@ import { listArchiveMedia } from "@/lib/media-lib";
 import { listPosts } from "@/lib/posts";
 import { getApprovedMember } from "@/lib/member-session";
 import { resolveLocale } from "@/lib/locale";
+import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
+import { images } from "@/lib/site";
 import { SectionTail } from "@/components/SectionTail";
+
+export const dynamic = "force-dynamic";
 
 export default async function ArchivePage({
   params,
@@ -39,14 +44,24 @@ export default async function ArchivePage({
   const pageItems = items.slice(start, start + archivePageSize());
 
   return (
-    <div className="mx-auto max-w-6xl px-guest-gutter py-16">
-      <h1 className="font-display text-4xl text-brand-ink">{t("sections.archive")}</h1>
-      <div className="mt-10">
-        <MediaArchiveTable items={pageItems} locale={locale} rowOffset={start} />
-        <ArchivePagination page={page} totalPages={totalPages} basePath="/community/archive" />
-      </div>
-      <ArchivePostsTable items={posts} locale={locale} />
-      <SectionTail />
+    <div>
+      <CmsSectionHero
+        section="community"
+        imageFallback={images.lab}
+        copy={{
+          kicker: t("kicker"),
+          title: t("sections.archive"),
+          lede: t("archiveLede"),
+        }}
+      />
+      <section className="bg-paper py-12 sm:py-16">
+        <div className={`mx-auto w-full ${GUEST_CONTENT_MAX} max-w-6xl px-guest-gutter`}>
+          <MediaArchiveTable items={pageItems} locale={locale} rowOffset={start} />
+          <ArchivePagination page={page} totalPages={totalPages} basePath="/community/archive" />
+          <ArchivePostsTable items={posts} locale={locale} />
+        </div>
+      </section>
+      <SectionTail section="community" />
     </div>
   );
 }

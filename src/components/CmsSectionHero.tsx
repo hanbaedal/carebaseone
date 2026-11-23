@@ -33,10 +33,13 @@ export async function CmsSectionHero({
   section,
   imageFallback = images.hero,
   showLede = true,
+  copy,
 }: {
   section: CmsHeroSection;
   imageFallback?: string;
   showLede?: boolean;
+  /** 하위 페이지(공지 등) — 커뮤니티 히어로 스타일 유지, 문구만 교체 */
+  copy?: { kicker?: string; title?: string; lede?: string };
 }) {
   const t = await getTranslations(section);
 
@@ -57,9 +60,9 @@ export async function CmsSectionHero({
     return { fontSize, color, fontFamily: family };
   }
 
-  const kicker = t("kicker");
-  const title = t("title");
-  const lede = showLede ? t("lede") : "";
+  const kicker = copy?.kicker ?? t("kicker");
+  const title = copy?.title ?? t("title");
+  const lede = showLede ? (copy?.lede ?? t("lede")) : "";
 
   return (
     <section className="bg-paper">
