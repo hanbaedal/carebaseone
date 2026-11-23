@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { DecadePager } from "@/components/admin/DecadePager";
 import { GallerySlideModal } from "@/components/admin/GallerySlideModal";
+import { GalleryThumbImage } from "@/components/admin/GalleryThumbImage";
 import type { AdminGalleryItem } from "@/lib/admin-gallery";
 
 const field =
@@ -202,6 +203,11 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
   function itemEditor(item: AdminGalleryItem) {
     return (
       <>
+        {item.fileMissing ? (
+          <p className="rounded border border-red-200 bg-red-50 px-2 py-1.5 text-[11px] text-red-900">
+            이미지 파일이 서버에 없습니다. 「삭제」 후 같은 사진을 다시 올려 주세요.
+          </p>
+        ) : null}
         <input
           className={field}
           placeholder="제목"
@@ -369,8 +375,12 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
                         aria-label={`${itemIndex + 1}번 사진 크게 보기`}
                         onClick={() => openModalAt(itemIndex)}
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={item.src} alt={item.title} className="h-full w-full object-cover object-center" />
+                        <GalleryThumbImage
+                          src={item.src}
+                          slug={item.id}
+                          alt={item.title}
+                          className="h-full w-full object-cover object-center"
+                        />
                         <span className="absolute bottom-1 right-1 rounded bg-black/55 px-1.5 py-0.5 text-[10px] font-medium text-white">
                           {itemIndex + 1}
                         </span>
@@ -426,8 +436,12 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
             <ul className="grid gap-4 sm:grid-cols-2 md:hidden">
               {visible.map((item) => (
                 <li key={item.id} className="min-w-0 space-y-2 rounded-lg border border-line bg-white p-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={item.src} alt={item.title} className="aspect-[4/3] w-full rounded-md object-cover" />
+                  <GalleryThumbImage
+                    src={item.src}
+                    slug={item.id}
+                    alt={item.title}
+                    className="aspect-[4/3] w-full rounded-md object-cover"
+                  />
                   {itemEditor(item)}
                 </li>
               ))}
