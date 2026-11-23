@@ -176,6 +176,7 @@ export const CMS_PAGES: CmsPageDef[] = [
       "business.kicker": "키커",
       "business.title": "제목",
       "business.lede": "소개 문구",
+      "business.sideImage": "본문 이미지",
       "business.center": "다이어그램 중앙",
       "business.invite": "파트너 초대 문구",
       "business.nodes.technology": "기술",

@@ -64,7 +64,11 @@ function messagesHasLede(section: string) {
 }
 
 export function isCmsImageFieldPath(path: string) {
-  return path.endsWith("heroImage") || path.endsWith(".image");
+  return (
+    path.endsWith("heroImage") ||
+    path.endsWith("sideImage") ||
+    path.endsWith(".image")
+  );
 }
 
 export function isCmsMetaFieldPath(path: string) {

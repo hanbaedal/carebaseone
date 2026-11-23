@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { CmsSectionHero } from "@/components/CmsSectionHero";
 import { EcosystemDiagram } from "@/components/EcosystemDiagram";
@@ -5,6 +6,8 @@ import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
 import { SectionTail } from "@/components/SectionTail";
+import { heroImageUnoptimized } from "@/lib/home-hero";
+import { resolveBusinessSideImageSrc } from "@/lib/business-media";
 
 const nodeKeys = [
   "technology",
@@ -25,6 +28,7 @@ export default async function BusinessPage({
   resolveLocale((await params).locale);
   const t = await getTranslations();
   const nodes = nodeKeys.map((key) => t(`business.nodes.${key}`));
+  const sideImageSrc = resolveBusinessSideImageSrc(t("business.sideImage"));
 
   return (
     <div>
@@ -42,7 +46,20 @@ export default async function BusinessPage({
             <CtaLink href="/contact">{t("cta.inquire")}</CtaLink>
           </div>
         </div>
-        <EcosystemDiagram center={t("business.center")} nodes={nodes} />
+        {sideImageSrc ? (
+          <div className="relative mx-auto aspect-square w-full max-w-[440px] overflow-hidden">
+            <Image
+              src={sideImageSrc}
+              alt=""
+              fill
+              className="object-cover"
+              sizes="(min-width: 768px) 40vw, 100vw"
+              unoptimized={heroImageUnoptimized(sideImageSrc)}
+            />
+          </div>
+        ) : (
+          <EcosystemDiagram center={t("business.center")} nodes={nodes} />
+        )}
       </section>
       <SectionTail section="business" />
     </div>
