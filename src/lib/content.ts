@@ -95,10 +95,11 @@ function skipAutoTranslate(path: string, koText: string) {
     path.endsWith("Color") ||
     path.endsWith("Font") ||
     path.endsWith("footerBg") ||
-    path.endsWith("heroImage")
+    path.endsWith("heroImage") ||
+    path.endsWith("sideImage")
   )
     return true;
-  if (/\.(heroImage|image)$/i.test(path)) return true;
+  if (/\.(heroImage|sideImage|image)$/i.test(path)) return true;
   if (!/[가-힣]/.test(koText)) return true;
   return false;
 }

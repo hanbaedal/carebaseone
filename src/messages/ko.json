@@ -171,6 +171,13 @@
         "title": "네트워크",
         "text": "한국·중국·미국을 잇는 연구, 생산, 유통, 파트너 네트워크를 키웁니다."
       }
+    },
+    "hubCards": {
+      "greeting": { "image": "" },
+      "features": { "image": "" },
+      "solution": { "image": "" },
+      "global": { "image": "" },
+      "business": { "image": "" }
     }
   },
   "aboutGreeting": {
@@ -263,6 +270,11 @@
         "title": "연구와 교류",
         "text": "핵심 기술, 특허, 논문, 국제 심포지엄 등 연구 성과를 소개합니다. 숫자는 검증된 자료가 준비되는 대로 공개합니다."
       }
+    },
+    "hubCards": {
+      "patents": { "image": "" },
+      "certifications": { "image": "" },
+      "research": { "image": "" }
     }
   },
   "solution": {
@@ -321,6 +333,7 @@
         "title": "건강식품",
         "text": "자연에서 온 원료를 담은 건강식품.",
         "items": "땃두릅 · 육미송화",
+        "image": "",
         "titleFont": "gothic",
         "titleScale": "100",
         "titleColor": "black"
@@ -329,6 +342,7 @@
         "title": "일반식품",
         "text": "일상에 곁들이는 식품.",
         "items": "Happy N:O · 생맥산 · 쌍화탕",
+        "image": "",
         "titleFont": "gothic",
         "titleScale": "100",
         "titleColor": "black"
@@ -337,6 +351,7 @@
         "title": "화장품",
         "text": "피부와 모발을 위한 데일리 케어.",
         "items": "慈蓮(자련) 쿠션 등",
+        "image": "",
         "titleFont": "gothic",
         "titleScale": "100",
         "titleColor": "black"
@@ -345,6 +360,7 @@
         "title": "패치",
         "text": "일상과 스포츠 현장에 가볍게 더하는 패치.",
         "items": "바이오힐링 패치 라인",
+        "image": "",
         "titleFont": "gothic",
         "titleScale": "100",
         "titleColor": "black"
@@ -353,6 +369,7 @@
         "title": "건강관리플랫폼",
         "text": "데이터와 서비스로 건강을 연결하는 플랫폼.",
         "items": "CAREBASE 건강관리",
+        "image": "",
         "titleFont": "gothic",
         "titleScale": "100",
         "titleColor": "black"
@@ -605,6 +622,12 @@
       "archive": "자료실",
       "gallery": "갤러리",
       "contact": "문의"
+    },
+    "hubCards": {
+      "notice": { "image": "" },
+      "archive": { "image": "" },
+      "gallery": { "image": "" },
+      "contact": { "image": "" }
     }
   },
   "store": {

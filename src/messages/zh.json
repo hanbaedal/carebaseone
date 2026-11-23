@@ -171,6 +171,23 @@
         "title": "网络",
         "text": "在韩国、中国、美国拓展研究、生产、流通与伙伴网络。"
       }
+    },
+    "hubCards": {
+      "greeting": {
+        "image": ""
+      },
+      "features": {
+        "image": ""
+      },
+      "solution": {
+        "image": ""
+      },
+      "global": {
+        "image": ""
+      },
+      "business": {
+        "image": ""
+      }
     }
   },
   "aboutGreeting": {
@@ -263,6 +280,17 @@
         "title": "研究与交流",
         "text": "我们介绍核心技术、专利、论文与国际研讨会。具体数字将在资料核实后公布。"
       }
+    },
+    "hubCards": {
+      "patents": {
+        "image": ""
+      },
+      "certifications": {
+        "image": ""
+      },
+      "research": {
+        "image": ""
+      }
     }
   },
   "solution": {
@@ -323,7 +351,8 @@
         "items": "刺老芽 · 六味松花",
         "titleFont": "gothic",
         "titleScale": "100",
-        "titleColor": "black"
+        "titleColor": "black",
+        "image": ""
       },
       "generalFood": {
         "title": "一般食品",
@@ -331,7 +360,8 @@
         "items": "Happy N:O · 生脉散 · 双和汤",
         "titleFont": "gothic",
         "titleScale": "100",
-        "titleColor": "black"
+        "titleColor": "black",
+        "image": ""
       },
       "cosmetics": {
         "title": "化妆品",
@@ -339,7 +369,8 @@
         "items": "慈莲气垫等",
         "titleFont": "gothic",
         "titleScale": "100",
-        "titleColor": "black"
+        "titleColor": "black",
+        "image": ""
       },
       "patch": {
         "title": "贴剂",
@@ -347,7 +378,8 @@
         "items": "Bio Healing 贴剂系列",
         "titleFont": "gothic",
         "titleScale": "100",
-        "titleColor": "black"
+        "titleColor": "black",
+        "image": ""
       },
       "healthPlatform": {
         "title": "健康管理平台",
@@ -355,7 +387,8 @@
         "items": "CAREBASE 健康管理",
         "titleFont": "gothic",
         "titleScale": "100",
-        "titleColor": "black"
+        "titleColor": "black",
+        "image": ""
       }
     },
     "footerBg": "white",
@@ -605,6 +638,20 @@
       "archive": "资料室",
       "gallery": "图库",
       "contact": "咨询"
+    },
+    "hubCards": {
+      "notice": {
+        "image": ""
+      },
+      "archive": {
+        "image": ""
+      },
+      "gallery": {
+        "image": ""
+      },
+      "contact": {
+        "image": ""
+      }
     }
   },
   "store": {

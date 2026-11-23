@@ -20,7 +20,7 @@ export default async function AboutPage({
       <section className="mx-auto max-w-4xl px-guest-gutter pt-4">
         <p className="text-left text-sm text-brand-ink/60">{t("lede")}</p>
       </section>
-      <SectionHubList blocks={ABOUT_HUB_BLOCKS} />
+      <SectionHubList blocks={ABOUT_HUB_BLOCKS} imageSection="about" />
       <SectionTail />
     </div>
   );

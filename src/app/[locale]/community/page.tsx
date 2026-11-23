@@ -15,7 +15,7 @@ export default async function CommunityPage({
   return (
     <div>
       <CmsSectionHero section="community" imageFallback={images.close} />
-      <SectionHubList blocks={COMMUNITY_HUB_BLOCKS} />
+      <SectionHubList blocks={COMMUNITY_HUB_BLOCKS} imageSection="community" />
       <SectionTail section="community" />
     </div>
   );

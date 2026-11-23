@@ -20,7 +20,7 @@ export default async function ProductPage({
   return (
     <div>
       <CmsSectionHero section="product" imageFallback={images.breakfast} />
-      <SectionHubList blocks={PRODUCT_HUB_BLOCKS} />
+      <SectionHubList blocks={PRODUCT_HUB_BLOCKS} imageSection="product" />
       <section className="mx-auto max-w-6xl px-guest-gutter py-16">
         <ProductBeoneNote />
         <p className="mt-6 text-sm text-brand-ink/60">

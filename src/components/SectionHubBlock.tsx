@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
+import { heroImageUnoptimized } from "@/lib/home-hero";
 
 export function SectionHubBlock({
   title,
@@ -38,7 +39,14 @@ export function SectionHubBlock({
       >
         <div className="grid items-center gap-6 p-5 md:grid-cols-[minmax(0,11rem)_1fr] md:p-7">
           <div className="relative mx-auto aspect-[4/5] w-full max-w-[11rem] overflow-hidden rounded-xl bg-white shadow-sm">
-            <Image src={image} alt="" fill className="object-cover" sizes="176px" />
+            <Image
+              src={image}
+              alt=""
+              fill
+              className="object-cover"
+              sizes="176px"
+              unoptimized={heroImageUnoptimized(image)}
+            />
           </div>
           <p className="whitespace-pre-line text-[15px] leading-8 text-brand-ink/80">{excerpt}</p>
         </div>

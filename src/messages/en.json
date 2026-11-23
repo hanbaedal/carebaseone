@@ -171,6 +171,23 @@
         "title": "Network",
         "text": "Grow research, production, distribution, and partner networks across Korea, China, and the U.S."
       }
+    },
+    "hubCards": {
+      "greeting": {
+        "image": ""
+      },
+      "features": {
+        "image": ""
+      },
+      "solution": {
+        "image": ""
+      },
+      "global": {
+        "image": ""
+      },
+      "business": {
+        "image": ""
+      }
     }
   },
   "aboutGreeting": {
@@ -263,6 +280,17 @@
         "title": "Research and exchange",
         "text": "We present core technology, patents, papers, and international symposiums. Specific figures will be published as verified materials are ready."
       }
+    },
+    "hubCards": {
+      "patents": {
+        "image": ""
+      },
+      "certifications": {
+        "image": ""
+      },
+      "research": {
+        "image": ""
+      }
     }
   },
   "solution": {
@@ -323,7 +351,8 @@
         "items": "Ddatdureup · Yukmisonghwa",
         "titleFont": "gothic",
         "titleScale": "100",
-        "titleColor": "black"
+        "titleColor": "black",
+        "image": ""
       },
       "generalFood": {
         "title": "General food",
@@ -331,7 +360,8 @@
         "items": "Happy N:O · Saengmaeksan · Ssanghwatang",
         "titleFont": "gothic",
         "titleScale": "100",
-        "titleColor": "black"
+        "titleColor": "black",
+        "image": ""
       },
       "cosmetics": {
         "title": "Cosmetics",
@@ -339,7 +369,8 @@
         "items": "Jaryeon cushion and care line",
         "titleFont": "gothic",
         "titleScale": "100",
-        "titleColor": "black"
+        "titleColor": "black",
+        "image": ""
       },
       "patch": {
         "title": "Patch",
@@ -347,7 +378,8 @@
         "items": "Bio Healing patch line",
         "titleFont": "gothic",
         "titleScale": "100",
-        "titleColor": "black"
+        "titleColor": "black",
+        "image": ""
       },
       "healthPlatform": {
         "title": "Health management platform",
@@ -355,7 +387,8 @@
         "items": "CAREBASE health platform",
         "titleFont": "gothic",
         "titleScale": "100",
-        "titleColor": "black"
+        "titleColor": "black",
+        "image": ""
       }
     },
     "footerBg": "white",
@@ -605,6 +638,20 @@
       "archive": "Archive",
       "gallery": "Gallery",
       "contact": "Contact"
+    },
+    "hubCards": {
+      "notice": {
+        "image": ""
+      },
+      "archive": {
+        "image": ""
+      },
+      "gallery": {
+        "image": ""
+      },
+      "contact": {
+        "image": ""
+      }
     }
   },
   "store": {

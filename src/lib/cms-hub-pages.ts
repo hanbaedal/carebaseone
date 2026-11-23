@@ -39,5 +39,6 @@ export function filterHubCanvasContentPaths(pageKey: string, paths: string[]): s
         path !== "product.certLink",
     );
   }
-  return paths;
+  // 허브 카드 이미지는 시각 본문에서 편집 — 텍스트 목록에서 제외
+  return paths.filter((path) => !path.includes(".hubCards."));
 }
