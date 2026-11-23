@@ -109,9 +109,11 @@ export function SiteHeader({
           <Link href="/sitemap" className={utilityLinkClass(pathname === "/sitemap")}>
             {t("sitemap")}
           </Link>
-          <div className="hidden sm:block">
-            <LanguageSwitcher />
-          </div>
+          {!staffRole ? (
+            <div className="hidden sm:block">
+              <LanguageSwitcher />
+            </div>
+          ) : null}
           <button
             type="button"
             className="whitespace-nowrap rounded-full border border-line px-3 py-1.5 text-[12px] font-medium lg:hidden"
@@ -125,9 +127,11 @@ export function SiteHeader({
       {open ? (
         <div className="border-t border-line bg-white px-guest-gutter py-5 pb-safe lg:hidden">
           <div className="flex flex-col gap-2">
-            <div className="sm:hidden pb-2">
-              <LanguageSwitcher />
-            </div>
+            {!staffRole ? (
+              <div className="sm:hidden pb-2">
+                <LanguageSwitcher />
+              </div>
+            ) : null}
             <Link
               href="/sitemap"
               onClick={() => setOpen(false)}

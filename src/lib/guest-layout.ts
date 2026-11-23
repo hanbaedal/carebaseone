@@ -34,8 +34,8 @@ export const HEADER_SUBMENU_PANEL =
 export const GUEST_HEADER_INNER =
   "mx-auto flex w-full items-center justify-between gap-2 px-guest-gutter py-3 lg:gap-3 lg:py-4";
 
-export function guestHeaderMaxWidth(staffRole: boolean) {
-  return staffRole ? "max-w-[96rem]" : GUEST_CONTENT_MAX;
+export function guestHeaderMaxWidth(_staffRole?: boolean) {
+  return GUEST_CONTENT_MAX;
 }
 
 /** 헤더·사이트맵 링크 — 긴 관리 메뉴명 한 줄 */
