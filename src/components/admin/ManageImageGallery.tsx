@@ -31,7 +31,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
   const [items, setItems] = useState(initial);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [uploadPublic, setUploadPublic] = useState(false);
+  const [uploadPublic, setUploadPublic] = useState(true);
   const [uploadCms, setUploadCms] = useState(true);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -82,11 +82,11 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
       if (json.items) setItems(json.items);
       setTitle("");
       setDescription("");
-      setUploadPublic(false);
+      setUploadPublic(true);
       setUploadCms(true);
       pickFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
-      setMessage("올렸습니다. 아래 목록에서 제목·노출 구분을 수정할 수 있습니다.");
+      setMessage("올렸습니다. 공개 사이트에는 「공개 갤러리」가 체크된 사진만 나타납니다.");
     } catch {
       setMessage("네트워크 오류입니다. 잠시 후 다시 시도해 주세요.");
     } finally {
@@ -296,10 +296,10 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
             onChange={(e) => setDescription(e.target.value)}
           />
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
-            <label className="flex items-center gap-1.5">
-              <input type="checkbox" checked={uploadPublic} onChange={(e) => setUploadPublic(e.target.checked)} />
-              공개 갤러리
-            </label>
+              <label className="flex items-center gap-1.5">
+                <input type="checkbox" checked={uploadPublic} onChange={(e) => setUploadPublic(e.target.checked)} />
+                공개 갤러리 (사이트 /community/gallery)
+              </label>
             <label className="flex items-center gap-1.5">
               <input type="checkbox" checked={uploadCms} onChange={(e) => setUploadCms(e.target.checked)} />
               CMS 배경

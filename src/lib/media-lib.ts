@@ -1,6 +1,7 @@
 import { ensureIndexes, media, type MediaCategory, type MediaDoc } from "@/lib/db";
 import { ensureCmsGallerySeed, galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import { cmsGalleryFallbackOptions } from "@/lib/cms-gallery-images";
+import { isGalleryImageFile, repairGalleryImageMime } from "@/lib/media-crud";
 import { isImageMime, resolveMediaChannels } from "@/lib/media-channels";
 import { ensureMediaReady, ensureMediaSeed } from "@/lib/seed-media";
 import { mediaApiPath } from "@/lib/media-storage";
@@ -121,16 +122,18 @@ export async function findMediaBySlug(slug: string) {
 export async function listPublicGalleryMedia(memberApproved = false): Promise<MediaDoc[]> {
   await ensureMediaReady();
   await ensureCmsGallerySeed();
+  await repairGalleryImageMime();
   const audience = memberApproved ? { $in: ["public", "member"] as const } : "public";
   const docs = await (await media())
     .find({
       published: true,
-      mime: { $regex: /^image\//i },
+      category: "gallery",
       audience,
+      $or: [{ mime: { $regex: /^image\//i } }, { fileName: { $regex: /\.(jpe?g|png|webp|gif)$/i } }],
     })
     .sort({ createdAt: -1 })
     .toArray();
-  return docs.filter((d) => isImageMime(d.mime) && resolveMediaChannels(d).publicGallery);
+  return docs.filter((d) => isGalleryImageFile(d.fileName, d.mime) && resolveMediaChannels(d).publicGallery);
 }
 
 export function publicGalleryImageSrc(item: MediaDoc) {

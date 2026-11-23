@@ -1,6 +1,7 @@
 import { galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import type { MediaDoc } from "@/lib/db";
-import { isImageMime, resolveMediaChannels } from "@/lib/media-channels";
+import { isGalleryImageFile, repairGalleryImageMime } from "@/lib/media-crud";
+import { resolveMediaChannels } from "@/lib/media-channels";
 import { listMediaForAdmin } from "@/lib/media-lib";
 import { mediaApiPath } from "@/lib/media-storage";
 
@@ -36,8 +37,9 @@ export function toAdminGalleryItem(doc: MediaDoc): AdminGalleryItem {
 }
 
 export async function listAdminGalleryItems(): Promise<AdminGalleryItem[]> {
+  await repairGalleryImageMime();
   const docs = await listMediaForAdmin("gallery");
-  return docs.filter((d) => isImageMime(d.mime)).map(toAdminGalleryItem);
+  return docs.filter((d) => isGalleryImageFile(d.fileName, d.mime)).map(toAdminGalleryItem);
 }
 
 export function newGalleryUploadSlug() {

@@ -1,9 +1,44 @@
+import path from "node:path";
 import { ensureIndexes, media, type MediaAudience, type MediaCategory } from "@/lib/db";
 import { mongoCreatedUpdated, mongoUpdated } from "@/lib/korea-time";
-import { defaultChannelsForNewUpload } from "@/lib/media-channels";
+import { defaultChannelsForNewUpload, isImageMime } from "@/lib/media-channels";
 import { removeGridFsBySlug, uploadMediaBuffer, mediaApiPath } from "@/lib/media-storage";
 
 const slugRe = /^[a-z0-9][a-z0-9-]{2,48}$/;
+
+export function mimeFromFileName(fileName: string, fallback = "application/octet-stream") {
+  const ext = path.extname(fileName).toLowerCase();
+  if (ext === ".jpg" || ext === ".jpeg") return "image/jpeg";
+  if (ext === ".png") return "image/png";
+  if (ext === ".webp") return "image/webp";
+  if (ext === ".gif") return "image/gif";
+  return fallback;
+}
+
+export function isGalleryImageFile(fileName: string, mime: string) {
+  return isImageMime(mime) || /\.(jpe?g|png|webp|gif)$/i.test(fileName);
+}
+
+/** 업로드 시 MIME이 비어 있으면 목록·공개 갤러리에서 빠지는 문제 보정 */
+export async function repairGalleryImageMime() {
+  if (!process.env.MONGODB_URI) return;
+  await ensureIndexes();
+  const col = await media();
+  const broken = await col
+    .find({
+      category: "gallery",
+      mime: { $not: { $regex: /^image\//i } },
+      fileName: { $regex: /\.(jpe?g|png|webp|gif)$/i },
+    })
+    .project({ slug: 1, fileName: 1 })
+    .toArray();
+  for (const doc of broken) {
+    const mime = mimeFromFileName(doc.fileName);
+    if (isImageMime(mime)) {
+      await col.updateOne({ slug: doc.slug }, { $set: { mime } });
+    }
+  }
+}
 
 export async function upsertMedia(input: {
   slug: string;
@@ -36,14 +71,18 @@ export async function upsertMedia(input: {
   let fileName = existing?.fileName ?? `${slug}.pdf`;
 
   if (input.file && input.file.buffer.length > 0) {
+    const fileMime =
+      input.file.type && input.file.type !== "application/octet-stream"
+        ? input.file.type
+        : mimeFromFileName(input.file.name, "image/jpeg");
     const uploaded = await uploadMediaBuffer(slug, input.file.buffer, {
-      mime: input.file.type || "application/octet-stream",
+      mime: fileMime,
       fileName: input.file.name,
     });
     gridFsId = uploaded.gridFsId;
     size = uploaded.size;
     storage = "gridfs";
-    mime = input.file.type || mime;
+    mime = fileMime;
     fileName = input.file.name;
   }
 
