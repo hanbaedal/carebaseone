@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { BusinessCmsBody } from "@/components/admin/BusinessCmsBody";
+import { ContactCmsBody } from "@/components/admin/ContactCmsBody";
 import { FeaturesCmsBody } from "@/components/admin/FeaturesCmsBody";
 import { GlobalCmsBody } from "@/components/admin/GlobalCmsBody";
 import { HubCmsBody } from "@/components/admin/HubCmsBody";
@@ -113,6 +114,7 @@ export function resolveCmsVisualBody({
     );
   }
   if (page.key === "features") return <FeaturesCmsBody {...props} />;
+  if (page.key === "contact") return <ContactCmsBody />;
   if (page.key === "solution") {
     return <SolutionCmsBody {...props} onPickImage={onPickImage} />;
   }
