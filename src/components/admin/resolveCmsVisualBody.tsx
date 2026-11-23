@@ -46,7 +46,9 @@ export function resolveCmsVisualBody({
   if (page.key === "solution") {
     return <SolutionCmsBody {...props} onPickImage={onPickImage} />;
   }
-  if (page.key === "global") return <GlobalCmsBody {...props} />;
+  if (page.key === "global") {
+    return <GlobalCmsBody {...props} onPickImage={onPickImage} />;
+  }
   if (page.key === "business") return <BusinessCmsBody {...props} />;
   if (page.key === "product") return <ProductHubCmsBody {...props} />;
   if (page.productCategory) {

@@ -447,19 +447,23 @@
     "nodes": {
       "korea": {
         "title": "韩国",
-        "text": "技术、研究、品牌。"
+        "text": "技术、研究、品牌。",
+        "image": ""
       },
       "china": {
         "title": "中国",
-        "text": "生产、流通、运营中心。"
+        "text": "生产、流通、运营中心。",
+        "image": ""
       },
       "usa": {
         "title": "美国",
-        "text": "销售、OEM、品牌。"
+        "text": "销售、OEM、品牌。",
+        "image": ""
       },
       "future": {
         "title": "未来",
-        "text": "全球拓展。"
+        "text": "全球拓展。",
+        "image": ""
       }
     },
     "footerBg": "white",

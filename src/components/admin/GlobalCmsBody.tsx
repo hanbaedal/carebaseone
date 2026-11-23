@@ -3,42 +3,53 @@
 import Image from "next/image";
 import { cmsPreviewText, cmsSlotRing } from "@/components/admin/cms-slot";
 import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
-import { images } from "@/lib/site";
-
-const GLOBAL_NODES = [
-  { key: "korea", image: images.korea },
-  { key: "china", image: images.china },
-  { key: "usa", image: images.usa },
-  { key: "future", image: images.close },
-] as const;
+import { heroImageUnoptimized } from "@/lib/home-hero";
+import {
+  GLOBAL_NODE_KEYS,
+  globalNodeImagePath,
+  resolveGlobalNodeImageSrc,
+} from "@/lib/global-nodes";
 
 export function GlobalCmsBody({
   values,
   activeSlot,
   onSelectSlot,
+  onPickImage,
 }: {
   values: Record<string, string>;
   activeSlot: string | null;
   onSelectSlot: (path: string) => void;
+  onPickImage: (path: string) => void;
 }) {
   return (
     <section
       className={`mx-auto grid w-full ${GUEST_CONTENT_MAX} gap-10 px-guest-gutter py-20 md:grid-cols-2`}
     >
-      {GLOBAL_NODES.map((node) => {
-        const titlePath = `global.nodes.${node.key}.title`;
-        const textPath = `global.nodes.${node.key}.text`;
+      {GLOBAL_NODE_KEYS.map((key) => {
+        const titlePath = `global.nodes.${key}.title`;
+        const textPath = `global.nodes.${key}.text`;
+        const imagePath = globalNodeImagePath(key);
+        const imageSrc = resolveGlobalNodeImageSrc(key, values[imagePath]);
         return (
-          <article key={node.key}>
-            <div className="relative aspect-[16/10] overflow-hidden">
+          <article key={key}>
+            <button
+              type="button"
+              onClick={() => onPickImage(imagePath)}
+              aria-label="이미지 편집"
+              className={`relative aspect-[16/10] w-full overflow-hidden border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === imagePath)}`}
+            >
               <Image
-                src={node.image}
+                src={imageSrc}
                 alt=""
                 fill
                 className="object-cover"
                 sizes="(min-width: 768px) 50vw, 100vw"
+                unoptimized={heroImageUnoptimized(imageSrc)}
               />
-            </div>
+              <span className="absolute inset-x-0 bottom-0 bg-black/45 px-3 py-2 text-[11px] font-medium text-white">
+                이미지 클릭하여 변경
+              </span>
+            </button>
             <button
               type="button"
               onClick={() => onSelectSlot(titlePath)}

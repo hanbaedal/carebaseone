@@ -447,19 +447,23 @@
     "nodes": {
       "korea": {
         "title": "Korea",
-        "text": "Technology, research, brand."
+        "text": "Technology, research, brand.",
+        "image": ""
       },
       "china": {
         "title": "China",
-        "text": "Production, distribution, operations."
+        "text": "Production, distribution, operations.",
+        "image": ""
       },
       "usa": {
         "title": "USA",
-        "text": "Sales, OEM, brand."
+        "text": "Sales, OEM, brand.",
+        "image": ""
       },
       "future": {
         "title": "Future",
-        "text": "Global expansion."
+        "text": "Global expansion.",
+        "image": ""
       }
     },
     "footerBg": "white",
