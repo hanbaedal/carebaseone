@@ -6,6 +6,7 @@ import {
   ProductCatalogCards,
   type ProductCatalogCard,
 } from "@/components/ProductCatalogCards";
+import { cmsTypoStyleFromT } from "@/lib/cms-typography-styles";
 import {
   PRODUCT_BEONE_NOTE_PATH,
   resolveProductCatalogImageSrc,
@@ -42,6 +43,8 @@ export async function ProductLineGrid({
     ),
     gallery: line.gallery ?? [],
     mediaHrefs: line.mediaHrefs ?? [],
+    titleStyle: cmsTypoStyleFromT("product", `catalog.${line.slug}.title`, productText),
+    summaryStyle: cmsTypoStyleFromT("product", `catalog.${line.slug}.summary`, productText),
   }));
 
   return (
@@ -67,10 +70,16 @@ export async function ProductBeoneNote() {
   const locale = await getLocale();
   const loc = locale === "en" || locale === "zh" ? locale : "ko";
   const tProduct = await getTranslations("product");
+  const productText = tProduct as unknown as (key: string) => string;
   const override = (tProduct("beoneNote") as string | undefined)?.trim() ?? "";
   const text = override.length > 0 ? override : catalog.beoneNote[loc];
   return (
-    <p className="max-w-3xl border-l-2 border-sage pl-5 text-sm leading-7 text-ink/70">{text}</p>
+    <p
+      className="max-w-3xl border-l-2 border-sage pl-5 text-sm leading-7 text-ink/70"
+      style={cmsTypoStyleFromT("product", "beoneNote", productText)}
+    >
+      {text}
+    </p>
   );
 }
 

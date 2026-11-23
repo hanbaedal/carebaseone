@@ -88,6 +88,16 @@ function allowedPaths() {
   return new Set(flattenStrings(ko).map((field) => field.path));
 }
 
+/** 메시지에 없어도 텍스트 슬롯의 Font/Scale/Color 메타는 저장 허용 */
+function isAllowedContentPath(path: string, allowed: Set<string>, sectionKey: string) {
+  if (!path.startsWith(`${sectionKey}.`)) return false;
+  if (allowed.has(path)) return true;
+  const match = path.match(/^(.+)(Font|Scale|Color)$/);
+  if (!match) return false;
+  const textPath = match[1];
+  return allowed.has(textPath) || textPath.startsWith(`${sectionKey}.`);
+}
+
 /** URL·숫자·스케일 등 — 번역 API 호출 생략 */
 function skipAutoTranslate(path: string, koText: string) {
   if (
@@ -163,7 +173,7 @@ export async function saveSection(input: {
   let failed = 0;
 
   for (const [path, value] of Object.entries(input.values)) {
-    if (!allowed.has(path) || !path.startsWith(`${section.key}.`)) continue;
+    if (!isAllowedContentPath(path, allowed, section.key)) continue;
     const nextKo = value.ko.trim();
     const nextEn = value.en.trim();
     const nextZh = value.zh.trim();

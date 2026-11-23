@@ -9,6 +9,7 @@ import {
   BUSINESS_SIDE_IMAGE_PATH,
   resolveBusinessSideImageSrc,
 } from "@/lib/business-media";
+import { cmsTypoInlineStyle } from "@/lib/cms-typography-styles";
 
 const NODE_KEYS = [
   "technology",
@@ -54,7 +55,9 @@ export function BusinessCmsBody({
                   onClick={() => onSelectSlot(path)}
                   className={`block w-full border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === path)}`}
                 >
-                  {cmsPreviewText(values[path] ?? "", "항목")}
+                  <span style={cmsTypoInlineStyle(path, values)}>
+                    {cmsPreviewText(values[path] ?? "", "항목")}
+                  </span>
                 </button>
               </li>
             );
@@ -65,7 +68,10 @@ export function BusinessCmsBody({
           onClick={() => onSelectSlot(invitePath)}
           className={`mt-8 block w-full border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === invitePath)}`}
         >
-          <span className="text-sm leading-7 text-brand-ink/70">
+          <span
+            className="text-sm leading-7 text-brand-ink/70"
+            style={cmsTypoInlineStyle(invitePath, values)}
+          >
             {cmsPreviewText(values[invitePath] ?? "", "파트너 초대 문구")}
           </span>
         </button>

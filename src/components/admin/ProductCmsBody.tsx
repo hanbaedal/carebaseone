@@ -9,6 +9,7 @@ import {
   productCategoryImagePath,
   resolveHubBlockImageSrc,
 } from "@/lib/hub-media";
+import { cmsTypoInlineStyle } from "@/lib/cms-typography-styles";
 import {
   PRODUCT_BEONE_NOTE_PATH,
   catalogLinesForCategory,
@@ -188,7 +189,10 @@ export function ProductCategoryCmsBody({
         onClick={() => onSelectSlot(textPath)}
         className={`mt-4 block max-w-2xl border-0 bg-transparent p-0 text-left ${ring(activeSlot === textPath)}`}
       >
-        <p className="text-base leading-8 text-brand-ink/70">
+        <p
+          className="text-base leading-8 text-brand-ink/70"
+          style={cmsTypoInlineStyle(textPath, values)}
+        >
           {cmsPreviewText(values[textPath] ?? "", "소개 문구")}
         </p>
       </button>
@@ -198,7 +202,10 @@ export function ProductCategoryCmsBody({
         onClick={() => onSelectSlot(PRODUCT_BEONE_NOTE_PATH)}
         className={`mt-6 block w-full max-w-3xl border-0 bg-transparent p-0 text-left ${ring(activeSlot === PRODUCT_BEONE_NOTE_PATH)}`}
       >
-        <p className="border-l-2 border-sage pl-5 text-sm leading-7 text-ink/70">
+        <p
+          className="border-l-2 border-sage pl-5 text-sm leading-7 text-ink/70"
+          style={cmsTypoInlineStyle(PRODUCT_BEONE_NOTE_PATH, values)}
+        >
           {cmsPreviewText(
             values[PRODUCT_BEONE_NOTE_PATH] ?? "",
             catalog.beoneNote.ko,
@@ -211,7 +218,10 @@ export function ProductCategoryCmsBody({
         onClick={() => onSelectSlot(itemsPath)}
         className={`mt-6 block max-w-4xl border-0 bg-transparent p-0 text-left ${ring(activeSlot === itemsPath)}`}
       >
-        <p className="text-sm text-brand-ink/55">
+        <p
+          className="text-sm text-brand-ink/55"
+          style={cmsTypoInlineStyle(itemsPath, values)}
+        >
           {cmsPreviewText(values[itemsPath] ?? "", "대표 품목")}
         </p>
       </button>
@@ -256,14 +266,22 @@ export function ProductCategoryCmsBody({
                     onClick={() => onSelectSlot(titlePath)}
                     className={`block w-full border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === titlePath)}`}
                   >
-                    <span className="text-lg font-semibold text-brand-ink">{title}</span>
+                    <span
+                      className="text-lg font-semibold text-brand-ink"
+                      style={cmsTypoInlineStyle(titlePath, values)}
+                    >
+                      {title}
+                    </span>
                   </button>
                   <button
                     type="button"
                     onClick={() => onSelectSlot(summaryPath)}
                     className={`mt-2 block w-full border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === summaryPath)}`}
                   >
-                    <span className="text-sm leading-relaxed text-brand-ink/70">
+                    <span
+                      className="text-sm leading-relaxed text-brand-ink/70"
+                      style={cmsTypoInlineStyle(summaryPath, values)}
+                    >
                       {cmsPreviewText(values[summaryPath] ?? "", "제품 설명")}
                     </span>
                   </button>

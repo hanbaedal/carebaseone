@@ -2,6 +2,7 @@
 
 import { FeatureQuadGrid } from "@/components/FeatureQuadGrid";
 import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
+import { cmsTypoInlineStyle } from "@/lib/cms-typography-styles";
 
 const FEATURE_KEYS = ["tech", "product", "global", "trust"] as const;
 
@@ -45,7 +46,10 @@ export function FeaturesCmsBody({
         onClick={() => onSelectSlot(ledePath)}
         className={`block max-w-4xl border-0 bg-transparent p-0 text-left ${ring(activeSlot === ledePath)}`}
       >
-        <p className="text-base leading-8 text-brand-ink/70">
+        <p
+          className="text-base leading-8 text-brand-ink/70"
+          style={cmsTypoInlineStyle(ledePath, values)}
+        >
           {previewText(values[ledePath] ?? "", "소개 문구")}
         </p>
       </button>
@@ -62,7 +66,10 @@ export function FeaturesCmsBody({
                   onClick={() => onSelectSlot(panel.titlePath)}
                   className={`border-0 bg-transparent p-1 text-center ${ring(activeSlot === panel.titlePath)}`}
                 >
-                  <span className="text-[1.08rem] font-bold leading-snug tracking-tight text-[#1a3a6e] sm:text-lg md:text-xl">
+                  <span
+                    className="text-[1.08rem] font-bold leading-snug tracking-tight text-[#1a3a6e] sm:text-lg md:text-xl"
+                    style={cmsTypoInlineStyle(panel.titlePath, values)}
+                  >
                     {panel.title}
                   </span>
                 </button>
@@ -71,7 +78,10 @@ export function FeaturesCmsBody({
                   onClick={() => onSelectSlot(panel.textPath)}
                   className={`border-0 bg-transparent p-1 text-center ${ring(activeSlot === panel.textPath)}`}
                 >
-                  <span className="text-[13px] leading-7 text-[#1a3a6e]/85 sm:text-sm sm:leading-7">
+                  <span
+                    className="text-[13px] leading-7 text-[#1a3a6e]/85 sm:text-sm sm:leading-7"
+                    style={cmsTypoInlineStyle(panel.textPath, values)}
+                  >
                     {panel.text}
                   </span>
                 </button>

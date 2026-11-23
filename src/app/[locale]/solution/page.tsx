@@ -6,6 +6,7 @@ import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
 import { SectionTail } from "@/components/SectionTail";
 import { heroImageUnoptimized } from "@/lib/home-hero";
+import { cmsTypoStyleFromT } from "@/lib/cms-typography-styles";
 import {
   SOLUTION_ITEM_KEYS,
   resolveSolutionItemImageSrc,
@@ -18,6 +19,8 @@ export default async function SolutionPage({
 }) {
   resolveLocale((await params).locale);
   const t = await getTranslations();
+  const tSolution = await getTranslations("solution");
+  const tr = tSolution as unknown as (key: string) => string;
 
   return (
     <div>
@@ -49,10 +52,16 @@ export default async function SolutionPage({
                   <p className="text-[11px] tracking-[0.28em] text-sage">
                     {String(index + 1).padStart(2, "0")}
                   </p>
-                  <h2 className="font-display mt-3 text-4xl">
+                  <h2
+                    className="font-display mt-3 text-4xl"
+                    style={cmsTypoStyleFromT("solution", `items.${key}.title`, tr)}
+                  >
                     {t(`solution.items.${key}.title`)}
                   </h2>
-                  <p className="mt-5 max-w-md text-base leading-8 text-ink/70">
+                  <p
+                    className="mt-5 max-w-md text-base leading-8 text-ink/70"
+                    style={cmsTypoStyleFromT("solution", `items.${key}.text`, tr)}
+                  >
                     {t(`solution.items.${key}.text`)}
                   </p>
                 </div>

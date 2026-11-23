@@ -4,6 +4,7 @@ import Image from "next/image";
 import { cmsPreviewText, cmsSlotRing } from "@/components/admin/cms-slot";
 import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
 import { heroImageUnoptimized } from "@/lib/home-hero";
+import { cmsTypoInlineStyle } from "@/lib/cms-typography-styles";
 import {
   GLOBAL_NODE_KEYS,
   globalNodeImagePath,
@@ -55,7 +56,10 @@ export function GlobalCmsBody({
               onClick={() => onSelectSlot(titlePath)}
               className={`mt-5 block w-full border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === titlePath)}`}
             >
-              <span className="font-display text-3xl text-brand-ink">
+              <span
+                className="font-display text-3xl text-brand-ink"
+                style={cmsTypoInlineStyle(titlePath, values)}
+              >
                 {cmsPreviewText(values[titlePath] ?? "", "제목")}
               </span>
             </button>
@@ -64,7 +68,7 @@ export function GlobalCmsBody({
               onClick={() => onSelectSlot(textPath)}
               className={`mt-2 block w-full border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === textPath)}`}
             >
-              <span className="text-ink/70">
+              <span className="text-ink/70" style={cmsTypoInlineStyle(textPath, values)}>
                 {cmsPreviewText(values[textPath] ?? "", "설명")}
               </span>
             </button>

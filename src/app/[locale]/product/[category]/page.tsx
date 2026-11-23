@@ -25,6 +25,7 @@ import {
   resolveHomeFontFamily,
   resolveHomeTextColorHex,
 } from "@/lib/home-hero";
+import { cmsTypoStyleFromT } from "@/lib/cms-typography-styles";
 import { resolveLocale } from "@/lib/locale";
 import { Link } from "@/i18n/navigation";
 import { SectionTail } from "@/components/SectionTail";
@@ -131,7 +132,12 @@ export default async function ProductCategoryPage({
           <span className="mx-2 text-brand-ink/30">/</span>
           {title}
         </p>
-        <p className="mt-4 max-w-2xl text-base leading-8 text-brand-ink/70">{text}</p>
+        <p
+          className="mt-4 max-w-2xl text-base leading-8 text-brand-ink/70"
+          style={cmsTypoStyleFromT("product", `categories.${category}.text`, tr)}
+        >
+          {text}
+        </p>
         <div className="mt-6">
           <ProductBeoneNote />
         </div>

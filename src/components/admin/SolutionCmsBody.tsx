@@ -4,6 +4,7 @@ import Image from "next/image";
 import { cmsPreviewText, cmsSlotRing } from "@/components/admin/cms-slot";
 import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
 import { heroImageUnoptimized } from "@/lib/home-hero";
+import { cmsTypoInlineStyle } from "@/lib/cms-typography-styles";
 import {
   SOLUTION_ITEM_KEYS,
   resolveSolutionItemImageSrc,
@@ -60,7 +61,10 @@ export function SolutionCmsBody({
                   onClick={() => onSelectSlot(titlePath)}
                   className={`mt-3 block w-full border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === titlePath)}`}
                 >
-                  <span className="font-display text-4xl text-brand-ink">
+                  <span
+                    className="font-display text-4xl text-brand-ink"
+                    style={cmsTypoInlineStyle(titlePath, values)}
+                  >
                     {cmsPreviewText(values[titlePath] ?? "", "제목")}
                   </span>
                 </button>
@@ -69,7 +73,10 @@ export function SolutionCmsBody({
                   onClick={() => onSelectSlot(textPath)}
                   className={`mt-5 block w-full max-w-md border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === textPath)}`}
                 >
-                  <span className="text-base leading-8 text-ink/70">
+                  <span
+                    className="text-base leading-8 text-ink/70"
+                    style={cmsTypoInlineStyle(textPath, values)}
+                  >
                     {cmsPreviewText(values[textPath] ?? "", "설명")}
                   </span>
                 </button>

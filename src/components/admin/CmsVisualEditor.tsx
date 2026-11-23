@@ -249,7 +249,7 @@ export function CmsVisualEditor({
   const linkedScalePath = typoTextPath ? scalePathFor(typoTextPath) : null;
   const linkedColorPath = typoTextPath ? colorPathFor(typoTextPath) : null;
   const linkedFontPath = typoTextPath ? fontPathFor(typoTextPath) : null;
-  const showHeroTypography = Boolean(
+  const showTypography = Boolean(
     typoTextPath && isCmsTypoTextPath(typoTextPath) && !isMediaField,
   );
   const colorFallback = typoTextPath ? defaultColorForTextPath(typoTextPath) : "blue";
@@ -297,9 +297,24 @@ export function CmsVisualEditor({
     const payload: Record<string, string> = {};
     for (const field of editorFields) {
       payload[field.path] = draft[field.path] ?? valueByPath[field.path] ?? "";
+      if (!isCmsTypoTextPath(field.path)) continue;
+      for (const kind of ["Font", "Scale", "Color"] as const) {
+        const meta = `${field.path}${kind}`;
+        if (meta in draft || meta in valueByPath) {
+          payload[meta] = draft[meta] ?? valueByPath[meta] ?? "";
+        }
+      }
+    }
+    // 현재 편집 슬롯 타이포 메타는 항상 포함 (메시지에 없어도 저장)
+    if (typoTextPath && isCmsTypoTextPath(typoTextPath)) {
+      payload[typoTextPath] = draft[typoTextPath] ?? valueByPath[typoTextPath] ?? "";
+      for (const kind of ["Font", "Scale", "Color"] as const) {
+        const meta = `${typoTextPath}${kind}`;
+        payload[meta] = draft[meta] ?? valueByPath[meta] ?? "";
+      }
     }
     return payload;
-  }, [draft, editorFields, isHome, valueByPath]);
+  }, [draft, editorFields, isHome, typoTextPath, valueByPath]);
 
   const handleSave = () => {
     if (saving) return;
@@ -570,13 +585,13 @@ export function CmsVisualEditor({
             </div>
           ) : null}
 
-          {showHeroTypography ? (
+          {showTypography ? (
             <div className="shrink-0 border-b border-ink/10 bg-ink/[0.02] px-3 py-2">
               <p className="text-[10px] font-medium text-ink/55">글자 스타일</p>
             </div>
           ) : null}
 
-          {showHeroTypography && linkedFontPath ? (
+          {showTypography && linkedFontPath ? (
             <div className="shrink-0 border-b border-ink/10 px-3 py-2">
               <button
                 type="button"
@@ -596,14 +611,14 @@ export function CmsVisualEditor({
             </div>
           ) : null}
 
-          {showHeroTypography && linkedScalePath ? (
+          {showTypography && linkedScalePath ? (
             <div className="shrink-0 border-b border-ink/10 px-3 py-2">
               <FontScaleStepper value={currentScaleValue()} onChange={pickScale} />
               <p className="mt-1 text-[10px] text-ink/45">100% = 기준 크기 · 50~300% (10% 단위)</p>
             </div>
           ) : null}
 
-          {showHeroTypography && linkedColorPath ? (
+          {showTypography && linkedColorPath ? (
             <div className="shrink-0 border-b border-ink/10 px-3 py-2">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-[12px] text-brand-ink">글자 컬러</span>

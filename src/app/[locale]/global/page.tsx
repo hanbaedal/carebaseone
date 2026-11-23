@@ -6,6 +6,7 @@ import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
 import { SectionTail } from "@/components/SectionTail";
 import { heroImageUnoptimized } from "@/lib/home-hero";
+import { cmsTypoStyleFromT } from "@/lib/cms-typography-styles";
 import {
   GLOBAL_NODE_KEYS,
   resolveGlobalNodeImageSrc,
@@ -18,6 +19,8 @@ export default async function GlobalPage({
 }) {
   resolveLocale((await params).locale);
   const t = await getTranslations();
+  const tGlobal = await getTranslations("global");
+  const tr = tGlobal as unknown as (key: string) => string;
 
   return (
     <div>
@@ -37,10 +40,18 @@ export default async function GlobalPage({
                   unoptimized={heroImageUnoptimized(imageSrc)}
                 />
               </div>
-              <h2 className="font-display mt-5 text-3xl">
+              <h2
+                className="font-display mt-5 text-3xl"
+                style={cmsTypoStyleFromT("global", `nodes.${key}.title`, tr)}
+              >
                 {t(`global.nodes.${key}.title`)}
               </h2>
-              <p className="mt-2 text-ink/70">{t(`global.nodes.${key}.text`)}</p>
+              <p
+                className="mt-2 text-ink/70"
+                style={cmsTypoStyleFromT("global", `nodes.${key}.text`, tr)}
+              >
+                {t(`global.nodes.${key}.text`)}
+              </p>
             </article>
           );
         })}

@@ -8,6 +8,7 @@ import {
   hubCardImagePath,
   resolveHubBlockImageSrc,
 } from "@/lib/hub-media";
+import { cmsTypoInlineStyle } from "@/lib/cms-typography-styles";
 import type { HubBlockDef } from "@/lib/section-hub";
 
 export type HubCmsCardMeta = {
@@ -52,7 +53,10 @@ export function HubCmsBody({
                 onClick={() => onSelectSlot(titlePath)}
                 className={`block w-full border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === titlePath)}`}
               >
-                <span className="font-display text-2xl text-brand-ink md:text-3xl">
+                <span
+                  className="font-display text-2xl text-brand-ink md:text-3xl"
+                  style={cmsTypoInlineStyle(titlePath, values)}
+                >
                   {cmsPreviewText(values[titlePath] ?? "", meta.label)}
                 </span>
               </button>
@@ -85,7 +89,10 @@ export function HubCmsBody({
                     onClick={() => onSelectSlot(excerptPath)}
                     className={`block w-full border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === excerptPath)}`}
                   >
-                    <span className="whitespace-pre-line text-[15px] leading-8 text-brand-ink/80">
+                    <span
+                      className="whitespace-pre-line text-[15px] leading-8 text-brand-ink/80"
+                      style={cmsTypoInlineStyle(excerptPath, values)}
+                    >
                       {cmsPreviewText(values[excerptPath] ?? "", "소개")}
                     </span>
                   </button>

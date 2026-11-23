@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import { Link } from "@/i18n/navigation";
 import { heroImageUnoptimized } from "@/lib/home-hero";
 
@@ -12,6 +12,8 @@ export type ProductCatalogCard = {
   image: string;
   gallery: string[];
   mediaHrefs: string[];
+  titleStyle?: CSSProperties;
+  summaryStyle?: CSSProperties;
 };
 
 export function ProductCatalogCards({
@@ -86,8 +88,13 @@ export function ProductCatalogCards({
               </span>
             </button>
             <div className="flex flex-1 flex-col p-5">
-              <h3 className="text-lg font-semibold text-brand-ink">{item.title}</h3>
-              <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-brand-ink/70">
+              <h3 className="text-lg font-semibold text-brand-ink" style={item.titleStyle}>
+                {item.title}
+              </h3>
+              <p
+                className="mt-2 line-clamp-3 text-sm leading-relaxed text-brand-ink/70"
+                style={item.summaryStyle}
+              >
                 {item.summary}
               </p>
               <div className="mt-auto flex flex-wrap items-center gap-3 pt-4">
