@@ -35,6 +35,51 @@ function DocumentThumbPlaceholder({ fileLabel }: { fileLabel: string }) {
   );
 }
 
+const cardEmbedClassName =
+  "pointer-events-none absolute left-0 top-0 h-[115%] w-full origin-top scale-[1.08] border-0 bg-white";
+
+/** 목록 카드 — 클릭 전 첫 화면 미리보기(다운로드 유발 원본 URL iframe 금지) */
+function CardFirstPagePreview({ item }: { item: PatentPreviewItem }) {
+  const [officeSrc, setOfficeSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (item.previewMode !== "office") {
+      setOfficeSrc(null);
+      return;
+    }
+    setOfficeSrc(officeOnlineEmbedSrc(mediaAbsoluteHref(item.href, window.location.origin)));
+  }, [item]);
+
+  if (item.previewMode === "image") {
+    return (
+      <MediaAwareImage
+        src={item.thumbSrc}
+        mediaSlug={item.slug}
+        alt=""
+        fill
+        className="object-cover transition duration-300 group-hover:scale-[1.02]"
+      />
+    );
+  }
+
+  if (item.previewMode === "pdf") {
+    return (
+      <iframe
+        title={item.title}
+        src={`${item.href}#page=1&toolbar=0&navpanes=0&scrollbar=0`}
+        className={cardEmbedClassName}
+        tabIndex={-1}
+      />
+    );
+  }
+
+  if (item.previewMode === "office" && officeSrc) {
+    return <iframe title={item.title} src={officeSrc} className={cardEmbedClassName} tabIndex={-1} loading="lazy" />;
+  }
+
+  return <DocumentThumbPlaceholder fileLabel={item.fileLabel} />;
+}
+
 export function PatentMediaPreviewGrid({
   items,
   labels,
@@ -104,17 +149,7 @@ export function PatentMediaPreviewGrid({
               className="group flex h-full w-full flex-col overflow-hidden rounded-xl border border-line bg-white text-left shadow-sm transition hover:border-brand/25 hover:shadow-md"
             >
               <span className="relative block aspect-[3/4] w-full overflow-hidden bg-brand-ink/[0.06]">
-                {item.previewMode === "image" ? (
-                  <MediaAwareImage
-                    src={item.thumbSrc}
-                    mediaSlug={item.slug}
-                    alt=""
-                    fill
-                    className="object-cover transition duration-300 group-hover:scale-[1.02]"
-                  />
-                ) : (
-                  <DocumentThumbPlaceholder fileLabel={item.fileLabel} />
-                )}
+                <CardFirstPagePreview item={item} />
                 <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent px-2 pb-2 pt-8 text-[10px] font-medium text-white opacity-0 transition group-hover:opacity-100">
                   {labels.view}
                 </span>
