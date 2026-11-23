@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { listAdminGalleryItems, newGalleryUploadSlug } from "@/lib/admin-gallery";
 import { requireStaffRole } from "@/lib/admin-access";
 import { ensureIndexes, media } from "@/lib/db";
-import { validateProductLineToggle } from "@/lib/gallery-product-line-limit";
+import { reclaimProductLineSlotsForSave } from "@/lib/gallery-product-line-limit";
 import { isAcceptedImageUpload } from "@/lib/image-upload";
 import { mongoUpdated } from "@/lib/korea-time";
 import { deleteMedia, upsertMedia } from "@/lib/media-crud";
@@ -82,9 +82,6 @@ export async function POST(request: Request) {
     const productLines = productLinesFromForm(form);
 
     const slug = newGalleryUploadSlug();
-    const limitErr = await validateProductLineToggle(slug, productLines, published);
-    if (limitErr) return NextResponse.json({ error: limitErr }, { status: 400 });
-
     const buffer = Buffer.from(await file.arrayBuffer());
     const err = await upsertMedia({
       slug,
@@ -102,8 +99,9 @@ export async function POST(request: Request) {
       file: { name: file.name, type: file.type, buffer },
     });
     if (err) return NextResponse.json({ error: err }, { status: 400 });
+    const reclaimed = await reclaimProductLineSlotsForSave(slug, productLines, published);
     const items = await listAdminGalleryItems();
-    return NextResponse.json({ ok: true, items });
+    return NextResponse.json({ ok: true, items, reclaimed });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "저장 중 오류";
     return NextResponse.json(
@@ -153,8 +151,7 @@ export async function PATCH(request: Request) {
     productLines,
   };
 
-  const limitErr = await validateProductLineToggle(slug, productLines, published);
-  if (limitErr) return NextResponse.json({ error: limitErr }, { status: 400 });
+  const reclaimed = await reclaimProductLineSlotsForSave(slug, productLines, published);
 
   await (await media()).updateOne(
     { slug },
@@ -174,7 +171,7 @@ export async function PATCH(request: Request) {
   );
 
   const items = await listAdminGalleryItems();
-  return NextResponse.json({ ok: true, items });
+  return NextResponse.json({ ok: true, items, reclaimed });
 }
 
 export async function DELETE(request: Request) {

@@ -99,20 +99,60 @@ export async function repairProductLineSlots() {
   }
 }
 
-export async function validateProductLineToggle(
+/**
+ * 저장 시 라인당 2장 유지 — 슬롯이 찼으면 다른 사진(가장 오래된 순)에서 라인 체크 해제.
+ * 반환: 해제된 사진 제목 목록
+ */
+export async function reclaimProductLineSlotsForSave(
   slug: string,
   nextLines: MediaProductLines,
   published: boolean,
-): Promise<string | null> {
-  if (!published) return null;
+): Promise<{ titles: string[]; lines: string[] }> {
+  const titles: string[] = [];
+  const lines: string[] = [];
+  if (!published || !process.env.MONGODB_URI) return { titles, lines };
+
+  await ensureIndexes();
+  const col = await media();
+  const { resolveMediaChannels } = await import("@/lib/media-channels");
+  const { resolveProductLines } = await import("@/lib/media-product-lines");
+  const { mongoUpdated } = await import("@/lib/korea-time");
+
   for (const category of PRODUCT_LINE_CATEGORIES) {
     if (!nextLines[category]) continue;
-    const count = await countProductLinePublished(category, slug);
-    if (count >= PRODUCT_LINES_PER_CATEGORY) {
-      return `「${PRODUCT_LINE_LABELS[category]}」 라인은 게시 중인 제품 사진이 이미 ${PRODUCT_LINES_PER_CATEGORY}장입니다. 다른 사진의 체크를 해제한 뒤 저장해 주세요.`;
+
+    const others = (await col
+      .find({
+        category: "gallery",
+        published: true,
+        [`channels.productLines.${category}`]: true,
+        slug: { $ne: slug },
+      })
+      .toArray()) as MediaDoc[];
+
+    const eligible = countsForProductLine(others, category).sort(
+      (a, b) => a.updatedAt.getTime() - b.updatedAt.getTime(),
+    );
+    const maxOthers = PRODUCT_LINES_PER_CATEGORY - 1;
+    const excess = eligible.length - maxOthers;
+    if (excess <= 0) continue;
+
+    const victims = eligible.slice(0, excess);
+    for (const doc of victims) {
+      const hit = await col.findOne({ slug: doc.slug });
+      if (!hit) continue;
+      const ch = resolveMediaChannels(hit);
+      const merged = { ...resolveProductLines(ch), [category]: false };
+      await col.updateOne(
+        { slug: doc.slug },
+        { $set: { channels: { ...ch, productLines: merged }, ...mongoUpdated() } },
+      );
+      titles.push(hit.title.ko?.trim() || doc.slug);
+      lines.push(PRODUCT_LINE_LABELS[category]);
     }
   }
-  return null;
+
+  return { titles, lines };
 }
 
 export async function productLineSlotUsage(): Promise<Record<ProductLineCategory, { used: number; max: number }>> {

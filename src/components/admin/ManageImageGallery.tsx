@@ -131,13 +131,23 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
           productLines: item.productLines,
         }),
       });
-      const json = (await res.json()) as { ok?: boolean; items?: AdminGalleryItem[]; error?: string };
+      const json = (await res.json()) as {
+        ok?: boolean;
+        items?: AdminGalleryItem[];
+        error?: string;
+        reclaimed?: { titles?: string[] };
+      };
       if (!res.ok || !json.ok) {
         setMessage(json.error || "저장에 실패했습니다.");
         return;
       }
       if (json.items) setItems(json.items);
-      setMessage("저장했습니다.");
+      const freed = json.reclaimed?.titles?.filter(Boolean) ?? [];
+      setMessage(
+        freed.length > 0
+          ? `저장했습니다. 슬롯 교체: ${freed.join(" · ")}`
+          : "저장했습니다.",
+      );
     } catch {
       setMessage("저장 중 오류가 났습니다.");
     } finally {
@@ -205,21 +215,26 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
             const used = productLineUsage(key, editingId);
             const occupants = productLineOccupants(key, editingId);
             const atCap = used >= PRODUCT_LINES_PER_CATEGORY && !value[key];
-            const capHint = atCap
-              ? `「${PRODUCT_LINE_LABELS[key]}」 ${PRODUCT_LINES_PER_CATEGORY}장이 이미 사용 중입니다 (${occupants.join(" · ")}). 해당 사진에서 체크 해제·저장 후 다시 시도하세요.`
-              : undefined;
+            const capHint =
+              used >= PRODUCT_LINES_PER_CATEGORY
+                ? `현재: ${occupants.join(" · ") || "—"}. 2/2여도 체크 후 「저장」하면 가장 오래된 사진이 이 라인에서 자동 해제됩니다.`
+                : undefined;
             return (
               <label
                 key={key}
                 className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] ${
-                  value[key] ? "border-brand bg-brand/10 text-brand" : "border-ink/15 bg-white text-brand-ink/80"
-                } ${disabled || atCap ? "opacity-60" : ""}`}
+                  value[key]
+                    ? "border-brand bg-brand/10 text-brand"
+                    : atCap
+                      ? "border-amber-300/80 bg-amber-50/90 text-brand-ink/90"
+                      : "border-ink/15 bg-white text-brand-ink/80"
+                } ${disabled ? "opacity-60" : ""}`}
                 title={capHint}
               >
                 <input
                   type="checkbox"
                   className="size-3.5"
-                  disabled={disabled || atCap}
+                  disabled={disabled}
                   checked={value[key]}
                   onChange={(e) => onChange({ ...value, [key]: e.target.checked })}
                 />
@@ -231,6 +246,9 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
             );
           })}
         </div>
+        <p className="text-[10px] leading-relaxed text-ink/50">
+          라인당 2장까지 노출됩니다. 슬롯이 찼어도 체크한 뒤 「저장」하면 기존 사진 중 오래된 항목이 자동으로 해제됩니다.
+        </p>
       </div>
     );
   }
@@ -338,16 +356,6 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
           onChange={(productLines) => patchItem(item.id, { productLines })}
           disabled={busy}
         />
-        {PRODUCT_LINE_CATEGORIES.some(
-          (key) =>
-            !item.productLines[key] &&
-            productLineUsage(key, item.id) >= PRODUCT_LINES_PER_CATEGORY,
-        ) ? (
-          <p className="text-[11px] leading-relaxed text-ink/55">
-            회색으로 비활성된 라인은 다른 사진이 슬롯을 쓰고 있습니다. 목록에서 해당 사진을 찾아 제품 라인 체크를 해제한 뒤
-            「저장」하세요.
-          </p>
-        ) : null}
         <GalleryItemActions item={item} busy={busy} onSave={onSave} onDelete={onDelete} onDownload={onDownload} />
       </>
     );
