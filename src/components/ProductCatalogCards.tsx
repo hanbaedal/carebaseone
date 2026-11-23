@@ -137,6 +137,7 @@ export function ProductCatalogCards({
                 className="object-contain p-2 sm:object-cover sm:p-0"
                 sizes="(min-width: 768px) 768px, 100vw"
                 priority
+                unoptimized={heroImageUnoptimized(shots[slide] ?? active.image)}
               />
             </div>
             {shots.length > 1 ? (
@@ -150,7 +151,14 @@ export function ProductCatalogCards({
                       i === slide ? "border-brand" : "border-transparent opacity-70"
                     }`}
                   >
-                    <Image src={src} alt="" fill className="object-cover" sizes="56px" />
+                    <Image
+                      src={src}
+                      alt=""
+                      fill
+                      className="object-cover"
+                      sizes="56px"
+                      unoptimized={heroImageUnoptimized(src)}
+                    />
                   </button>
                 ))}
               </div>
