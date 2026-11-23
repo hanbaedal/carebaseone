@@ -23,15 +23,16 @@ export async function listPublishedMedia(
   return (await media()).find(filter).sort({ createdAt: -1 }).toArray();
 }
 
-/** 자료실: 특허 페이지와 겹치지 않도록 patent 제외 */
+/** 자료실: 문서·PDF 위주 — 특허·갤러리(이미지 전시) 제외 */
 export async function listArchiveMedia(memberApproved = false) {
   await ensureMediaReady();
   const filter: Record<string, unknown> = {
     published: true,
-    category: { $ne: "patent" },
+    category: { $nin: ["patent", "gallery"] },
     audience: memberApproved ? { $in: ["public", "member"] } : "public",
   };
-  return (await media()).find(filter).sort({ createdAt: -1 }).toArray();
+  const docs = await (await media()).find(filter).sort({ createdAt: -1 }).toArray();
+  return docs.filter((d) => !showOnPublicGallery(d));
 }
 
 export async function listAllMedia() {
