@@ -70,6 +70,20 @@ export async function openMediaDownloadStream(gridFsId: string) {
   return b.openDownloadStream(new ObjectId(gridFsId));
 }
 
+export function publicMediaUrl(slug: string, fileName: string) {
+  const ext = path.extname(fileName) || ".jpg";
+  return `/media/${slug}${ext}`;
+}
+
+export function writePublicMediaMirror(slug: string, fileName: string, data: Buffer) {
+  const ext = path.extname(fileName) || ".jpg";
+  const dir = path.join(process.cwd(), "public", "media");
+  fs.mkdirSync(dir, { recursive: true });
+  const target = path.join(dir, `${slug}${ext}`);
+  fs.writeFileSync(target, data);
+  return target;
+}
+
 export function resolveMediaDiskPath(slug: string, fileName: string) {
   const ext = path.extname(fileName) || ".pdf";
   const publicPath = path.join(process.cwd(), "public", "media", `${slug}${ext}`);

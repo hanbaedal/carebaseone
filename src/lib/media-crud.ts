@@ -2,7 +2,14 @@ import path from "node:path";
 import { ensureIndexes, media, type MediaAudience, type MediaCategory } from "@/lib/db";
 import { mongoCreatedUpdated, mongoUpdated } from "@/lib/korea-time";
 import { defaultChannelsForNewUpload, isImageMime } from "@/lib/media-channels";
-import { removeGridFsBySlug, uploadMediaBuffer, mediaApiPath } from "@/lib/media-storage";
+import {
+  openMediaDownloadStream,
+  removeGridFsBySlug,
+  resolveMediaDiskPath,
+  uploadMediaBuffer,
+  writePublicMediaMirror,
+  mediaApiPath,
+} from "@/lib/media-storage";
 
 const slugRe = /^[a-z0-9][a-z0-9-]{2,48}$/;
 
@@ -20,6 +27,36 @@ export function isGalleryImageFile(fileName: string, mime: string) {
 }
 
 /** 업로드 시 MIME이 비어 있으면 목록·공개 갤러리에서 빠지는 문제 보정 */
+/** GridFS만 있고 public/media 미러 없으면 썸네일이 깨질 수 있어 복원 */
+export async function repairGalleryDiskMirrors() {
+  if (!process.env.MONGODB_URI) return;
+  await ensureIndexes();
+  const col = await media();
+  const docs = await col
+    .find({
+      category: "gallery",
+      storage: "gridfs",
+      gridFsId: { $exists: true },
+    })
+    .project({ slug: 1, fileName: 1, mime: 1, gridFsId: 1 })
+    .toArray();
+  for (const doc of docs) {
+    if (!isGalleryImageFile(doc.fileName, doc.mime)) continue;
+    if (resolveMediaDiskPath(doc.slug, doc.fileName)) continue;
+    if (!doc.gridFsId) continue;
+    try {
+      const stream = await openMediaDownloadStream(doc.gridFsId);
+      const chunks: Buffer[] = [];
+      for await (const chunk of stream) {
+        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+      }
+      writePublicMediaMirror(doc.slug, doc.fileName, Buffer.concat(chunks));
+    } catch {
+      /* 개별 실패 무시 */
+    }
+  }
+}
+
 export async function repairGalleryImageMime() {
   if (!process.env.MONGODB_URI) return;
   await ensureIndexes();
@@ -84,6 +121,9 @@ export async function upsertMedia(input: {
     storage = "gridfs";
     mime = fileMime;
     fileName = input.file.name;
+    if (isImageMime(fileMime)) {
+      writePublicMediaMirror(slug, fileName, input.file.buffer);
+    }
   }
 
   const doc = {

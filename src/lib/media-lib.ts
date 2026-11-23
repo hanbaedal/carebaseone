@@ -1,4 +1,5 @@
 import { ensureIndexes, media, type MediaCategory, type MediaDoc } from "@/lib/db";
+import { galleryThumbSrc } from "@/lib/gallery-thumb-src";
 import { ensureCmsGallerySeed, galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import { cmsGalleryFallbackOptions } from "@/lib/cms-gallery-images";
 import { isGalleryImageFile, repairGalleryImageMime } from "@/lib/media-crud";
@@ -43,23 +44,12 @@ export async function listMediaForAdmin(category?: MediaCategory): Promise<Media
   return (await media()).find(filter).sort({ createdAt: -1 }).toArray();
 }
 
-function mediaOptionFromDoc(m: {
-  slug: string;
-  filePath?: string;
-  title?: { ko?: string };
-  fileName: string;
-  tags?: string[];
-}) {
-  const publicHint = galleryPublicPathFromDoc(m.tags, m.fileName);
-  const src =
-    m.filePath?.startsWith("/images/")
-      ? m.filePath
-      : publicHint.startsWith("/images/")
-        ? publicHint
-        : m.filePath || mediaApiPath(m.slug);
+function mediaOptionFromDoc(
+  m: Pick<MediaDoc, "slug" | "filePath" | "title" | "fileName" | "tags" | "mime" | "storage">,
+) {
   return {
     slug: m.slug,
-    src,
+    src: galleryThumbSrc(m),
     title: m.title?.ko || m.slug,
   };
 }
@@ -84,6 +74,7 @@ export async function listCmsImageMediaOptions() {
         category: 1,
         channels: 1,
         mime: 1,
+        storage: 1,
         createdAt: 1,
       })
       .sort({ category: 1, createdAt: -1 })
@@ -123,6 +114,8 @@ export async function listPublicGalleryMedia(memberApproved = false): Promise<Me
   await ensureMediaReady();
   await ensureCmsGallerySeed();
   await repairGalleryImageMime();
+  const { repairGalleryDiskMirrors } = await import("@/lib/media-crud");
+  await repairGalleryDiskMirrors();
   const audience = memberApproved ? { $in: ["public", "member"] as const } : "public";
   const docs = await (await media())
     .find({
