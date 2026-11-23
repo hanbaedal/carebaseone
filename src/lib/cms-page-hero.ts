@@ -84,7 +84,8 @@ export function cmsHeroSlots(page: CmsPageDef): CmsHeroSlots {
 }
 
 function messagesHasLede(section: string) {
-  return !["aboutGreeting", "contact"].includes(section);
+  // 인사말은 본문(body)만 쓰고 히어로 lede는 숨김. 문의는 공개 페이지와 같이 lede 노출.
+  return section !== "aboutGreeting";
 }
 
 export function isCmsImageFieldPath(path: string) {

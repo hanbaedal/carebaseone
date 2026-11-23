@@ -114,7 +114,7 @@ export function resolveCmsVisualBody({
     );
   }
   if (page.key === "features") return <FeaturesCmsBody {...props} />;
-  if (page.key === "contact") return <ContactCmsBody />;
+  if (page.key === "contact") return <ContactCmsBody {...props} />;
   if (page.key === "solution") {
     return <SolutionCmsBody {...props} onPickImage={onPickImage} />;
   }
