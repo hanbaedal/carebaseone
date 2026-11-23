@@ -650,7 +650,15 @@
     "gridEmpty": "No intellectual property documents are published yet.",
     "gridView": "Preview",
     "gridClose": "Close",
-    "gridOpenFile": "Open original file"
+    "gridOpenFile": "Open original file",
+    "gridZoomPageFit": "Fit page",
+    "gridZoomPageWidth": "Fit width",
+    "gridZoomActual": "100%",
+    "gridZoomIn": "Zoom in",
+    "gridZoomOut": "Zoom out",
+    "gridPrevPage": "Previous page",
+    "gridNextPage": "Next page",
+    "gridPageLabel": "Page {n}"
   },
   "certifications": {
     "kicker": "CERTIFICATION",

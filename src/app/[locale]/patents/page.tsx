@@ -43,6 +43,14 @@ export default async function PatentsPage({
             view: t("gridView"),
             close: t("gridClose"),
             openFile: t("gridOpenFile"),
+            zoomPageFit: t("gridZoomPageFit"),
+            zoomPageWidth: t("gridZoomPageWidth"),
+            zoomActual: t("gridZoomActual"),
+            zoomIn: t("gridZoomIn"),
+            zoomOut: t("gridZoomOut"),
+            prevPage: t("gridPrevPage"),
+            nextPage: t("gridNextPage"),
+            pageLabel: t("gridPageLabel"),
           }}
         />
       </section>

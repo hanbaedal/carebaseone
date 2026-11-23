@@ -12,6 +12,13 @@ export type PatentPreviewItem = {
   thumbSrc: string;
 };
 
+type PdfZoom = "page-fit" | "page-width" | "100" | "125" | "150";
+
+function pdfViewerSrc(href: string, page: number, zoom: PdfZoom) {
+  const zoomParam = zoom === "page-fit" ? "page-fit" : zoom === "page-width" ? "page-width" : zoom;
+  return `${href}#page=${page}&zoom=${zoomParam}&toolbar=0&navpanes=0&scrollbar=1&view=Fit`;
+}
+
 export function PatentMediaPreviewGrid({
   items,
   labels,
@@ -22,11 +29,29 @@ export function PatentMediaPreviewGrid({
     view: string;
     close: string;
     openFile: string;
+    zoomPageFit: string;
+    zoomPageWidth: string;
+    zoomActual: string;
+    zoomIn: string;
+    zoomOut: string;
+    prevPage: string;
+    nextPage: string;
+    pageLabel: string;
   };
 }) {
   const [active, setActive] = useState<PatentPreviewItem | null>(null);
+  const [pdfPage, setPdfPage] = useState(1);
+  const [pdfZoom, setPdfZoom] = useState<PdfZoom>("page-fit");
+  const [imageScale, setImageScale] = useState(100);
 
   const close = useCallback(() => setActive(null), []);
+
+  useEffect(() => {
+    if (!active) return;
+    setPdfPage(1);
+    setPdfZoom("page-fit");
+    setImageScale(100);
+  }, [active]);
 
   useEffect(() => {
     if (!active) return;
@@ -90,20 +115,23 @@ export function PatentMediaPreviewGrid({
       </ul>
 
       {active ? (
-        <div className="fixed inset-0 z-[100] flex items-end justify-center p-4 sm:items-center sm:p-6" role="presentation">
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4"
+          role="presentation"
+        >
           <button
             type="button"
             aria-label={labels.close}
-            className="absolute inset-0 bg-brand-ink/60 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-brand-ink/65 backdrop-blur-[2px]"
             onClick={close}
           />
           <div
             role="dialog"
             aria-modal="true"
-            className="relative z-10 flex max-h-[min(92dvh,900px)] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-2xl"
+            className="relative z-10 flex h-[min(96dvh,940px)] w-[min(98vw,1280px)] flex-col overflow-hidden rounded-xl border border-line bg-white shadow-2xl sm:rounded-2xl"
           >
-            <div className="flex items-start justify-between gap-3 border-b border-line px-4 py-3 sm:px-5">
-              <h2 className="text-base font-semibold text-brand-ink sm:text-lg">{active.title}</h2>
+            <div className="flex shrink-0 items-start justify-between gap-3 border-b border-line px-3 py-2.5 sm:px-4">
+              <h2 className="line-clamp-2 pr-2 text-sm font-semibold text-brand-ink sm:text-base">{active.title}</h2>
               <button
                 type="button"
                 onClick={close}
@@ -112,24 +140,77 @@ export function PatentMediaPreviewGrid({
                 {labels.close}
               </button>
             </div>
-            <div className="relative min-h-[min(60dvh,640px)] flex-1 bg-ink/5">
+
+            <div className="flex shrink-0 flex-wrap items-center gap-1.5 border-b border-line bg-paper/80 px-3 py-2 sm:gap-2 sm:px-4">
               {active.isImage ? (
-                <MediaAwareImage
-                  src={active.thumbSrc}
-                  mediaSlug={active.slug}
-                  alt=""
-                  className="mx-auto max-h-[min(72dvh,780px)] w-full object-contain p-2"
-                />
+                <>
+                  <ZoomButton label={labels.zoomOut} onClick={() => setImageScale((s) => Math.max(50, s - 25))} />
+                  <span className="min-w-[3rem] text-center text-xs text-brand-ink/60">{imageScale}%</span>
+                  <ZoomButton label={labels.zoomIn} onClick={() => setImageScale((s) => Math.min(200, s + 25))} />
+                  <ZoomButton label={labels.zoomActual} onClick={() => setImageScale(100)} />
+                </>
               ) : (
-                <iframe title={active.title} src={active.href} className="absolute inset-0 h-full w-full border-0 bg-white" />
+                <>
+                  <ZoomButton
+                    active={pdfZoom === "page-fit"}
+                    label={labels.zoomPageFit}
+                    onClick={() => setPdfZoom("page-fit")}
+                  />
+                  <ZoomButton
+                    active={pdfZoom === "page-width"}
+                    label={labels.zoomPageWidth}
+                    onClick={() => setPdfZoom("page-width")}
+                  />
+                  <ZoomButton active={pdfZoom === "100"} label={labels.zoomActual} onClick={() => setPdfZoom("100")} />
+                  <ZoomButton label={labels.zoomOut} onClick={() => setPdfZoom((z) => (z === "150" ? "125" : z === "125" ? "100" : "100"))} />
+                  <ZoomButton label={labels.zoomIn} onClick={() => setPdfZoom((z) => (z === "100" ? "125" : z === "125" ? "150" : "150"))} />
+                  <span className="mx-1 hidden h-4 w-px bg-line sm:inline" />
+                  <ZoomButton
+                    label={labels.prevPage}
+                    onClick={() => setPdfPage((p) => Math.max(1, p - 1))}
+                  />
+                  <span className="text-xs text-brand-ink/55">
+                    {labels.pageLabel.replace("{n}", String(pdfPage))}
+                  </span>
+                  <ZoomButton label={labels.nextPage} onClick={() => setPdfPage((p) => p + 1)} />
+                </>
               )}
             </div>
+
+            <div className="relative min-h-0 flex-1 bg-ink/[0.04]">
+              {active.isImage ? (
+                <div className="absolute inset-0 overflow-auto p-3 sm:p-4">
+                  <div className="flex min-h-full min-w-full items-center justify-center">
+                    <div
+                      className="origin-center transition-transform"
+                      style={{ transform: `scale(${imageScale / 100})` }}
+                    >
+                      <MediaAwareImage
+                        src={active.thumbSrc}
+                        mediaSlug={active.slug}
+                        alt=""
+                        priority
+                        className="max-h-[min(88dvh,820px)] w-auto max-w-[min(96vw,1200px)] object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <iframe
+                  key={`${active.slug}-${pdfPage}-${pdfZoom}`}
+                  title={active.title}
+                  src={pdfViewerSrc(active.href, pdfPage, pdfZoom)}
+                  className="absolute inset-0 h-full w-full border-0 bg-white"
+                />
+              )}
+            </div>
+
             {active.summary ? (
-              <p className="border-t border-line px-4 py-3 text-sm leading-relaxed text-brand-ink/70 sm:px-5">
+              <p className="line-clamp-2 shrink-0 border-t border-line px-3 py-2 text-xs leading-relaxed text-brand-ink/70 sm:px-4 sm:text-sm">
                 {active.summary}
               </p>
             ) : null}
-            <div className="border-t border-line px-4 py-3 sm:px-5">
+            <div className="shrink-0 border-t border-line px-3 py-2 sm:px-4">
               <a
                 href={active.href}
                 target="_blank"
@@ -143,5 +224,29 @@ export function PatentMediaPreviewGrid({
         </div>
       ) : null}
     </>
+  );
+}
+
+function ZoomButton({
+  label,
+  onClick,
+  active,
+}: {
+  label: string;
+  onClick: () => void;
+  active?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-md border px-2 py-1 text-[11px] sm:text-xs ${
+        active
+          ? "border-brand bg-brand/10 text-brand"
+          : "border-line bg-white text-brand-ink/80 hover:bg-ink/5"
+      }`}
+    >
+      {label}
+    </button>
   );
 }
