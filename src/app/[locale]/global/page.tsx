@@ -1,11 +1,11 @@
-import Image from "next/image";
+import { MediaAwareImage } from "@/components/MediaAwareImage";
 import { getTranslations } from "next-intl/server";
 import { CmsSectionHero } from "@/components/CmsSectionHero";
 import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
 import { SectionTail } from "@/components/SectionTail";
-import { heroImageUnoptimized } from "@/lib/home-hero";
+import { cmsMediaSlugFromValue } from "@/lib/home-hero";
 import { cmsTypoStyleFromT } from "@/lib/cms-typography-styles";
 import {
   GLOBAL_NODE_KEYS,
@@ -27,17 +27,17 @@ export default async function GlobalPage({
       <CmsSectionHero section="global" imageFallback={images.close} />
       <section className="mx-auto grid max-w-6xl gap-10 px-guest-gutter py-20 md:grid-cols-2">
         {GLOBAL_NODE_KEYS.map((key) => {
-          const imageSrc = resolveGlobalNodeImageSrc(key, t(`global.nodes.${key}.image`));
+          const imageRaw = t(`global.nodes.${key}.image`);
+          const imageSrc = resolveGlobalNodeImageSrc(key, imageRaw);
           return (
             <article key={key}>
               <div className="relative aspect-[16/10] overflow-hidden">
-                <Image
+                <MediaAwareImage
                   src={imageSrc}
+                  mediaSlug={cmsMediaSlugFromValue(imageRaw)}
                   alt=""
                   fill
                   className="object-cover"
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  unoptimized={heroImageUnoptimized(imageSrc)}
                 />
               </div>
               <h2

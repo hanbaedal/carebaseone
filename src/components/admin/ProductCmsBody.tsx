@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
+import { MediaAwareImage } from "@/components/MediaAwareImage";
 import catalog from "@/data/product-catalog.json";
 import { cmsPreviewText, cmsSlotRing } from "@/components/admin/cms-slot";
 import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
-import { heroImageUnoptimized } from "@/lib/home-hero";
+import { cmsMediaSlugFromValue } from "@/lib/home-hero";
 import {
   productCategoryImagePath,
   resolveHubBlockImageSrc,
@@ -96,13 +96,12 @@ export function ProductHubCmsBody({
                 aria-label="카테고리 이미지 편집"
                 className={`relative aspect-[16/10] w-full border-0 bg-transparent p-0 ${cmsSlotRing(activeSlot === imagePath)}`}
               >
-                <Image
+                <MediaAwareImage
                   src={imageSrc}
+                  mediaSlug={cmsMediaSlugFromValue(values[imagePath])}
                   alt=""
                   fill
                   className="object-cover"
-                  sizes="(min-width: 640px) 45vw, 100vw"
-                  unoptimized={heroImageUnoptimized(imageSrc)}
                 />
                 <span className="absolute inset-x-0 bottom-0 bg-black/45 px-3 py-2 text-[11px] font-medium text-white">
                   이미지 클릭하여 변경
@@ -248,14 +247,13 @@ export function ProductCategoryCmsBody({
                   aria-label={`${title} 이미지 편집`}
                   className={`relative aspect-[4/3] w-full border-0 bg-brand-ink/5 p-0 ${cmsSlotRing(activeSlot === imagePath)}`}
                 >
-                  <Image
-                    src={imageSrc}
-                    alt=""
-                    fill
-                    className="object-cover"
-                    sizes="(min-width: 640px) 45vw, 100vw"
-                    unoptimized={heroImageUnoptimized(imageSrc)}
-                  />
+                <MediaAwareImage
+                  src={imageSrc}
+                  mediaSlug={cmsMediaSlugFromValue(values[imagePath])}
+                  alt=""
+                  fill
+                  className="object-cover"
+                />
                   <span className="absolute inset-x-0 bottom-0 bg-black/45 px-3 py-2 text-[11px] font-medium text-white">
                     이미지 클릭하여 변경
                   </span>

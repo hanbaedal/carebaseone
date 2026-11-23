@@ -21,6 +21,7 @@ import {
   cmsHeroSlots,
   isCmsImageFieldPath,
   cmsPageHeroImagePath,
+  resolveCmsPageHeroRaw,
   resolveCmsPageHeroSrc,
 } from "@/lib/cms-page-hero";
 import {
@@ -431,6 +432,11 @@ export function CmsVisualEditor({
     ? resolvePreviewActiveSlot(slot, typoTextPath, previewPin)
     : null;
 
+  const subpageHeroRaw = resolveCmsPageHeroRaw(
+    page.section,
+    canvasValues,
+    page.productCategory,
+  );
   const subpageHeroSrc = resolveCmsPageHeroSrc(
     page.section,
     canvasValues,
@@ -478,6 +484,7 @@ export function CmsVisualEditor({
             <HomeCmsCanvas
               compact
               heroSrc={heroSrc}
+              heroImageRaw={draft["home.heroImage"]}
               kicker={draft["home.kicker"] ?? ""}
               headline={draft["home.headline"] ?? ""}
               lede={draft["home.lede"] ?? ""}
@@ -499,6 +506,7 @@ export function CmsVisualEditor({
             <SubpageCmsCanvas
               page={page}
               heroSrc={subpageHeroSrc}
+              heroImageRaw={subpageHeroRaw}
               hero={heroSlots}
               values={canvasValues}
               contentPaths={contentPaths}

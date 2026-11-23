@@ -27,18 +27,24 @@ export function cmsPageHeroImage(pageKey: string) {
   return HERO_IMAGE_BY_KEY[pageKey] ?? images.hero;
 }
 
+export function resolveCmsPageHeroRaw(
+  section: string,
+  values: Record<string, string>,
+  productCategory?: ProductLineCategory | null,
+) {
+  if (productCategory) {
+    return (values[productCategoryImagePath(productCategory)] ?? "").trim();
+  }
+  return (values[sectionHeroImagePath(section)] ?? "").trim();
+}
+
 export function resolveCmsPageHeroSrc(
   section: string,
   values: Record<string, string>,
   pageKey: string,
   productCategory?: ProductLineCategory | null,
 ) {
-  if (productCategory) {
-    const path = productCategoryImagePath(productCategory);
-    return resolveHubBlockImageSrc(cmsPageHeroImage(pageKey), values[path]);
-  }
-  const path = sectionHeroImagePath(section);
-  const raw = (values[path] ?? "").trim();
+  const raw = resolveCmsPageHeroRaw(section, values, productCategory);
   if (raw) return resolveHeroImageSrc(raw);
   return cmsPageHeroImage(pageKey);
 }

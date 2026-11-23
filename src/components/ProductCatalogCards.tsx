@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
+import { MediaAwareImage } from "@/components/MediaAwareImage";
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import { Link } from "@/i18n/navigation";
-import { heroImageUnoptimized } from "@/lib/home-hero";
+import { cmsMediaSlugFromValue } from "@/lib/home-hero";
 
 export type ProductCatalogCard = {
   slug: string;
@@ -75,13 +75,12 @@ export function ProductCatalogCards({
               onClick={() => open(item)}
               className="group relative aspect-[4/3] w-full cursor-zoom-in overflow-hidden bg-brand-ink/5 text-left"
             >
-              <Image
+              <MediaAwareImage
                 src={item.image}
+                mediaSlug={cmsMediaSlugFromValue(item.image)}
                 alt=""
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                sizes="(min-width: 640px) 45vw, 100vw"
-                unoptimized={heroImageUnoptimized(item.image)}
               />
               <span className="sr-only">
                 {item.title} — {labels.viewDetail}
@@ -137,14 +136,13 @@ export function ProductCatalogCards({
             className="relative z-10 flex max-h-[min(92dvh,880px)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-2xl"
           >
             <div className="relative aspect-[4/3] w-full shrink-0 bg-brand-ink/5 sm:aspect-[16/10]">
-              <Image
+              <MediaAwareImage
                 src={shots[slide] ?? active.image}
+                mediaSlug={cmsMediaSlugFromValue(shots[slide] ?? active.image)}
                 alt=""
                 fill
-                className="object-contain p-2 sm:object-cover sm:p-0"
-                sizes="(min-width: 768px) 768px, 100vw"
                 priority
-                unoptimized={heroImageUnoptimized(shots[slide] ?? active.image)}
+                className="object-contain p-2 sm:object-cover sm:p-0"
               />
             </div>
             {shots.length > 1 ? (
@@ -158,13 +156,12 @@ export function ProductCatalogCards({
                       i === slide ? "border-brand" : "border-transparent opacity-70"
                     }`}
                   >
-                    <Image
+                    <MediaAwareImage
                       src={src}
+                      mediaSlug={cmsMediaSlugFromValue(src)}
                       alt=""
                       fill
                       className="object-cover"
-                      sizes="56px"
-                      unoptimized={heroImageUnoptimized(src)}
                     />
                   </button>
                 ))}

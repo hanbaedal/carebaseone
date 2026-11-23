@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
+import { MediaAwareImage } from "@/components/MediaAwareImage";
 import { cmsPreviewText, cmsSlotRing } from "@/components/admin/cms-slot";
 import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
-import { heroImageUnoptimized } from "@/lib/home-hero";
+import { cmsMediaSlugFromValue } from "@/lib/home-hero";
 import { cmsTypoInlineStyle } from "@/lib/cms-typography-styles";
 import {
   SOLUTION_ITEM_KEYS,
@@ -40,13 +40,12 @@ export function SolutionCmsBody({
                   index % 2 === 1 ? "md:order-2" : ""
                 } ${cmsSlotRing(activeSlot === imagePath)}`}
               >
-                <Image
+                <MediaAwareImage
                   src={imageSrc}
+                  mediaSlug={cmsMediaSlugFromValue(values[imagePath])}
                   alt=""
                   fill
                   className="object-cover"
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  unoptimized={heroImageUnoptimized(imageSrc)}
                 />
                 <span className="absolute inset-x-0 bottom-0 bg-black/45 px-3 py-2 text-[11px] font-medium text-white">
                   이미지 클릭하여 변경

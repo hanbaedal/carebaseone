@@ -5,6 +5,28 @@ import {
   defaultFontForCmsTextPath,
 } from "@/lib/cms-typography";
 
+/** CMS 이미지 값에서 media slug 추출 (없으면 undefined) */
+export function cmsMediaSlugFromValue(value: string | undefined) {
+  const raw = (value ?? "").trim();
+  if (!raw) return undefined;
+  if (raw.startsWith("/api/media/")) {
+    try {
+      return decodeURIComponent(raw.slice("/api/media/".length));
+    } catch {
+      return raw.slice("/api/media/".length);
+    }
+  }
+  if (raw.startsWith("/media/")) {
+    const base = raw.split("/").pop()?.replace(/\.[a-z0-9]+$/i, "") ?? "";
+    return base || undefined;
+  }
+  if (raw.startsWith("/images/") || raw.startsWith("http://") || raw.startsWith("https://")) {
+    return undefined;
+  }
+  if (raw.startsWith("/")) return undefined;
+  return raw;
+}
+
 /** CMS `home.heroImage` — slug, `/api/media/…`, `/images/…` */
 export function resolveHeroImageSrc(heroImage: string | undefined) {
   const raw = (heroImage ?? "").trim();

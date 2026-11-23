@@ -1,5 +1,5 @@
 import { ensureIndexes, media, type MediaCategory, type MediaDoc } from "@/lib/db";
-import { galleryThumbSrc } from "@/lib/gallery-thumb-src";
+import { galleryFileMissing, galleryThumbSrc } from "@/lib/gallery-thumb-src";
 import { ensureCmsGallerySeed, galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import { cmsGalleryFallbackOptions } from "@/lib/cms-gallery-images";
 import { isGalleryImageFile, repairGalleryImageMime } from "@/lib/media-crud";
@@ -45,7 +45,7 @@ export async function listMediaForAdmin(category?: MediaCategory): Promise<Media
 }
 
 function mediaOptionFromDoc(
-  m: Pick<MediaDoc, "slug" | "filePath" | "title" | "fileName" | "tags" | "mime"> & {
+  m: Pick<MediaDoc, "slug" | "filePath" | "title" | "fileName" | "tags" | "mime" | "gridFsId"> & {
     storage?: MediaDoc["storage"];
   },
 ) {
@@ -62,10 +62,13 @@ export async function listCmsImageMediaOptions() {
   try {
     await ensureMediaReady();
     await ensureCmsGallerySeed();
+    await repairGalleryImageMime();
+    const { repairGalleryDiskMirrors } = await import("@/lib/media-crud");
+    await repairGalleryDiskMirrors();
     const docs = await (await media())
       .find({
         published: true,
-        mime: { $regex: /^image\//i },
+        $or: [{ mime: { $regex: /^image\//i } }, { fileName: { $regex: /\.(jpe?g|png|webp|gif)$/i } }],
       })
       .project({
         slug: 1,
@@ -77,6 +80,7 @@ export async function listCmsImageMediaOptions() {
         channels: 1,
         mime: 1,
         storage: 1,
+        gridFsId: 1,
         createdAt: 1,
       })
       .sort({ category: 1, createdAt: -1 })
@@ -86,7 +90,12 @@ export async function listCmsImageMediaOptions() {
       "slug" | "filePath" | "title" | "fileName" | "tags" | "category" | "channels" | "mime" | "createdAt"
     >[];
 
-    const cmsDocs = docs.filter((m) => resolveMediaChannels(m).cmsBackground);
+    const cmsDocs = docs.filter(
+      (m) =>
+        isGalleryImageFile(m.fileName, m.mime) &&
+        resolveMediaChannels(m).cmsBackground &&
+        !galleryFileMissing(m as MediaDoc),
+    );
 
     const map = new Map(fallback.map((item) => [item.slug, item]));
     for (const m of cmsDocs) {

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { GalleryThumbImage } from "@/components/admin/GalleryThumbImage";
 
 export type CmsMediaOption = {
   slug: string;
@@ -70,13 +70,11 @@ export function MediaPickerModal({
                     }`}
                   >
                     <div className="relative aspect-[4/3] bg-ink/5">
-                      <Image
+                      <GalleryThumbImage
                         src={item.src}
-                        alt=""
-                        fill
-                        className="object-cover"
-                        sizes="160px"
-                        unoptimized
+                        slug={item.slug}
+                        alt={item.title}
+                        className="absolute inset-0 h-full w-full object-cover"
                       />
                     </div>
                     <p className="truncate px-2 py-1.5 text-[10px] text-brand-ink">{item.title}</p>
@@ -99,7 +97,7 @@ export function MediaPickerModal({
           <a href="/admin/gallery" className="text-brand hover:underline">
             배경 이미지 갤러리
           </a>
-          에서 분류를 <strong>gallery</strong>로 등록하면 여기에도 나타납니다.
+          에서 올리고 「CMS 배경」을 체크하면 여기에도 나타납니다.
         </div>
       </div>
     </div>

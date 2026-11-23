@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
+import { MediaAwareImage } from "@/components/MediaAwareImage";
 import { cmsPreviewText, cmsSlotRing } from "@/components/admin/cms-slot";
 import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
-import { heroImageUnoptimized } from "@/lib/home-hero";
+import { cmsMediaSlugFromValue } from "@/lib/home-hero";
 import {
   hubCardImagePath,
   resolveHubBlockImageSrc,
@@ -71,13 +71,12 @@ export function HubCmsBody({
                   aria-label={`${meta.label} 이미지 편집`}
                   className={`relative mx-auto aspect-[4/5] w-full max-w-[11rem] overflow-hidden rounded-xl border-0 bg-white p-0 shadow-sm ${cmsSlotRing(activeSlot === imagePath)}`}
                 >
-                  <Image
+                  <MediaAwareImage
                     src={imageSrc}
+                    mediaSlug={cmsMediaSlugFromValue(values[imagePath])}
                     alt=""
                     fill
                     className="object-cover"
-                    sizes="176px"
-                    unoptimized={heroImageUnoptimized(imageSrc)}
                   />
                   <span className="absolute inset-x-0 bottom-0 bg-black/45 px-2 py-1.5 text-[10px] font-medium text-white">
                     이미지 클릭하여 변경

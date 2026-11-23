@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { MediaAwareImage } from "@/components/MediaAwareImage";
 
 export function GalleryThumbImage({
   src,
@@ -13,18 +13,5 @@ export function GalleryThumbImage({
   alt: string;
   className?: string;
 }) {
-  const apiSrc = `/api/media/${slug}`;
-  const [uri, setUri] = useState(src);
-
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={uri}
-      alt={alt}
-      className={className}
-      onError={() => {
-        if (uri !== apiSrc) setUri(apiSrc);
-      }}
-    />
-  );
+  return <MediaAwareImage src={src} mediaSlug={slug} alt={alt} className={className} />;
 }

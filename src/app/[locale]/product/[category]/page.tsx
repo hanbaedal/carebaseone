@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { MediaAwareImage } from "@/components/MediaAwareImage";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { ProductBeoneNote, ProductLineGrid } from "@/components/ProductLineGrid";
@@ -8,16 +8,12 @@ import {
   productCategoryFromPath,
 } from "@/lib/product-categories";
 import { cmsPageHeroImage } from "@/lib/cms-page-hero";
-import {
-  GUEST_CONTENT_MAX,
-  GUEST_HERO_FRAME,
-  GUEST_HERO_IMAGE_SIZES,
-} from "@/lib/guest-layout";
+import { GUEST_CONTENT_MAX, GUEST_HERO_FRAME } from "@/lib/guest-layout";
 import { resolveHubBlockImageSrc } from "@/lib/hub-media";
 import {
   defaultColorForTextPath,
   defaultFontForTextPath,
-  heroImageUnoptimized,
+  cmsMediaSlugFromValue,
   homeHeadlineFontSizeFluid,
   homeKickerFontSizeFluid,
   homeLedeFontSizeFluid,
@@ -52,10 +48,8 @@ export default async function ProductCategoryPage({
   const title = tr(`categories.${category}.title`);
   const text = tr(`categories.${category}.text`);
   const kicker = tr("kicker");
-  const heroSrc = resolveHubBlockImageSrc(
-    cmsPageHeroImage(category),
-    tr(`categories.${category}.image`),
-  );
+  const heroImageRaw = tr(`categories.${category}.image`);
+  const heroSrc = resolveHubBlockImageSrc(cmsPageHeroImage(category), heroImageRaw);
 
   function styleFor(kind: "kicker" | "title" | "lede") {
     const textPath =
@@ -92,14 +86,13 @@ export default async function ProductCategoryPage({
     <div>
       <section className="bg-paper">
         <div className={`${GUEST_HERO_FRAME} min-h-[56vh] bg-brand-ink text-white`}>
-          <Image
+          <MediaAwareImage
             src={heroSrc}
+            mediaSlug={cmsMediaSlugFromValue(heroImageRaw)}
             alt=""
             fill
             priority
             className="object-cover object-center opacity-55"
-            sizes={GUEST_HERO_IMAGE_SIZES}
-            unoptimized={heroImageUnoptimized(heroSrc)}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-brand-ink/80 via-brand-ink/45 to-transparent" />
           <div className="relative flex min-h-[56vh] w-full flex-col justify-end px-guest-gutter pb-16 pt-28">

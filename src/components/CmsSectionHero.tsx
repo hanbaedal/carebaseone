@@ -1,9 +1,9 @@
-import Image from "next/image";
+import { MediaAwareImage } from "@/components/MediaAwareImage";
 import { getTranslations } from "next-intl/server";
 import { images } from "@/lib/site";
-import { GUEST_HERO_FRAME, GUEST_HERO_IMAGE_SIZES } from "@/lib/guest-layout";
+import { GUEST_HERO_FRAME } from "@/lib/guest-layout";
 import {
-  heroImageUnoptimized,
+  cmsMediaSlugFromValue,
   homeHeadlineFontSizeFluid,
   homeKickerFontSizeFluid,
   homeLedeFontSizeFluid,
@@ -64,14 +64,13 @@ export async function CmsSectionHero({
   return (
     <section className="bg-paper">
       <div className={`${GUEST_HERO_FRAME} min-h-[56vh] bg-brand-ink text-white`}>
-        <Image
+        <MediaAwareImage
           src={heroSrc}
+          mediaSlug={cmsMediaSlugFromValue(heroRaw)}
           alt=""
           fill
           priority
           className="object-cover object-center opacity-55"
-          sizes={GUEST_HERO_IMAGE_SIZES}
-          unoptimized={heroImageUnoptimized(heroSrc)}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-brand-ink/80 via-brand-ink/45 to-transparent" />
         <div className="relative flex min-h-[56vh] w-full flex-col justify-end px-guest-gutter pb-16 pt-28">

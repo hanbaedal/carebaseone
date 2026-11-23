@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import Image from "next/image";
+import { MediaAwareImage } from "@/components/MediaAwareImage";
 import { CompanyContactBlock } from "@/components/CompanyContactBlock";
 import { SnsIconLinkRow } from "@/components/sns/SnsIconLinkRow";
 import { companySnsLinks, SITE_SNS_DEFAULTS } from "@/lib/company-sns";
@@ -9,8 +9,8 @@ import { CMS_FOOTER_INNER_DOCKED } from "@/lib/footer-layout";
 import type { CmsHeroSlots } from "@/lib/cms-page-hero";
 import { fieldLabelFor, type CmsPageDef } from "@/lib/cms-pages";
 import { cmsTypoInlineStyle } from "@/lib/cms-typography-styles";
-import { GUEST_HERO_FRAME, GUEST_HERO_IMAGE_SIZES } from "@/lib/guest-layout";
-import { heroImageUnoptimized } from "@/lib/home-hero";
+import { GUEST_HERO_FRAME } from "@/lib/guest-layout";
+import { cmsMediaSlugFromValue } from "@/lib/home-hero";
 import { pageFooterTextColor, resolvePageFooterBackground, PAGE_FOOTER_BG_DEFAULT } from "@/lib/page-footer";
 import { isCmsHubPage } from "@/lib/cms-hub-pages";
 
@@ -28,6 +28,7 @@ function previewText(value: string, empty: string) {
 export function SubpageCmsCanvas({
   page,
   heroSrc,
+  heroImageRaw,
   hero,
   values,
   contentPaths,
@@ -41,6 +42,7 @@ export function SubpageCmsCanvas({
 }: {
   page: CmsPageDef;
   heroSrc: string;
+  heroImageRaw?: string;
   hero: CmsHeroSlots;
   values: Record<string, string>;
   contentPaths: string[];
@@ -82,13 +84,13 @@ export function SubpageCmsCanvas({
           <div
             className={`${GUEST_HERO_FRAME} bg-brand-ink text-white ${publicHero ? "min-h-[56vh]" : "min-h-[42vh]"}`}
           >
-          <Image
+          <MediaAwareImage
             src={heroSrc}
+            mediaSlug={cmsMediaSlugFromValue(heroImageRaw)}
             alt=""
             fill
+            priority
             className="object-cover object-center opacity-55"
-            sizes={GUEST_HERO_IMAGE_SIZES}
-            unoptimized={heroImageUnoptimized(heroSrc)}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-brand-ink/80 via-brand-ink/45 to-transparent" />
           <button

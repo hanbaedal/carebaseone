@@ -1,11 +1,11 @@
-import Image from "next/image";
+import { MediaAwareImage } from "@/components/MediaAwareImage";
 import { getTranslations } from "next-intl/server";
 import { CmsSectionHero } from "@/components/CmsSectionHero";
 import { CtaLink } from "@/components/CtaLink";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
 import { SectionTail } from "@/components/SectionTail";
-import { heroImageUnoptimized } from "@/lib/home-hero";
+import { cmsMediaSlugFromValue } from "@/lib/home-hero";
 import { cmsTypoStyleFromT } from "@/lib/cms-typography-styles";
 import {
   SOLUTION_ITEM_KEYS,
@@ -28,7 +28,8 @@ export default async function SolutionPage({
       <section className="mx-auto max-w-6xl px-guest-gutter py-20">
         <div className="grid gap-16">
           {SOLUTION_ITEM_KEYS.map((key, index) => {
-            const imageSrc = resolveSolutionItemImageSrc(key, t(`solution.items.${key}.image`));
+            const imageRaw = t(`solution.items.${key}.image`);
+            const imageSrc = resolveSolutionItemImageSrc(key, imageRaw);
             return (
               <article
                 key={key}
@@ -39,13 +40,12 @@ export default async function SolutionPage({
                     index % 2 === 1 ? "md:order-2" : ""
                   }`}
                 >
-                  <Image
+                  <MediaAwareImage
                     src={imageSrc}
+                    mediaSlug={cmsMediaSlugFromValue(imageRaw)}
                     alt=""
                     fill
                     className="object-cover"
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    unoptimized={heroImageUnoptimized(imageSrc)}
                   />
                 </div>
                 <div>

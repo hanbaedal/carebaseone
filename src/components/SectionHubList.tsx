@@ -52,6 +52,7 @@ export async function SectionHubList({
               excerpt={excerpt}
               href={block.href}
               image={resolveHubBlockImageSrc(block.image, cmsImage)}
+              imageRaw={cmsImage || undefined}
               detailsLabel={detailsLabel}
               anchorId={anchorId}
             />

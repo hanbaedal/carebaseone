@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
+import { MediaAwareImage } from "@/components/MediaAwareImage";
 import { CompanyContactBlock } from "@/components/CompanyContactBlock";
 import {
   HOME_HERO_IMAGE_CLASS,
   HOME_HEADLINE_COLOR_DEFAULT,
   HOME_KICKER_COLOR_DEFAULT,
-  heroImageUnoptimized,
+  cmsMediaSlugFromValue,
   homeHeadlineFontSizeFluid,
   homeKickerFontSizeFluid,
   homeLedeFontSizeFluid,
@@ -18,7 +18,7 @@ import {
   HOME_LEDE_COLOR_DEFAULT,
   HOME_LEDE_FONT_DEFAULT,
 } from "@/lib/home-hero";
-import { GUEST_HERO_FRAME, GUEST_HERO_IMAGE_SIZES } from "@/lib/guest-layout";
+import { GUEST_HERO_FRAME } from "@/lib/guest-layout";
 import { HOME_CONTENT_GUTTER, HOME_VIEWPORT_SHELL } from "@/lib/home-layout";
 import { SnsIconLinkRow } from "@/components/sns/SnsIconLinkRow";
 import { companySnsLinks } from "@/lib/company-sns";
@@ -29,6 +29,7 @@ type SlotKey = "home.heroImage" | "home.kicker" | "home.headline" | "home.lede";
 
 export function HomeCmsCanvas({
   heroSrc,
+  heroImageRaw,
   kicker,
   headline,
   lede,
@@ -48,6 +49,7 @@ export function HomeCmsCanvas({
   compact = false,
 }: {
   heroSrc: string;
+  heroImageRaw?: string;
   kicker: string;
   headline: string;
   lede: string;
@@ -106,13 +108,13 @@ export function HomeCmsCanvas({
   return (
     <div className={`${rootClass} bg-paper`}>
       <section className={`${GUEST_HERO_FRAME} min-h-0 flex-1 bg-brand-ink text-brand-ink`}>
-        <Image
+        <MediaAwareImage
           src={heroSrc}
+          mediaSlug={cmsMediaSlugFromValue(heroImageRaw)}
           alt=""
           fill
+          priority
           className={HOME_HERO_IMAGE_CLASS}
-          sizes={GUEST_HERO_IMAGE_SIZES}
-          unoptimized={heroImageUnoptimized(heroSrc)}
         />
 
         <div className={`relative z-10 flex h-full min-h-0 flex-col py-4 sm:py-5 md:py-6 ${HOME_CONTENT_GUTTER}`}>

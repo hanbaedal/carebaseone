@@ -1,12 +1,12 @@
-import Image from "next/image";
+import { MediaAwareImage } from "@/components/MediaAwareImage";
 import { getTranslations } from "next-intl/server";
 import { resolveLocale } from "@/lib/locale";
 import { CmsPageFooter } from "@/components/CmsPageFooter";
-import { GUEST_HERO_FRAME, GUEST_HERO_IMAGE_SIZES } from "@/lib/guest-layout";
+import { GUEST_HERO_FRAME } from "@/lib/guest-layout";
 import { HOME_CONTENT_GUTTER, HOME_VIEWPORT_SHELL } from "@/lib/home-layout";
 import {
   HOME_HERO_IMAGE_CLASS,
-  heroImageUnoptimized,
+  cmsMediaSlugFromValue,
   homeHeadlineFontSizeFluid,
   homeKickerFontSizeFluid,
   homeLedeFontSizeFluid,
@@ -30,7 +30,8 @@ export default async function HomePage({
   resolveLocale((await params).locale);
   const t = await getTranslations();
 
-  const heroSrc = resolveHeroImageSrc(t("home.heroImage"));
+  const heroImageRaw = t("home.heroImage");
+  const heroSrc = resolveHeroImageSrc(heroImageRaw);
   const kickerScale = parseHomeScale(t("home.kickerScale"));
   const headlineScale = parseHomeScale(t("home.headlineScale"));
   const ledeScale = parseHomeScale(t("home.ledeScale"));
@@ -48,14 +49,13 @@ export default async function HomePage({
       <section
         className={`${GUEST_HERO_FRAME} min-h-0 flex-1 bg-brand-ink text-brand-ink`}
       >
-        <Image
+        <MediaAwareImage
           src={heroSrc}
+          mediaSlug={cmsMediaSlugFromValue(heroImageRaw)}
           alt=""
           fill
           priority
           className={HOME_HERO_IMAGE_CLASS}
-          sizes={GUEST_HERO_IMAGE_SIZES}
-          unoptimized={heroImageUnoptimized(heroSrc)}
         />
 
         <div className={`relative flex h-full min-h-0 flex-col py-4 sm:py-5 md:py-6 ${HOME_CONTENT_GUTTER}`}>
