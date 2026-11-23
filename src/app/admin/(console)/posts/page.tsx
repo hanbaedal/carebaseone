@@ -1,14 +1,10 @@
+import { redirect } from "next/navigation";
 import { listAllPosts } from "@/lib/posts";
 import { ensurePostSeed } from "@/lib/seed-posts";
 import { removePost, savePost } from "@/app/admin/ops-actions";
 import { HomepageOpsShell, OpsSection } from "@/components/admin/HomepageOpsShell";
 
 export const dynamic = "force-dynamic";
-
-const TYPE_LABELS = {
-  archive: "자료실",
-  gallery: "갤러리",
-} as const;
 
 export default async function AdminPostsPage({
   searchParams,
@@ -17,37 +13,29 @@ export default async function AdminPostsPage({
 }) {
   await ensurePostSeed();
   const query = await searchParams;
-  const typeFilter =
-    query.type === "archive" || query.type === "gallery" ? query.type : undefined;
-  const title = typeFilter ? TYPE_LABELS[typeFilter] : "갤러리·자료";
-  const posts = (await listAllPosts()).filter((p) => {
-    if (p.type === "notice") return false;
-    if (typeFilter) return p.type === typeFilter;
-    return true;
-  });
+  if (query.type === "gallery") {
+    redirect("/admin/gallery");
+  }
+  const posts = (await listAllPosts()).filter((p) => p.type === "archive");
   const statusMsg = query.status === "saved" ? "저장했습니다." : query.status === "error" ? query.message : undefined;
 
   return (
     <HomepageOpsShell
-      title={title}
-      description="등록 · 목록 · 삭제"
+      title="자료실"
+      description="자료 게시물 등록 · 목록 · 삭제. 사진 갤러리는 이미지 갤러리(/admin/gallery)에서 관리합니다."
       status={statusMsg}
       statusError={query.status === "error"}
     >
       <OpsSection title="등록">
         <form action={savePost} className="grid gap-2 text-xs">
           <input name="slug" placeholder="slug" required className="border border-ink/15 px-2 py-1.5" />
-          <select name="type" defaultValue={typeFilter ?? "gallery"} className="border border-ink/15 px-2 py-1.5">
-            <option value="gallery">갤러리</option>
-            <option value="archive">자료</option>
-          </select>
+          <input type="hidden" name="type" value="archive" />
           <select name="visibility" className="border border-ink/15 px-2 py-1.5">
             <option value="public">공개</option>
             <option value="member">회원</option>
           </select>
           <input name="titleKo" placeholder="제목 (한국어)" className="border border-ink/15 px-2 py-1.5" />
           <textarea name="bodyKo" placeholder="본문 (한국어)" rows={4} className="border border-ink/15 px-2 py-1.5" />
-          <input name="eventPlace" placeholder="장소 (갤러리)" className="border border-ink/15 px-2 py-1.5" />
           <label className="flex items-center gap-2">
             <input name="pinned" type="checkbox" /> 상단 고정
           </label>
