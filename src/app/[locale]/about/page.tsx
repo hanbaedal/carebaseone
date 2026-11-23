@@ -18,7 +18,7 @@ export default async function AboutPage({
     <div>
       <CmsSectionHero section="about" imageFallback={images.close} />
       <section className="mx-auto max-w-4xl px-guest-gutter pt-4">
-        <p className="text-center text-sm text-brand-ink/60">{t("lede")}</p>
+        <p className="text-left text-sm text-brand-ink/60">{t("lede")}</p>
       </section>
       <SectionHubList blocks={ABOUT_HUB_BLOCKS} />
       <SectionTail />

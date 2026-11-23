@@ -3,46 +3,54 @@
 import Image from "next/image";
 import { cmsPreviewText, cmsSlotRing } from "@/components/admin/cms-slot";
 import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
-import { images } from "@/lib/site";
-
-const SOLUTION_ITEMS = [
-  { key: "vascular", image: images.vascular },
-  { key: "sports", image: images.sports },
-  { key: "senior", image: images.senior },
-  { key: "beauty", image: images.beauty },
-  { key: "wellness", image: images.wellness },
-] as const;
+import { heroImageUnoptimized } from "@/lib/home-hero";
+import {
+  SOLUTION_ITEM_KEYS,
+  resolveSolutionItemImageSrc,
+  solutionItemImagePath,
+} from "@/lib/solution-items";
 
 export function SolutionCmsBody({
   values,
   activeSlot,
   onSelectSlot,
+  onPickImage,
 }: {
   values: Record<string, string>;
   activeSlot: string | null;
   onSelectSlot: (path: string) => void;
+  onPickImage: (path: string) => void;
 }) {
   return (
     <section className={`mx-auto w-full ${GUEST_CONTENT_MAX} px-guest-gutter py-20`}>
       <div className="grid gap-16">
-        {SOLUTION_ITEMS.map((item, index) => {
-          const titlePath = `solution.items.${item.key}.title`;
-          const textPath = `solution.items.${item.key}.text`;
+        {SOLUTION_ITEM_KEYS.map((key, index) => {
+          const titlePath = `solution.items.${key}.title`;
+          const textPath = `solution.items.${key}.text`;
+          const imagePath = solutionItemImagePath(key);
+          const imageSrc = resolveSolutionItemImageSrc(key, values[imagePath]);
           return (
-            <article key={item.key} className="grid items-center gap-10 md:grid-cols-2">
-              <div
-                className={`relative aspect-[4/3] overflow-hidden ${
+            <article key={key} className="grid items-center gap-10 md:grid-cols-2">
+              <button
+                type="button"
+                onClick={() => onPickImage(imagePath)}
+                aria-label="이미지 편집"
+                className={`relative aspect-[4/3] overflow-hidden border-0 bg-transparent p-0 text-left ${
                   index % 2 === 1 ? "md:order-2" : ""
-                }`}
+                } ${cmsSlotRing(activeSlot === imagePath)}`}
               >
                 <Image
-                  src={item.image}
+                  src={imageSrc}
                   alt=""
                   fill
                   className="object-cover"
                   sizes="(min-width: 768px) 50vw, 100vw"
+                  unoptimized={heroImageUnoptimized(imageSrc)}
                 />
-              </div>
+                <span className="absolute inset-x-0 bottom-0 bg-black/45 px-3 py-2 text-[11px] font-medium text-white">
+                  이미지 클릭하여 변경
+                </span>
+              </button>
               <div>
                 <p className="text-[11px] tracking-[0.28em] text-sage">
                   {String(index + 1).padStart(2, "0")}

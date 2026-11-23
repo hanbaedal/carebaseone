@@ -63,6 +63,10 @@ function messagesHasLede(section: string) {
   return !["aboutGreeting", "contact"].includes(section);
 }
 
+export function isCmsImageFieldPath(path: string) {
+  return path.endsWith("heroImage") || path.endsWith(".image");
+}
+
 export function isCmsMetaFieldPath(path: string) {
   return (
     path.endsWith("footerBg") ||
@@ -70,7 +74,7 @@ export function isCmsMetaFieldPath(path: string) {
     path.endsWith("Scale") ||
     path.endsWith("Color") ||
     path.endsWith("Font") ||
-    path.endsWith("heroImage")
+    isCmsImageFieldPath(path)
   );
 }
 

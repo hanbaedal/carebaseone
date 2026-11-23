@@ -92,7 +92,7 @@
     "ledeFont": "myeongjo",
     "kicker": "HEALTHCARE BUSINESS PLATFORM",
     "headline": "Technology for daily health, products for global opportunity",
-    "lede": "CAREBASE connects products, solutions, and global business on a technology foundation.",
+    "lede": "CAREBASE connects technology, products, solutions, and global business on one platform.",
     "whyTitle": "Why nitric oxide",
     "whyBody": "Nitric oxide is a signaling molecule involved in circulation, cells, immune response, and recovery. CAREBASE uses this science to open a new direction for everyday health.",
     "pillarsTitle": "Five connections",
@@ -153,7 +153,7 @@
     "ledeColor": "white",
     "kicker": "COMPANY",
     "title": "A healthcare business platform for people",
-    "lede": "CAREBASE connects technology with products, solutions, and global business.",
+    "lede": "A healthcare business where technology, products, solutions, and global work meet on one platform.",
     "storyTitle": "From technology to daily life, from daily life to the world",
     "storyBody": "We turn nitric oxide metabolite technology into healthier routines, and expand opportunity through products and partnerships. Research, brands, and markets meet on one platform.",
     "ctaTechnology": "Explore technology",
@@ -196,7 +196,7 @@
   "aboutFeatures": {
     "kicker": "Features",
     "title": "What CAREBASE does",
-    "lede": "Technology, products, and global business connect on one platform.",
+    "lede": "Technology, products, and global business connecting on one platform is the CAREBASE way.",
     "items": {
       "tech": {
         "title": "Technology-first",
@@ -268,27 +268,32 @@
   "solution": {
     "kicker": "02 Solution",
     "title": "Different health, different solutions",
-    "lede": "The health each person needs is different. CAREBASE offers solutions for living, not a single product story.",
+    "lede": "Because each person needs different health support, we connect technology, products, and life solutions on one platform.",
     "items": {
       "vascular": {
         "title": "Vascular health",
-        "text": "Care that considers circulation and the rhythm of daily life."
+        "text": "Care that considers circulation and the rhythm of daily life.",
+        "image": ""
       },
       "sports": {
         "title": "Sport recovery",
-        "text": "Solutions for recovery after movement."
+        "text": "Solutions for recovery after movement.",
+        "image": ""
       },
       "senior": {
         "title": "Healthspan",
-        "text": "Healthy time shared by seniors and their families."
+        "text": "Healthy time shared by seniors and their families.",
+        "image": ""
       },
       "beauty": {
         "title": "Skin health",
-        "text": "Beauty care for skin and daily life in natural light."
+        "text": "Beauty care for skin and daily life in natural light.",
+        "image": ""
       },
       "wellness": {
         "title": "Wellness",
-        "text": "Care that links meditation, nature, and balance."
+        "text": "Care that links meditation, nature, and balance.",
+        "image": ""
       }
     },
     "footerBg": "white",
@@ -307,7 +312,7 @@
   "product": {
     "kicker": "03 Product",
     "title": "A health platform for living",
-    "lede": "Bio Healing patch, beauty, and beverage lines linked to BEONE technical files.",
+    "lede": "Health food, daily food, cosmetics, patches, and platform lines introduced with technical materials in one place.",
     "note": "Spec sheets and test reports open from each card or the archive. The member store accepts order requests only after approval (no checkout yet).",
     "proofLink": "Research & clinical",
     "certLink": "Certifications",
@@ -438,7 +443,7 @@
   "global": {
     "kicker": "04 Global",
     "title": "A platform that connects the world",
-    "lede": "Health has no borders. We connect Korean technology with health around the world.",
+    "lede": "From Korea, China, and the U.S., we expand global health markets through technology, distribution, and partnerships.",
     "nodes": {
       "korea": {
         "title": "Korea",
@@ -473,7 +478,7 @@
   "business": {
     "kicker": "05 Partnership",
     "title": "A health ecosystem we grow together",
-    "lede": "CAREBASE is not a company that only sells products. It is a health business platform that connects technology, people, companies, and markets.",
+    "lede": "A health business platform connecting technology, research, products, distribution, and education with partners.",
     "center": "NO Metabolite",
     "nodes": {
       "technology": "Technology",
@@ -552,7 +557,7 @@
     "ledeColor": "white",
     "kicker": "Community",
     "title": "Community",
-    "lede": "Notices, archives, gallery, and contact.",
+    "lede": "Check notices, archives, gallery, and inquiries in one place and stay connected with CAREBASE.",
     "footerBg": "white",
     "footerText": "",
     "noticeLede": "Site notices and updates.",
@@ -616,7 +621,7 @@
   "contact": {
     "kicker": "Contact",
     "title": "Where connection begins",
-    "lede": "We welcome people who want to know the products, and people who want to build the business with us.",
+    "lede": "From product and solution questions to partnership and OEM talks, this is where connections begin.",
     "audience": "I am inquiring as",
     "consumer": "Product / solution inquiry",
     "partner": "Partnership / OEM inquiry",

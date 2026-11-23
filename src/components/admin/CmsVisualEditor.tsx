@@ -19,6 +19,7 @@ import { fieldLabelFor, type CmsPageDef } from "@/lib/cms-pages";
 import {
   cmsContentFieldPaths,
   cmsHeroSlots,
+  isCmsImageFieldPath,
   resolveCmsPageHeroSrc,
 } from "@/lib/cms-page-hero";
 import {
@@ -79,7 +80,7 @@ function isMetaEditorPath(path: string) {
     path.endsWith("Color") ||
     path.endsWith("Font") ||
     path.endsWith("footerBg") ||
-    path.endsWith("heroImage")
+    isCmsImageFieldPath(path)
   );
 }
 
@@ -212,7 +213,9 @@ export function CmsVisualEditor({
     Boolean(active?.path.endsWith(".text"));
 
   const isScaleField = active?.path.endsWith("Scale");
-  const isHeroField = active?.path === heroImagePath;
+  const isMediaField = Boolean(active?.path && isCmsImageFieldPath(active.path));
+  const mediaSlotPath =
+    active?.path && isCmsImageFieldPath(active.path) ? active.path : heroImagePath;
   const hasHeroImage = useMemo(
     () => editorFields.some((f) => f.path === heroImagePath),
     [editorFields, heroImagePath],
@@ -226,7 +229,7 @@ export function CmsVisualEditor({
   const linkedColorPath = typoTextPath ? colorPathFor(typoTextPath) : null;
   const linkedFontPath = typoTextPath ? fontPathFor(typoTextPath) : null;
   const showHeroTypography = Boolean(
-    typoTextPath && isCmsTypoTextPath(typoTextPath) && !isHeroField,
+    typoTextPath && isCmsTypoTextPath(typoTextPath) && !isMediaField,
   );
   const colorFallback = typoTextPath ? defaultColorForTextPath(typoTextPath) : "blue";
 
@@ -284,10 +287,14 @@ export function CmsVisualEditor({
     void persistKoFields(payload);
   };
 
-  const openBackgroundPicker = () => {
+  const openImagePicker = (path: string) => {
     setPreviewPin(null);
-    setSlot(heroImagePath);
+    setSlot(path);
     setMediaOpen(true);
+  };
+
+  const openBackgroundPicker = () => {
+    openImagePicker(heroImagePath);
   };
 
   const pinPreviewForTextTools = () => {
@@ -391,7 +398,7 @@ export function CmsVisualEditor({
 
   const showTextEditor =
     (typoTextPath && textField) ||
-    Boolean(active && !isHeroField && !isScaleField && !isFooterBgField);
+    Boolean(active && !isMediaField && !isScaleField && !isFooterBgField);
 
   const showSaveFooter = editorFields.length > 0;
 
@@ -464,6 +471,7 @@ export function CmsVisualEditor({
                 values: canvasValues,
                 activeSlot: slot,
                 onSelectSlot: handleSubpageSlot,
+                onPickImage: openImagePicker,
               })}
             />
           )}
@@ -517,7 +525,7 @@ export function CmsVisualEditor({
             </label>
           </div>
 
-          {isHeroField ? (
+          {isMediaField ? (
             <div className="border-b border-ink/10 px-3 py-2">
               <button
                 type="button"
@@ -526,6 +534,13 @@ export function CmsVisualEditor({
               >
                 갤러리에서 이미지 선택
               </button>
+              <p className="mt-1 truncate text-[10px] text-ink/45">
+                {draft[mediaSlotPath]
+                  ? draft[mediaSlotPath].startsWith("/")
+                    ? draft[mediaSlotPath]
+                    : `미디어 ${draft[mediaSlotPath]}`
+                  : "기본 이미지"}
+              </p>
             </div>
           ) : null}
 
@@ -638,9 +653,9 @@ export function CmsVisualEditor({
                 })()}
               </div>
             </form>
-          ) : isHeroField ? (
+          ) : isMediaField ? (
             <p className="p-3 text-[11px] leading-5 text-ink/50">
-              미리보기 배경을 클릭하거나 위 버튼으로 이미지를 선택한 뒤 저장하세요.
+              미리보기 이미지를 클릭하거나 위 버튼으로 이미지를 선택한 뒤 저장하세요.
             </p>
           ) : (
             <p className="p-3 text-[11px] text-ink/45">편집할 문구가 없습니다.</p>
@@ -678,10 +693,10 @@ export function CmsVisualEditor({
       <MediaPickerModal
         open={mediaOpen}
         options={mediaOptions}
-        currentSlug={draft[heroImagePath] ?? ""}
+        currentSlug={draft[mediaSlotPath] ?? ""}
         onClose={() => setMediaOpen(false)}
         onSelect={(slug) => {
-          setDraft((d) => ({ ...d, [heroImagePath]: slug }));
+          setDraft((d) => ({ ...d, [mediaSlotPath]: slug }));
         }}
       />
 

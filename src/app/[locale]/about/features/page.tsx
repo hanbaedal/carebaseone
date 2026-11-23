@@ -23,13 +23,9 @@ export default async function AboutFeaturesPage({
 
   return (
     <div>
-      <CmsSectionHero
-        section="aboutFeatures"
-        imageFallback={images.lab}
-        ledeAlign="center"
-      />
+      <CmsSectionHero section="aboutFeatures" imageFallback={images.lab} />
       <section className={`mx-auto w-full ${GUEST_CONTENT_MAX} px-guest-gutter py-16`}>
-        <p className="mx-auto max-w-4xl text-center text-base leading-8 text-brand-ink/70">
+        <p className="max-w-4xl text-left text-base leading-8 text-brand-ink/70">
           {t("lede")}
         </p>
         <div className="mt-12">

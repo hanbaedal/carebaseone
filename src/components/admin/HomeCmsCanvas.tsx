@@ -116,7 +116,7 @@ export function HomeCmsCanvas({
         />
 
         <div className={`relative z-10 flex h-full min-h-0 flex-col py-4 sm:py-5 md:py-6 ${HOME_CONTENT_GUTTER}`}>
-          <div className="flex min-h-0 w-full flex-1 flex-col justify-center md:max-w-3xl">
+          <div className="flex min-h-0 w-full flex-1 flex-col justify-center md:max-w-4xl">
             <button
               type="button"
               onClick={() => onSelectSlot("home.kicker")}
@@ -152,7 +152,7 @@ export function HomeCmsCanvas({
             <button
               type="button"
               onClick={() => onSelectSlot("home.lede")}
-              className={`mt-7 block w-fit max-w-xl border-0 bg-transparent p-0 text-left sm:mt-8 ${ring("home.lede")}`}
+              className={`mt-7 block w-full max-w-4xl border-0 bg-transparent p-0 text-left sm:mt-8 ${ring("home.lede")}`}
             >
               <span
                 className={`block whitespace-pre-line font-normal leading-7 tracking-[-0.01em] ${lede.trim() ? "" : "opacity-60"}`}

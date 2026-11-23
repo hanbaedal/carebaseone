@@ -59,7 +59,7 @@ export default async function HomePage({
         />
 
         <div className={`relative flex h-full min-h-0 flex-col py-4 sm:py-5 md:py-6 ${HOME_CONTENT_GUTTER}`}>
-          <div className="flex min-h-0 w-full flex-1 flex-col justify-center gap-0 md:max-w-3xl">
+          <div className="flex min-h-0 w-full flex-1 flex-col justify-center gap-0 md:max-w-4xl">
             <p
               className="animate-[fadeUp_0.7s_ease_both] font-semibold tracking-[0.18em] sm:tracking-[0.22em]"
               style={{

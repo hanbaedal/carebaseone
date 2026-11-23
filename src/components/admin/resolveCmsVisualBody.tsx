@@ -32,16 +32,20 @@ export function resolveCmsVisualBody({
   values,
   activeSlot,
   onSelectSlot,
+  onPickImage,
 }: {
   page: CmsPageDef;
   values: Record<string, string>;
   activeSlot: string | null;
   onSelectSlot: (path: string) => void;
+  onPickImage: (path: string) => void;
 }): ReactNode {
   const props = { values, activeSlot, onSelectSlot };
 
   if (page.key === "features") return <FeaturesCmsBody {...props} />;
-  if (page.key === "solution") return <SolutionCmsBody {...props} />;
+  if (page.key === "solution") {
+    return <SolutionCmsBody {...props} onPickImage={onPickImage} />;
+  }
   if (page.key === "global") return <GlobalCmsBody {...props} />;
   if (page.key === "business") return <BusinessCmsBody {...props} />;
   if (page.key === "product") return <ProductHubCmsBody {...props} />;
