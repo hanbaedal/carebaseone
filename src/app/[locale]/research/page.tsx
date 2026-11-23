@@ -25,7 +25,6 @@ export default async function ResearchPage({
     view: t("gridView"),
     close: t("gridClose"),
     openFile: t("gridOpenFile"),
-    downloadFile: t("gridDownloadFile"),
     noPreview: t("gridNoPreview"),
     zoomPageFit: t("gridZoomPageFit"),
     zoomPageWidth: t("gridZoomPageWidth"),

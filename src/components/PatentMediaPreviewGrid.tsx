@@ -1,8 +1,7 @@
 "use client";
 
 import { MediaAwareImage } from "@/components/MediaAwareImage";
-import type { MediaPreviewMode } from "@/lib/media-public";
-import { mediaDownloadHref } from "@/lib/media-public";
+import type { MediaPreviewMode } from "@/lib/media-preview-shared";
 import { useCallback, useEffect, useState } from "react";
 
 export type PatentPreviewItem = {
@@ -42,7 +41,6 @@ export function PatentMediaPreviewGrid({
     view: string;
     close: string;
     openFile: string;
-    downloadFile: string;
     noPreview: string;
     zoomPageFit: string;
     zoomPageWidth: string;
@@ -219,19 +217,18 @@ export function PatentMediaPreviewGrid({
                 {active.summary}
               </p>
             ) : null}
-            <div className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2 border-t border-line px-3 py-2 sm:px-4">
-              <a
-                href={active.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-medium text-brand hover:underline"
-              >
-                {labels.openFile} ↗
-              </a>
-              <a href={mediaDownloadHref(active.href)} className="text-sm font-medium text-brand-ink/80 hover:underline">
-                {labels.downloadFile}
-              </a>
-            </div>
+            {active.previewMode === "pdf" || active.previewMode === "image" ? (
+              <div className="shrink-0 border-t border-line px-3 py-2 sm:px-4">
+                <a
+                  href={active.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium text-brand hover:underline"
+                >
+                  {labels.openFile} ↗
+                </a>
+              </div>
+            ) : null}
           </div>
         </div>
       ) : null}

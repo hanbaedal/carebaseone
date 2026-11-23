@@ -36,7 +36,6 @@ export default async function CertificationsPage({
             view: t("gridView"),
             close: t("gridClose"),
             openFile: t("gridOpenFile"),
-            downloadFile: t("gridDownloadFile"),
             noPreview: t("gridNoPreview"),
             zoomPageFit: t("gridZoomPageFit"),
             zoomPageWidth: t("gridZoomPageWidth"),
