@@ -128,7 +128,7 @@ export function PatentMediaPreviewGrid({
           <div
             role="dialog"
             aria-modal="true"
-            className="relative z-10 flex h-[min(96dvh,940px)] w-[min(98vw,1280px)] flex-col overflow-hidden rounded-xl border border-line bg-white shadow-2xl sm:rounded-2xl"
+            className="relative z-10 flex h-[min(98dvh,1222px)] w-[min(98vw,1280px)] flex-col overflow-hidden rounded-xl border border-line bg-white shadow-2xl sm:rounded-2xl"
           >
             <div className="flex shrink-0 items-start justify-between gap-3 border-b border-line px-3 py-2.5 sm:px-4">
               <h2 className="line-clamp-2 pr-2 text-sm font-semibold text-brand-ink sm:text-base">{active.title}</h2>
@@ -190,7 +190,7 @@ export function PatentMediaPreviewGrid({
                         mediaSlug={active.slug}
                         alt=""
                         priority
-                        className="max-h-[min(88dvh,820px)] w-auto max-w-[min(96vw,1200px)] object-contain"
+                        className="max-h-[min(94dvh,1066px)] w-auto max-w-[min(96vw,1200px)] object-contain"
                       />
                     </div>
                   </div>
