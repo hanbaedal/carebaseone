@@ -170,6 +170,16 @@ export type PageViewDoc = {
   createdAtKst?: string;
 };
 
+export type InquiryReply = {
+  id: string;
+  body: string;
+  createdBy: string;
+  createdAt: Date;
+  createdAtKst?: string;
+  updatedAt?: Date;
+  updatedAtKst?: string;
+};
+
 export type InquiryDoc = {
   name: string;
   organization: string;
@@ -179,6 +189,8 @@ export type InquiryDoc = {
   audience: string;
   message: string;
   memberUsername?: string;
+  /** 관리자 답변 (CRUD) */
+  replies?: InquiryReply[];
   createdAt: Date;
   createdAtKst?: string;
 };

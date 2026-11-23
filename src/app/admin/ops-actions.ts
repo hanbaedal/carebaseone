@@ -7,7 +7,12 @@ import { findUser } from "@/lib/users";
 import { deletePost, upsertPost } from "@/lib/posts";
 import { setMemberStatus, deleteMember } from "@/lib/members";
 import { updateOrderStatus } from "@/lib/orders";
-import { deleteInquiry } from "@/lib/inquiries";
+import {
+  addInquiryReply,
+  deleteInquiry,
+  deleteInquiryReply,
+  updateInquiryReply,
+} from "@/lib/inquiries";
 import { ensureIndexes, media, type MediaCategory } from "@/lib/db";
 import { deleteMedia, upsertMedia } from "@/lib/media-crud";
 import { mongoUpdated } from "@/lib/korea-time";
@@ -101,6 +106,28 @@ export async function updateOrder(formData: FormData) {
 export async function removeInquiry(formData: FormData) {
   await requireStaff();
   await deleteInquiry(String(formData.get("id") ?? ""));
+  redirect("/admin/inquiries?status=saved");
+}
+
+export async function saveInquiryReply(formData: FormData) {
+  const session = await requireStaff();
+  const inquiryId = String(formData.get("inquiryId") ?? "").trim();
+  const replyId = String(formData.get("replyId") ?? "").trim();
+  const body = String(formData.get("body") ?? "");
+  const err = replyId
+    ? await updateInquiryReply(inquiryId, replyId, body)
+    : await addInquiryReply(inquiryId, body, session.username);
+  if (err === "empty") redirect("/admin/inquiries?status=error&message=답변+내용을+입력해+주세요");
+  if (err === "notfound") redirect("/admin/inquiries?status=error&message=답변을+찾을+수+없습니다");
+  redirect("/admin/inquiries?status=saved");
+}
+
+export async function removeInquiryReply(formData: FormData) {
+  await requireStaff();
+  await deleteInquiryReply(
+    String(formData.get("inquiryId") ?? ""),
+    String(formData.get("replyId") ?? ""),
+  );
   redirect("/admin/inquiries?status=saved");
 }
 
