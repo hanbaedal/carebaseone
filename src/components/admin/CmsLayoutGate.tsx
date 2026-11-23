@@ -8,7 +8,6 @@ import { SiteHeader } from "@/components/SiteHeader";
 import type { Role } from "@/lib/session";
 import type { AbstractIntlMessages } from "next-intl";
 import { isHomepageAdminPath } from "@/lib/homepage-admin-paths";
-import { CmsAdminSectionNav } from "@/components/admin/CmsAdminSectionNav";
 
 export function CmsLayoutGate({
   children,
@@ -36,7 +35,6 @@ export function CmsLayoutGate({
       <NextIntlClientProvider locale="ko" messages={messages}>
         <div className="flex min-h-dvh flex-col bg-paper text-brand-ink">
           <SiteHeader memberName={memberName} staffRole={staffRole} />
-          <CmsAdminSectionNav />
           <main className="flex-1">{children}</main>
         </div>
       </NextIntlClientProvider>

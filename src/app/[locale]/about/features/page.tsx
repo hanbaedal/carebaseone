@@ -1,6 +1,5 @@
 import { getTranslations } from "next-intl/server";
 import { CmsSectionHero } from "@/components/CmsSectionHero";
-import { CtaLink } from "@/components/CtaLink";
 import { FeatureQuadGrid } from "@/components/FeatureQuadGrid";
 import { images } from "@/lib/site";
 import { resolveLocale } from "@/lib/locale";
@@ -28,12 +27,6 @@ export default async function AboutFeaturesPage({
         <p className="max-w-2xl text-base leading-8 text-brand-ink/70">{t("lede")}</p>
         <div className="mt-12">
           <FeatureQuadGrid items={items} />
-        </div>
-        <div className="mt-12 flex flex-wrap gap-3">
-          <CtaLink href="/product">{t("ctaProduct")}</CtaLink>
-          <CtaLink href="/about/greeting" variant="light">
-            {t("ctaGreeting")}
-          </CtaLink>
         </div>
       </section>
       <SectionTail section="aboutFeatures" />

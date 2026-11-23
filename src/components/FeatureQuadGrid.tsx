@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 type FeatureItem = {
   key: string;
@@ -35,7 +35,13 @@ const PANEL_STYLES = [
   },
 ] as const;
 
-export function FeatureQuadGrid({ items }: { items: FeatureItem[] }) {
+export function FeatureQuadGrid({
+  items,
+  renderContent,
+}: {
+  items: FeatureItem[];
+  renderContent?: (item: FeatureItem, index: number) => ReactNode;
+}) {
   return (
     <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-2 sm:gap-2.5 md:grid-cols-2 md:gap-2.5">
       {items.map((item, index) => {
@@ -47,12 +53,18 @@ export function FeatureQuadGrid({ items }: { items: FeatureItem[] }) {
             style={{ "--quad-clip": style.clip } as CSSProperties}
           >
             <div className="mx-auto flex max-w-[20rem] flex-col items-center justify-center gap-3">
-              <h2 className="text-[1.08rem] font-bold leading-snug tracking-tight text-[#1a3a6e] sm:text-lg md:text-xl">
-                {item.title}
-              </h2>
-              <p className="text-[13px] leading-7 text-[#1a3a6e]/85 sm:text-sm sm:leading-7">
-                {item.text}
-              </p>
+              {renderContent ? (
+                renderContent(item, index)
+              ) : (
+                <>
+                  <h2 className="text-[1.08rem] font-bold leading-snug tracking-tight text-[#1a3a6e] sm:text-lg md:text-xl">
+                    {item.title}
+                  </h2>
+                  <p className="text-[13px] leading-7 text-[#1a3a6e]/85 sm:text-sm sm:leading-7">
+                    {item.text}
+                  </p>
+                </>
+              )}
             </div>
           </article>
         );

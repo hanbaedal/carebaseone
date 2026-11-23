@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveContentInline } from "@/app/admin/actions";
+import { FeaturesCmsBody } from "@/components/admin/FeaturesCmsBody";
 import { HomeCmsCanvas } from "@/components/admin/HomeCmsCanvas";
 import { SubpageCmsCanvas } from "@/components/admin/SubpageCmsCanvas";
 import { FontFamilyModal } from "@/components/admin/FontFamilyModal";
@@ -113,6 +114,7 @@ export function CmsVisualEditor({
   mediaOptions?: CmsMediaOption[];
 }) {
   const isHome = page.key === "home";
+  const isFeatures = page.key === "features";
   const router = useRouter();
   const [mediaOptions, setMediaOptions] = useState<CmsMediaOption[]>(mediaOptionsProp);
   const mediaFetchStarted = useRef(false);
@@ -120,7 +122,12 @@ export function CmsVisualEditor({
     const list = isHome
       ? fields.filter((f) => (HOME_CMS_PATHS as readonly string[]).includes(f.path))
       : fields;
-    return list.filter((f) => !f.path.endsWith("footerText"));
+    return list.filter(
+      (f) =>
+        !f.path.endsWith("footerText") &&
+        f.path !== "aboutFeatures.ctaProduct" &&
+        f.path !== "aboutFeatures.ctaGreeting",
+    );
   }, [fields, isHome]);
 
   const heroSlots = useMemo(() => cmsHeroSlots(page), [page]);
@@ -448,6 +455,16 @@ export function CmsVisualEditor({
                 setFooterBgOpen(true);
               }}
               onPickBackground={openBackgroundPicker}
+              publicHero={isFeatures}
+              body={
+                isFeatures ? (
+                  <FeaturesCmsBody
+                    values={canvasValues}
+                    activeSlot={slot}
+                    onSelectSlot={handleSubpageSlot}
+                  />
+                ) : undefined
+              }
             />
           )}
         </div>

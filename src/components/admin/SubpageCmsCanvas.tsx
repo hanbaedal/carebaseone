@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Image from "next/image";
 import { CompanyContactBlock } from "@/components/CompanyContactBlock";
 import { SnsIconLinkRow } from "@/components/sns/SnsIconLinkRow";
@@ -34,6 +35,8 @@ export function SubpageCmsCanvas({
   onSelectSlot,
   onEditFooter,
   onPickBackground,
+  body,
+  publicHero = false,
 }: {
   page: CmsPageDef;
   heroSrc: string;
@@ -45,6 +48,10 @@ export function SubpageCmsCanvas({
   onSelectSlot: (path: string) => void;
   onEditFooter: () => void;
   onPickBackground: () => void;
+  /** 공개 페이지와 같은 본문. 있으면 필드 목록 대신 이 영역을 그립니다. */
+  body?: ReactNode;
+  /** 회사특징처럼 공개 히어로 높이에 맞춥니다. */
+  publicHero?: boolean;
 }) {
   const footerBgCss = resolvePageFooterBackground(footerBg, PAGE_FOOTER_BG_DEFAULT);
   const footerColor = pageFooterTextColor(footerBgCss);
@@ -70,7 +77,9 @@ export function SubpageCmsCanvas({
   return (
     <div className="flex h-[calc(100dvh-4.5rem)] max-h-[calc(100dvh-4.5rem)] flex-col overflow-hidden bg-white">
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-        <section className="relative isolate min-h-[42vh] overflow-hidden bg-brand-ink text-white">
+        <section
+          className={`relative isolate overflow-hidden bg-brand-ink text-white ${publicHero ? "min-h-[56vh]" : "min-h-[42vh]"}`}
+        >
           <Image
             src={heroSrc}
             alt=""
@@ -86,7 +95,13 @@ export function SubpageCmsCanvas({
             onClick={onPickBackground}
             className="absolute inset-0 z-[1] cursor-pointer border-0 bg-transparent"
           />
-          <div className="relative z-[2] mx-auto flex min-h-[42vh] max-w-7xl flex-col justify-end px-6 pb-12 pt-20">
+          <div
+            className={`relative z-[2] mx-auto flex max-w-7xl flex-col justify-end ${
+              publicHero
+                ? "min-h-[56vh] px-guest-gutter pb-16 pt-28"
+                : "min-h-[42vh] px-6 pb-12 pt-20"
+            }`}
+          >
             {hero.kicker ? (
               <button
                 type="button"
@@ -129,7 +144,7 @@ export function SubpageCmsCanvas({
           </div>
         </section>
 
-        {contentPaths.length > 0 ? (
+        {body ?? (contentPaths.length > 0 ? (
         <section className="mx-auto max-w-3xl space-y-3 px-6 py-10">
           <p className="text-[11px] font-medium text-ink/45">
             {isCmsHubPage(page.key) ? "허브 하위 카드 요약" : `${page.label} 본문 · 버튼`}
@@ -157,7 +172,7 @@ export function SubpageCmsCanvas({
             );
           })}
         </section>
-        ) : null}
+        ) : null)}
       </div>
 
       <footer
