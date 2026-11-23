@@ -173,11 +173,21 @@
       }
     },
     "hubCards": {
-      "greeting": { "image": "" },
-      "features": { "image": "" },
-      "solution": { "image": "" },
-      "global": { "image": "" },
-      "business": { "image": "" }
+      "greeting": {
+        "image": ""
+      },
+      "features": {
+        "image": ""
+      },
+      "solution": {
+        "image": ""
+      },
+      "global": {
+        "image": ""
+      },
+      "business": {
+        "image": ""
+      }
     }
   },
   "aboutGreeting": {
@@ -272,9 +282,15 @@
       }
     },
     "hubCards": {
-      "patents": { "image": "" },
-      "certifications": { "image": "" },
-      "research": { "image": "" }
+      "patents": {
+        "image": ""
+      },
+      "certifications": {
+        "image": ""
+      },
+      "research": {
+        "image": ""
+      }
     }
   },
   "solution": {
@@ -386,7 +402,54 @@
     "titleColor": "black",
     "ledeFont": "myeongjo",
     "ledeScale": "100",
-    "ledeColor": "white"
+    "ledeColor": "white",
+    "catalog": {
+      "ddaturip": {
+        "image": ""
+      },
+      "yukmi-songhwa": {
+        "image": ""
+      },
+      "happy-no": {
+        "image": ""
+      },
+      "saengmaeksan": {
+        "image": ""
+      },
+      "ssanghwatang": {
+        "image": ""
+      },
+      "jaryeon-cushion": {
+        "image": ""
+      },
+      "muscle-joint-patch": {
+        "image": ""
+      },
+      "muscle-joint-hot-patch": {
+        "image": ""
+      },
+      "slim-hot-patch": {
+        "image": ""
+      },
+      "good-night-nose-patch": {
+        "image": ""
+      },
+      "multi-memory-patch": {
+        "image": ""
+      },
+      "energy-focus-patch": {
+        "image": ""
+      },
+      "us-miracle-patch": {
+        "image": ""
+      },
+      "us-hot-patch": {
+        "image": ""
+      },
+      "carebase-health-platform": {
+        "image": ""
+      }
+    }
   },
   "productCatalog": {
     "doc": "자료",
@@ -624,10 +687,18 @@
       "contact": "문의"
     },
     "hubCards": {
-      "notice": { "image": "" },
-      "archive": { "image": "" },
-      "gallery": { "image": "" },
-      "contact": { "image": "" }
+      "notice": {
+        "image": ""
+      },
+      "archive": {
+        "image": ""
+      },
+      "gallery": {
+        "image": ""
+      },
+      "contact": {
+        "image": ""
+      }
     }
   },
   "store": {

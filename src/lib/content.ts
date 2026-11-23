@@ -100,6 +100,7 @@ function skipAutoTranslate(path: string, koText: string) {
   )
     return true;
   if (/\.(heroImage|sideImage|image)$/i.test(path)) return true;
+  if (path.includes(".catalog.") && path.endsWith(".image")) return true;
   if (!/[가-힣]/.test(koText)) return true;
   return false;
 }

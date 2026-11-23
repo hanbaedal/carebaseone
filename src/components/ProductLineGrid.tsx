@@ -6,6 +6,7 @@ import {
   ProductCatalogCards,
   type ProductCatalogCard,
 } from "@/components/ProductCatalogCards";
+import { resolveProductCatalogImageSrc } from "@/lib/product-catalog-media";
 
 export async function ProductLineGrid({
   category,
@@ -15,7 +16,9 @@ export async function ProductLineGrid({
   heading: string;
 }) {
   const t = await getTranslations("productCatalog");
+  const tProduct = await getTranslations("product");
   const lineText = t as unknown as (key: string) => string;
+  const productText = tProduct as unknown as (key: string) => string;
   const lines = catalog.lines.filter((l) => l.category === category);
   if (lines.length === 0) return null;
 
@@ -23,7 +26,10 @@ export async function ProductLineGrid({
     slug: line.slug,
     title: lineText(`lines.${line.slug}.title`),
     summary: lineText(`lines.${line.slug}.summary`),
-    image: line.image,
+    image: resolveProductCatalogImageSrc(
+      line.image,
+      productText(`catalog.${line.slug}.image`),
+    ),
     gallery: line.gallery ?? [],
     mediaHrefs: line.mediaHrefs ?? [],
   }));

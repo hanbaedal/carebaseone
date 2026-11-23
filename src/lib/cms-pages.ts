@@ -2,6 +2,8 @@
 
 import type { ProductLineCategory } from "@/lib/product-categories";
 import { PRODUCT_CATEGORY_PATHS } from "@/lib/product-categories";
+import { catalogLinesForCategory } from "@/lib/product-catalog-media";
+import { productCatalogImagePath } from "@/lib/product-catalog-media";
 
 export type CmsPageDef = {
   key: string;
@@ -25,21 +27,30 @@ const PRODUCT_LINE_CATEGORY_PAGES: CmsPageDef[] = (
     ["patch", "패치"],
     ["healthPlatform", "건강관리플랫폼"],
   ] as const
-).map(([key, label]) => ({
-  key,
-  label,
-  preview: `/ko/product/${PRODUCT_CATEGORY_PATHS[key]}`,
-  section: "product",
-  tab: "submenu" as const,
-  productCategory: key,
-  fieldLabels: {
-    "product.kicker": "키커",
-    [`product.categories.${key}.title`]: "제목",
-    [`product.categories.${key}.text`]: "소개 문구",
-    [`product.categories.${key}.items`]: "대표 품목",
-    [`product.categories.${key}.image`]: "배경 이미지",
-  },
-}));
+).map(([key, label]) => {
+  const lineImageLabels = Object.fromEntries(
+    catalogLinesForCategory(key).map((line) => [
+      productCatalogImagePath(line.slug),
+      `제품 이미지 · ${line.slug}`,
+    ]),
+  );
+  return {
+    key,
+    label,
+    preview: `/ko/product/${PRODUCT_CATEGORY_PATHS[key]}`,
+    section: "product",
+    tab: "submenu" as const,
+    productCategory: key,
+    fieldLabels: {
+      "product.kicker": "키커",
+      [`product.categories.${key}.title`]: "제목",
+      [`product.categories.${key}.text`]: "소개 문구",
+      [`product.categories.${key}.items`]: "대표 품목",
+      [`product.categories.${key}.image`]: "배경 이미지",
+      ...lineImageLabels,
+    },
+  };
+});
 
 export const CMS_PAGES: CmsPageDef[] = [
   {

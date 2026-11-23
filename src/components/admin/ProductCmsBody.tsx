@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import catalog from "@/data/product-catalog.json";
 import { cmsPreviewText, cmsSlotRing } from "@/components/admin/cms-slot";
 import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
 import { heroImageUnoptimized } from "@/lib/home-hero";
@@ -9,6 +8,11 @@ import {
   productCategoryImagePath,
   resolveHubBlockImageSrc,
 } from "@/lib/hub-media";
+import {
+  catalogLinesForCategory,
+  productCatalogImagePath,
+  resolveProductCatalogImageSrc,
+} from "@/lib/product-catalog-media";
 import {
   PRODUCT_LINE_CATEGORIES,
   type ProductLineCategory,
@@ -136,21 +140,23 @@ export function ProductHubCmsBody({
   );
 }
 
-/** 회사특징과 동일: 히어로(배경·키커·제목·소개) + 본문 소개 + 카드 그리드 */
+/** 회사특징과 동일: 히어로(배경·키커·제목·소개) + 본문 소개 + 카드 이미지 편집 */
 export function ProductCategoryCmsBody({
   category,
   values,
   activeSlot,
   onSelectSlot,
+  onPickImage,
 }: {
   category: ProductLineCategory;
   values: Record<string, string>;
   activeSlot: string | null;
   onSelectSlot: (path: string) => void;
+  onPickImage: (path: string) => void;
 }) {
   const textPath = `product.categories.${category}.text`;
   const itemsPath = `product.categories.${category}.items`;
-  const lines = catalog.lines.filter((line) => line.category === category);
+  const lines = catalogLinesForCategory(category);
   const itemLabels = (values[itemsPath] ?? "")
     .split(/[·•|,/]/)
     .map((part) => part.trim())
@@ -179,42 +185,52 @@ export function ProductCategoryCmsBody({
       </button>
 
       <div className="mt-12 grid gap-6 sm:grid-cols-2">
-        {lines.length > 0
-          ? lines.map((line, index) => (
+        {lines.length > 0 ? (
+          lines.map((line, index) => {
+            const imagePath = productCatalogImagePath(line.slug);
+            const imageSrc = resolveProductCatalogImageSrc(line.image, values[imagePath]);
+            return (
               <article
                 key={line.slug}
                 className="overflow-hidden rounded-2xl border border-line bg-white shadow-sm"
               >
-                <div className="relative aspect-[4/3] bg-brand-ink/5">
+                <button
+                  type="button"
+                  onClick={() => onPickImage(imagePath)}
+                  aria-label={`${itemLabels[index] ?? line.slug} 이미지 편집`}
+                  className={`relative aspect-[4/3] w-full border-0 bg-brand-ink/5 p-0 ${cmsSlotRing(activeSlot === imagePath)}`}
+                >
                   <Image
-                    src={line.image}
+                    src={imageSrc}
                     alt=""
                     fill
                     className="object-cover"
                     sizes="(min-width: 640px) 45vw, 100vw"
+                    unoptimized={heroImageUnoptimized(imageSrc)}
                   />
-                </div>
+                  <span className="absolute inset-x-0 bottom-0 bg-black/45 px-3 py-2 text-[11px] font-medium text-white">
+                    이미지 클릭하여 변경
+                  </span>
+                </button>
                 <div className="p-5">
                   <p className="text-lg font-semibold text-brand-ink">
                     {itemLabels[index] ?? line.slug}
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed text-brand-ink/70">
-                    공개 페이지 제품 카드 미리보기
-                  </p>
                 </div>
               </article>
-            ))
-          : (
-              <button
-                type="button"
-                onClick={() => onSelectSlot(itemsPath)}
-                className={`col-span-full rounded-2xl border border-dashed border-brand/25 bg-brand/5 px-4 py-8 text-left ${ring(activeSlot === itemsPath)}`}
-              >
-                <p className="text-sm text-brand-ink/60">
-                  {cmsPreviewText(values[itemsPath] ?? "", "대표 품목을 입력하세요")}
-                </p>
-              </button>
-            )}
+            );
+          })
+        ) : (
+          <button
+            type="button"
+            onClick={() => onSelectSlot(itemsPath)}
+            className={`col-span-full rounded-2xl border border-dashed border-brand/25 bg-brand/5 px-4 py-8 text-left ${ring(activeSlot === itemsPath)}`}
+          >
+            <p className="text-sm text-brand-ink/60">
+              {cmsPreviewText(values[itemsPath] ?? "", "대표 품목을 입력하세요")}
+            </p>
+          </button>
+        )}
       </div>
     </section>
   );
