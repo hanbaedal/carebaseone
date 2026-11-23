@@ -37,3 +37,16 @@ export const MEDIA_FOCUS_LABELS: Record<MediaFocusKey, string> = {
   research: "연구·임상",
   archive: "자료실",
 };
+
+/** 관리 화면 분류 표시용 (value는 영문 category 유지) */
+export const MEDIA_CATEGORY_LABELS_KO: Record<
+  (typeof ARCHIVE_PUBLIC_CATEGORIES)[number] | "gallery" | "patent",
+  string
+> = {
+  gallery: "이미지 갤러리",
+  patent: "지식재산권",
+  certification: "인증·규제",
+  research: "연구·임상",
+  product: "제품·성분",
+  other: "기타 자료",
+};

@@ -1,5 +1,6 @@
 import { formatKoreaDate } from "@/lib/korea-time";
 import { galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
+import { MEDIA_CATEGORY_LABELS_KO } from "@/lib/homepage-admin-paths";
 import { removeMedia, toggleMedia } from "@/app/admin/ops-actions";
 import type { MediaDoc } from "@/lib/db";
 
@@ -30,7 +31,9 @@ export function AdminMediaItemsTable({
             <tr key={item.slug} className="border-t border-ink/10">
               <td className="px-2 py-2">{items.length - i}</td>
               <td className="px-2 py-2">{item.slug}</td>
-              <td className="px-2 py-2">{item.category}</td>
+              <td className="px-2 py-2">
+                {MEDIA_CATEGORY_LABELS_KO[item.category as keyof typeof MEDIA_CATEGORY_LABELS_KO] ?? item.category}
+              </td>
               <td className="whitespace-nowrap px-2 py-2">
                 {item.published && item.audience === "public" ? (
                   <span className="text-forest">사이트</span>

@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import {
   ARCHIVE_PUBLIC_CATEGORIES,
+  MEDIA_CATEGORY_LABELS_KO,
   MEDIA_FOCUS_LABELS,
   MEDIA_FOCUS_TO_CATEGORY,
   RESEARCH_PUBLIC_CATEGORIES,
@@ -66,15 +67,20 @@ export default async function AdminMediaPage({
       : "이미지 갤러리는 /admin/gallery 에서 관리합니다. 특허·인증 등 문서는 이 화면에서 등록합니다.";
 
   const returnQuery = focusKey ? `?focus=${encodeURIComponent(focusKey)}` : "";
-  const categoryHint = (c: MediaCategory) => {
-    if (isArchiveFocus && ARCHIVE_PUBLIC_CATEGORIES.includes(c as (typeof ARCHIVE_PUBLIC_CATEGORIES)[number])) {
-      return " — 사이트 자료실";
-    }
-    if (isResearchFocus && RESEARCH_PUBLIC_CATEGORIES.includes(c as (typeof RESEARCH_PUBLIC_CATEGORIES)[number])) {
-      return " — 사이트 연구·임상";
-    }
-    return "";
-  };
+  const categoryOptions: MediaCategory[] = isArchiveFocus
+    ? [...ARCHIVE_PUBLIC_CATEGORIES]
+    : isResearchFocus
+      ? [...RESEARCH_PUBLIC_CATEGORIES]
+      : focusKey === "patents"
+        ? ["patent"]
+        : focusKey === "certifications"
+          ? ["certification"]
+          : categories;
+  const defaultCategory = isArchiveFocus
+    ? "certification"
+    : isResearchFocus
+      ? "research"
+      : (category ?? "patent");
 
   return (
     <HomepageOpsShell
@@ -87,11 +93,10 @@ export default async function AdminMediaPage({
         <form action={saveMedia} className="grid gap-2 text-xs">
           {returnQuery ? <input type="hidden" name="returnQuery" value={returnQuery} /> : null}
           <input name="slug" placeholder="slug (영문·숫자·하이픈)" required className="border border-ink/15 px-2 py-1.5" />
-          <select name="category" defaultValue={category ?? "patent"} className="border border-ink/15 px-2 py-1.5">
-            {categories.map((c) => (
+          <select name="category" defaultValue={defaultCategory} className="border border-ink/15 px-2 py-1.5">
+            {categoryOptions.map((c) => (
               <option key={c} value={c}>
-                {c}
-                {categoryHint(c)}
+                {MEDIA_CATEGORY_LABELS_KO[c as keyof typeof MEDIA_CATEGORY_LABELS_KO] ?? c}
               </option>
             ))}
           </select>
@@ -121,22 +126,22 @@ export default async function AdminMediaPage({
       {isArchiveFocus ? (
         <>
           <OpsSection
-            title={`인증·규제 (certification) — ${certificationItems.length}건, 사이트 노출 ${siteVisibleCount(certificationItems)}건`}
+            title={`${MEDIA_CATEGORY_LABELS_KO.certification} — ${certificationItems.length}건, 사이트 노출 ${siteVisibleCount(certificationItems)}건`}
           >
             <AdminMediaItemsTable items={certificationItems} returnQuery={returnQuery} />
           </OpsSection>
           <OpsSection
-            title={`연구·임상 (research) — ${researchItems.length}건, 사이트 노출 ${siteVisibleCount(researchItems)}건`}
+            title={`${MEDIA_CATEGORY_LABELS_KO.research} — ${researchItems.length}건, 사이트 노출 ${siteVisibleCount(researchItems)}건`}
           >
             <AdminMediaItemsTable items={researchItems} returnQuery={returnQuery} />
           </OpsSection>
           <OpsSection
-            title={`제품·성분 (product) — ${productItems.length}건, 사이트 노출 ${siteVisibleCount(productItems)}건`}
+            title={`${MEDIA_CATEGORY_LABELS_KO.product} — ${productItems.length}건, 사이트 노출 ${siteVisibleCount(productItems)}건`}
           >
             <AdminMediaItemsTable items={productItems} returnQuery={returnQuery} />
           </OpsSection>
           <OpsSection
-            title={`기타 자료 (other) — ${otherItems.length}건, 사이트 노출 ${siteVisibleCount(otherItems)}건`}
+            title={`${MEDIA_CATEGORY_LABELS_KO.other} — ${otherItems.length}건, 사이트 노출 ${siteVisibleCount(otherItems)}건`}
           >
             <AdminMediaItemsTable items={otherItems} returnQuery={returnQuery} />
           </OpsSection>
@@ -144,12 +149,12 @@ export default async function AdminMediaPage({
       ) : isResearchFocus ? (
         <>
           <OpsSection
-            title={`연구·논문 (research) — ${researchItems.length}건, 사이트 노출 ${siteVisibleCount(researchItems)}건`}
+            title={`${MEDIA_CATEGORY_LABELS_KO.research} — ${researchItems.length}건, 사이트 노출 ${siteVisibleCount(researchItems)}건`}
           >
             <AdminMediaItemsTable items={researchItems} returnQuery={returnQuery} />
           </OpsSection>
           <OpsSection
-            title={`제품·성분 (product) — ${productItems.length}건, 사이트 노출 ${siteVisibleCount(productItems)}건`}
+            title={`${MEDIA_CATEGORY_LABELS_KO.product} — ${productItems.length}건, 사이트 노출 ${siteVisibleCount(productItems)}건`}
           >
             <AdminMediaItemsTable items={productItems} returnQuery={returnQuery} />
           </OpsSection>
