@@ -646,7 +646,11 @@
   "patents": {
     "kicker": "IP",
     "title": "Intellectual property",
-    "lede": "Patents and publications for Korea, the U.S., China, Japan, and PCT filings."
+    "lede": "Patents and publications for Korea, the U.S., China, Japan, and PCT filings.",
+    "gridEmpty": "No intellectual property documents are published yet.",
+    "gridView": "Preview",
+    "gridClose": "Close",
+    "gridOpenFile": "Open original file"
   },
   "certifications": {
     "kicker": "CERTIFICATION",

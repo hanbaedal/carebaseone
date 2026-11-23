@@ -646,7 +646,11 @@
   "patents": {
     "kicker": "IP",
     "title": "知识产权",
-    "lede": "韩国、美国、中国、日本及 PCT 专利与公告。"
+    "lede": "韩国、美国、中国、日本及 PCT 专利与公告。",
+    "gridEmpty": "暂无已发布的知识产权资料。",
+    "gridView": "预览",
+    "gridClose": "关闭",
+    "gridOpenFile": "在新窗口打开原文件"
   },
   "certifications": {
     "kicker": "CERTIFICATION",
