@@ -2,9 +2,6 @@
 
 import type { ProductLineCategory } from "@/lib/product-categories";
 import { PRODUCT_CATEGORY_PATHS } from "@/lib/product-categories";
-import { catalogLinesForCategory } from "@/lib/product-catalog-media";
-import { productCatalogImagePath } from "@/lib/product-catalog-media";
-
 export type CmsPageDef = {
   key: string;
   label: string;
@@ -27,32 +24,22 @@ const PRODUCT_LINE_CATEGORY_PAGES: CmsPageDef[] = (
     ["patch", "패치"],
     ["healthPlatform", "건강관리플랫폼"],
   ] as const
-).map(([key, label]) => {
-  const lineFieldLabels = Object.fromEntries(
-    catalogLinesForCategory(key).flatMap((line) => [
-      [productCatalogImagePath(line.slug), `제품 이미지 · ${line.slug}`],
-      [`product.catalog.${line.slug}.title`, `제품 제목 · ${line.slug}`],
-      [`product.catalog.${line.slug}.summary`, `제품 설명 · ${line.slug}`],
-    ]),
-  );
-  return {
-    key,
-    label,
-    preview: `/ko/product/${PRODUCT_CATEGORY_PATHS[key]}`,
-    section: "product",
-    tab: "submenu" as const,
-    productCategory: key,
-    fieldLabels: {
-      "product.kicker": "키커",
-      "product.beoneNote": "비원 안내 문구",
-      [`product.categories.${key}.title`]: "제목",
-      [`product.categories.${key}.text`]: "소개 문구",
-      [`product.categories.${key}.items`]: "대표 품목",
-      [`product.categories.${key}.image`]: "배경 이미지",
-      ...lineFieldLabels,
-    },
-  };
-});
+).map(([key, label]) => ({
+  key,
+  label,
+  preview: `/ko/product/${PRODUCT_CATEGORY_PATHS[key]}`,
+  section: "product",
+  tab: "submenu" as const,
+  productCategory: key,
+  fieldLabels: {
+    "product.kicker": "키커",
+    "product.beoneNote": "비원 안내 문구",
+    [`product.categories.${key}.title`]: "제목",
+    [`product.categories.${key}.text`]: "소개 문구",
+    [`product.categories.${key}.items`]: "대표 품목",
+    [`product.categories.${key}.image`]: "배경 이미지",
+  },
+}));
 
 export const CMS_PAGES: CmsPageDef[] = [
   {

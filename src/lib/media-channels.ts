@@ -1,4 +1,5 @@
 import type { MediaChannels, MediaDoc } from "@/lib/db";
+import { emptyProductLines, resolveProductLines } from "@/lib/media-product-lines";
 
 export type { MediaChannels };
 
@@ -18,27 +19,31 @@ export function defaultChannelsForGallerySeed(publicPath: string): MediaChannels
   return {
     cmsBackground: true,
     publicGallery: publicGalleryDefaultForPath(publicPath),
+    productLines: emptyProductLines(),
   };
 }
 
 export function defaultChannelsForNewUpload(category: MediaDoc["category"], mime: string): MediaChannels {
   if (category === "gallery" && mime.startsWith("image/")) {
-    return { cmsBackground: true, publicGallery: true };
+    return { cmsBackground: true, publicGallery: true, productLines: emptyProductLines() };
   }
   if (mime.startsWith("image/")) {
-    return { cmsBackground: false, publicGallery: false };
+    return { cmsBackground: false, publicGallery: false, productLines: emptyProductLines() };
   }
-  return { publicGallery: false, cmsBackground: false };
+  return { publicGallery: false, cmsBackground: false, productLines: emptyProductLines() };
 }
 
 export function resolveMediaChannels(
   doc: Pick<MediaDoc, "channels" | "category" | "mime">,
 ): MediaChannels {
-  if (doc.channels) return doc.channels;
-  if (doc.category === "gallery" && doc.mime?.startsWith("image/")) {
-    return { cmsBackground: true, publicGallery: true };
+  const productLines = resolveProductLines(doc.channels);
+  if (doc.channels) {
+    return { ...doc.channels, productLines };
   }
-  return { publicGallery: false, cmsBackground: false };
+  if (doc.category === "gallery" && doc.mime?.startsWith("image/")) {
+    return { cmsBackground: true, publicGallery: true, productLines };
+  }
+  return { publicGallery: false, cmsBackground: false, productLines };
 }
 
 /** 공개 /community/gallery — 갤러리 분류 이미지 기본 노출, publicGallery:false 만 숨김 */

@@ -2,6 +2,7 @@
 
 import { MediaAwareImage } from "@/components/MediaAwareImage";
 import catalog from "@/data/product-catalog.json";
+import Link from "next/link";
 import { cmsPreviewText, cmsSlotRing } from "@/components/admin/cms-slot";
 import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
 import { cmsMediaSlugFromValue } from "@/lib/home-hero";
@@ -10,14 +11,8 @@ import {
   resolveHubBlockImageSrc,
 } from "@/lib/hub-media";
 import { cmsTypoInlineStyle } from "@/lib/cms-typography-styles";
-import {
-  PRODUCT_BEONE_NOTE_PATH,
-  catalogLinesForCategory,
-  productCatalogImagePath,
-  productCatalogSummaryPath,
-  productCatalogTitlePath,
-  resolveProductCatalogImageSrc,
-} from "@/lib/product-catalog-media";
+import { PRODUCT_BEONE_NOTE_PATH } from "@/lib/product-catalog-media";
+import { PRODUCT_LINE_LABELS } from "@/lib/media-product-lines";
 import {
   PRODUCT_LINE_CATEGORIES,
   type ProductLineCategory,
@@ -160,12 +155,6 @@ export function ProductCategoryCmsBody({
 }) {
   const textPath = `product.categories.${category}.text`;
   const itemsPath = `product.categories.${category}.items`;
-  const lines = catalogLinesForCategory(category);
-  const itemLabels = (values[itemsPath] ?? "")
-    .split(/[·•|,/]/)
-    .map((part) => part.trim())
-    .filter(Boolean);
-
   const titlePath = `product.categories.${category}.title`;
   const categoryTitle = cmsPreviewText(values[titlePath] ?? "", "카테고리");
 
@@ -225,80 +214,16 @@ export function ProductCategoryCmsBody({
         </p>
       </button>
 
-      <div className="mt-12 grid gap-6 sm:grid-cols-2">
-        {lines.length > 0 ? (
-          lines.map((line, index) => {
-            const imagePath = productCatalogImagePath(line.slug);
-            const titlePath = productCatalogTitlePath(line.slug);
-            const summaryPath = productCatalogSummaryPath(line.slug);
-            const imageSrc = resolveProductCatalogImageSrc(line.image, values[imagePath]);
-            const title = cmsPreviewText(
-              values[titlePath] ?? "",
-              itemLabels[index] ?? line.slug,
-            );
-            return (
-              <article
-                key={line.slug}
-                className="overflow-hidden rounded-2xl border border-line bg-white shadow-sm"
-              >
-                <button
-                  type="button"
-                  onClick={() => onPickImage(imagePath)}
-                  aria-label={`${title} 이미지 편집`}
-                  className={`relative aspect-[4/3] w-full border-0 bg-brand-ink/5 p-0 ${cmsSlotRing(activeSlot === imagePath)}`}
-                >
-                <MediaAwareImage
-                  src={imageSrc}
-                  mediaSlug={cmsMediaSlugFromValue(values[imagePath])}
-                  alt=""
-                  fill
-                  className="object-cover"
-                />
-                  <span className="absolute inset-x-0 bottom-0 bg-black/45 px-3 py-2 text-[11px] font-medium text-white">
-                    이미지 클릭하여 변경
-                  </span>
-                </button>
-                <div className="p-5">
-                  <button
-                    type="button"
-                    onClick={() => onSelectSlot(titlePath)}
-                    className={`block w-full border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === titlePath)}`}
-                  >
-                    <span
-                      className="text-lg font-semibold text-brand-ink"
-                      style={cmsTypoInlineStyle(titlePath, values)}
-                    >
-                      {title}
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => onSelectSlot(summaryPath)}
-                    className={`mt-2 block w-full border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === summaryPath)}`}
-                  >
-                    <span
-                      className="text-sm leading-relaxed text-brand-ink/70"
-                      style={cmsTypoInlineStyle(summaryPath, values)}
-                    >
-                      {cmsPreviewText(values[summaryPath] ?? "", "제품 설명")}
-                    </span>
-                  </button>
-                </div>
-              </article>
-            );
-          })
-        ) : (
-          <button
-            type="button"
-            onClick={() => onSelectSlot(itemsPath)}
-            className={`col-span-full rounded-2xl border border-dashed border-brand/25 bg-brand/5 px-4 py-8 text-left ${ring(activeSlot === itemsPath)}`}
-          >
-            <p className="text-sm text-brand-ink/60">
-              {cmsPreviewText(values[itemsPath] ?? "", "대표 품목을 입력하세요")}
-            </p>
-          </button>
-        )}
-      </div>
+      <hr className="mt-10 border-line/60" />
+      <p className="mt-8 text-sm leading-7 text-brand-ink/70">
+        <strong className="text-brand-ink">{PRODUCT_LINE_LABELS[category]}</strong> 제품 카드는 라인당{" "}
+        <strong>2장</strong>까지입니다. 「게시」와 라인 체크를 모두 켜야 공개 제품 페이지에 나옵니다.
+        {" "}
+        <Link href="/admin/gallery" className="font-medium text-brand underline-offset-2 hover:underline">
+          이미지 갤러리
+        </Link>
+        에서 관리합니다.
+      </p>
     </section>
   );
 }

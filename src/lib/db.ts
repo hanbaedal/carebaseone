@@ -80,9 +80,18 @@ export type MediaAudience = "public" | "member";
 
 export type MediaStorage = "gridfs" | "missing";
 
+export type MediaProductLines = {
+  healthFood: boolean;
+  generalFood: boolean;
+  cosmetics: boolean;
+  patch: boolean;
+  healthPlatform: boolean;
+};
+
 export type MediaChannels = {
   publicGallery: boolean;
   cmsBackground: boolean;
+  productLines?: MediaProductLines;
 };
 
 export type MediaDoc = {

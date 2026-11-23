@@ -2,9 +2,18 @@ import { NextResponse } from "next/server";
 import { listAdminGalleryItems, newGalleryUploadSlug } from "@/lib/admin-gallery";
 import { requireStaffRole } from "@/lib/admin-access";
 import { ensureIndexes, media } from "@/lib/db";
+import { validateProductLineToggle } from "@/lib/gallery-product-line-limit";
 import { isAcceptedImageUpload } from "@/lib/image-upload";
 import { mongoUpdated } from "@/lib/korea-time";
 import { deleteMedia, upsertMedia } from "@/lib/media-crud";
+import { resolveMediaChannels } from "@/lib/media-channels";
+import { PRODUCT_LINE_CATEGORIES } from "@/lib/product-categories";
+import {
+  emptyProductLines,
+  mergeProductLines,
+  resolveProductLines,
+  type MediaProductLines,
+} from "@/lib/media-product-lines";
 import { getSession } from "@/lib/session";
 
 export const maxDuration = 120;
@@ -15,6 +24,25 @@ async function requireStaff() {
     return null;
   }
   return session;
+}
+
+function productLinesFromForm(form: FormData): MediaProductLines {
+  const lines = emptyProductLines();
+  for (const key of PRODUCT_LINE_CATEGORIES) {
+    const raw = form.get(`productLine_${key}`);
+    lines[key] = raw === "true" || raw === "on";
+  }
+  return lines;
+}
+
+function productLinesFromBody(body: Record<string, unknown>): Partial<MediaProductLines> | undefined {
+  const raw = body.productLines;
+  if (!raw || typeof raw !== "object") return undefined;
+  const patch: Partial<MediaProductLines> = {};
+  for (const key of PRODUCT_LINE_CATEGORIES) {
+    if (key in raw) patch[key] = Boolean((raw as MediaProductLines)[key]);
+  }
+  return patch;
 }
 
 export async function GET() {
@@ -50,8 +78,13 @@ export async function POST(request: Request) {
         : form.get("cmsBackground") === "true" || form.get("cmsBackground") === "on" || !form.has("cmsBackground")
           ? true
           : false;
+    const published = form.get("published") !== "false";
+    const productLines = productLinesFromForm(form);
 
     const slug = newGalleryUploadSlug();
+    const limitErr = await validateProductLineToggle(slug, productLines, published);
+    if (limitErr) return NextResponse.json({ error: limitErr }, { status: 400 });
+
     const buffer = Buffer.from(await file.arrayBuffer());
     const err = await upsertMedia({
       slug,
@@ -63,9 +96,9 @@ export async function POST(request: Request) {
       summaryKo: description,
       summaryEn: description,
       summaryZh: description,
-      published: true,
+      published,
       createdBy: session.username,
-      channels: { publicGallery, cmsBackground },
+      channels: { publicGallery, cmsBackground, productLines },
       file: { name: file.name, type: file.type, buffer },
     });
     if (err) return NextResponse.json({ error: err }, { status: 400 });
@@ -91,6 +124,7 @@ export async function PATCH(request: Request) {
     publicGallery?: boolean;
     cmsBackground?: boolean;
     published?: boolean;
+    productLines?: Partial<MediaProductLines>;
   };
   try {
     body = await request.json();
@@ -107,10 +141,20 @@ export async function PATCH(request: Request) {
 
   const title = body.title !== undefined ? String(body.title) : hit.title.ko;
   const description = body.description !== undefined ? String(body.description) : hit.summary.ko;
+  const published = body.published ?? hit.published;
+  const base = resolveMediaChannels(hit);
+  const productLines = mergeProductLines(
+    resolveProductLines(base),
+    productLinesFromBody(body as Record<string, unknown>),
+  );
   const channels = {
-    publicGallery: body.publicGallery ?? hit.channels?.publicGallery ?? false,
-    cmsBackground: body.cmsBackground ?? hit.channels?.cmsBackground ?? false,
+    publicGallery: body.publicGallery ?? base.publicGallery,
+    cmsBackground: body.cmsBackground ?? base.cmsBackground,
+    productLines,
   };
+
+  const limitErr = await validateProductLineToggle(slug, productLines, published);
+  if (limitErr) return NextResponse.json({ error: limitErr }, { status: 400 });
 
   await (await media()).updateOne(
     { slug },
@@ -123,7 +167,7 @@ export async function PATCH(request: Request) {
           zh: hit.summary.zh || description,
         },
         channels,
-        published: body.published ?? hit.published,
+        published,
         ...mongoUpdated(),
       },
     },

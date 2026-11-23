@@ -1,7 +1,9 @@
 import path from "node:path";
 import { ensureIndexes, media, type MediaAudience, type MediaCategory } from "@/lib/db";
 import { mongoCreatedUpdated, mongoUpdated } from "@/lib/korea-time";
-import { defaultChannelsForNewUpload, isImageMime } from "@/lib/media-channels";
+import { isImageMime, resolveMediaChannels } from "@/lib/media-channels";
+import type { MediaChannels } from "@/lib/db";
+import { mergeProductLines, resolveProductLines } from "@/lib/media-product-lines";
 import {
   openMediaDownloadStream,
   removeGridFsBySlug,
@@ -110,7 +112,7 @@ export async function upsertMedia(input: {
   summaryZh: string;
   published: boolean;
   createdBy: string;
-  channels?: { publicGallery: boolean; cmsBackground: boolean };
+  channels?: MediaChannels;
   file?: { name: string; type: string; buffer: Buffer };
 }) {
   await ensureIndexes();
@@ -171,10 +173,18 @@ export async function upsertMedia(input: {
     storage,
     gridFsId,
     createdBy: existing?.createdBy ?? input.createdBy,
-    channels:
-      input.channels ??
-      existing?.channels ??
-      defaultChannelsForNewUpload(input.category, mime),
+    channels: (() => {
+      const base = resolveMediaChannels(existing ?? { category: input.category, mime });
+      if (!input.channels) return base;
+      return {
+        publicGallery: input.channels.publicGallery ?? base.publicGallery,
+        cmsBackground: input.channels.cmsBackground ?? base.cmsBackground,
+        productLines: mergeProductLines(
+          resolveProductLines(base),
+          resolveProductLines(input.channels),
+        ),
+      };
+    })(),
   };
 
   if (!existing) {

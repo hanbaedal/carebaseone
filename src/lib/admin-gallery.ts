@@ -7,6 +7,8 @@ import {
 import { galleryFileMissing, galleryThumbSrc } from "@/lib/gallery-thumb-src";
 import { resolveMediaChannels } from "@/lib/media-channels";
 import { listMediaForAdmin } from "@/lib/media-lib";
+import { resolveProductLines, type MediaProductLines } from "@/lib/media-product-lines";
+import { ensureProductLineGalleryFromCatalog } from "@/lib/product-line-gallery-migrate";
 
 export type AdminGalleryItem = {
   id: string;
@@ -16,6 +18,7 @@ export type AdminGalleryItem = {
   published: boolean;
   publicGallery: boolean;
   cmsBackground: boolean;
+  productLines: MediaProductLines;
   /** 파일 미반영(저장 실패) — 삭제 후 재업로드 권장 */
   fileMissing?: boolean;
 };
@@ -32,6 +35,7 @@ export function toAdminGalleryItem(doc: MediaDoc): AdminGalleryItem {
     published: doc.published,
     publicGallery: ch.publicGallery,
     cmsBackground: ch.cmsBackground,
+    productLines: resolveProductLines(ch),
     fileMissing: galleryFileMissing(doc),
   };
 }
@@ -41,6 +45,7 @@ export async function listAdminGalleryItems(): Promise<AdminGalleryItem[]> {
   await repairGalleryDiskMirrors();
   const { repairGalleryPublicChannels } = await import("@/lib/media-crud");
   await repairGalleryPublicChannels();
+  await ensureProductLineGalleryFromCatalog();
   const docs = await listMediaForAdmin("gallery");
   return docs.filter((d) => isGalleryImageFile(d.fileName, d.mime)).map(toAdminGalleryItem);
 }

@@ -5,6 +5,13 @@ import { DecadePager } from "@/components/admin/DecadePager";
 import { GallerySlideModal } from "@/components/admin/GallerySlideModal";
 import { GalleryThumbImage } from "@/components/admin/GalleryThumbImage";
 import type { AdminGalleryItem } from "@/lib/admin-gallery";
+import { PRODUCT_LINE_CATEGORIES } from "@/lib/product-categories";
+import {
+  PRODUCT_LINE_LABELS,
+  PRODUCT_LINES_PER_CATEGORY,
+  emptyProductLines,
+  type MediaProductLines,
+} from "@/lib/media-product-lines";
 
 const field =
   "h-9 w-full min-w-0 rounded-md border border-ink/15 bg-white px-3 text-sm text-brand-ink outline-none focus-visible:ring-2 focus-visible:ring-brand/30";
@@ -34,6 +41,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
   const [description, setDescription] = useState("");
   const [uploadPublic, setUploadPublic] = useState(true);
   const [uploadCms, setUploadCms] = useState(true);
+  const [uploadProductLines, setUploadProductLines] = useState<MediaProductLines>(() => emptyProductLines());
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -73,6 +81,10 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
     if (uploadPublic) form.set("publicGallery", "true");
     if (uploadCms) form.set("cmsBackground", "true");
     if (!uploadCms) form.set("cmsBackground", "false");
+    form.set("published", "true");
+    for (const key of PRODUCT_LINE_CATEGORIES) {
+      if (uploadProductLines[key]) form.set(`productLine_${key}`, "true");
+    }
     try {
       const res = await fetch("/api/admin/gallery", { method: "POST", body: form, credentials: "same-origin" });
       let json: { ok?: boolean; error?: string; items?: AdminGalleryItem[] } = {};
@@ -91,6 +103,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
       setDescription("");
       setUploadPublic(true);
       setUploadCms(true);
+      setUploadProductLines(emptyProductLines());
       pickFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
       setMessage("올렸습니다. 공개 사이트에는 「공개 갤러리」가 체크된 사진만 나타납니다.");
@@ -115,6 +128,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
           publicGallery: item.publicGallery,
           cmsBackground: item.cmsBackground,
           published: item.published,
+          productLines: item.productLines,
         }),
       });
       const json = (await res.json()) as { ok?: boolean; items?: AdminGalleryItem[]; error?: string };
@@ -147,6 +161,53 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
 
   function patchItem(id: string, patch: Partial<AdminGalleryItem>) {
     setItems((rows) => rows.map((row) => (row.id === id ? { ...row, ...patch } : row)));
+  }
+
+  function productLineUsage(category: (typeof PRODUCT_LINE_CATEGORIES)[number]) {
+    return items.filter((row) => row.published && row.productLines[category]).length;
+  }
+
+  function ProductLineToggles({
+    value,
+    onChange,
+    disabled,
+  }: {
+    value: MediaProductLines;
+    onChange: (next: MediaProductLines) => void;
+    disabled?: boolean;
+  }) {
+    return (
+      <div className="space-y-1.5">
+        <p className="text-[11px] font-medium text-brand-ink/80">제품 페이지 (라인당 {PRODUCT_LINES_PER_CATEGORY}장)</p>
+        <div className="flex flex-wrap gap-1.5">
+          {PRODUCT_LINE_CATEGORIES.map((key) => {
+            const used = productLineUsage(key);
+            const atCap = used >= PRODUCT_LINES_PER_CATEGORY && !value[key];
+            return (
+              <label
+                key={key}
+                className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] ${
+                  value[key] ? "border-brand bg-brand/10 text-brand" : "border-ink/15 bg-white text-brand-ink/80"
+                } ${disabled || atCap ? "opacity-60" : ""}`}
+                title={atCap ? `이미 ${PRODUCT_LINES_PER_CATEGORY}장 게시 중` : undefined}
+              >
+                <input
+                  type="checkbox"
+                  className="size-3.5"
+                  disabled={disabled || atCap}
+                  checked={value[key]}
+                  onChange={(e) => onChange({ ...value, [key]: e.target.checked })}
+                />
+                {PRODUCT_LINE_LABELS[key]}
+                <span className="text-[10px] text-ink/45">
+                  {used}/{PRODUCT_LINES_PER_CATEGORY}
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+    );
   }
 
   const visible = items.filter((item) => matchesFilter(item, filter));
@@ -246,6 +307,11 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
             공개(게시)
           </label>
         </div>
+        <ProductLineToggles
+          value={item.productLines}
+          onChange={(productLines) => patchItem(item.id, { productLines })}
+          disabled={busy}
+        />
         <GalleryItemActions item={item} busy={busy} onSave={onSave} onDelete={onDelete} onDownload={onDownload} />
       </>
     );
@@ -306,6 +372,11 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
             placeholder="설명 (캡션)"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+          />
+          <ProductLineToggles
+            value={uploadProductLines}
+            onChange={setUploadProductLines}
+            disabled={busy}
           />
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
               <label className="flex items-center gap-1.5">

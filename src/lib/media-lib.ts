@@ -4,6 +4,9 @@ import { ensureCmsGallerySeed, galleryPublicPathFromDoc } from "@/lib/cms-galler
 import { cmsGalleryFallbackOptions } from "@/lib/cms-gallery-images";
 import { isGalleryImageFile, repairGalleryImageMime } from "@/lib/media-crud";
 import { isImageMime, resolveMediaChannels, showOnPublicGallery } from "@/lib/media-channels";
+import { PRODUCT_LINES_PER_CATEGORY, showOnProductLine } from "@/lib/media-product-lines";
+import { ensureProductLineGalleryFromCatalog } from "@/lib/product-line-gallery-migrate";
+import type { ProductLineCategory } from "@/lib/product-categories";
 import { ensureMediaReady, ensureMediaSeed } from "@/lib/seed-media";
 import { mediaApiPath } from "@/lib/media-storage";
 
@@ -142,4 +145,26 @@ export async function listPublicGalleryMedia(memberApproved = false): Promise<Me
 
 export function publicGalleryImageSrc(item: MediaDoc) {
   return mediaOptionFromDoc(item).src;
+}
+
+/** 제품 라인 페이지 카드 — 게시 + 라인 체크 + 파일 있음, 라인당 최대 2장 */
+export async function listProductLineGalleryMedia(
+  category: ProductLineCategory,
+): Promise<MediaDoc[]> {
+  await ensureMediaReady();
+  await ensureCmsGallerySeed();
+  await repairGalleryImageMime();
+  const { repairGalleryDiskMirrors } = await import("@/lib/media-crud");
+  await repairGalleryDiskMirrors();
+  await ensureProductLineGalleryFromCatalog();
+  const { galleryFileMissing } = await import("@/lib/gallery-thumb-src");
+  const docs = await listMediaForAdmin("gallery");
+  return docs
+    .filter((d) => {
+      if (!isGalleryImageFile(d.fileName, d.mime)) return false;
+      if (galleryFileMissing(d)) return false;
+      return showOnProductLine(d, category);
+    })
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .slice(0, PRODUCT_LINES_PER_CATEGORY);
 }
