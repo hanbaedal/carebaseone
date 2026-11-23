@@ -1,11 +1,9 @@
 "use client";
 
-import { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { AdminConsoleFrame } from "@/components/admin/AdminConsoleFrame";
 import { AdminTopBar } from "@/components/admin/AdminTopBar";
-import { CmsAdminSectionNav } from "@/components/admin/CmsAdminSectionNav";
 import { SiteHeader } from "@/components/SiteHeader";
 import type { Role } from "@/lib/session";
 import type { AbstractIntlMessages } from "next-intl";
@@ -37,9 +35,6 @@ export function CmsLayoutGate({
       <NextIntlClientProvider locale="ko" messages={messages}>
         <div className="flex min-h-dvh flex-col bg-paper text-brand-ink">
           <SiteHeader memberName={memberName} staffRole={staffRole} />
-          <Suspense fallback={null}>
-            <CmsAdminSectionNav />
-          </Suspense>
           <main className="flex-1">{children}</main>
         </div>
       </NextIntlClientProvider>

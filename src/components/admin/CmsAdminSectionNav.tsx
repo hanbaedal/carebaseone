@@ -1,10 +1,7 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import {
-  cmsAdminNavContext,
-  cmsAdminNavMatchesHref,
-} from "@/lib/cms-admin-nav";
+import { cmsAdminNavContext } from "@/lib/cms-admin-nav";
 
 function chipClass(active: boolean) {
   return `shrink-0 rounded-full border px-3 py-1.5 text-[12px] font-medium transition-colors ${
@@ -21,29 +18,25 @@ export function CmsAdminSectionNav() {
 
   if (!ctx) return null;
 
-  const { allLinks } = ctx;
+  const { parent, siblings, activeKey, onHub } = ctx;
 
   return (
     <nav
-      aria-label="홈페이지관리 전체 메뉴"
+      aria-label="섹션별 편집 메뉴"
       className="sticky top-[var(--guest-header-total)] z-40 border-b border-line bg-white/95 backdrop-blur-md"
     >
-      <div className="mx-auto flex max-w-[96rem] flex-wrap items-center gap-1.5 px-4 py-2.5 sm:gap-2 sm:px-6">
-        {allLinks.map((item) => {
-          if (item.heading) {
-            return (
-              <span
-                key={item.key}
-                className="ml-1 shrink-0 px-1 text-[10px] font-semibold tracking-wide text-ink/40 first:ml-0 sm:text-[11px]"
-              >
-                {item.label}
-              </span>
-            );
-          }
-          const active = cmsAdminNavMatchesHref(item.href, pathname, searchParams);
+      <div className="mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto px-4 py-2 sm:px-6 [&::-webkit-scrollbar]:h-0">
+        <a href={parent.href} className={chipClass(onHub)}>
+          {parent.label}
+        </a>
+        <span className="shrink-0 text-ink/25" aria-hidden>
+          |
+        </span>
+        {siblings.map((child) => {
+          const active = child.key === activeKey && !onHub;
           return (
-            <a key={item.key} href={item.href} className={chipClass(active)}>
-              {item.label}
+            <a key={child.key} href={child.href} className={chipClass(active)}>
+              {child.label}
             </a>
           );
         })}
