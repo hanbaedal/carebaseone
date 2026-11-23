@@ -5,6 +5,7 @@ import { mediaFileExtensionLabel, mediaPreviewMode, mediaPublicHref } from "@/li
 export type { MediaPreviewMode } from "@/lib/media-preview-shared";
 export {
   isMediaImageMime,
+  isMediaOfficeMime,
   isMediaPdfMime,
   mediaFileExtensionLabel,
   mediaPreviewMode,

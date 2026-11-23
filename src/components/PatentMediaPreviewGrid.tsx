@@ -1,8 +1,12 @@
 "use client";
 
 import { MediaAwareImage } from "@/components/MediaAwareImage";
-import type { MediaPreviewMode } from "@/lib/media-preview-shared";
-import { useCallback, useEffect, useState } from "react";
+import {
+  mediaAbsoluteHref,
+  officeOnlineEmbedSrc,
+  type MediaPreviewMode,
+} from "@/lib/media-preview-shared";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export type PatentPreviewItem = {
   slug: string;
@@ -56,6 +60,11 @@ export function PatentMediaPreviewGrid({
   const [pdfPage, setPdfPage] = useState(1);
   const [pdfZoom, setPdfZoom] = useState<PdfZoom>("page-fit");
   const [imageScale, setImageScale] = useState(100);
+
+  const officeEmbedSrc = useMemo(() => {
+    if (!active || active.previewMode !== "office" || typeof window === "undefined") return null;
+    return officeOnlineEmbedSrc(mediaAbsoluteHref(active.href, window.location.origin));
+  }, [active]);
 
   const close = useCallback(() => setActive(null), []);
 
@@ -203,6 +212,14 @@ export function PatentMediaPreviewGrid({
                   title={active.title}
                   src={pdfViewerSrc(active.href, pdfPage, pdfZoom)}
                   className="absolute inset-0 h-full w-full border-0 bg-white"
+                />
+              ) : active.previewMode === "office" && officeEmbedSrc ? (
+                <iframe
+                  key={active.slug}
+                  title={active.title}
+                  src={officeEmbedSrc}
+                  className="absolute inset-0 h-full w-full border-0 bg-white"
+                  allowFullScreen
                 />
               ) : (
                 <div className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
