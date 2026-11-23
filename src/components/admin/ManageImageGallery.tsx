@@ -73,10 +73,16 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
     if (uploadCms) form.set("cmsBackground", "true");
     if (!uploadCms) form.set("cmsBackground", "false");
     try {
-      const res = await fetch("/api/admin/gallery", { method: "POST", body: form });
-      const json = (await res.json()) as { ok?: boolean; error?: string; items?: AdminGalleryItem[] };
+      const res = await fetch("/api/admin/gallery", { method: "POST", body: form, credentials: "same-origin" });
+      let json: { ok?: boolean; error?: string; items?: AdminGalleryItem[] } = {};
+      try {
+        json = (await res.json()) as typeof json;
+      } catch {
+        setMessage(`업로드에 실패했습니다. (HTTP ${res.status})`);
+        return;
+      }
       if (!res.ok || !json.ok) {
-        setMessage(json.error || "업로드에 실패했습니다.");
+        setMessage(json.error || `업로드에 실패했습니다. (HTTP ${res.status})`);
         return;
       }
       if (json.items) setItems(json.items);

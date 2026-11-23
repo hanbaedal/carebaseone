@@ -2,9 +2,12 @@ import { NextResponse } from "next/server";
 import { listAdminGalleryItems, newGalleryUploadSlug } from "@/lib/admin-gallery";
 import { requireStaffRole } from "@/lib/admin-access";
 import { ensureIndexes, media } from "@/lib/db";
+import { isAcceptedImageUpload } from "@/lib/image-upload";
 import { mongoUpdated } from "@/lib/korea-time";
 import { deleteMedia, upsertMedia } from "@/lib/media-crud";
 import { getSession } from "@/lib/session";
+
+export const maxDuration = 120;
 
 async function requireStaff() {
   const session = await getSession();
@@ -25,45 +28,56 @@ export async function POST(request: Request) {
   const session = await requireStaff();
   if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
-  const form = await request.formData();
-  const file = form.get("file");
-  if (!(file instanceof File) || file.size === 0) {
-    return NextResponse.json({ error: "사진 파일을 선택해 주세요." }, { status: 400 });
-  }
-  if (!file.type.startsWith("image/")) {
-    return NextResponse.json({ error: "이미지 파일만 올릴 수 있습니다." }, { status: 400 });
-  }
+  try {
+    const form = await request.formData();
+    const file = form.get("file");
+    if (!(file instanceof File) || file.size === 0) {
+      return NextResponse.json({ error: "사진 파일을 선택해 주세요." }, { status: 400 });
+    }
+    if (!isAcceptedImageUpload(file)) {
+      return NextResponse.json(
+        { error: "JPG·PNG·WebP·GIF 이미지만 올릴 수 있습니다. (파일 확장자를 확인해 주세요.)" },
+        { status: 400 },
+      );
+    }
 
-  const title = String(form.get("title") ?? form.get("alt") ?? "갤러리").trim() || "갤러리";
-  const description = String(form.get("description") ?? form.get("summaryKo") ?? "").trim();
-  const publicGallery = form.get("publicGallery") === "true" || form.get("publicGallery") === "on";
-  const cmsBackground =
-    form.get("cmsBackground") === "false"
-      ? false
-      : form.get("cmsBackground") === "true" || form.get("cmsBackground") === "on" || !form.has("cmsBackground")
-        ? true
-        : false;
+    const title = String(form.get("title") ?? form.get("alt") ?? "갤러리").trim() || "갤러리";
+    const description = String(form.get("description") ?? form.get("summaryKo") ?? "").trim();
+    const publicGallery = form.get("publicGallery") === "true" || form.get("publicGallery") === "on";
+    const cmsBackground =
+      form.get("cmsBackground") === "false"
+        ? false
+        : form.get("cmsBackground") === "true" || form.get("cmsBackground") === "on" || !form.has("cmsBackground")
+          ? true
+          : false;
 
-  const slug = newGalleryUploadSlug();
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const err = await upsertMedia({
-    slug,
-    category: "gallery",
-    audience: "public",
-    titleKo: title,
-    titleEn: title,
-    titleZh: title,
-    summaryKo: description,
-    summaryEn: description,
-    summaryZh: description,
-    published: true,
-    createdBy: session.username,
-    channels: { publicGallery, cmsBackground },
-    file: { name: file.name, type: file.type, buffer },
-  });
-  if (err) return NextResponse.json({ error: err }, { status: 400 });
-  const items = await listAdminGalleryItems();
-  return NextResponse.json({ ok: true, items });
+    const slug = newGalleryUploadSlug();
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const err = await upsertMedia({
+      slug,
+      category: "gallery",
+      audience: "public",
+      titleKo: title,
+      titleEn: title,
+      titleZh: title,
+      summaryKo: description,
+      summaryEn: description,
+      summaryZh: description,
+      published: true,
+      createdBy: session.username,
+      channels: { publicGallery, cmsBackground },
+      file: { name: file.name, type: file.type, buffer },
+    });
+    if (err) return NextResponse.json({ error: err }, { status: 400 });
+    const items = await listAdminGalleryItems();
+    return NextResponse.json({ ok: true, items });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "저장 중 오류";
+    return NextResponse.json(
+      { error: `업로드에 실패했습니다. ${msg} (DB·Mongo 연결을 확인해 주세요.)` },
+      { status: 500 },
+    );
+  }
 }
 
 export async function PATCH(request: Request) {

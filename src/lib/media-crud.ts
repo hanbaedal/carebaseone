@@ -9,6 +9,7 @@ import {
   uploadMediaBuffer,
   writePublicMediaMirror,
   mediaApiPath,
+  safeMediaFileName,
 } from "@/lib/media-storage";
 
 const slugRe = /^[a-z0-9][a-z0-9-]{2,48}$/;
@@ -112,17 +113,22 @@ export async function upsertMedia(input: {
       input.file.type && input.file.type !== "application/octet-stream"
         ? input.file.type
         : mimeFromFileName(input.file.name, "image/jpeg");
+    const safeName = safeMediaFileName(input.file.name);
     const uploaded = await uploadMediaBuffer(slug, input.file.buffer, {
       mime: fileMime,
-      fileName: input.file.name,
+      fileName: safeName,
     });
     gridFsId = uploaded.gridFsId;
     size = uploaded.size;
     storage = "gridfs";
     mime = fileMime;
-    fileName = input.file.name;
+    fileName = safeName;
     if (isImageMime(fileMime)) {
-      writePublicMediaMirror(slug, fileName, input.file.buffer);
+      try {
+        writePublicMediaMirror(slug, safeName, input.file.buffer);
+      } catch {
+        /* 호스트 디스크 비쓰기 가능 시에도 GridFS 저장은 유지 */
+      }
     }
   }
 

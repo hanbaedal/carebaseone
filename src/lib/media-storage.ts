@@ -75,8 +75,14 @@ export function publicMediaUrl(slug: string, fileName: string) {
   return `/media/${slug}${ext}`;
 }
 
+export function safeMediaFileName(fileName: string) {
+  const base = path.basename(fileName).replace(/[^\w.\-()가-힣]/gi, "_");
+  return base || "image.jpg";
+}
+
 export function writePublicMediaMirror(slug: string, fileName: string, data: Buffer) {
-  const ext = path.extname(fileName) || ".jpg";
+  const safeName = safeMediaFileName(fileName);
+  const ext = path.extname(safeName) || ".jpg";
   const dir = path.join(process.cwd(), "public", "media");
   fs.mkdirSync(dir, { recursive: true });
   const target = path.join(dir, `${slug}${ext}`);
