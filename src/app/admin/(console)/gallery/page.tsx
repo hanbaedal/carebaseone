@@ -21,7 +21,7 @@ export default async function AdminGalleryPage({
   return (
     <HomepageOpsShell
       title="이미지 갤러리"
-      description="제품 라인(건강식품 등)은 라인당 2장·「게시」 필수로 /product/*에 노출됩니다. 공개 갤러리·CMS 배경은 각각 커뮤니티·페이지 배경용입니다."
+      description="제품 라인을 체크하고 「게시」하면 /product/*에 한 줄 2개씩 모두 표시됩니다. 공개 갤러리·CMS 배경은 커뮤니티·페이지 배경용입니다."
       status={notice}
       statusError={query.status === "error"}
     >

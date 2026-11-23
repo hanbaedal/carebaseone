@@ -216,8 +216,8 @@ export function ProductCategoryCmsBody({
 
       <hr className="mt-10 border-line/60" />
       <p className="mt-8 text-sm leading-7 text-brand-ink/70">
-        <strong className="text-brand-ink">{PRODUCT_LINE_LABELS[category]}</strong> 제품 카드는 라인당{" "}
-        <strong>2장</strong>까지입니다. 「게시」와 라인 체크를 모두 켜야 공개 제품 페이지에 나옵니다.
+        <strong className="text-brand-ink">{PRODUCT_LINE_LABELS[category]}</strong> 제품 카드는 갤러리에서 체크·게시한
+        사진이 <strong>한 줄에 2개</strong> 배치로 <strong>모두</strong> 노출됩니다.
         {" "}
         <Link href="/admin/gallery" className="font-medium text-brand underline-offset-2 hover:underline">
           이미지 갤러리

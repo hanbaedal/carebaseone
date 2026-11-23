@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { listAdminGalleryItems, newGalleryUploadSlug } from "@/lib/admin-gallery";
 import { requireStaffRole } from "@/lib/admin-access";
 import { ensureIndexes, media } from "@/lib/db";
-import { reclaimProductLineSlotsForSave } from "@/lib/gallery-product-line-limit";
 import { isAcceptedImageUpload } from "@/lib/image-upload";
 import { mongoUpdated } from "@/lib/korea-time";
 import { deleteMedia, upsertMedia } from "@/lib/media-crud";
@@ -99,9 +98,8 @@ export async function POST(request: Request) {
       file: { name: file.name, type: file.type, buffer },
     });
     if (err) return NextResponse.json({ error: err }, { status: 400 });
-    const reclaimed = await reclaimProductLineSlotsForSave(slug, productLines, published);
     const items = await listAdminGalleryItems();
-    return NextResponse.json({ ok: true, items, reclaimed });
+    return NextResponse.json({ ok: true, items });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "저장 중 오류";
     return NextResponse.json(
@@ -151,8 +149,6 @@ export async function PATCH(request: Request) {
     productLines,
   };
 
-  const reclaimed = await reclaimProductLineSlotsForSave(slug, productLines, published);
-
   await (await media()).updateOne(
     { slug },
     {
@@ -171,7 +167,7 @@ export async function PATCH(request: Request) {
   );
 
   const items = await listAdminGalleryItems();
-  return NextResponse.json({ ok: true, items, reclaimed });
+  return NextResponse.json({ ok: true, items });
 }
 
 export async function DELETE(request: Request) {

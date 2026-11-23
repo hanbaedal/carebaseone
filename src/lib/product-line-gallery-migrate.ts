@@ -4,7 +4,6 @@ import { galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import { cmsGalleryImageDefs } from "@/lib/cms-gallery-images";
 import ko from "@/messages/ko.json";
 import {
-  PRODUCT_LINES_PER_CATEGORY,
   emptyProductLines,
   resolveProductLines,
   type MediaProductLines,
@@ -53,20 +52,8 @@ function uniqueCatalogImagesForCategory(category: ProductLineCategory) {
     if (!path || seen.has(path)) continue;
     seen.add(path);
     paths.push({ path, line });
-    if (paths.length >= PRODUCT_LINES_PER_CATEGORY) break;
   }
   return paths;
-}
-
-async function countProductLineSlots(
-  col: Awaited<ReturnType<typeof media>>,
-  category: ProductLineCategory,
-) {
-  return col.countDocuments({
-    category: "gallery",
-    published: true,
-    [`channels.productLines.${category}`]: true,
-  });
 }
 
 async function assignProductLine(
@@ -107,7 +94,7 @@ async function assignProductLine(
   );
 }
 
-/** product-catalog.json → 갤러리 제품 라인(라인당 2장), 최초 1회 */
+/** product-catalog.json → 갤러리 제품 라인, 최초 1회 */
 export async function ensureProductLineGalleryFromCatalog() {
   if (!process.env.MONGODB_URI) return;
   await ensureIndexes();
@@ -116,22 +103,13 @@ export async function ensureProductLineGalleryFromCatalog() {
   if (flagged) return;
 
   for (const category of PRODUCT_LINE_CATEGORIES) {
-    const slots = await countProductLineSlots(col, category);
-    if (slots >= PRODUCT_LINES_PER_CATEGORY) continue;
-    const needed = PRODUCT_LINES_PER_CATEGORY - slots;
     const candidates = uniqueCatalogImagesForCategory(category);
-    let assigned = 0;
     for (const { path, line } of candidates) {
-      if (assigned >= needed) break;
       const doc = await findGalleryByImagePath(col, path);
       if (!doc) continue;
       const already = resolveProductLines(resolveMediaChannels(doc))[category];
-      if (already) {
-        assigned += 1;
-        continue;
-      }
+      if (already) continue;
       await assignProductLine(col, doc.slug, category, line);
-      assigned += 1;
     }
   }
 

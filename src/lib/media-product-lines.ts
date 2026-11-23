@@ -4,7 +4,8 @@ import {
   type ProductLineCategory,
 } from "@/lib/product-categories";
 
-export const PRODUCT_LINES_PER_CATEGORY = 2;
+/** 제품 카드 그리드 — 한 줄에 2개 (`ProductCatalogCards` sm:grid-cols-2) */
+export const PRODUCT_LINE_GRID_COLUMNS = 2;
 
 export const PRODUCT_LINE_LABELS: Record<ProductLineCategory, string> = {
   healthFood: "건강식품",

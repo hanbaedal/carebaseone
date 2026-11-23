@@ -7,8 +7,8 @@ import { GalleryThumbImage } from "@/components/admin/GalleryThumbImage";
 import type { AdminGalleryItem } from "@/lib/admin-gallery";
 import { PRODUCT_LINE_CATEGORIES } from "@/lib/product-categories";
 import {
+  PRODUCT_LINE_GRID_COLUMNS,
   PRODUCT_LINE_LABELS,
-  PRODUCT_LINES_PER_CATEGORY,
   emptyProductLines,
   type MediaProductLines,
 } from "@/lib/media-product-lines";
@@ -131,23 +131,13 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
           productLines: item.productLines,
         }),
       });
-      const json = (await res.json()) as {
-        ok?: boolean;
-        items?: AdminGalleryItem[];
-        error?: string;
-        reclaimed?: { titles?: string[] };
-      };
+      const json = (await res.json()) as { ok?: boolean; items?: AdminGalleryItem[]; error?: string };
       if (!res.ok || !json.ok) {
         setMessage(json.error || "저장에 실패했습니다.");
         return;
       }
       if (json.items) setItems(json.items);
-      const freed = json.reclaimed?.titles?.filter(Boolean) ?? [];
-      setMessage(
-        freed.length > 0
-          ? `저장했습니다. 슬롯 교체: ${freed.join(" · ")}`
-          : "저장했습니다.",
-      );
+      setMessage("저장했습니다.");
     } catch {
       setMessage("저장 중 오류가 났습니다.");
     } finally {
@@ -173,63 +163,35 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
     setItems((rows) => rows.map((row) => (row.id === id ? { ...row, ...patch } : row)));
   }
 
-  function productLineOccupants(
-    category: (typeof PRODUCT_LINE_CATEGORIES)[number],
-    excludeId?: string,
-  ) {
-    return items
-      .filter(
-        (row) =>
-          row.id !== excludeId &&
-          row.published &&
-          row.productLines[category] &&
-          !row.fileMissing,
-      )
-      .map((row) => row.title.trim() || row.id);
-  }
-
-  function productLineUsage(
-    category: (typeof PRODUCT_LINE_CATEGORIES)[number],
-    excludeId?: string,
-  ) {
-    return productLineOccupants(category, excludeId).length;
+  function productLineUsage(category: (typeof PRODUCT_LINE_CATEGORIES)[number]) {
+    return items.filter(
+      (row) => row.published && row.productLines[category] && !row.fileMissing,
+    ).length;
   }
 
   function ProductLineToggles({
     value,
     onChange,
     disabled,
-    editingId,
   }: {
     value: MediaProductLines;
     onChange: (next: MediaProductLines) => void;
     disabled?: boolean;
-    /** 편집 중인 카드는 슬롯 카운트에서 제외 */
-    editingId?: string;
   }) {
     return (
       <div className="space-y-1.5">
-        <p className="text-[11px] font-medium text-brand-ink/80">제품 페이지 (라인당 {PRODUCT_LINES_PER_CATEGORY}장)</p>
+        <p className="text-[11px] font-medium text-brand-ink/80">
+          제품 페이지 ({`한 줄 ${PRODUCT_LINE_GRID_COLUMNS}개`} 표시 · 체크된 사진 전부)
+        </p>
         <div className="flex flex-wrap gap-1.5">
           {PRODUCT_LINE_CATEGORIES.map((key) => {
-            const used = productLineUsage(key, editingId);
-            const occupants = productLineOccupants(key, editingId);
-            const atCap = used >= PRODUCT_LINES_PER_CATEGORY && !value[key];
-            const capHint =
-              used >= PRODUCT_LINES_PER_CATEGORY
-                ? `현재: ${occupants.join(" · ") || "—"}. 2/2여도 체크 후 「저장」하면 가장 오래된 사진이 이 라인에서 자동 해제됩니다.`
-                : undefined;
+            const used = productLineUsage(key);
             return (
               <label
                 key={key}
                 className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] ${
-                  value[key]
-                    ? "border-brand bg-brand/10 text-brand"
-                    : atCap
-                      ? "border-amber-300/80 bg-amber-50/90 text-brand-ink/90"
-                      : "border-ink/15 bg-white text-brand-ink/80"
+                  value[key] ? "border-brand bg-brand/10 text-brand" : "border-ink/15 bg-white text-brand-ink/80"
                 } ${disabled ? "opacity-60" : ""}`}
-                title={capHint}
               >
                 <input
                   type="checkbox"
@@ -239,15 +201,13 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
                   onChange={(e) => onChange({ ...value, [key]: e.target.checked })}
                 />
                 {PRODUCT_LINE_LABELS[key]}
-                <span className="text-[10px] text-ink/45">
-                  {used}/{PRODUCT_LINES_PER_CATEGORY}
-                </span>
+                <span className="text-[10px] text-ink/45">{used}장</span>
               </label>
             );
           })}
         </div>
         <p className="text-[10px] leading-relaxed text-ink/50">
-          라인당 2장까지 노출됩니다. 슬롯이 찼어도 체크한 뒤 「저장」하면 기존 사진 중 오래된 항목이 자동으로 해제됩니다.
+          「게시」와 라인 체크가 모두 켜진 사진이 해당 제품 페이지에 모두 나옵니다.
         </p>
       </div>
     );
@@ -351,7 +311,6 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
           </label>
         </div>
         <ProductLineToggles
-          editingId={item.id}
           value={item.productLines}
           onChange={(productLines) => patchItem(item.id, { productLines })}
           disabled={busy}

@@ -4,7 +4,7 @@ import { ensureCmsGallerySeed, galleryPublicPathFromDoc } from "@/lib/cms-galler
 import { cmsGalleryFallbackOptions } from "@/lib/cms-gallery-images";
 import { isGalleryImageFile, repairGalleryImageMime } from "@/lib/media-crud";
 import { isImageMime, resolveMediaChannels, showOnPublicGallery } from "@/lib/media-channels";
-import { PRODUCT_LINES_PER_CATEGORY, showOnProductLine } from "@/lib/media-product-lines";
+import { showOnProductLine } from "@/lib/media-product-lines";
 import { ensureProductLineGalleryFromCatalog } from "@/lib/product-line-gallery-migrate";
 import type { ProductLineCategory } from "@/lib/product-categories";
 import { ensureMediaReady, ensureMediaSeed } from "@/lib/seed-media";
@@ -147,7 +147,7 @@ export function publicGalleryImageSrc(item: MediaDoc) {
   return mediaOptionFromDoc(item).src;
 }
 
-/** 제품 라인 페이지 카드 — 게시 + 라인 체크 + 파일 있음, 라인당 최대 2장 */
+/** 제품 라인 페이지 카드 — 게시 + 라인 체크 + 파일 있음 (체크된 전부) */
 export async function listProductLineGalleryMedia(
   category: ProductLineCategory,
 ): Promise<MediaDoc[]> {
@@ -157,8 +157,8 @@ export async function listProductLineGalleryMedia(
   const { repairGalleryDiskMirrors } = await import("@/lib/media-crud");
   await repairGalleryDiskMirrors();
   await ensureProductLineGalleryFromCatalog();
-  const { repairProductLineSlots } = await import("@/lib/gallery-product-line-limit");
-  await repairProductLineSlots();
+  const { repairProductLineFileMissing } = await import("@/lib/gallery-product-line-limit");
+  await repairProductLineFileMissing();
   const { galleryFileMissing } = await import("@/lib/gallery-thumb-src");
   const docs = await listMediaForAdmin("gallery");
   return docs
@@ -167,6 +167,5 @@ export async function listProductLineGalleryMedia(
       if (galleryFileMissing(d)) return false;
       return showOnProductLine(d, category);
     })
-    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-    .slice(0, PRODUCT_LINES_PER_CATEGORY);
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 }
