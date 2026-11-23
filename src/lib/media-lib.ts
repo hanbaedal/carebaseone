@@ -4,7 +4,7 @@ import { ensureCmsGallerySeed, galleryPublicPathFromDoc } from "@/lib/cms-galler
 import { cmsGalleryFallbackOptions } from "@/lib/cms-gallery-images";
 import { isGalleryImageFile, repairGalleryImageMime } from "@/lib/media-crud";
 import { isImageMime, resolveMediaChannels, showOnPublicGallery } from "@/lib/media-channels";
-import { showOnProductLine } from "@/lib/media-product-lines";
+import { productLinesQuery } from "@/lib/media-product-lines";
 import { ensureProductLineGalleryFromCatalog } from "@/lib/product-line-gallery-migrate";
 import type { ProductLineCategory } from "@/lib/product-categories";
 import { ensureMediaReady, ensureMediaSeed } from "@/lib/seed-media";
@@ -157,15 +157,18 @@ export async function listProductLineGalleryMedia(
   const { repairGalleryDiskMirrors } = await import("@/lib/media-crud");
   await repairGalleryDiskMirrors();
   await ensureProductLineGalleryFromCatalog();
-  const { repairProductLineFileMissing } = await import("@/lib/gallery-product-line-limit");
-  await repairProductLineFileMissing();
-  const { galleryFileMissing } = await import("@/lib/gallery-thumb-src");
-  const docs = await listMediaForAdmin("gallery");
-  return docs
-    .filter((d) => {
-      if (!isGalleryImageFile(d.fileName, d.mime)) return false;
-      if (galleryFileMissing(d)) return false;
-      return showOnProductLine(d, category);
-    })
-    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  const { backfillProductLineCategoryFromCatalog } = await import(
+    "@/lib/product-line-gallery-migrate"
+  );
+  await backfillProductLineCategoryFromCatalog(category);
+  const { repairProductLineChannelsShape } = await import("@/lib/gallery-product-line-limit");
+  await repairProductLineChannelsShape();
+
+  await ensureIndexes();
+  const docs = (await (await media())
+    .find(productLinesQuery(category))
+    .sort({ createdAt: -1 })
+    .toArray()) as MediaDoc[];
+
+  return docs.filter((d) => isGalleryImageFile(d.fileName, d.mime));
 }

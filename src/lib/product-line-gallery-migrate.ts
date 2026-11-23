@@ -95,6 +95,27 @@ async function assignProductLine(
 }
 
 /** product-catalog.json → 갤러리 제품 라인, 최초 1회 */
+/** 해당 라인에 게시·체크된 사진이 없으면 카탈로그 기준으로 다시 연결 */
+export async function backfillProductLineCategoryFromCatalog(category: ProductLineCategory) {
+  if (!process.env.MONGODB_URI) return;
+  await ensureIndexes();
+  const col = await media();
+  const count = await col.countDocuments({
+    category: "gallery",
+    published: true,
+    [`channels.productLines.${category}`]: true,
+  });
+  if (count > 0) return;
+  const candidates = uniqueCatalogImagesForCategory(category);
+  for (const { path, line } of candidates) {
+    const doc = await findGalleryByImagePath(col, path);
+    if (!doc) continue;
+    const already = resolveProductLines(resolveMediaChannels(doc))[category];
+    if (already) continue;
+    await assignProductLine(col, doc.slug, category, line);
+  }
+}
+
 export async function ensureProductLineGalleryFromCatalog() {
   if (!process.env.MONGODB_URI) return;
   await ensureIndexes();

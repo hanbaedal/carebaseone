@@ -18,7 +18,6 @@ export async function ProductLineGrid({
   heading: string;
 }) {
   const docs = await listProductLineGalleryMedia(category);
-  if (docs.length === 0) return null;
 
   const locale = await getLocale();
   const loc = locale === "en" || locale === "zh" ? locale : "ko";
@@ -41,6 +40,11 @@ export async function ProductLineGrid({
     <section id={PRODUCT_CATEGORY_PATHS[category]} className="scroll-mt-28">
       {heading ? (
         <h2 className="font-display text-2xl text-brand-ink">{heading}</h2>
+      ) : null}
+      {items.length === 0 ? (
+        <p className="mt-6 text-sm text-brand-ink/55">
+          이미지 갤러리에서 이 제품 라인을 체크하고 「게시」한 뒤 저장하면 여기에 표시됩니다.
+        </p>
       ) : null}
       <ProductCatalogCards
         items={items}

@@ -46,8 +46,8 @@ export async function listAdminGalleryItems(): Promise<AdminGalleryItem[]> {
   const { repairGalleryPublicChannels } = await import("@/lib/media-crud");
   await repairGalleryPublicChannels();
   await ensureProductLineGalleryFromCatalog();
-  const { repairProductLineFileMissing } = await import("@/lib/gallery-product-line-limit");
-  await repairProductLineFileMissing();
+  const { repairProductLineChannelsShape } = await import("@/lib/gallery-product-line-limit");
+  await repairProductLineChannelsShape();
   const docs = await listMediaForAdmin("gallery");
   return docs.filter((d) => isGalleryImageFile(d.fileName, d.mime)).map(toAdminGalleryItem);
 }

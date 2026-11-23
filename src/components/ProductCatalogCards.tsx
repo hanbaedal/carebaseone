@@ -77,7 +77,7 @@ export function ProductCatalogCards({
             >
               <MediaAwareImage
                 src={item.image}
-                mediaSlug={cmsMediaSlugFromValue(item.image)}
+                mediaSlug={cmsMediaSlugFromValue(item.slug) ?? cmsMediaSlugFromValue(item.image)}
                 alt=""
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
@@ -138,7 +138,10 @@ export function ProductCatalogCards({
             <div className="relative aspect-[4/3] w-full shrink-0 bg-brand-ink/5 sm:aspect-[16/10]">
               <MediaAwareImage
                 src={shots[slide] ?? active.image}
-                mediaSlug={cmsMediaSlugFromValue(shots[slide] ?? active.image)}
+                mediaSlug={
+                  cmsMediaSlugFromValue(active.slug) ??
+                  cmsMediaSlugFromValue(shots[slide] ?? active.image)
+                }
                 alt=""
                 fill
                 priority

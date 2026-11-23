@@ -164,9 +164,7 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
   }
 
   function productLineUsage(category: (typeof PRODUCT_LINE_CATEGORIES)[number]) {
-    return items.filter(
-      (row) => row.published && row.productLines[category] && !row.fileMissing,
-    ).length;
+    return items.filter((row) => row.published && row.productLines[category]).length;
   }
 
   function ProductLineToggles({

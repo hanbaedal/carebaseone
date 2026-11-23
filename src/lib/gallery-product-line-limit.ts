@@ -4,7 +4,7 @@ import {
   PRODUCT_LINE_CATEGORIES,
   type ProductLineCategory,
 } from "@/lib/product-categories";
-import { emptyProductLines, resolveProductLines } from "@/lib/media-product-lines";
+import { resolveProductLines } from "@/lib/media-product-lines";
 
 function countsForProductLine(docs: MediaDoc[], category: ProductLineCategory) {
   return docs.filter((d) => {
@@ -34,34 +34,20 @@ export async function countProductLinePublished(
   return eligible.filter((d) => d.slug !== excludeSlug).length;
 }
 
-/** 파일 없는 항목은 제품 라인 체크 해제 */
-export async function repairProductLineFileMissing() {
+/** 갤러리 채널에 productLines 객체가 없으면 기본값 보정 (체크 해제하지 않음) */
+export async function repairProductLineChannelsShape() {
   if (!process.env.MONGODB_URI) return;
   await ensureIndexes();
   const col = await media();
   const { resolveMediaChannels } = await import("@/lib/media-channels");
 
-  const imageDocs = (await col
-    .find({
-      category: "gallery",
-      published: true,
-      $or: PRODUCT_LINE_CATEGORIES.map((key) => ({
-        [`channels.productLines.${key}`]: true,
-      })),
-    })
-    .toArray()) as MediaDoc[];
-
+  const imageDocs = (await col.find({ category: "gallery" }).toArray()) as MediaDoc[];
   for (const doc of imageDocs) {
-    if (!galleryFileMissing(doc)) continue;
     const ch = resolveMediaChannels(doc);
-    let cleared = false;
-    for (const key of PRODUCT_LINE_CATEGORIES) {
-      if (resolveProductLines(ch)[key]) cleared = true;
-    }
-    if (!cleared) continue;
+    if (doc.channels?.productLines) continue;
     await col.updateOne(
       { slug: doc.slug },
-      { $set: { channels: { ...ch, productLines: emptyProductLines() } } },
+      { $set: { channels: { ...ch, productLines: resolveProductLines(ch) } } },
     );
   }
 }
