@@ -3,6 +3,7 @@ import manifest from "@/data/media-manifest.json";
 import mediaI18n from "@/data/media-i18n.json";
 import { ensureIndexes, media, type MediaCategory } from "@/lib/db";
 import { mongoCreatedUpdated, mongoUpdated } from "@/lib/korea-time";
+import { ensureCmsGallerySeed } from "@/lib/cms-gallery-seed";
 import { ingestAllMediaBinaries } from "@/lib/media-ingest";
 import { mediaApiPath } from "@/lib/media-storage";
 
@@ -44,11 +45,16 @@ export async function ensureMediaReady() {
 
 /** 관리·최초 적재: manifest 메타 동기화 (/admin/media 등에서만 호출) */
 export async function ensureMediaSeed() {
-  if (seedCompleted) return;
+  if (seedCompleted) {
+    await ensureCmsGallerySeed();
+    return;
+  }
   if (seedRunning) return seedRunning;
-  seedRunning = runMediaSeed().then(() => {
-    seedCompleted = true;
-  });
+  seedRunning = runMediaSeed()
+    .then(async () => {
+      seedCompleted = true;
+      await ensureCmsGallerySeed();
+    });
   return seedRunning;
 }
 

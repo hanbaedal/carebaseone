@@ -73,6 +73,7 @@ export type MediaCategory =
   | "certification"
   | "research"
   | "product"
+  | "gallery"
   | "other";
 
 export type MediaAudience = "public" | "member";

@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
+import fs from "node:fs";
+import path from "node:path";
 import { ensureIndexes, media } from "@/lib/db";
+import { galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import { getApprovedMember } from "@/lib/member-session";
 import { openMediaDownloadStream, resolveMediaDiskPath } from "@/lib/media-storage";
 import { getSession } from "@/lib/session";
@@ -59,6 +62,15 @@ export async function GET(
   const disk = resolveMediaDiskPath(slug, doc.fileName);
   if (disk) {
     return streamToWeb(createReadStream(disk), doc.mime, doc.fileName);
+  }
+
+  // CMS 갤러리 시드 — public/images 정적 파일
+  const publicHint = galleryPublicPathFromDoc(doc.tags, doc.fileName);
+  if (publicHint.startsWith("/images/")) {
+    const publicDisk = path.join(process.cwd(), "public", publicHint.replace(/^\//, ""));
+    if (fs.existsSync(publicDisk)) {
+      return streamToWeb(createReadStream(publicDisk), doc.mime, doc.fileName);
+    }
   }
 
   return NextResponse.json({ error: "file not ingested" }, { status: 404 });

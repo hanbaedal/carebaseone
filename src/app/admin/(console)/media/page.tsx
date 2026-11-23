@@ -11,7 +11,14 @@ import type { MediaCategory } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-const categories: MediaCategory[] = ["patent", "certification", "research", "product", "other"];
+const categories: MediaCategory[] = [
+  "gallery",
+  "patent",
+  "certification",
+  "research",
+  "product",
+  "other",
+];
 
 export default async function AdminMediaPage({
   searchParams,
@@ -33,7 +40,7 @@ export default async function AdminMediaPage({
   return (
     <HomepageOpsShell
       title={title}
-      description="등록 · 목록 · 공개/비공개 · 삭제. 파일은 GridFS 또는 /admin/media 전체에서 관리할 수 있습니다."
+      description="홈페이지 배경 이미지는 분류 gallery 로 등록합니다. 사이트에서 쓰던 기본 이미지는 갤러리에 자동 등록되며, CMS 배경 선택에서 고를 수 있습니다."
       status={statusMsg}
       statusError={query.status === "error"}
     >

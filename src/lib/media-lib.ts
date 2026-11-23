@@ -1,5 +1,8 @@
 import { ensureIndexes, media, type MediaCategory, type MediaDoc } from "@/lib/db";
+import { ensureCmsGallerySeed, galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
+import { cmsGalleryFallbackOptions } from "@/lib/cms-gallery-images";
 import { ensureMediaReady, ensureMediaSeed } from "@/lib/seed-media";
+import { mediaApiPath } from "@/lib/media-storage";
 
 export async function listPublishedMedia(
   category?: MediaCategory,
@@ -37,23 +40,41 @@ export async function listMediaForAdmin(category?: MediaCategory): Promise<Media
   return (await media()).find(filter).sort({ createdAt: -1 }).toArray();
 }
 
-/** CMS 배경 선택 — 시드 없이 이미지만 (가벼운 조회) */
+/** CMS 배경 선택 — 갤러리(및 업로드 이미지). 갤러리 시드 포함 */
 export async function listCmsImageMediaOptions() {
-  await ensureMediaReady();
-  const docs = await (await media())
-    .find({
-      published: true,
-      mime: { $regex: /^image\//i },
-    })
-    .project({ slug: 1, filePath: 1, title: 1 })
-    .sort({ createdAt: -1 })
-    .limit(120)
-    .toArray();
-  return docs.map((m) => ({
-    slug: m.slug,
-    src: m.filePath,
-    title: m.title?.ko || m.slug,
-  }));
+  try {
+    await ensureMediaReady();
+    await ensureCmsGallerySeed();
+    const docs = await (await media())
+      .find({
+        published: true,
+        mime: { $regex: /^image\//i },
+      })
+      .project({ slug: 1, filePath: 1, title: 1, fileName: 1, tags: 1, category: 1 })
+      .sort({ category: 1, createdAt: -1 })
+      .limit(200)
+      .toArray();
+
+    const fromDb = docs.map((m) => {
+      const publicHint = galleryPublicPathFromDoc(m.tags, m.fileName);
+      const src =
+        m.filePath?.startsWith("/images/")
+          ? m.filePath
+          : publicHint.startsWith("/images/")
+            ? publicHint
+            : m.filePath || mediaApiPath(m.slug);
+      return {
+        slug: m.slug,
+        src,
+        title: m.title?.ko || m.slug,
+      };
+    });
+
+    if (fromDb.length > 0) return fromDb;
+  } catch {
+    /* Mongo 없으면 로컬 갤러리 폴백 */
+  }
+  return cmsGalleryFallbackOptions();
 }
 
 export async function findMediaBySlug(slug: string) {

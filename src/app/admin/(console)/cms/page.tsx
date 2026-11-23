@@ -1,6 +1,7 @@
 import { CmsVisualEditor } from "@/components/admin/CmsVisualEditor";
 import { getKoCmsEditorFields } from "@/lib/content";
 import { cmsPageByKey } from "@/lib/cms-pages";
+import { listCmsImageMediaOptions } from "@/lib/media-lib";
 export const dynamic = "force-dynamic";
 
 const notices: Record<string, string> = {
@@ -16,7 +17,10 @@ export default async function AdminCmsPage({
 }) {
   const query = await searchParams;
   const page = cmsPageByKey(query.page);
-  const fields = await getKoCmsEditorFields(page.section);
+  const [fields, mediaOptions] = await Promise.all([
+    getKoCmsEditorFields(page.section),
+    listCmsImageMediaOptions(),
+  ]);
   const notice = query.status ? notices[query.status] : "";
   return (
     <CmsVisualEditor
@@ -25,6 +29,7 @@ export default async function AdminCmsPage({
       previewFocus={query.focus}
       notice={query.message || notice}
       noticeError={query.status === "error"}
+      mediaOptions={mediaOptions}
     />
   );
 }

@@ -211,7 +211,11 @@ export function CmsVisualEditor({
       .then((res) => (res.ok ? res.json() : []))
       .then((items: CmsMediaOption[]) => {
         if (Array.isArray(items) && items.length > 0) {
-          setMediaOptions((prev) => [...prev, ...items]);
+          setMediaOptions((prev) => {
+            const map = new Map(prev.map((item) => [item.slug, item]));
+            for (const item of items) map.set(item.slug, item);
+            return Array.from(map.values());
+          });
         }
       })
       .catch(() => {
@@ -573,7 +577,7 @@ export function CmsVisualEditor({
                 onClick={() => setMediaOpen(true)}
                 className="w-full rounded-md border border-ink/15 bg-ink/5 px-2 py-2 text-[12px] text-brand hover:bg-brand/5"
               >
-                갤러리에서 이미지 선택
+                갤러리에서 배경 이미지 선택
               </button>
               <p className="mt-1 truncate text-[10px] text-ink/45">
                 {draft[mediaSlotPath]

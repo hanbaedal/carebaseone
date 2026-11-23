@@ -1,19 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { images } from "@/lib/site";
 
 export type CmsMediaOption = {
   slug: string;
   src: string;
   title: string;
 };
-
-const SITE_IMAGE_OPTIONS: CmsMediaOption[] = Object.entries(images).map(([key, src]) => ({
-  slug: src,
-  src,
-  title: `사이트 · ${key}`,
-}));
 
 export function MediaPickerModal({
   open,
@@ -30,8 +23,6 @@ export function MediaPickerModal({
 }) {
   if (!open) return null;
 
-  const all = [...SITE_IMAGE_OPTIONS, ...options];
-
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-4"
@@ -47,52 +38,69 @@ export function MediaPickerModal({
         <div className="flex items-center justify-between border-b border-ink/10 px-4 py-3">
           <div>
             <h2 id="media-picker-title" className="text-sm font-semibold text-brand-ink">
-              배경 이미지 선택
+              갤러리에서 배경 이미지 선택
             </h2>
             <p className="text-[10px] text-ink/50">
-              사이트 기본 이미지 · 자료실에 업로드한 이미지 (갤러리 업로드는 /admin/media)
+              홈페이지 사용 이미지 · /admin/media 갤러리 업로드 이미지
             </p>
           </div>
           <button type="button" onClick={onClose} className="text-[11px] text-ink/50 hover:text-ink">
             닫기
           </button>
         </div>
-        <ul className="grid max-h-[60vh] grid-cols-2 gap-2 overflow-y-auto p-3 sm:grid-cols-3 md:grid-cols-4">
-          {all.map((item) => {
-            const selected =
-              currentSlug === item.slug ||
-              currentSlug === item.src ||
-              (!currentSlug && item.src === images.hero);
-            return (
-              <li key={`${item.slug}-${item.src}`}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onSelect(item.slug.startsWith("/") ? item.slug : item.slug || "");
-                    onClose();
-                  }}
-                  className={`w-full overflow-hidden rounded-lg border text-left ${
-                    selected ? "border-brand ring-2 ring-brand/30" : "border-ink/10 hover:border-brand/40"
-                  }`}
-                >
-                  <div className="relative aspect-[4/3] bg-ink/5">
-                    <Image src={item.src} alt="" fill className="object-cover" sizes="160px" unoptimized />
-                  </div>
-                  <p className="truncate px-2 py-1.5 text-[10px] text-brand-ink">{item.title}</p>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-        {options.length === 0 ? (
-          <p className="border-t border-ink/10 px-4 py-3 text-[11px] text-ink/50">
-            업로드 이미지가 없으면 위 사이트 기본 이미지를 쓰거나,{" "}
+        {options.length > 0 ? (
+          <ul className="grid max-h-[60vh] grid-cols-2 gap-2 overflow-y-auto p-3 sm:grid-cols-3 md:grid-cols-4">
+            {options.map((item) => {
+              const selected =
+                currentSlug === item.slug ||
+                currentSlug === item.src ||
+                (!currentSlug && item.slug === "gallery-site-hero");
+              return (
+                <li key={`${item.slug}-${item.src}`}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onSelect(item.slug);
+                      onClose();
+                    }}
+                    className={`w-full overflow-hidden rounded-lg border text-left ${
+                      selected
+                        ? "border-brand ring-2 ring-brand/30"
+                        : "border-ink/10 hover:border-brand/40"
+                    }`}
+                  >
+                    <div className="relative aspect-[4/3] bg-ink/5">
+                      <Image
+                        src={item.src}
+                        alt=""
+                        fill
+                        className="object-cover"
+                        sizes="160px"
+                        unoptimized
+                      />
+                    </div>
+                    <p className="truncate px-2 py-1.5 text-[10px] text-brand-ink">{item.title}</p>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="px-4 py-8 text-center text-[12px] text-ink/50">
+            등록된 갤러리 이미지가 없습니다.{" "}
             <a href="/admin/media" className="text-brand hover:underline">
               /admin/media
             </a>
-            에 등록해 주세요.
+            에서 이미지를 업로드해 주세요.
           </p>
-        ) : null}
+        )}
+        <div className="border-t border-ink/10 px-4 py-3 text-[11px] text-ink/50">
+          새 이미지는{" "}
+          <a href="/admin/media" className="text-brand hover:underline">
+            자료·갤러리 (/admin/media)
+          </a>
+          에서 분류를 <strong>gallery</strong>로 등록하면 여기에도 나타납니다.
+        </div>
       </div>
     </div>
   );
