@@ -32,10 +32,12 @@ export async function CmsSectionHero({
   section,
   imageFallback = images.hero,
   showLede = true,
+  ledeAlign = "left",
 }: {
   section: CmsHeroSection;
   imageFallback?: string;
   showLede?: boolean;
+  ledeAlign?: "left" | "center";
 }) {
   const t = await getTranslations(section);
 
@@ -83,7 +85,14 @@ export async function CmsSectionHero({
           {title}
         </h1>
         {showLede && lede.trim() ? (
-          <p className="mt-6 max-w-2xl whitespace-pre-line leading-8" style={styleFor("lede")}>
+          <p
+            className={`mt-6 whitespace-pre-line leading-8 ${
+              ledeAlign === "center"
+                ? "mx-auto max-w-4xl text-center"
+                : "max-w-2xl text-left"
+            }`}
+            style={styleFor("lede")}
+          >
             {lede}
           </p>
         ) : null}

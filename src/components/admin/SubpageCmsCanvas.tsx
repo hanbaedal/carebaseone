@@ -131,7 +131,11 @@ export function SubpageCmsCanvas({
               <button
                 type="button"
                 onClick={() => onSelectSlot(hero.lede!)}
-                className={`relative mt-5 block max-w-2xl border-0 bg-transparent p-0 text-left ${ring(activeSlot === hero.lede)}`}
+                className={`relative mt-5 block border-0 bg-transparent p-0 ${
+                  publicHero
+                    ? `mx-auto max-w-4xl text-center ${ring(activeSlot === hero.lede)}`
+                    : `max-w-2xl text-left ${ring(activeSlot === hero.lede)}`
+                }`}
               >
                 <span
                   className="block whitespace-pre-line leading-8"

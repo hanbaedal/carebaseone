@@ -42,7 +42,7 @@ export function FeaturesCmsBody({
       <button
         type="button"
         onClick={() => onSelectSlot(ledePath)}
-        className={`block max-w-2xl border-0 bg-transparent p-0 text-left ${ring(activeSlot === ledePath)}`}
+        className={`mx-auto block max-w-4xl border-0 bg-transparent p-0 text-center ${ring(activeSlot === ledePath)}`}
       >
         <p className="text-base leading-8 text-brand-ink/70">
           {previewText(values[ledePath] ?? "", "소개 문구")}

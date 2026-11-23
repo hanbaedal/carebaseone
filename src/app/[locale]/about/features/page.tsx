@@ -22,9 +22,15 @@ export default async function AboutFeaturesPage({
 
   return (
     <div>
-      <CmsSectionHero section="aboutFeatures" imageFallback={images.lab} />
+      <CmsSectionHero
+        section="aboutFeatures"
+        imageFallback={images.lab}
+        ledeAlign="center"
+      />
       <section className="mx-auto max-w-7xl px-guest-gutter py-16">
-        <p className="max-w-2xl text-base leading-8 text-brand-ink/70">{t("lede")}</p>
+        <p className="mx-auto max-w-4xl text-center text-base leading-8 text-brand-ink/70">
+          {t("lede")}
+        </p>
         <div className="mt-12">
           <FeatureQuadGrid items={items} />
         </div>
