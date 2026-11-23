@@ -1,13 +1,13 @@
 import { redirect } from "next/navigation";
-import { formatKoreaDate } from "@/lib/korea-time";
 import {
   MEDIA_FOCUS_LABELS,
   MEDIA_FOCUS_TO_CATEGORY,
+  RESEARCH_PUBLIC_CATEGORIES,
   type MediaFocusKey,
 } from "@/lib/homepage-admin-paths";
-import { galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import { listMediaForAdmin } from "@/lib/media-lib";
-import { removeMedia, saveMedia, toggleMedia } from "@/app/admin/ops-actions";
+import { saveMedia } from "@/app/admin/ops-actions";
+import { AdminMediaItemsTable } from "@/components/admin/AdminMediaItemsTable";
 import { HomepageOpsShell, OpsSection } from "@/components/admin/HomepageOpsShell";
 import type { MediaCategory } from "@/lib/db";
 
@@ -21,6 +21,10 @@ const categories: MediaCategory[] = [
   "product",
   "other",
 ];
+
+function siteVisibleCount(items: Awaited<ReturnType<typeof listMediaForAdmin>>) {
+  return items.filter((item) => item.published && item.audience === "public").length;
+}
 
 export default async function AdminMediaPage({
   searchParams,
@@ -38,7 +42,12 @@ export default async function AdminMediaPage({
   }
   const category = focusKey && focusKey in MEDIA_FOCUS_TO_CATEGORY ? MEDIA_FOCUS_TO_CATEGORY[focusKey] : undefined;
   const title = focusKey && focusKey in MEDIA_FOCUS_LABELS ? MEDIA_FOCUS_LABELS[focusKey] : "자료·증빙 전체";
-  const items = await listMediaForAdmin(category);
+  const isResearchFocus = focusKey === "research";
+
+  const researchItems = isResearchFocus ? await listMediaForAdmin("research") : [];
+  const productItems = isResearchFocus ? await listMediaForAdmin("product") : [];
+  const items = isResearchFocus ? [] : await listMediaForAdmin(category);
+
   const statusMsg =
     query.status === "saved"
       ? "저장했습니다."
@@ -46,10 +55,14 @@ export default async function AdminMediaPage({
         ? (query.message ?? "저장 실패")
         : undefined;
 
+  const description = isResearchFocus
+    ? "공개 연구·임상 페이지(/research)는 아래와 같이 두 섹션입니다. 「노출=사이트」인 항목만 게스트에 표시됩니다. 제품·성분 자료는 분류 product 로 등록하세요."
+    : "이미지 갤러리는 /admin/gallery 에서 관리합니다. 특허·인증 등 문서는 이 화면에서 등록합니다.";
+
   return (
     <HomepageOpsShell
       title={title}
-      description="이미지 갤러리는 /admin/gallery 에서 관리합니다. 특허·인증 등 문서는 이 화면에서 등록합니다."
+      description={description}
       status={statusMsg}
       statusError={query.status === "error"}
     >
@@ -60,6 +73,9 @@ export default async function AdminMediaPage({
             {categories.map((c) => (
               <option key={c} value={c}>
                 {c}
+                {isResearchFocus && RESEARCH_PUBLIC_CATEGORIES.includes(c as (typeof RESEARCH_PUBLIC_CATEGORIES)[number])
+                  ? " — 사이트 연구·임상"
+                  : ""}
               </option>
             ))}
           </select>
@@ -86,69 +102,24 @@ export default async function AdminMediaPage({
         </form>
       </OpsSection>
 
-      <OpsSection title={`목록 (${items.length}건)`}>
-        <div className="overflow-x-auto text-xs">
-          <table className="w-full min-w-[48rem]">
-            <thead>
-              <tr className="text-ink/50">
-                <th className="px-2 py-2 text-left font-normal">No</th>
-                <th className="px-2 py-2 text-left font-normal">slug</th>
-                <th className="px-2 py-2 text-left font-normal">분류</th>
-                <th className="px-2 py-2 text-left font-normal">제목</th>
-                <th className="px-2 py-2 text-left font-normal">날짜</th>
-                <th className="px-2 py-2 text-left font-normal">파일</th>
-                <th className="px-2 py-2 text-left font-normal">수정·삭제</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((item, i) => (
-                <tr key={item.slug} className="border-t border-ink/10">
-                  <td className="px-2 py-2">{items.length - i}</td>
-                  <td className="px-2 py-2">{item.slug}</td>
-                  <td className="px-2 py-2">{item.category}</td>
-                  <td className="max-w-[14rem] truncate px-2 py-2">{item.title.ko}</td>
-                  <td className="whitespace-nowrap px-2 py-2">{formatKoreaDate(item.createdAt)}</td>
-                  <td className="px-2 py-2">
-                    {(() => {
-                      const publicHint = galleryPublicPathFromDoc(item.tags, item.fileName);
-                      const href =
-                        item.storage === "gridfs"
-                          ? item.filePath
-                          : publicHint.startsWith("/images/")
-                            ? publicHint
-                            : item.filePath;
-                      const label =
-                        item.storage === "gridfs"
-                          ? "열기"
-                          : publicHint.startsWith("/images/")
-                            ? "보기"
-                            : "없음";
-                      return (
-                        <a href={href} className="text-forest" target="_blank" rel="noreferrer">
-                          {label}
-                        </a>
-                      );
-                    })()}
-                  </td>
-                  <td className="space-x-2 px-2 py-2">
-                    <form action={toggleMedia} className="inline">
-                      <input type="hidden" name="slug" value={item.slug} />
-                      <input type="hidden" name="published" value={item.published ? "false" : "true"} />
-                      <button type="submit">{item.published ? "비공개" : "공개"}</button>
-                    </form>
-                    <form action={removeMedia} className="inline">
-                      <input type="hidden" name="slug" value={item.slug} />
-                      <button type="submit" className="text-red-800">
-                        삭제
-                      </button>
-                    </form>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </OpsSection>
+      {isResearchFocus ? (
+        <>
+          <OpsSection
+            title={`연구·논문 (research) — ${researchItems.length}건, 사이트 노출 ${siteVisibleCount(researchItems)}건`}
+          >
+            <AdminMediaItemsTable items={researchItems} />
+          </OpsSection>
+          <OpsSection
+            title={`제품·성분 (product) — ${productItems.length}건, 사이트 노출 ${siteVisibleCount(productItems)}건`}
+          >
+            <AdminMediaItemsTable items={productItems} />
+          </OpsSection>
+        </>
+      ) : (
+        <OpsSection title={`목록 (${items.length}건, 사이트 노출 ${siteVisibleCount(items)}건)`}>
+          <AdminMediaItemsTable items={items} />
+        </OpsSection>
+      )}
     </HomepageOpsShell>
   );
 }

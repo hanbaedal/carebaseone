@@ -20,6 +20,9 @@ export const MEDIA_FOCUS_TO_CATEGORY = {
   research: "research",
 } as const;
 
+/** 공개 /research 페이지와 동일 — 연구·논문 + 제품·성분 */
+export const RESEARCH_PUBLIC_CATEGORIES = ["research", "product"] as const;
+
 export type MediaFocusKey = keyof typeof MEDIA_FOCUS_TO_CATEGORY;
 
 export const MEDIA_FOCUS_LABELS: Record<MediaFocusKey, string> = {
