@@ -9,7 +9,7 @@ import { CMS_FOOTER_INNER_DOCKED } from "@/lib/footer-layout";
 import type { CmsHeroSlots } from "@/lib/cms-page-hero";
 import { fieldLabelFor, type CmsPageDef } from "@/lib/cms-pages";
 import { cmsTypoInlineStyle } from "@/lib/cms-typography-styles";
-import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
+import { GUEST_HERO_FRAME, GUEST_HERO_IMAGE_SIZES } from "@/lib/guest-layout";
 import { heroImageUnoptimized } from "@/lib/home-hero";
 import { pageFooterTextColor, resolvePageFooterBackground, PAGE_FOOTER_BG_DEFAULT } from "@/lib/page-footer";
 import { isCmsHubPage } from "@/lib/cms-hub-pages";
@@ -78,15 +78,16 @@ export function SubpageCmsCanvas({
   return (
     <div className="flex h-[calc(100dvh-4.5rem)] max-h-[calc(100dvh-4.5rem)] flex-col overflow-hidden bg-white">
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-        <section
-          className={`relative isolate overflow-hidden bg-brand-ink text-white ${publicHero ? "min-h-[56vh]" : "min-h-[42vh]"}`}
-        >
+        <section className="bg-paper">
+          <div
+            className={`${GUEST_HERO_FRAME} bg-brand-ink text-white ${publicHero ? "min-h-[56vh]" : "min-h-[42vh]"}`}
+          >
           <Image
             src={heroSrc}
             alt=""
             fill
             className="object-cover object-center opacity-55"
-            sizes="100vw"
+            sizes={GUEST_HERO_IMAGE_SIZES}
             unoptimized={heroImageUnoptimized(heroSrc)}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-brand-ink/80 via-brand-ink/45 to-transparent" />
@@ -97,7 +98,7 @@ export function SubpageCmsCanvas({
             className="absolute inset-0 z-[1] cursor-pointer border-0 bg-transparent"
           />
           <div
-            className={`relative z-[2] mx-auto flex w-full ${GUEST_CONTENT_MAX} flex-col justify-end ${
+            className={`relative z-[2] flex w-full flex-col justify-end ${
               publicHero
                 ? "min-h-[56vh] px-guest-gutter pb-16 pt-28"
                 : "min-h-[42vh] px-6 pb-12 pt-20"
@@ -146,6 +147,7 @@ export function SubpageCmsCanvas({
                 </span>
               </button>
             ) : null}
+          </div>
           </div>
         </section>
 

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { images } from "@/lib/site";
-import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
+import { GUEST_HERO_FRAME, GUEST_HERO_IMAGE_SIZES } from "@/lib/guest-layout";
 import {
   heroImageUnoptimized,
   homeHeadlineFontSizeFluid,
@@ -64,41 +64,41 @@ export async function CmsSectionHero({
   const lede = showLede ? t("lede") : "";
 
   return (
-    <section className="relative isolate min-h-[56vh] overflow-hidden bg-brand-ink text-white">
-      <Image
-        src={heroSrc}
-        alt=""
-        fill
-        priority
-        className="object-cover object-center opacity-55"
-        sizes="100vw"
-        unoptimized={heroImageUnoptimized(heroSrc)}
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-brand-ink/80 via-brand-ink/45 to-transparent" />
-      <div
-        className={`relative mx-auto flex min-h-[56vh] w-full ${GUEST_CONTENT_MAX} flex-col justify-end px-guest-gutter pb-16 pt-28`}
-      >
-        <p className="font-semibold tracking-[0.22em]" style={styleFor("kicker")}>
-          {kicker}
-        </p>
-        <h1
-          className="mt-4 max-w-3xl whitespace-pre-line font-display leading-tight"
-          style={styleFor("title")}
-        >
-          {title}
-        </h1>
-        {showLede && lede.trim() ? (
-          <p
-            className={`mt-6 whitespace-pre-line leading-8 ${
-              ledeAlign === "center"
-                ? "mx-auto max-w-4xl text-center"
-                : "max-w-2xl text-left"
-            }`}
-            style={styleFor("lede")}
-          >
-            {lede}
+    <section className="bg-paper">
+      <div className={`${GUEST_HERO_FRAME} min-h-[56vh] bg-brand-ink text-white`}>
+        <Image
+          src={heroSrc}
+          alt=""
+          fill
+          priority
+          className="object-cover object-center opacity-55"
+          sizes={GUEST_HERO_IMAGE_SIZES}
+          unoptimized={heroImageUnoptimized(heroSrc)}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-ink/80 via-brand-ink/45 to-transparent" />
+        <div className="relative flex min-h-[56vh] w-full flex-col justify-end px-guest-gutter pb-16 pt-28">
+          <p className="font-semibold tracking-[0.22em]" style={styleFor("kicker")}>
+            {kicker}
           </p>
-        ) : null}
+          <h1
+            className="mt-4 max-w-3xl whitespace-pre-line font-display leading-tight"
+            style={styleFor("title")}
+          >
+            {title}
+          </h1>
+          {showLede && lede.trim() ? (
+            <p
+              className={`mt-6 whitespace-pre-line leading-8 ${
+                ledeAlign === "center"
+                  ? "mx-auto max-w-4xl text-center"
+                  : "max-w-2xl text-left"
+              }`}
+              style={styleFor("lede")}
+            >
+              {lede}
+            </p>
+          ) : null}
+        </div>
       </div>
     </section>
   );

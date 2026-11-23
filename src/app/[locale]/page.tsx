@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { resolveLocale } from "@/lib/locale";
 import { CmsPageFooter } from "@/components/CmsPageFooter";
+import { GUEST_HERO_FRAME, GUEST_HERO_IMAGE_SIZES } from "@/lib/guest-layout";
 import { HOME_CONTENT_GUTTER, HOME_VIEWPORT_SHELL } from "@/lib/home-layout";
 import {
   HOME_HERO_IMAGE_CLASS,
@@ -43,15 +44,17 @@ export default async function HomePage({
   const headlineFamily = resolveHomeFontFamily(t("home.headlineFont"), HOME_HEADLINE_FONT_DEFAULT);
   const ledeFamily = resolveHomeFontFamily(t("home.ledeFont"), HOME_LEDE_FONT_DEFAULT);
   return (
-    <div className={HOME_VIEWPORT_SHELL}>
-      <section className="relative isolate min-h-0 flex-1 overflow-hidden bg-brand-ink text-brand-ink">
+    <div className={`${HOME_VIEWPORT_SHELL} bg-paper`}>
+      <section
+        className={`${GUEST_HERO_FRAME} min-h-0 flex-1 bg-brand-ink text-brand-ink`}
+      >
         <Image
           src={heroSrc}
           alt=""
           fill
           priority
           className={HOME_HERO_IMAGE_CLASS}
-          sizes="100vw"
+          sizes={GUEST_HERO_IMAGE_SIZES}
           unoptimized={heroImageUnoptimized(heroSrc)}
         />
 

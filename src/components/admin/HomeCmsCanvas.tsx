@@ -18,6 +18,7 @@ import {
   HOME_LEDE_COLOR_DEFAULT,
   HOME_LEDE_FONT_DEFAULT,
 } from "@/lib/home-hero";
+import { GUEST_HERO_FRAME, GUEST_HERO_IMAGE_SIZES } from "@/lib/guest-layout";
 import { HOME_CONTENT_GUTTER, HOME_VIEWPORT_SHELL } from "@/lib/home-layout";
 import { SnsIconLinkRow } from "@/components/sns/SnsIconLinkRow";
 import { companySnsLinks } from "@/lib/company-sns";
@@ -103,14 +104,14 @@ export function HomeCmsCanvas({
   });
 
   return (
-    <div className={rootClass}>
-      <section className="relative isolate min-h-0 flex-1 overflow-hidden bg-brand-ink text-brand-ink">
+    <div className={`${rootClass} bg-paper`}>
+      <section className={`${GUEST_HERO_FRAME} min-h-0 flex-1 bg-brand-ink text-brand-ink`}>
         <Image
           src={heroSrc}
           alt=""
           fill
           className={HOME_HERO_IMAGE_CLASS}
-          sizes="100vw"
+          sizes={GUEST_HERO_IMAGE_SIZES}
           unoptimized={heroImageUnoptimized(heroSrc)}
         />
 

@@ -22,6 +22,9 @@ export const GUEST_PAGE_GUTTER_X = "px-guest-gutter";
 /** 공개 홈페이지·게스트 본문 기준 가로폭 */
 export const GUEST_CONTENT_WIDTH_PX = 1136;
 export const GUEST_CONTENT_MAX = "max-w-[1136px]";
+/** 히어로 이미지·제목 영역 — 본문과 같은 1136 프레임 */
+export const GUEST_HERO_FRAME = `relative isolate mx-auto w-full ${GUEST_CONTENT_MAX} overflow-hidden`;
+export const GUEST_HERO_IMAGE_SIZES = "1136px";
 
 /** 헤더 hover 서브메뉴 — 한글 6자 + 좌우 px-4(2rem), 긴 라벨은 w-max로 확장 */
 export const HEADER_SUBMENU_PANEL =
