@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import catalog from "@/data/product-catalog.json";
 import { cmsPreviewText, cmsSlotRing } from "@/components/admin/cms-slot";
 import { GUEST_CONTENT_MAX } from "@/lib/guest-layout";
 import { heroImageUnoptimized } from "@/lib/home-hero";
@@ -162,17 +163,36 @@ export function ProductCategoryCmsBody({
     .map((part) => part.trim())
     .filter(Boolean);
 
+  const titlePath = `product.categories.${category}.title`;
+  const categoryTitle = cmsPreviewText(values[titlePath] ?? "", "카테고리");
+
   return (
     <section className={`mx-auto w-full ${GUEST_CONTENT_MAX} px-guest-gutter py-16`}>
+      <p className="text-sm text-brand-ink/60">
+        <span className="text-brand">제품</span>
+        <span className="mx-2 text-brand-ink/30">/</span>
+        <button
+          type="button"
+          onClick={() => onSelectSlot(titlePath)}
+          className={`border-0 bg-transparent p-0 ${ring(activeSlot === titlePath)}`}
+        >
+          {categoryTitle}
+        </button>
+      </p>
+
       <button
         type="button"
         onClick={() => onSelectSlot(textPath)}
-        className={`block max-w-4xl border-0 bg-transparent p-0 text-left ${ring(activeSlot === textPath)}`}
+        className={`mt-4 block max-w-2xl border-0 bg-transparent p-0 text-left ${ring(activeSlot === textPath)}`}
       >
         <p className="text-base leading-8 text-brand-ink/70">
           {cmsPreviewText(values[textPath] ?? "", "소개 문구")}
         </p>
       </button>
+
+      <p className="mt-6 max-w-3xl border-l-2 border-sage pl-5 text-sm leading-7 text-ink/70">
+        {catalog.beoneNote.ko}
+      </p>
 
       <button
         type="button"

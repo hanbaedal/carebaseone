@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { ProductLineGrid } from "@/components/ProductLineGrid";
+import { ProductBeoneNote, ProductLineGrid } from "@/components/ProductLineGrid";
 import {
   PRODUCT_CATEGORY_PATHS,
   PRODUCT_LINE_CATEGORIES,
@@ -26,6 +26,7 @@ import {
   resolveHomeTextColorHex,
 } from "@/lib/home-hero";
 import { resolveLocale } from "@/lib/locale";
+import { Link } from "@/i18n/navigation";
 import { SectionTail } from "@/components/SectionTail";
 
 export function generateStaticParams() {
@@ -44,8 +45,9 @@ export default async function ProductCategoryPage({
   const category = productCategoryFromPath(slug);
   if (!category) notFound();
 
-  const t = await getTranslations("product");
-  const tr = t as unknown as (key: string) => string;
+  const t = await getTranslations();
+  const tProduct = await getTranslations("product");
+  const tr = tProduct as unknown as (key: string) => string;
   const title = tr(`categories.${category}.title`);
   const text = tr(`categories.${category}.text`);
   const kicker = tr("kicker");
@@ -122,9 +124,19 @@ export default async function ProductCategoryPage({
       </section>
 
       <section className={`mx-auto w-full ${GUEST_CONTENT_MAX} px-guest-gutter py-16`}>
-        <p className="max-w-4xl text-left text-base leading-8 text-brand-ink/70">{text}</p>
+        <p className="text-sm text-brand-ink/60">
+          <Link href="/product" className="text-brand hover:underline">
+            {t("nav.product")}
+          </Link>
+          <span className="mx-2 text-brand-ink/30">/</span>
+          {title}
+        </p>
+        <p className="mt-4 max-w-2xl text-base leading-8 text-brand-ink/70">{text}</p>
+        <div className="mt-6">
+          <ProductBeoneNote />
+        </div>
         <div className="mt-12">
-          <ProductLineGrid category={category} heading="" />
+          <ProductLineGrid category={category} heading={title} />
         </div>
       </section>
       <SectionTail section="product" />
