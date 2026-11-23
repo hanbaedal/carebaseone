@@ -3,6 +3,14 @@ import type { MediaDoc } from "@/lib/db";
 import { isGalleryImageFile } from "@/lib/media-crud";
 import { mediaApiPath, publicMediaUrl, resolveMediaDiskPath } from "@/lib/media-storage";
 
+export function galleryFileMissing(doc: MediaDoc) {
+  const publicHint = galleryPublicPathFromDoc(doc.tags, doc.fileName);
+  if (publicHint.startsWith("/images/")) return false;
+  if (resolveMediaDiskPath(doc.slug, doc.fileName)) return false;
+  if (doc.storage === "gridfs" && doc.gridFsId) return false;
+  return true;
+}
+
 export function galleryThumbSrc(
   item: Pick<MediaDoc, "filePath" | "tags" | "fileName" | "slug" | "mime"> & { storage?: MediaDoc["storage"] },
 ) {

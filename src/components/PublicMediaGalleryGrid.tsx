@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { getLocale } from "next-intl/server";
+import { PublicGalleryImage } from "@/components/PublicGalleryImage";
 import { listPublicGalleryMedia, publicGalleryImageSrc } from "@/lib/media-lib";
 import { getApprovedMember } from "@/lib/member-session";
 
@@ -24,8 +24,13 @@ export async function PublicMediaGalleryGrid() {
         const caption = item.summary[locale as "ko" | "en" | "zh"] || item.summary.ko;
         return (
           <figure key={item.slug} className="overflow-hidden rounded-2xl border border-line bg-white">
-            <div className="relative aspect-[4/3]">
-              <Image src={src} alt="" fill className="object-cover" sizes="(min-width: 640px) 50vw, 100vw" unoptimized />
+            <div className="relative aspect-[4/3] overflow-hidden">
+              <PublicGalleryImage
+                src={src}
+                slug={item.slug}
+                alt={title}
+                className="h-full w-full object-cover"
+              />
             </div>
             <figcaption className="px-4 py-3">
               <p className="text-sm font-semibold text-brand-ink">{title}</p>

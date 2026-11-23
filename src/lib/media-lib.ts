@@ -3,7 +3,7 @@ import { galleryThumbSrc } from "@/lib/gallery-thumb-src";
 import { ensureCmsGallerySeed, galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import { cmsGalleryFallbackOptions } from "@/lib/cms-gallery-images";
 import { isGalleryImageFile, repairGalleryImageMime } from "@/lib/media-crud";
-import { isImageMime, resolveMediaChannels } from "@/lib/media-channels";
+import { isImageMime, resolveMediaChannels, showOnPublicGallery } from "@/lib/media-channels";
 import { ensureMediaReady, ensureMediaSeed } from "@/lib/seed-media";
 import { mediaApiPath } from "@/lib/media-storage";
 
@@ -111,24 +111,24 @@ export async function findMediaBySlug(slug: string) {
   return (await media()).findOne({ slug, published: true });
 }
 
-/** 공개 커뮤니티 갤러리 — publicGallery 채널 */
+/** 공개 커뮤니티 갤러리 — 관리 이미지 갤러리와 동일 풀(공개·파일 있음·공개갤러리 체크) */
 export async function listPublicGalleryMedia(memberApproved = false): Promise<MediaDoc[]> {
   await ensureMediaReady();
   await ensureCmsGallerySeed();
   await repairGalleryImageMime();
-  const { repairGalleryDiskMirrors } = await import("@/lib/media-crud");
+  const { repairGalleryDiskMirrors, repairGalleryPublicChannels } = await import("@/lib/media-crud");
   await repairGalleryDiskMirrors();
-  const audience = memberApproved ? { $in: ["public", "member"] as const } : "public";
-  const docs = await (await media())
-    .find({
-      published: true,
-      category: "gallery",
-      audience,
-      $or: [{ mime: { $regex: /^image\//i } }, { fileName: { $regex: /\.(jpe?g|png|webp|gif)$/i } }],
-    })
-    .sort({ createdAt: -1 })
-    .toArray();
-  return docs.filter((d) => isGalleryImageFile(d.fileName, d.mime) && resolveMediaChannels(d).publicGallery);
+  await repairGalleryPublicChannels();
+  const { galleryFileMissing } = await import("@/lib/gallery-thumb-src");
+  const docs = await listMediaForAdmin("gallery");
+  return docs.filter((d) => {
+    if (!d.published) return false;
+    if (!isGalleryImageFile(d.fileName, d.mime)) return false;
+    if (galleryFileMissing(d)) return false;
+    if (!showOnPublicGallery(d)) return false;
+    if (d.audience === "member" && !memberApproved) return false;
+    return true;
+  });
 }
 
 export function publicGalleryImageSrc(item: MediaDoc) {

@@ -1,14 +1,12 @@
-import { galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import type { MediaDoc } from "@/lib/db";
 import {
   isGalleryImageFile,
   repairGalleryDiskMirrors,
   repairGalleryImageMime,
 } from "@/lib/media-crud";
-import { galleryThumbSrc } from "@/lib/gallery-thumb-src";
+import { galleryFileMissing, galleryThumbSrc } from "@/lib/gallery-thumb-src";
 import { resolveMediaChannels } from "@/lib/media-channels";
 import { listMediaForAdmin } from "@/lib/media-lib";
-import { resolveMediaDiskPath } from "@/lib/media-storage";
 
 export type AdminGalleryItem = {
   id: string;
@@ -22,15 +20,7 @@ export type AdminGalleryItem = {
   fileMissing?: boolean;
 };
 
-export { galleryThumbSrc } from "@/lib/gallery-thumb-src";
-
-function galleryFileMissing(doc: MediaDoc) {
-  const publicHint = galleryPublicPathFromDoc(doc.tags, doc.fileName);
-  if (publicHint.startsWith("/images/")) return false;
-  if (resolveMediaDiskPath(doc.slug, doc.fileName)) return false;
-  if (doc.storage === "gridfs" && doc.gridFsId) return false;
-  return true;
-}
+export { galleryFileMissing, galleryThumbSrc } from "@/lib/gallery-thumb-src";
 
 export function toAdminGalleryItem(doc: MediaDoc): AdminGalleryItem {
   const ch = resolveMediaChannels(doc);
@@ -49,6 +39,8 @@ export function toAdminGalleryItem(doc: MediaDoc): AdminGalleryItem {
 export async function listAdminGalleryItems(): Promise<AdminGalleryItem[]> {
   await repairGalleryImageMime();
   await repairGalleryDiskMirrors();
+  const { repairGalleryPublicChannels } = await import("@/lib/media-crud");
+  await repairGalleryPublicChannels();
   const docs = await listMediaForAdmin("gallery");
   return docs.filter((d) => isGalleryImageFile(d.fileName, d.mime)).map(toAdminGalleryItem);
 }

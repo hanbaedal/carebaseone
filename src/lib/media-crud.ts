@@ -58,6 +58,26 @@ export async function repairGalleryDiskMirrors() {
   }
 }
 
+/** 갤러리 이미지 공개 채널 보정(채널 없음·예전 CMS만 기본) */
+export async function repairGalleryPublicChannels() {
+  if (!process.env.MONGODB_URI) return;
+  await ensureIndexes();
+  const col = await media();
+  const imageFilter = { category: "gallery" as const, mime: { $regex: /^image\//i } };
+  await col.updateMany(
+    { ...imageFilter, channels: { $exists: false } },
+    { $set: { channels: { publicGallery: true, cmsBackground: true } } },
+  );
+  await col.updateMany(
+    {
+      ...imageFilter,
+      "channels.publicGallery": false,
+      "channels.cmsBackground": true,
+    },
+    { $set: { "channels.publicGallery": true } },
+  );
+}
+
 export async function repairGalleryImageMime() {
   if (!process.env.MONGODB_URI) return;
   await ensureIndexes();
