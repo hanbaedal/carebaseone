@@ -24,6 +24,7 @@ export const adminMenuGroups: AdminMenuGroup[] = [
     href: "/admin/cms",
     items: [
       { href: "/admin/cms", label: "메인 홈" },
+      { href: "/admin/media?focus=gallery", label: "배경 이미지 갤러리" },
       { href: "", label: "회사소개", heading: true },
       { href: "/admin/cms?page=about", label: "회사소개(허브)" },
       { href: "/admin/cms?page=greeting", label: "인사말" },
@@ -47,7 +48,7 @@ export const adminMenuGroups: AdminMenuGroup[] = [
       { href: "/admin/cms?page=community", label: "커뮤니티(허브)" },
       { href: "/admin/notices", label: "공지사항" },
       { href: "/admin/posts?type=archive", label: "자료실" },
-      { href: "/admin/posts?type=gallery", label: "갤러리" },
+      { href: "/admin/posts?type=gallery", label: "커뮤니티 갤러리" },
       { href: "/admin/cms?page=contact", label: "문의 페이지" },
       { href: "/admin/inquiries", label: "문의 접수" },
     ],

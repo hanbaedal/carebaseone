@@ -40,6 +40,9 @@ export async function ensureMediaReady() {
   const count = await col.estimatedDocumentCount();
   if (count === 0) {
     await ensureMediaSeed();
+  } else {
+    // 기존 DB에도 배경 갤러리 시드가 비어 있으면 보강
+    await ensureCmsGallerySeed();
   }
 }
 

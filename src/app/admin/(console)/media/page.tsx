@@ -4,6 +4,7 @@ import {
   MEDIA_FOCUS_TO_CATEGORY,
   type MediaFocusKey,
 } from "@/lib/homepage-admin-paths";
+import { galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import { listMediaForAdmin } from "@/lib/media-lib";
 import { removeMedia, saveMedia, toggleMedia } from "@/app/admin/ops-actions";
 import { HomepageOpsShell, OpsSection } from "@/components/admin/HomepageOpsShell";
@@ -30,6 +31,7 @@ export default async function AdminMediaPage({
   const category = focusKey && focusKey in MEDIA_FOCUS_TO_CATEGORY ? MEDIA_FOCUS_TO_CATEGORY[focusKey] : undefined;
   const title = focusKey && focusKey in MEDIA_FOCUS_LABELS ? MEDIA_FOCUS_LABELS[focusKey] : "자료·증빙 전체";
   const items = await listMediaForAdmin(category);
+  const isGalleryFocus = category === "gallery";
   const statusMsg =
     query.status === "saved"
       ? "저장했습니다."
@@ -40,14 +42,18 @@ export default async function AdminMediaPage({
   return (
     <HomepageOpsShell
       title={title}
-      description="홈페이지 배경 이미지는 분류 gallery 로 등록합니다. 사이트에서 쓰던 기본 이미지는 갤러리에 자동 등록되며, CMS 배경 선택에서 고를 수 있습니다."
+      description={
+        isGalleryFocus
+          ? "CMS 배경 이미지용 갤러리입니다. 사이트 기본 이미지는 자동 등록되며, 새 이미지는 분류 gallery 로 올리면 배경 선택에 나타납니다."
+          : "홈페이지 배경 이미지는 「배경 이미지 갤러리」 메뉴(분류 gallery)에서 관리합니다."
+      }
       status={statusMsg}
       statusError={query.status === "error"}
     >
       <OpsSection title="등록 / 메타 수정">
         <form action={saveMedia} className="grid gap-2 text-xs">
           <input name="slug" placeholder="slug (영문·숫자·하이픈)" required className="border border-ink/15 px-2 py-1.5" />
-          <select name="category" defaultValue={category ?? "patent"} className="border border-ink/15 px-2 py-1.5">
+          <select name="category" defaultValue={category ?? "gallery"} className="border border-ink/15 px-2 py-1.5">
             {categories.map((c) => (
               <option key={c} value={c}>
                 {c}
@@ -96,9 +102,26 @@ export default async function AdminMediaPage({
                   <td className="max-w-[14rem] truncate px-2 py-2">{item.title.ko}</td>
                   <td className="whitespace-nowrap px-2 py-2">{formatKoreaDate(item.createdAt)}</td>
                   <td className="px-2 py-2">
-                    <a href={item.filePath} className="text-forest" target="_blank" rel="noreferrer">
-                      {item.storage === "gridfs" ? "열기" : "없음"}
-                    </a>
+                    {(() => {
+                      const publicHint = galleryPublicPathFromDoc(item.tags, item.fileName);
+                      const href =
+                        item.storage === "gridfs"
+                          ? item.filePath
+                          : publicHint.startsWith("/images/")
+                            ? publicHint
+                            : item.filePath;
+                      const label =
+                        item.storage === "gridfs"
+                          ? "열기"
+                          : publicHint.startsWith("/images/")
+                            ? "보기"
+                            : "없음";
+                      return (
+                        <a href={href} className="text-forest" target="_blank" rel="noreferrer">
+                          {label}
+                        </a>
+                      );
+                    })()}
                   </td>
                   <td className="space-x-2 px-2 py-2">
                     <form action={toggleMedia} className="inline">

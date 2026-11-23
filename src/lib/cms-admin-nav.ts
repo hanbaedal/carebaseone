@@ -24,6 +24,7 @@ function parseAdminLocation(pathname: string, search: URLSearchParams): string |
   }
   if (path === "/admin/media") {
     const focus = search.get("focus");
+    // 배경 이미지 갤러리는 커뮤니티 '갤러리' 게시와 별개 — 칩 네비에 묶지 않음
     if (focus === "patents") return "patents";
     if (focus === "certifications") return "certifications";
     if (focus === "research") return "research";

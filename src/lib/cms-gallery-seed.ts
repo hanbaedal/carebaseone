@@ -4,13 +4,19 @@ import { cmsGalleryImageDefs } from "@/lib/cms-gallery-images";
 import { mediaApiPath } from "@/lib/media-storage";
 
 let seedPromise: Promise<void> | null = null;
+let seedCompleted = false;
 
 /** 사용 중인 사이트·제품 이미지를 media(gallery)에 등록 */
 export async function ensureCmsGallerySeed() {
+  if (seedCompleted) return;
   if (seedPromise) return seedPromise;
-  seedPromise = runSeed().finally(() => {
-    seedPromise = null;
-  });
+  seedPromise = runSeed()
+    .then(() => {
+      seedCompleted = true;
+    })
+    .finally(() => {
+      seedPromise = null;
+    });
   return seedPromise;
 }
 

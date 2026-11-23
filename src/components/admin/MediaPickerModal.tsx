@@ -41,7 +41,7 @@ export function MediaPickerModal({
               갤러리에서 배경 이미지 선택
             </h2>
             <p className="text-[10px] text-ink/50">
-              홈페이지 사용 이미지 · /admin/media 갤러리 업로드 이미지
+              배경 이미지 갤러리 · /admin/media?focus=gallery
             </p>
           </div>
           <button type="button" onClick={onClose} className="text-[11px] text-ink/50 hover:text-ink">
@@ -88,16 +88,16 @@ export function MediaPickerModal({
         ) : (
           <p className="px-4 py-8 text-center text-[12px] text-ink/50">
             등록된 갤러리 이미지가 없습니다.{" "}
-            <a href="/admin/media" className="text-brand hover:underline">
-              /admin/media
+            <a href="/admin/media?focus=gallery" className="text-brand hover:underline">
+              배경 이미지 갤러리
             </a>
             에서 이미지를 업로드해 주세요.
           </p>
         )}
         <div className="border-t border-ink/10 px-4 py-3 text-[11px] text-ink/50">
           새 이미지는{" "}
-          <a href="/admin/media" className="text-brand hover:underline">
-            자료·갤러리 (/admin/media)
+          <a href="/admin/media?focus=gallery" className="text-brand hover:underline">
+            배경 이미지 갤러리
           </a>
           에서 분류를 <strong>gallery</strong>로 등록하면 여기에도 나타납니다.
         </div>
