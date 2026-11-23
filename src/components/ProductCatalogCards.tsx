@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "@/i18n/navigation";
+import { heroImageUnoptimized } from "@/lib/home-hero";
 
 export type ProductCatalogCard = {
   slug: string;
@@ -78,6 +79,7 @@ export function ProductCatalogCards({
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 sizes="(min-width: 640px) 45vw, 100vw"
+                unoptimized={heroImageUnoptimized(item.image)}
               />
               <span className="sr-only">
                 {item.title} — {labels.viewDetail}
