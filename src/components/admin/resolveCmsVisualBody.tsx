@@ -126,13 +126,7 @@ export function resolveCmsVisualBody({
     return <ProductHubCmsBody {...props} onPickImage={onPickImage} />;
   }
   if (page.productCategory) {
-    return (
-      <ProductCategoryCmsBody
-        category={page.productCategory}
-        {...props}
-        onPickImage={onPickImage}
-      />
-    );
+    return <ProductCategoryCmsBody category={page.productCategory} {...props} />;
   }
   return undefined;
 }

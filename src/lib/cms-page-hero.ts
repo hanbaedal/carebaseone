@@ -1,6 +1,7 @@
 import { images } from "@/lib/site";
 import type { CmsPageDef } from "@/lib/cms-pages";
 import type { ProductLineCategory } from "@/lib/product-categories";
+import { productCategoryImagePath, resolveHubBlockImageSrc } from "@/lib/hub-media";
 import { resolveHeroImageSrc } from "@/lib/home-hero";
 import { sectionHeroImagePath } from "@/lib/cms-typography";
 
@@ -26,11 +27,28 @@ export function cmsPageHeroImage(pageKey: string) {
   return HERO_IMAGE_BY_KEY[pageKey] ?? images.hero;
 }
 
-export function resolveCmsPageHeroSrc(section: string, values: Record<string, string>, pageKey: string) {
+export function resolveCmsPageHeroSrc(
+  section: string,
+  values: Record<string, string>,
+  pageKey: string,
+  productCategory?: ProductLineCategory | null,
+) {
+  if (productCategory) {
+    const path = productCategoryImagePath(productCategory);
+    return resolveHubBlockImageSrc(cmsPageHeroImage(pageKey), values[path]);
+  }
   const path = sectionHeroImagePath(section);
   const raw = (values[path] ?? "").trim();
   if (raw) return resolveHeroImageSrc(raw);
   return cmsPageHeroImage(pageKey);
+}
+
+export function cmsPageHeroImagePath(
+  section: string,
+  productCategory?: ProductLineCategory | null,
+) {
+  if (productCategory) return productCategoryImagePath(productCategory);
+  return sectionHeroImagePath(section);
 }
 
 /** 히어로에 노출할 슬롯 경로 (없으면 null) */

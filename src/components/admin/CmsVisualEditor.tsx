@@ -20,12 +20,12 @@ import {
   cmsContentFieldPaths,
   cmsHeroSlots,
   isCmsImageFieldPath,
+  cmsPageHeroImagePath,
   resolveCmsPageHeroSrc,
 } from "@/lib/cms-page-hero";
 import {
   isCmsTypoTextPath,
   resolveCmsTypoTextSlot,
-  sectionHeroImagePath,
 } from "@/lib/cms-typography";
 import {
   colorPathFor,
@@ -135,7 +135,9 @@ export function CmsVisualEditor({
   }, [fields, isHome]);
 
   const heroSlots = useMemo(() => cmsHeroSlots(page), [page]);
-  const heroImagePath = isHome ? "home.heroImage" : sectionHeroImagePath(page.section);
+  const heroImagePath = isHome
+    ? "home.heroImage"
+    : cmsPageHeroImagePath(page.section, page.productCategory);
 
   const defaultPath = useMemo(() => {
     if (page.productCategory) {
@@ -391,7 +393,12 @@ export function CmsVisualEditor({
     ? resolvePreviewActiveSlot(slot, typoTextPath, previewPin)
     : null;
 
-  const subpageHeroSrc = resolveCmsPageHeroSrc(page.section, canvasValues, page.key);
+  const subpageHeroSrc = resolveCmsPageHeroSrc(
+    page.section,
+    canvasValues,
+    page.key,
+    page.productCategory,
+  );
 
   const showNotice = inlineNotice?.text ?? notice;
   const showNoticeError = inlineNotice ? inlineNotice.error : noticeError;

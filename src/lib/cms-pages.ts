@@ -34,10 +34,10 @@ const PRODUCT_LINE_CATEGORY_PAGES: CmsPageDef[] = (
   productCategory: key,
   fieldLabels: {
     "product.kicker": "키커",
-    [`product.categories.${key}.title`]: "카테고리 제목",
-    [`product.categories.${key}.text`]: "카테고리 소개",
+    [`product.categories.${key}.title`]: "제목",
+    [`product.categories.${key}.text`]: "소개 문구",
     [`product.categories.${key}.items`]: "대표 품목",
-    [`product.categories.${key}.image`]: "카테고리 이미지",
+    [`product.categories.${key}.image`]: "배경 이미지",
   },
 }));
 
