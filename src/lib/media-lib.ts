@@ -157,6 +157,8 @@ export async function listProductLineGalleryMedia(
   const { repairGalleryDiskMirrors } = await import("@/lib/media-crud");
   await repairGalleryDiskMirrors();
   await ensureProductLineGalleryFromCatalog();
+  const { repairProductLineSlots } = await import("@/lib/gallery-product-line-limit");
+  await repairProductLineSlots();
   const { galleryFileMissing } = await import("@/lib/gallery-thumb-src");
   const docs = await listMediaForAdmin("gallery");
   return docs

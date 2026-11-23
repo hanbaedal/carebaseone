@@ -163,33 +163,58 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
     setItems((rows) => rows.map((row) => (row.id === id ? { ...row, ...patch } : row)));
   }
 
-  function productLineUsage(category: (typeof PRODUCT_LINE_CATEGORIES)[number]) {
-    return items.filter((row) => row.published && row.productLines[category]).length;
+  function productLineOccupants(
+    category: (typeof PRODUCT_LINE_CATEGORIES)[number],
+    excludeId?: string,
+  ) {
+    return items
+      .filter(
+        (row) =>
+          row.id !== excludeId &&
+          row.published &&
+          row.productLines[category] &&
+          !row.fileMissing,
+      )
+      .map((row) => row.title.trim() || row.id);
+  }
+
+  function productLineUsage(
+    category: (typeof PRODUCT_LINE_CATEGORIES)[number],
+    excludeId?: string,
+  ) {
+    return productLineOccupants(category, excludeId).length;
   }
 
   function ProductLineToggles({
     value,
     onChange,
     disabled,
+    editingId,
   }: {
     value: MediaProductLines;
     onChange: (next: MediaProductLines) => void;
     disabled?: boolean;
+    /** 편집 중인 카드는 슬롯 카운트에서 제외 */
+    editingId?: string;
   }) {
     return (
       <div className="space-y-1.5">
         <p className="text-[11px] font-medium text-brand-ink/80">제품 페이지 (라인당 {PRODUCT_LINES_PER_CATEGORY}장)</p>
         <div className="flex flex-wrap gap-1.5">
           {PRODUCT_LINE_CATEGORIES.map((key) => {
-            const used = productLineUsage(key);
+            const used = productLineUsage(key, editingId);
+            const occupants = productLineOccupants(key, editingId);
             const atCap = used >= PRODUCT_LINES_PER_CATEGORY && !value[key];
+            const capHint = atCap
+              ? `「${PRODUCT_LINE_LABELS[key]}」 ${PRODUCT_LINES_PER_CATEGORY}장이 이미 사용 중입니다 (${occupants.join(" · ")}). 해당 사진에서 체크 해제·저장 후 다시 시도하세요.`
+              : undefined;
             return (
               <label
                 key={key}
                 className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] ${
                   value[key] ? "border-brand bg-brand/10 text-brand" : "border-ink/15 bg-white text-brand-ink/80"
                 } ${disabled || atCap ? "opacity-60" : ""}`}
-                title={atCap ? `이미 ${PRODUCT_LINES_PER_CATEGORY}장 게시 중` : undefined}
+                title={capHint}
               >
                 <input
                   type="checkbox"
@@ -308,10 +333,21 @@ export function ManageImageGallery({ initial }: { initial: AdminGalleryItem[] })
           </label>
         </div>
         <ProductLineToggles
+          editingId={item.id}
           value={item.productLines}
           onChange={(productLines) => patchItem(item.id, { productLines })}
           disabled={busy}
         />
+        {PRODUCT_LINE_CATEGORIES.some(
+          (key) =>
+            !item.productLines[key] &&
+            productLineUsage(key, item.id) >= PRODUCT_LINES_PER_CATEGORY,
+        ) ? (
+          <p className="text-[11px] leading-relaxed text-ink/55">
+            회색으로 비활성된 라인은 다른 사진이 슬롯을 쓰고 있습니다. 목록에서 해당 사진을 찾아 제품 라인 체크를 해제한 뒤
+            「저장」하세요.
+          </p>
+        ) : null}
         <GalleryItemActions item={item} busy={busy} onSave={onSave} onDelete={onDelete} onDownload={onDownload} />
       </>
     );
