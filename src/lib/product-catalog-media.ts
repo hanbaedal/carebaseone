@@ -6,18 +6,25 @@ export function productCatalogImagePath(slug: string) {
   return `product.catalog.${slug}.image`;
 }
 
+export function productCatalogTitlePath(slug: string) {
+  return `product.catalog.${slug}.title`;
+}
+
+export function productCatalogSummaryPath(slug: string) {
+  return `product.catalog.${slug}.summary`;
+}
+
+export const PRODUCT_BEONE_NOTE_PATH = "product.beoneNote";
+
 export function resolveProductCatalogImageSrc(fallback: string, raw: string | undefined) {
   return resolveHubBlockImageSrc(fallback, raw);
 }
 
-export function catalogLinesForCategory(category: ProductLineCategory) {
-  return catalog.lines.filter((line) => line.category === category);
+export function resolveProductCatalogText(override: string | undefined, fallback: string) {
+  const value = (override ?? "").trim();
+  return value.length > 0 ? value : fallback;
 }
 
-export function allCatalogImageFields(): Record<string, { image: string }> {
-  const out: Record<string, { image: string }> = {};
-  for (const line of catalog.lines) {
-    out[line.slug] = { image: "" };
-  }
-  return out;
+export function catalogLinesForCategory(category: ProductLineCategory) {
+  return catalog.lines.filter((line) => line.category === category);
 }

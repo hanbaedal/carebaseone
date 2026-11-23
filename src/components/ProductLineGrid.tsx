@@ -6,7 +6,11 @@ import {
   ProductCatalogCards,
   type ProductCatalogCard,
 } from "@/components/ProductCatalogCards";
-import { resolveProductCatalogImageSrc } from "@/lib/product-catalog-media";
+import {
+  PRODUCT_BEONE_NOTE_PATH,
+  resolveProductCatalogImageSrc,
+  resolveProductCatalogText,
+} from "@/lib/product-catalog-media";
 
 export async function ProductLineGrid({
   category,
@@ -24,8 +28,14 @@ export async function ProductLineGrid({
 
   const items: ProductCatalogCard[] = lines.map((line) => ({
     slug: line.slug,
-    title: lineText(`lines.${line.slug}.title`),
-    summary: lineText(`lines.${line.slug}.summary`),
+    title: resolveProductCatalogText(
+      productText(`catalog.${line.slug}.title`),
+      lineText(`lines.${line.slug}.title`),
+    ),
+    summary: resolveProductCatalogText(
+      productText(`catalog.${line.slug}.summary`),
+      lineText(`lines.${line.slug}.summary`),
+    ),
     image: resolveProductCatalogImageSrc(
       line.image,
       productText(`catalog.${line.slug}.image`),
@@ -56,8 +66,12 @@ export async function ProductLineGrid({
 export async function ProductBeoneNote() {
   const locale = await getLocale();
   const loc = locale === "en" || locale === "zh" ? locale : "ko";
-  const text = catalog.beoneNote[loc];
+  const tProduct = await getTranslations("product");
+  const override = (tProduct("beoneNote") as string | undefined)?.trim() ?? "";
+  const text = override.length > 0 ? override : catalog.beoneNote[loc];
   return (
     <p className="max-w-3xl border-l-2 border-sage pl-5 text-sm leading-7 text-ink/70">{text}</p>
   );
 }
+
+export { PRODUCT_BEONE_NOTE_PATH };

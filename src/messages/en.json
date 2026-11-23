@@ -405,51 +405,82 @@
     "ledeColor": "white",
     "catalog": {
       "ddaturip": {
+        "title": "Ddatdureup",
+        "summary": "Health food line — contact or archive for details.",
         "image": ""
       },
       "yukmi-songhwa": {
+        "title": "Yukmisonghwa",
+        "summary": "Health food line — contact or archive for details.",
         "image": ""
       },
       "happy-no": {
+        "title": "Happy N:O",
+        "summary": "Lifestyle beverage line (inquire via store).",
         "image": ""
       },
       "saengmaeksan": {
+        "title": "Saengmaeksan",
+        "summary": "General food line.",
         "image": ""
       },
       "ssanghwatang": {
+        "title": "Ssanghwatang",
+        "summary": "General food line.",
         "image": ""
       },
       "jaryeon-cushion": {
+        "title": "Jaryeon (慈蓮) beauty cushion",
+        "summary": "Premium cushion line with lotus motif.",
         "image": ""
       },
       "muscle-joint-patch": {
+        "title": "Bio Healing muscle & joint patch",
+        "summary": "Flagship patch for daily and post-activity care. COI, ingredient table, and irritation test on file.",
         "image": ""
       },
       "muscle-joint-hot-patch": {
+        "title": "Bio Healing muscle & joint hot patch",
+        "summary": "Warmth-oriented muscle and joint line per product spec.",
         "image": ""
       },
       "slim-hot-patch": {
+        "title": "Slim hot patch (NO material)",
+        "summary": "Slim hot patch line with NO metabolite materials.",
         "image": ""
       },
       "good-night-nose-patch": {
+        "title": "Good-night nose patch",
+        "summary": "Nose patch designed for sleep and breathing comfort.",
         "image": ""
       },
       "multi-memory-patch": {
+        "title": "Multi-memory patch",
+        "summary": "Composite patch for cognitive and vitality care.",
         "image": ""
       },
       "energy-focus-patch": {
+        "title": "Energy focus patch",
+        "summary": "Energy care patch for activity and focus.",
         "image": ""
       },
       "us-miracle-patch": {
+        "title": "US export · Miracle patch",
+        "summary": "Bio Healing Miracle patch for the US (1P·2P·4P·12P packs).",
         "image": ""
       },
       "us-hot-patch": {
+        "title": "US export · Hot patch",
+        "summary": "Hot patch packaging for the US market.",
         "image": ""
       },
       "carebase-health-platform": {
+        "title": "CAREBASE health platform",
+        "summary": "Member and data-driven health management services.",
         "image": ""
       }
-    }
+    },
+    "beoneNote": "BEONE researches and manufactures patch materials and formulations. Descriptions stay within verified test data and do not claim medical outcomes."
   },
   "productCatalog": {
     "doc": "File",

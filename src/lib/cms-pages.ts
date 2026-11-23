@@ -28,10 +28,11 @@ const PRODUCT_LINE_CATEGORY_PAGES: CmsPageDef[] = (
     ["healthPlatform", "건강관리플랫폼"],
   ] as const
 ).map(([key, label]) => {
-  const lineImageLabels = Object.fromEntries(
-    catalogLinesForCategory(key).map((line) => [
-      productCatalogImagePath(line.slug),
-      `제품 이미지 · ${line.slug}`,
+  const lineFieldLabels = Object.fromEntries(
+    catalogLinesForCategory(key).flatMap((line) => [
+      [productCatalogImagePath(line.slug), `제품 이미지 · ${line.slug}`],
+      [`product.catalog.${line.slug}.title`, `제품 제목 · ${line.slug}`],
+      [`product.catalog.${line.slug}.summary`, `제품 설명 · ${line.slug}`],
     ]),
   );
   return {
@@ -43,11 +44,12 @@ const PRODUCT_LINE_CATEGORY_PAGES: CmsPageDef[] = (
     productCategory: key,
     fieldLabels: {
       "product.kicker": "키커",
+      "product.beoneNote": "비원 안내 문구",
       [`product.categories.${key}.title`]: "제목",
       [`product.categories.${key}.text`]: "소개 문구",
       [`product.categories.${key}.items`]: "대표 품목",
       [`product.categories.${key}.image`]: "배경 이미지",
-      ...lineImageLabels,
+      ...lineFieldLabels,
     },
   };
 });
@@ -218,6 +220,7 @@ export const CMS_PAGES: CmsPageDef[] = [
       "product.title": "허브 제목",
       "product.lede": "허브 소개",
       "product.note": "제품 안내 노트",
+      "product.beoneNote": "비원 안내 문구",
       "product.proofLink": "연구·임상 링크 문구",
       "product.certLink": "인증·규제 링크 문구",
       "product.categories.healthFood.title": "건강식품 제목",

@@ -405,51 +405,82 @@
     "ledeColor": "white",
     "catalog": {
       "ddaturip": {
+        "title": "땃두릅",
+        "summary": "건강식품 라인. 상세는 문의·자료실을 이용해 주세요.",
         "image": ""
       },
       "yukmi-songhwa": {
+        "title": "육미송화",
+        "summary": "건강식품 라인. 상세는 문의·자료실을 이용해 주세요.",
         "image": ""
       },
       "happy-no": {
+        "title": "Happy N:O",
+        "summary": "생활형 음료 라인 (스토어 문의).",
         "image": ""
       },
       "saengmaeksan": {
+        "title": "생맥산",
+        "summary": "일반식품 라인.",
         "image": ""
       },
       "ssanghwatang": {
+        "title": "쌍화탕",
+        "summary": "일반식품 라인.",
         "image": ""
       },
       "jaryeon-cushion": {
+        "title": "慈蓮 (자련) 뷰티 쿠션",
+        "summary": "연꽃 모티프 프리미엄 쿠션 라인.",
         "image": ""
       },
       "muscle-joint-patch": {
+        "title": "바이오힐링 근육관절 패치",
+        "summary": "일상·활동 후 부위 케어용 대표 패치. 성분분석표·COI·피부 일차자극 시험 자료 보유.",
         "image": ""
       },
       "muscle-joint-hot-patch": {
+        "title": "바이오힐링 근육관절 핫패치",
+        "summary": "온열감을 고려한 근육·관절 라인. 상품기술서 기준 소개.",
         "image": ""
       },
       "slim-hot-patch": {
+        "title": "슬림 핫패치 (산화질소 소재)",
+        "summary": "산화질소 대사체 소재를 적용한 슬림 핫패치 라인.",
         "image": ""
       },
       "good-night-nose-patch": {
+        "title": "굿나잇 코패치",
+        "summary": "수면·호흡 편의를 고려한 코 부착형 패치.",
         "image": ""
       },
       "multi-memory-patch": {
+        "title": "다기억 패치",
+        "summary": "인지·활력 케어를 위한 복합 소재 패치.",
         "image": ""
       },
       "energy-focus-patch": {
+        "title": "에너이자 패치",
+        "summary": "활동·집중 상황을 위한 에너지 케어 패치.",
         "image": ""
       },
       "us-miracle-patch": {
+        "title": "미국 수출 · 미라클 패치",
+        "summary": "미국 시장용 바이오힐링 미라클 패치 (1P·2P·4P·12P 구성).",
         "image": ""
       },
       "us-hot-patch": {
+        "title": "미국 수출 · 핫 패치",
+        "summary": "미국 시장용 핫 패치 라인 패키징.",
         "image": ""
       },
       "carebase-health-platform": {
+        "title": "CAREBASE 건강관리플랫",
+        "summary": "회원·데이터 기반 건강관리 서비스 플랫폼.",
         "image": ""
       }
-    }
+    },
+    "beoneNote": "㈜비원(BEONE)은 패치 소재·배합·구조를 연구·제조합니다. 아래 설명은 확인된 시험·자료 범위에서 소개하며, 의학적 효능을 단정하지 않습니다."
   },
   "productCatalog": {
     "doc": "자료",

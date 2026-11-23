@@ -10,8 +10,11 @@ import {
   resolveHubBlockImageSrc,
 } from "@/lib/hub-media";
 import {
+  PRODUCT_BEONE_NOTE_PATH,
   catalogLinesForCategory,
   productCatalogImagePath,
+  productCatalogSummaryPath,
+  productCatalogTitlePath,
   resolveProductCatalogImageSrc,
 } from "@/lib/product-catalog-media";
 import {
@@ -190,9 +193,18 @@ export function ProductCategoryCmsBody({
         </p>
       </button>
 
-      <p className="mt-6 max-w-3xl border-l-2 border-sage pl-5 text-sm leading-7 text-ink/70">
-        {catalog.beoneNote.ko}
-      </p>
+      <button
+        type="button"
+        onClick={() => onSelectSlot(PRODUCT_BEONE_NOTE_PATH)}
+        className={`mt-6 block w-full max-w-3xl border-0 bg-transparent p-0 text-left ${ring(activeSlot === PRODUCT_BEONE_NOTE_PATH)}`}
+      >
+        <p className="border-l-2 border-sage pl-5 text-sm leading-7 text-ink/70">
+          {cmsPreviewText(
+            values[PRODUCT_BEONE_NOTE_PATH] ?? "",
+            catalog.beoneNote.ko,
+          )}
+        </p>
+      </button>
 
       <button
         type="button"
@@ -208,7 +220,13 @@ export function ProductCategoryCmsBody({
         {lines.length > 0 ? (
           lines.map((line, index) => {
             const imagePath = productCatalogImagePath(line.slug);
+            const titlePath = productCatalogTitlePath(line.slug);
+            const summaryPath = productCatalogSummaryPath(line.slug);
             const imageSrc = resolveProductCatalogImageSrc(line.image, values[imagePath]);
+            const title = cmsPreviewText(
+              values[titlePath] ?? "",
+              itemLabels[index] ?? line.slug,
+            );
             return (
               <article
                 key={line.slug}
@@ -217,7 +235,7 @@ export function ProductCategoryCmsBody({
                 <button
                   type="button"
                   onClick={() => onPickImage(imagePath)}
-                  aria-label={`${itemLabels[index] ?? line.slug} 이미지 편집`}
+                  aria-label={`${title} 이미지 편집`}
                   className={`relative aspect-[4/3] w-full border-0 bg-brand-ink/5 p-0 ${cmsSlotRing(activeSlot === imagePath)}`}
                 >
                   <Image
@@ -233,9 +251,22 @@ export function ProductCategoryCmsBody({
                   </span>
                 </button>
                 <div className="p-5">
-                  <p className="text-lg font-semibold text-brand-ink">
-                    {itemLabels[index] ?? line.slug}
-                  </p>
+                  <button
+                    type="button"
+                    onClick={() => onSelectSlot(titlePath)}
+                    className={`block w-full border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === titlePath)}`}
+                  >
+                    <span className="text-lg font-semibold text-brand-ink">{title}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onSelectSlot(summaryPath)}
+                    className={`mt-2 block w-full border-0 bg-transparent p-0 text-left ${cmsSlotRing(activeSlot === summaryPath)}`}
+                  >
+                    <span className="text-sm leading-relaxed text-brand-ink/70">
+                      {cmsPreviewText(values[summaryPath] ?? "", "제품 설명")}
+                    </span>
+                  </button>
                 </div>
               </article>
             );

@@ -405,51 +405,82 @@
     "ledeColor": "white",
     "catalog": {
       "ddaturip": {
+        "title": "刺老芽",
+        "summary": "健康食品系列，详情请咨询或见资料室。",
         "image": ""
       },
       "yukmi-songhwa": {
+        "title": "六味松花",
+        "summary": "健康食品系列，详情请咨询或见资料室。",
         "image": ""
       },
       "happy-no": {
+        "title": "Happy N:O",
+        "summary": "生活型饮品系列（商城咨询）。",
         "image": ""
       },
       "saengmaeksan": {
+        "title": "生脉散",
+        "summary": "一般食品系列。",
         "image": ""
       },
       "ssanghwatang": {
+        "title": "双和汤",
+        "summary": "一般食品系列。",
         "image": ""
       },
       "jaryeon-cushion": {
+        "title": "慈莲美容气垫",
+        "summary": "莲花主题 Premium 气垫系列。",
         "image": ""
       },
       "muscle-joint-patch": {
+        "title": "Bio Healing 肌肉关节贴",
+        "summary": "日常与活动后护理主打贴。提供成分表、COI 与皮肤刺激试验资料。",
         "image": ""
       },
       "muscle-joint-hot-patch": {
+        "title": "Bio Healing 肌肉关节热敷贴",
+        "summary": "注重温热感的肌肉关节系列，按产品技术书介绍。",
         "image": ""
       },
       "slim-hot-patch": {
+        "title": "纤体热敷贴（NO 材料）",
+        "summary": "采用 NO 代谢体材料的纤体热敷贴系列。",
         "image": ""
       },
       "good-night-nose-patch": {
+        "title": "晚安鼻贴",
+        "summary": "考虑睡眠与呼吸方便的鼻贴。",
         "image": ""
       },
       "multi-memory-patch": {
+        "title": "多记忆贴",
+        "summary": "认知与活力护理用复合贴。",
         "image": ""
       },
       "energy-focus-patch": {
+        "title": "能量集中贴",
+        "summary": "活动与专注场景用能量护理贴。",
         "image": ""
       },
       "us-miracle-patch": {
+        "title": "美国出口 · Miracle 贴",
+        "summary": "美国市场 Bio Healing Miracle 贴（1P·2P·4P·12P）。",
         "image": ""
       },
       "us-hot-patch": {
+        "title": "美国出口 · 热敷贴",
+        "summary": "美国市场热敷贴包装。",
         "image": ""
       },
       "carebase-health-platform": {
+        "title": "CAREBASE 健康管理平台",
+        "summary": "会员与数据驱动的健康管理服务。",
         "image": ""
       }
-    }
+    },
+    "beoneNote": "BEONE 研究与制造贴剂材质与配方。以下介绍以可核对试验资料为限，不作医学疗效断言。"
   },
   "productCatalog": {
     "doc": "资料",
