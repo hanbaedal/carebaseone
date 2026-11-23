@@ -46,7 +46,7 @@ export const adminMenuGroups: AdminMenuGroup[] = [
       { href: "", label: "커뮤니티", heading: true },
       { href: "/admin/cms?page=community", label: "커뮤니티(허브)" },
       { href: "/admin/notices", label: "공지사항" },
-      { href: "/admin/posts?type=archive", label: "자료실" },
+      { href: "/admin/media?focus=archive", label: "자료실" },
       { href: "/admin/gallery", label: "이미지 갤러리" },
       { href: "/admin/cms?page=contact", label: "문의 페이지" },
       { href: "/admin/inquiries", label: "문의 접수" },

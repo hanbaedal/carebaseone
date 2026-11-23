@@ -69,7 +69,7 @@ const editByKey: Record<string, string> = {
   research: "/admin/media?focus=research",
   community: "/admin/cms?page=community",
   notice: "/admin/notices",
-  archive: "/admin/posts?type=archive",
+  archive: "/admin/media?focus=archive",
   gallery: "/admin/gallery",
   contact: "/admin/cms?page=contact",
 };

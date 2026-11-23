@@ -3,7 +3,13 @@ import { galleryPublicPathFromDoc } from "@/lib/cms-gallery-seed";
 import { removeMedia, toggleMedia } from "@/app/admin/ops-actions";
 import type { MediaDoc } from "@/lib/db";
 
-export function AdminMediaItemsTable({ items }: { items: MediaDoc[] }) {
+export function AdminMediaItemsTable({
+  items,
+  returnQuery = "",
+}: {
+  items: MediaDoc[];
+  returnQuery?: string;
+}) {
   return (
     <div className="overflow-x-auto text-xs">
       <table className="w-full min-w-[48rem]">
@@ -58,10 +64,12 @@ export function AdminMediaItemsTable({ items }: { items: MediaDoc[] }) {
                 <form action={toggleMedia} className="inline">
                   <input type="hidden" name="slug" value={item.slug} />
                   <input type="hidden" name="published" value={item.published ? "false" : "true"} />
+                  {returnQuery ? <input type="hidden" name="returnQuery" value={returnQuery} /> : null}
                   <button type="submit">{item.published ? "비공개" : "공개"}</button>
                 </form>
                 <form action={removeMedia} className="inline">
                   <input type="hidden" name="slug" value={item.slug} />
+                  {returnQuery ? <input type="hidden" name="returnQuery" value={returnQuery} /> : null}
                   <button type="submit" className="text-red-800">
                     삭제
                   </button>

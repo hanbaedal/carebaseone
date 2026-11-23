@@ -28,6 +28,7 @@ function parseAdminLocation(pathname: string, search: URLSearchParams): string |
     if (focus === "patents") return "patents";
     if (focus === "certifications") return "certifications";
     if (focus === "research") return "research";
+    if (focus === "archive") return "archive";
     return null;
   }
   if (path === "/admin/notices") return "notice";
