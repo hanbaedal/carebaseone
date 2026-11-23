@@ -3,9 +3,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveContentInline } from "@/app/admin/actions";
-import { FeaturesCmsBody } from "@/components/admin/FeaturesCmsBody";
 import { HomeCmsCanvas } from "@/components/admin/HomeCmsCanvas";
 import { SubpageCmsCanvas } from "@/components/admin/SubpageCmsCanvas";
+import {
+  cmsUsesPublicHero,
+  resolveCmsVisualBody,
+} from "@/components/admin/resolveCmsVisualBody";
 import { FontFamilyModal } from "@/components/admin/FontFamilyModal";
 import { FontScaleStepper } from "@/components/admin/FontScaleStepper";
 import { MediaPickerModal, type CmsMediaOption } from "@/components/admin/MediaPickerModal";
@@ -114,7 +117,7 @@ export function CmsVisualEditor({
   mediaOptions?: CmsMediaOption[];
 }) {
   const isHome = page.key === "home";
-  const isFeatures = page.key === "features";
+  const usePublicHero = cmsUsesPublicHero(page.key);
   const router = useRouter();
   const [mediaOptions, setMediaOptions] = useState<CmsMediaOption[]>(mediaOptionsProp);
   const mediaFetchStarted = useRef(false);
@@ -455,16 +458,13 @@ export function CmsVisualEditor({
                 setFooterBgOpen(true);
               }}
               onPickBackground={openBackgroundPicker}
-              publicHero={isFeatures}
-              body={
-                isFeatures ? (
-                  <FeaturesCmsBody
-                    values={canvasValues}
-                    activeSlot={slot}
-                    onSelectSlot={handleSubpageSlot}
-                  />
-                ) : undefined
-              }
+              publicHero={usePublicHero}
+              body={resolveCmsVisualBody({
+                page,
+                values: canvasValues,
+                activeSlot: slot,
+                onSelectSlot: handleSubpageSlot,
+              })}
             />
           )}
         </div>
