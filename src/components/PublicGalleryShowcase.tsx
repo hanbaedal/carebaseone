@@ -10,7 +10,10 @@ export type PublicGalleryItem = {
   caption: string;
 };
 
-const PAGE_SIZE = 3;
+/** 아래 썸네일 줄에 한 번에 보이는 장수 */
+const THUMB_WINDOW = 3;
+/** 번호 버튼 한 블록에 표시할 개수 */
+const NUMBER_BLOCK = 10;
 
 export function PublicGalleryShowcase({
   items,
@@ -28,49 +31,48 @@ export function PublicGalleryShowcase({
   };
 }) {
   const [active, setActive] = useState(0);
-  const [page, setPage] = useState(1);
+  const total = items.length;
+  const current = items[active] ?? items[0];
 
-  const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
-  const safePage = Math.min(Math.max(1, page), totalPages);
-  const pageItems = useMemo(() => {
-    const start = (safePage - 1) * PAGE_SIZE;
-    return items.slice(start, start + PAGE_SIZE).map((item, i) => ({
+  const thumbItems = useMemo(() => {
+    const start = Math.floor(active / THUMB_WINDOW) * THUMB_WINDOW;
+    return items.slice(start, start + THUMB_WINDOW).map((item, i) => ({
       item,
       index: start + i,
     }));
-  }, [items, safePage]);
+  }, [items, active]);
 
-  const current = items[active] ?? items[0];
-
-  useEffect(() => {
-    if (items.length === 0) return;
-    setActive((i) => Math.min(i, items.length - 1));
-  }, [items.length]);
-
-  useEffect(() => {
-    const pageForActive = Math.floor(active / PAGE_SIZE) + 1;
-    setPage(pageForActive);
-  }, [active]);
-
-  const go = useCallback(
-    (delta: number) => {
-      if (items.length === 0) return;
-      setActive((i) => (i + delta + items.length) % items.length);
-    },
-    [items.length],
+  const numberBlockStart = Math.floor(active / NUMBER_BLOCK) * NUMBER_BLOCK;
+  const numberBlockEnd = Math.min(total, numberBlockStart + NUMBER_BLOCK);
+  const numberButtons = useMemo(
+    () => Array.from({ length: numberBlockEnd - numberBlockStart }, (_, i) => numberBlockStart + i),
+    [numberBlockStart, numberBlockEnd],
   );
 
   useEffect(() => {
-    if (items.length < 2) return;
+    if (total === 0) return;
+    setActive((i) => Math.min(i, total - 1));
+  }, [total]);
+
+  const go = useCallback(
+    (delta: number) => {
+      if (total === 0) return;
+      setActive((i) => (i + delta + total) % total);
+    },
+    [total],
+  );
+
+  useEffect(() => {
+    if (total < 2) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") go(-1);
       if (e.key === "ArrowRight") go(1);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [go, items.length]);
+  }, [go, total]);
 
-  if (items.length === 0) {
+  if (total === 0) {
     return <p className="text-sm text-brand-ink/60">{labels.empty}</p>;
   }
 
@@ -84,15 +86,15 @@ export function PublicGalleryShowcase({
           <div
             className="flex h-full transition-transform duration-700 ease-out motion-reduce:transition-none"
             style={{
-              width: `${items.length * 100}%`,
-              transform: `translateX(-${(100 / items.length) * active}%)`,
+              width: `${total * 100}%`,
+              transform: `translateX(-${(100 / total) * active}%)`,
             }}
           >
             {items.map((item, index) => (
               <div
                 key={item.slug}
                 className="relative h-full shrink-0"
-                style={{ width: `${100 / items.length}%` }}
+                style={{ width: `${100 / total}%` }}
               >
                 <MediaAwareImage
                   src={item.src}
@@ -106,7 +108,7 @@ export function PublicGalleryShowcase({
             ))}
           </div>
 
-          {items.length > 1 ? (
+          {total > 1 ? (
             <>
               <button
                 type="button"
@@ -137,7 +139,7 @@ export function PublicGalleryShowcase({
       </section>
 
       <ul className="grid grid-cols-1 gap-3 md:grid-cols-3">
-        {pageItems.map(({ item, index }) => {
+        {thumbItems.map(({ item, index }) => {
           const selected = index === active;
           return (
             <li key={item.slug}>
@@ -173,34 +175,40 @@ export function PublicGalleryShowcase({
         })}
       </ul>
 
-      {totalPages > 1 ? (
+      {total > 1 ? (
         <nav className="flex flex-wrap items-center justify-center gap-2" aria-label={labels.galleryNav}>
           <PageButton
             label={labels.first}
-            disabled={safePage <= 1}
-            onClick={() => {
-              setPage(1);
-              setActive(0);
-            }}
+            disabled={active <= 0}
+            onClick={() => setActive(0)}
           />
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+          {numberBlockStart > 0 ? (
             <PageButton
-              key={n}
-              label={labels.pageLabel.replace("{n}", String(n))}
-              active={n === safePage}
-              onClick={() => {
-                setPage(n);
-                setActive((n - 1) * PAGE_SIZE);
-              }}
+              label="…"
+              onClick={() => setActive(Math.max(0, numberBlockStart - 1))}
             />
-          ))}
+          ) : null}
+          {numberButtons.map((index) => {
+            const n = index + 1;
+            return (
+              <PageButton
+                key={index}
+                label={labels.pageLabel.replace("{n}", String(n))}
+                active={index === active}
+                onClick={() => setActive(index)}
+              />
+            );
+          })}
+          {numberBlockEnd < total ? (
+            <PageButton
+              label="…"
+              onClick={() => setActive(numberBlockEnd)}
+            />
+          ) : null}
           <PageButton
             label={labels.last}
-            disabled={safePage >= totalPages}
-            onClick={() => {
-              setPage(totalPages);
-              setActive((totalPages - 1) * PAGE_SIZE);
-            }}
+            disabled={active >= total - 1}
+            onClick={() => setActive(total - 1)}
           />
         </nav>
       ) : null}
