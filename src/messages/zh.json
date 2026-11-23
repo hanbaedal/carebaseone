@@ -682,7 +682,20 @@
     "title": "研究与临床",
     "lede": "CSR、论文、成分与皮肤试验资料。",
     "researchHeading": "研究",
-    "productHeading": "产品资料"
+    "productHeading": "产品资料",
+    "gridResearchEmpty": "暂无已发布的研究论文资料。",
+    "gridProductEmpty": "暂无已发布的产品资料。",
+    "gridView": "预览",
+    "gridClose": "关闭",
+    "gridOpenFile": "在新窗口打开原文件",
+    "gridZoomPageFit": "整页适应",
+    "gridZoomPageWidth": "宽度适应",
+    "gridZoomActual": "100%",
+    "gridZoomIn": "放大",
+    "gridZoomOut": "缩小",
+    "gridPrevPage": "上一页",
+    "gridNextPage": "下一页",
+    "gridPageLabel": "第 {n} 页"
   },
   "community": {
     "heroImage": "",

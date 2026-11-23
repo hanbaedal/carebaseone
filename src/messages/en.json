@@ -682,7 +682,20 @@
     "title": "Research & clinical",
     "lede": "CSR reports, papers, analyses, and product evidence files.",
     "researchHeading": "Research",
-    "productHeading": "Product evidence"
+    "productHeading": "Product evidence",
+    "gridResearchEmpty": "No research papers are published yet.",
+    "gridProductEmpty": "No product evidence files are published yet.",
+    "gridView": "Preview",
+    "gridClose": "Close",
+    "gridOpenFile": "Open original file",
+    "gridZoomPageFit": "Fit page",
+    "gridZoomPageWidth": "Fit width",
+    "gridZoomActual": "100%",
+    "gridZoomIn": "Zoom in",
+    "gridZoomOut": "Zoom out",
+    "gridPrevPage": "Previous page",
+    "gridNextPage": "Next page",
+    "gridPageLabel": "Page {n}"
   },
   "community": {
     "heroImage": "",

@@ -682,7 +682,20 @@
     "title": "연구·임상",
     "lede": "CSR, 논문, 성분·피부 시험, 제품 성분 자료를 제공합니다.",
     "researchHeading": "연구·논문",
-    "productHeading": "제품·성분"
+    "productHeading": "제품·성분",
+    "gridResearchEmpty": "등록된 연구·논문 자료가 없습니다.",
+    "gridProductEmpty": "등록된 제품·성분 자료가 없습니다.",
+    "gridView": "미리보기",
+    "gridClose": "닫기",
+    "gridOpenFile": "원본 파일 새 창에서 열기",
+    "gridZoomPageFit": "페이지 맞춤",
+    "gridZoomPageWidth": "가로 맞춤",
+    "gridZoomActual": "100%",
+    "gridZoomIn": "확대",
+    "gridZoomOut": "축소",
+    "gridPrevPage": "이전 페이지",
+    "gridNextPage": "다음 페이지",
+    "gridPageLabel": "{n}쪽"
   },
   "community": {
     "heroImage": "",
