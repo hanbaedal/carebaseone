@@ -69,9 +69,31 @@ type HomeSlot = (typeof HOME_CMS_PATHS)[number];
 
 function textareaRows(path: string, multiline: boolean) {
   if (path === "home.kicker") return 2;
-  if (path === "home.headline" || path.endsWith(".title")) return 4;
-  if (multiline) return 6;
-  return 2;
+  if (path.endsWith("beoneNote") || path.endsWith(".note") || path.endsWith(".summary")) {
+    return 10;
+  }
+  if (path === "home.headline" || path.endsWith(".title") || path.endsWith(".lede") || path.endsWith(".text")) {
+    return 6;
+  }
+  if (path.endsWith(".body") || path.endsWith(".items")) return 8;
+  if (multiline) return 8;
+  return 3;
+}
+
+function isLongTextPath(path: string) {
+  return (
+    path.endsWith(".body") ||
+    path.endsWith(".lede") ||
+    path.endsWith(".text") ||
+    path.endsWith(".summary") ||
+    path.endsWith(".note") ||
+    path.endsWith("beoneNote") ||
+    path.endsWith(".items") ||
+    path.endsWith(".headline") ||
+    path === "home.kicker" ||
+    path === "home.headline" ||
+    path === "home.lede"
+  );
 }
 
 function isMetaEditorPath(path: string) {
@@ -207,12 +229,9 @@ export function CmsVisualEditor({
     : "";
 
   const multiline =
-    active?.path === "home.kicker" ||
-    active?.path === "home.headline" ||
     Boolean(active?.multiline) ||
-    Boolean(active?.path.endsWith(".body")) ||
-    Boolean(active?.path.endsWith(".lede")) ||
-    Boolean(active?.path.endsWith(".text"));
+    Boolean(active?.path && isLongTextPath(active.path)) ||
+    Boolean(active?.path?.endsWith(".title"));
 
   const isScaleField = active?.path.endsWith("Scale");
   const isMediaField = Boolean(active?.path && isCmsImageFieldPath(active.path));
@@ -627,13 +646,12 @@ export function CmsVisualEditor({
                   const field = typoTextPath && textField ? textField : active!;
                   const value = draft[editPath] ?? field.ko;
                   const editMultiline =
-                    typoTextPath === "home.kicker" ||
-                    typoTextPath === "home.headline" ||
-                    typoTextPath === "home.lede" ||
-                    typoTextPath?.endsWith(".title") ||
-                    typoTextPath?.endsWith(".body") ||
                     field.multiline ||
-                    multiline;
+                    multiline ||
+                    isLongTextPath(editPath) ||
+                    editPath.endsWith(".title") ||
+                    value.includes("\n") ||
+                    value.length > 40;
                   return (
                     <label className="grid gap-1 text-[11px] text-ink/60">
                       내용 (한국어)
@@ -644,7 +662,7 @@ export function CmsVisualEditor({
                             setDraft((d) => ({ ...d, [editPath]: e.target.value }))
                           }
                           rows={textareaRows(editPath, editMultiline)}
-                          className="max-h-36 w-full resize-y rounded border border-ink/15 bg-white px-2 py-1.5 text-[13px] leading-6 outline-none focus:border-forest"
+                          className="min-h-[10rem] max-h-[28rem] w-full resize-y rounded border border-ink/15 bg-white px-2 py-2 text-[13px] leading-6 outline-none focus:border-forest"
                         />
                       ) : (
                         <input

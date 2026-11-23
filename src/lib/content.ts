@@ -112,7 +112,11 @@ export async function getKoCmsEditorFields(section: string): Promise<KoCmsField[
     path: field.path,
     label: field.path.slice(section.length + 1).replaceAll(".", " · "),
     ko: field.value,
-    multiline: field.value.length > 70,
+    multiline:
+      field.value.length > 40 ||
+      field.value.includes("\n") ||
+      /\.(body|lede|text|summary|note|items)$/i.test(field.path) ||
+      field.path.endsWith("beoneNote"),
   }));
 }
 
@@ -129,7 +133,11 @@ export async function getEditorFields(section: string): Promise<EditorField[]> {
     ko: field.value,
     en: getPath(english, field.path),
     zh: getPath(chinese, field.path),
-    multiline: field.value.length > 70,
+    multiline:
+      field.value.length > 40 ||
+      field.value.includes("\n") ||
+      /\.(body|lede|text|summary|note|items)$/i.test(field.path) ||
+      field.path.endsWith("beoneNote"),
   }));
 }
 
