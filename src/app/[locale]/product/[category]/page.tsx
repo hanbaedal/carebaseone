@@ -26,6 +26,8 @@ import { resolveLocale } from "@/lib/locale";
 import { Link } from "@/i18n/navigation";
 import { SectionTail } from "@/components/SectionTail";
 
+export const dynamic = "force-dynamic";
+
 export function generateStaticParams() {
   return PRODUCT_LINE_CATEGORIES.map((key) => ({
     category: PRODUCT_CATEGORY_PATHS[key],

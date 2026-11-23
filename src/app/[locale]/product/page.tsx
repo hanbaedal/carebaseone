@@ -10,6 +10,8 @@ import { SectionHubList } from "@/components/SectionHubList";
 import { PRODUCT_HUB_BLOCKS } from "@/lib/section-hub";
 import { Link } from "@/i18n/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default async function ProductPage({
   params,
 }: {

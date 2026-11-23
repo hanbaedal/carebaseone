@@ -4,7 +4,7 @@ import { ensureCmsGallerySeed, galleryPublicPathFromDoc } from "@/lib/cms-galler
 import { cmsGalleryFallbackOptions } from "@/lib/cms-gallery-images";
 import { isGalleryImageFile, repairGalleryImageMime } from "@/lib/media-crud";
 import { isImageMime, resolveMediaChannels, showOnPublicGallery } from "@/lib/media-channels";
-import { productLinesQuery } from "@/lib/media-product-lines";
+import { resolveProductLines } from "@/lib/media-product-lines";
 import { ensureProductLineGalleryFromCatalog } from "@/lib/product-line-gallery-migrate";
 import type { ProductLineCategory } from "@/lib/product-categories";
 import { ensureMediaReady, ensureMediaSeed } from "@/lib/seed-media";
@@ -164,11 +164,13 @@ export async function listProductLineGalleryMedia(
   const { repairProductLineChannelsShape } = await import("@/lib/gallery-product-line-limit");
   await repairProductLineChannelsShape();
 
-  await ensureIndexes();
-  const docs = (await (await media())
-    .find(productLinesQuery(category))
-    .sort({ createdAt: -1 })
-    .toArray()) as MediaDoc[];
+  const docs = await listMediaForAdmin("gallery");
 
-  return docs.filter((d) => isGalleryImageFile(d.fileName, d.mime));
+  return docs
+    .filter((d) => {
+      if (!d.published) return false;
+      if (!isGalleryImageFile(d.fileName, d.mime)) return false;
+      return resolveProductLines(resolveMediaChannels(d))[category];
+    })
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 }
